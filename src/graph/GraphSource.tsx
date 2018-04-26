@@ -5,10 +5,10 @@ import GraphState from './GraphState';
 import { loadRdf } from './actions';
 
 export interface DispatchProps {
-  loadRdf: (url: string) => Promise<void>,
-};
+  loadRdf: (url: string) => Promise<void>;
+}
 
-export interface StateProps {};
+export interface StateProps {}
 
 export interface Props extends DispatchProps, StateProps {
   url: string;

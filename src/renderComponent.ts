@@ -10,9 +10,12 @@ type ComponentConfiguration = {
   name: string;
   props?: ComponentProps;
   children?: ComponentConfiguration[];
-}
+};
 
-const createElement: any = (name: string, props?: ComponentProps, children?: ComponentConfiguration[]) => {
+const createElement: any = (
+    name: string,
+    props?: ComponentProps,
+    children?: ComponentConfiguration[]) => {
   const component = getComponent(name);
 
   const childComponents = children ?

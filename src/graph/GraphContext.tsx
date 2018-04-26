@@ -8,7 +8,7 @@ export interface Props {
   readonly children: any;
 }
 
-const GraphContext: React.StatelessComponent<Props> = props => {
+const GraphContext: React.StatelessComponent<Props> = (props) => {
   const middlewares = [
     thunkMiddleware,
   ];
@@ -16,7 +16,7 @@ const GraphContext: React.StatelessComponent<Props> = props => {
   if (process.env.NODE_ENV === 'development') {
     const { logger } = require('redux-logger');
     middlewares.push(logger);
-  };
+  }
 
   const store = createStore(reducer, applyMiddleware(...middlewares));
 

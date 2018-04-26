@@ -8,7 +8,7 @@ const dataFactory = new DataFactory();
 
 export interface StateProps {
   propertyQuads: Quad[];
-};
+}
 
 export interface OwnProps {
   resource: string;

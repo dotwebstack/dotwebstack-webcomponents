@@ -28,7 +28,7 @@ const loadRdfFailure = (err: Error) => ({
 
 export type LoadRdfResult = {
   (url: string): ThunkAction<Promise<void>, GraphState, null>;
-}
+};
 
 export const loadRdf: LoadRdfResult = (url: string) => {
   return (dispatch) => {
@@ -43,11 +43,11 @@ export const loadRdf: LoadRdfResult = (url: string) => {
     return fetch(url, opts)
       .then(response => response.json())
       .then(doc => parser.parse(doc))
-      .then(quads => {
+      .then((quads) => {
         dispatch(loadRdfSuccess(quads));
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(loadRdfFailure(err));
-      })
+      });
   };
 };

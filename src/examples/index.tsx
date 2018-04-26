@@ -6,7 +6,8 @@ const App = () => (
   <GraphContext>
     <GraphSource url="https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485" />
     <GraphSource url="https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117486" />
-    <PropertyTable resource="http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485" />
+    <PropertyTable
+      resource="http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485" />
   </GraphContext>
 );
 
