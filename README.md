@@ -13,13 +13,13 @@ The following tools are required:
 These webcomponents can be installed using NPM:
 
 ```bash
-npm install --save dotwebstack-webcomponents
+npm install --save @dotwebstack/webcomponents
 ```
 
 And of course, also with Yarn:
 
 ```bash
-yarn add dotwebstack-webcomponents
+yarn add @dotwebstack/webcomponents
 ```
 
 ## Usage with React
@@ -29,7 +29,7 @@ Here is an example of using webcomponents within a React application:
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { GraphContext, GraphSource, PropertyTable } from 'dotwebstack-webcomponents';
+import { GraphContext, GraphSource, PropertyTable } from '@dotwebstack/webcomponents';
 
 const App = () => (
   <GraphContext>
@@ -46,10 +46,10 @@ ReactDOM.render(<App />, document.getElementById('root'));
 Here is an example of using web components in a non-React application:
 
 ```js
-import { renderComponent } from 'dotwebstack-webcomponents';
+import { renderComponent } from '@dotwebstack/webcomponents';
 
 // Alternative way when not using ES6 modules:
-// const renderComponent = require('dotwebstack-webcomponents').renderComponent;
+// const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
 
 renderComponent({
   name: 'GraphContext',

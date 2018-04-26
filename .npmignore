@@ -1,6 +1,7 @@
 .gitignore
+README.md
 src
 tsconfig.json
 tslint.json
 webpack.config.js
-webpack.dev.js
+webpack.development.js
