@@ -6,15 +6,15 @@ import Quad from '../Quad';
 
 const dataFactory = new DataFactory();
 
-interface StateProps {
+export interface StateProps {
   propertyQuads: Quad[];
 };
 
-interface OwnProps {
+export interface OwnProps {
   resource: string;
 }
 
-interface Props extends StateProps, OwnProps {}
+export interface Props extends StateProps, OwnProps {}
 
 const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuads }) => (
   <section>

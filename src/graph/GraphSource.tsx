@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import GraphState from './GraphState';
 import { loadRdf } from './actions';
 
-interface DispatchProps {
+export interface DispatchProps {
   loadRdf: (url: string) => Promise<void>,
 };
 
-interface StateProps {};
+export interface StateProps {};
 
-interface Props extends DispatchProps, StateProps {
+export interface Props extends DispatchProps, StateProps {
   url: string;
 }
 

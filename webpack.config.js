@@ -8,7 +8,7 @@ const buildDir = path.resolve(__dirname, 'build');
 module.exports = {
   mode: env,
   entry: {
-    index: path.join(srcDir, 'index.tsx'),
+    index: path.join(srcDir, 'index.ts'),
   },
   output: {
     path: buildDir,
@@ -21,10 +21,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true,
-        },
+        loader: 'awesome-typescript-loader',
       },
     ],
   },

@@ -4,7 +4,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import reducer from './reducer';
 
-interface Props {
+export interface Props {
   readonly children: any;
 }
 
