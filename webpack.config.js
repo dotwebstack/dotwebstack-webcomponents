@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const libraryName = 'dotwebstack-webcomponents';
+const pkg = require('./package.json');
 const env = process.env.NODE_ENV || 'development';
 const srcDir = path.resolve(__dirname, 'src');
 const buildDir = path.resolve(__dirname, 'build');
@@ -14,29 +14,12 @@ module.exports = {
   output: {
     path: buildDir,
     filename: '[name].js',
-    library: libraryName,
+    library: pkg.name,
     libraryTarget: 'umd',
     umdNamedDefine: true,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
-    alias: {
-      [libraryName]: path.join(srcDir, 'index.ts'),
-    },
-  },
-  externals: {
-    react: {
-      commonjs: 'react',
-      commonjs2: 'react',
-      amd: 'react',
-      root: 'React',
-    },
-    'react-dom': {
-      commonjs: 'react-dom',
-      commonjs2: 'react-dom',
-      amd: 'react-dom',
-      root: 'ReactDOM',
-    },
   },
   module: {
     rules: [
@@ -45,7 +28,7 @@ module.exports = {
         loader: 'awesome-typescript-loader',
         query: {
           declaration: env === 'production',
-        }
+        },
       },
     ],
   },
