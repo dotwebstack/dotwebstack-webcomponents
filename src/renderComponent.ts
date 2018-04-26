@@ -2,15 +2,17 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { getComponent } from './index';
 
+type ComponentProps = {
+  [key: string]: any;
+};
+
 type ComponentConfiguration = {
   name: string;
-  props?: {
-    [key: string]: any;
-  };
+  props?: ComponentProps;
   children?: ComponentConfiguration[];
 }
 
-const createElement: any = (name: string, props?: any, children?: any[]) => {
+const createElement: any = (name: string, props?: ComponentProps, children?: ComponentConfiguration[]) => {
   const component = getComponent(name);
 
   const childComponents = children ?
