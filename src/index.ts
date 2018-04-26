@@ -1,6 +1,7 @@
 import PropertyTable from './components/PropertyTable';
 import GraphContext from './graph/GraphContext';
 import GraphSource from './graph/GraphSource';
+import DataFactory from './DataFactory';
 import renderComponent from './renderComponent';
 
 type ComponentMap = {
@@ -25,6 +26,7 @@ export {
   PropertyTable,
   GraphContext,
   GraphSource,
+  DataFactory,
   renderComponent,
   getComponent,
 };

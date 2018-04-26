@@ -1,5 +1,5 @@
 import Quad from './Quad';
-import { BlankNode, DefaultGraph, Literal, NamedNode, Variable } from './term';
+import { BlankNode, DefaultGraph, Literal, NamedNode } from './term';
 
 class DataFactory {
 
@@ -23,26 +23,22 @@ class DataFactory {
     return new Literal(value);
   }
 
-  variable(value: string): Variable {
-    return new Variable(value);
-  }
-
   defaultGraph(): DefaultGraph {
     return new DefaultGraph();
   }
 
   triple(
-      subject: BlankNode | NamedNode | Variable,
-      predicate: NamedNode | Variable,
-      object: BlankNode | NamedNode | Literal | Variable) {
+      subject: BlankNode | NamedNode,
+      predicate: NamedNode,
+      object: BlankNode | NamedNode | Literal) {
     return new Quad(subject, predicate, object);
   }
 
   quad(
-      subject: BlankNode | NamedNode | Variable,
-      predicate: NamedNode | Variable,
-      object: BlankNode | NamedNode | Literal | Variable,
-      graph?: BlankNode | DefaultGraph | NamedNode | Variable) {
+      subject: BlankNode | NamedNode,
+      predicate: NamedNode,
+      object: BlankNode | NamedNode | Literal,
+      graph?: BlankNode | DefaultGraph | NamedNode) {
     return new Quad(subject, predicate, object, graph);
   }
 

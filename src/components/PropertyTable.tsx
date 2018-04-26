@@ -1,24 +1,22 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import GraphState from '../graph/GraphState';
-import DataFactory from '../DataFactory';
 import Quad from '../Quad';
-
-const dataFactory = new DataFactory();
+import { NamedNode, BlankNode } from '../term';
 
 export interface StateProps {
   propertyQuads: Quad[];
 }
 
 export interface OwnProps {
-  resource: string;
+  resource: NamedNode | BlankNode;
 }
 
 export interface Props extends StateProps, OwnProps {}
 
 const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuads }) => (
   <section>
-    <h3>Resource: {resource}</h3>
+    <h3>Resource: {resource.value}</h3>
     <table className="table">
       <thead>
         <tr>
@@ -39,9 +37,7 @@ const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuad
 );
 
 const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => ({
-  propertyQuads: state.quads.filter(quad => quad.subject.equals(
-    dataFactory.namedNode(ownProps.resource),
-  )),
+  propertyQuads: state.quads.filter(quad => quad.subject.equals(ownProps.resource)),
 });
 
 export default connect<StateProps>(mapStateToProps)(PropertyTable);

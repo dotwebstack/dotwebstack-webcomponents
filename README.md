@@ -29,14 +29,16 @@ yarn add @dotwebstack/webcomponents
 Here is an example of using webcomponents within a React application:
 
 ```js
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { GraphContext, GraphSource, PropertyTable } from '@dotwebstack/webcomponents';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { DataFactory, GraphContext, GraphSource, PropertyTable } from '@dotwebstack/webcomponents';
+
+const dataFactory = new DataFactory();
 
 const App = () => (
   <GraphContext>
     <GraphSource url="https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485" />
-    <PropertyTable resource="http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485" />
+    <PropertyTable resource={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')} />
   </GraphContext>
 );
 
@@ -48,10 +50,13 @@ ReactDOM.render(<App />, document.getElementById('root'));
 Here is an example of using webcomponents in a non-React application:
 
 ```js
-import { renderComponent } from '@dotwebstack/webcomponents';
+import { DataFactory, renderComponent } from '@dotwebstack/webcomponents';
 
-// Alternative way when not using ES6 modules:
+// Alternative method when not using ES6 modules:
+// const DataFactory = require('@dotwebstack/webcomponents').DataFactory;
 // const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
+
+const dataFactory = new DataFactory();
 
 renderComponent({
   name: 'GraphContext',
@@ -65,7 +70,7 @@ renderComponent({
     {
       name: 'PropertyTable',
       props: {
-        resource: 'http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485',
+        resource: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485'),
       },
     },
   ],

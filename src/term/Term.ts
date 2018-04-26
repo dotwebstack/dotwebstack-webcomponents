@@ -3,7 +3,6 @@ export const enum TermType {
   DefaultGraph = 'DefaultGraph',
   NamedNode = 'NamedNode',
   Literal = 'Literal',
-  Variable = 'Variable',
 }
 
 interface Term {
