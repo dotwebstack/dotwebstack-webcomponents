@@ -27,8 +27,8 @@ yarn add dotwebstack-webcomponents
 Here is an example of using webcomponents within a React application:
 
 ```js
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { GraphContext, GraphSource, PropertyTable } from 'dotwebstack-webcomponents';
 
 const App = () => (
