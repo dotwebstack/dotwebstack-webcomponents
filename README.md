@@ -45,7 +45,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 ## Usage without React
 
-Here is an example of using web components in a non-React application:
+Here is an example of using webcomponents in a non-React application:
 
 ```js
 import { renderComponent } from '@dotwebstack/webcomponents';
