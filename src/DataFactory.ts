@@ -28,17 +28,17 @@ class DataFactory {
   }
 
   triple(
-      subject: BlankNode | NamedNode,
+      subject: NamedNode | BlankNode,
       predicate: NamedNode,
-      object: BlankNode | NamedNode | Literal) {
+      object: NamedNode | BlankNode | Literal) {
     return new Quad(subject, predicate, object);
   }
 
   quad(
-      subject: BlankNode | NamedNode,
+      subject: NamedNode | BlankNode,
       predicate: NamedNode,
-      object: BlankNode | NamedNode | Literal,
-      graph?: BlankNode | DefaultGraph | NamedNode) {
+      object: NamedNode | BlankNode | Literal,
+      graph?: NamedNode | BlankNode | DefaultGraph) {
     return new Quad(subject, predicate, object, graph);
   }
 
