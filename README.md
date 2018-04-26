@@ -46,10 +46,10 @@ ReactDOM.render(<App />, document.getElementById('root'));
 Here is an example of using web components in a non-React application:
 
 ```js
-import { renderComponent } from './dotwebstack-webcomponents';
+import { renderComponent } from 'dotwebstack-webcomponents';
 
 // Alternative way when not using ES6 modules:
-// const renderComponent = require('./dotwebstack-webcomponents').renderComponent;
+// const renderComponent = require('dotwebstack-webcomponents').renderComponent;
 
 renderComponent({
   name: 'GraphContext',
