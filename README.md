@@ -93,7 +93,7 @@ When releasing a new version, manually increase the version number in `package.j
 To publish the new version to the NPM registry:
 
 ```bash
-npm run publish
+npm publish
 ```
 
 ## License
