@@ -15,11 +15,14 @@ export interface StateProps {
 export interface OwnProps {
   resource: NamedNode | BlankNode;
   graph?: NamedNode | BlankNode | DefaultGraph;
+  headingType?: string;
 }
 
 export interface Props extends StateProps, OwnProps {}
 
-const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuads }) => {
+const PropertyTable: React.StatelessComponent<Props> = (props) => {
+  const { resource, propertyQuads, headingType } = props;
+
   const labelStatement = findSingleStatement(
     propertyQuads,
     resource,
@@ -29,7 +32,7 @@ const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuad
   return (
     <section>
       {labelStatement && (
-        <h3>{labelStatement.object.value}</h3>
+        React.createElement(headingType!, null, labelStatement.object.value)
       )}
       <table className="table">
         <thead>
@@ -49,6 +52,10 @@ const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuad
       </table>
     </section>
   );
+};
+
+PropertyTable.defaultProps = {
+  headingType: 'h1',
 };
 
 const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => ({
