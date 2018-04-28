@@ -26,16 +26,16 @@ class JsonLdParser {
 
   dataFactory: DataFactory = new DataFactory();
 
-  parse(doc: JsonLdDocument): Promise<Quad[]> {
+  parse(doc: JsonLdDocument, graph?: NamedNode | BlankNode | DefaultGraph): Promise<Quad[]> {
     return promises.toRDF(doc)
       .then((graphs: GraphCollection) => {
         const quads: Quad[] = [];
 
         Object.keys(graphs).forEach((graphKey) => {
-          const graph = this.toGraph(graphKey);
+          const targetGraph = graph || this.toGraph(graphKey);
 
           graphs[graphKey].forEach((statement) => {
-            const quad = this.toQuad(statement, graph);
+            const quad = this.toQuad(statement, targetGraph);
             quads.push(quad);
           });
         });
@@ -47,7 +47,7 @@ class JsonLdParser {
       });
   }
 
-  private toQuad(statement: JsonLdStatement, graph: DefaultGraph | NamedNode): Quad {
+  private toQuad(statement: JsonLdStatement, graph: NamedNode | BlankNode | DefaultGraph): Quad {
     return this.dataFactory.quad(
       this.toSubject(statement.subject),
       this.toPredicate(statement.predicate),
@@ -56,7 +56,7 @@ class JsonLdParser {
     );
   }
 
-  private toSubject(term: JsonLdTerm): BlankNode | NamedNode {
+  private toSubject(term: JsonLdTerm): NamedNode | BlankNode {
     switch (term.type) {
       case 'blank node':
         return this.dataFactory.blankNode(term.value);
@@ -70,7 +70,7 @@ class JsonLdParser {
     return this.dataFactory.namedNode(term.value);
   }
 
-  private toObject(term: JsonLdTerm): BlankNode | NamedNode | Literal {
+  private toObject(term: JsonLdTerm): NamedNode | BlankNode | Literal {
     switch (term.type) {
       case 'literal':
         return this.dataFactory.literal(term.value, term.language
@@ -84,7 +84,7 @@ class JsonLdParser {
     }
   }
 
-  private toGraph(graph: string): DefaultGraph | NamedNode {
+  private toGraph(graph: string): NamedNode | BlankNode | DefaultGraph {
     if (graph === '@default') {
       return this.dataFactory.defaultGraph();
     }

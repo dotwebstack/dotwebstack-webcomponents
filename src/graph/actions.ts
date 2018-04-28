@@ -2,6 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import GraphState from './GraphState';
 import JsonLdParser from '../JsonLdParser';
 import Quad from '../Quad';
+import { NamedNode, BlankNode, DefaultGraph } from '../term';
 
 const parser = new JsonLdParser();
 
@@ -11,9 +12,12 @@ export const LOAD_RDF_SUCCESS = 'LOAD_RDF_SUCCESS';
 
 export const LOAD_RDF_FAILURE = 'LOAD_RDF_FAILURE';
 
-const loadRdfRequest = (url: string) => ({
+const loadRdfRequest = (url: string, graph?: NamedNode | BlankNode | DefaultGraph) => ({
   type: LOAD_RDF_REQUEST,
-  payload: url,
+  payload: {
+    url,
+    graph,
+  },
 });
 
 const loadRdfSuccess = (quads: Quad[]) => ({
@@ -27,12 +31,15 @@ const loadRdfFailure = (err: Error) => ({
 });
 
 export type LoadRdfResult = {
-  (url: string): ThunkAction<Promise<void>, GraphState, null>;
+  (url: string, graph?: NamedNode | BlankNode | DefaultGraph):
+    ThunkAction<Promise<void>, GraphState, null>;
 };
 
-export const loadRdf: LoadRdfResult = (url: string) => {
+export const loadRdf: LoadRdfResult = (
+    url: string,
+    graph?: NamedNode | BlankNode | DefaultGraph) => {
   return (dispatch) => {
-    dispatch(loadRdfRequest(url));
+    dispatch(loadRdfRequest(url, graph));
 
     const opts = {
       headers: {
@@ -42,7 +49,7 @@ export const loadRdf: LoadRdfResult = (url: string) => {
 
     return fetch(url, opts)
       .then(response => response.json())
-      .then(doc => parser.parse(doc))
+      .then(doc => parser.parse(doc, graph))
       .then((quads) => {
         dispatch(loadRdfSuccess(quads));
       })

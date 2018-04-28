@@ -3,20 +3,26 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import GraphState from './GraphState';
 import { loadRdf } from './actions';
+import { NamedNode, BlankNode, DefaultGraph } from '../term';
 
 export interface DispatchProps {
-  loadRdf: (url: string) => Promise<void>;
+  loadRdf: (url: string, graph?: NamedNode | BlankNode | DefaultGraph) => Promise<void>;
 }
 
 export interface StateProps {}
 
-export interface Props extends DispatchProps, StateProps {
+export interface OwnProps {
+  graph?: NamedNode | BlankNode | DefaultGraph;
+}
+
+export interface Props extends DispatchProps, StateProps, OwnProps {
   url: string;
 }
 
 class GraphSource extends React.Component<Props> {
   componentDidMount() {
-    this.props.loadRdf(this.props.url);
+    const { url, graph } = this.props;
+    this.props.loadRdf(url, graph);
   }
 
   render() {
@@ -27,7 +33,8 @@ class GraphSource extends React.Component<Props> {
 const mapStateToProps = (state: GraphState): StateProps => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<GraphState>): DispatchProps => ({
-  loadRdf: (url: string) => dispatch(loadRdf(url)),
+  loadRdf: (url: string, graph?: NamedNode | BlankNode | DefaultGraph) =>
+    dispatch(loadRdf(url, graph)),
 });
 
 export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(GraphSource);
