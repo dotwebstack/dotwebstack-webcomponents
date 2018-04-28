@@ -16,7 +16,8 @@ const App = () => (
       resource={dataFactory.namedNode(
         'http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')}
       graph={dataFactory.namedNode(
-        'https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485')} />
+        'https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485')}
+      namespaces={['http://bag.basisregistraties.overheid.nl/def/bag#']} />
 
   </GraphContext>
 );

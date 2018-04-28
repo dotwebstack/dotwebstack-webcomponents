@@ -15,6 +15,7 @@ export interface StateProps {
 export interface OwnProps {
   resource: NamedNode | BlankNode;
   graph?: NamedNode | BlankNode | DefaultGraph;
+  namespaces?: string[];
   headingType?: string;
 }
 
@@ -59,8 +60,15 @@ PropertyTable.defaultProps = {
 };
 
 const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => ({
-  propertyQuads: state.quads.filter(quad =>
-    quad.subject.equals(ownProps.resource) && quad.graph.equals(ownProps.graph!)),
+  propertyQuads: state.quads
+    .filter(quad =>
+      quad.subject.equals(ownProps.resource) &&
+      quad.graph.equals(ownProps.graph!) &&
+      (ownProps.namespaces ? ownProps.namespaces.reduce(
+        (acc, namespace) => acc || quad.predicate.value.startsWith(namespace),
+        false) :
+      true),
+    ),
 });
 
 const ConnectedPropertyTable = connect<StateProps>(mapStateToProps)(PropertyTable);
