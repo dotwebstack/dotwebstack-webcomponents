@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import GraphState from './GraphState';
-import { loadRdf } from './actions';
+import GraphState from '../graph/GraphState';
+import { loadRdf } from '../graph/actions';
 import { NamedNode, BlankNode, DefaultGraph } from '../term';
 
 export interface DispatchProps {

@@ -1,6 +1,6 @@
 import PropertyTable from './components/PropertyTable';
-import GraphContext from './graph/GraphContext';
-import GraphSource from './graph/GraphSource';
+import GraphContext from './components/GraphContext';
+import GraphSource from './components/GraphSource';
 import DataFactory from './DataFactory';
 import renderComponent from './renderComponent';
 
