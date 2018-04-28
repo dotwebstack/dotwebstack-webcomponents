@@ -87,7 +87,7 @@ renderComponent({
   name: 'GraphContext',
   props: {
     src: sources,
-  }
+  },
   children: [
     {
       name: 'PropertyTable',
