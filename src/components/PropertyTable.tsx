@@ -20,7 +20,7 @@ export interface OwnProps {
 export interface Props extends StateProps, OwnProps {}
 
 const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuads }) => {
-  const titleStatement = findSingleStatement(
+  const labelStatement = findSingleStatement(
     propertyQuads,
     resource,
     dataFactory.namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
@@ -28,8 +28,8 @@ const PropertyTable: React.StatelessComponent<Props> = ({ resource, propertyQuad
 
   return (
     <section>
-      {titleStatement && (
-        <h3>Resource: {titleStatement.object.value}</h3>
+      {labelStatement && (
+        <h3>{labelStatement.object.value}</h3>
       )}
       <table className="table">
         <thead>
