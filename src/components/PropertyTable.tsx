@@ -27,7 +27,9 @@ const PropertyTable: React.StatelessComponent<Props> = (props) => {
 
   return (
     <section>
-      {React.createElement(headingType!, null, <Label resource={resource} graph={graph} />)}
+      {React.createElement(headingType!, null, (
+        <Label resource={resource} graph={graph} />
+      ))}
       <table className="table">
         <thead>
           <tr>
