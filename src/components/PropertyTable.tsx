@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import GraphState from '../graph/GraphState';
+import { GraphState } from '../graph';
 import Quad from '../Quad';
 import DataFactory from '../DataFactory';
 import Label from './Label';
@@ -9,15 +9,15 @@ import { NamedNode, BlankNode, DefaultGraph } from '../term';
 const dataFactory = new DataFactory();
 
 export interface StateProps {
-  resourceQuads: Quad[];
+  readonly resourceQuads: Quad[];
 }
 
 export interface OwnProps {
-  resource: NamedNode | BlankNode;
-  graph?: NamedNode | BlankNode | DefaultGraph;
-  vocabularyGraph?: NamedNode | BlankNode | DefaultGraph;
-  namespaces?: string[];
-  headingType?: string;
+  readonly resource: NamedNode | BlankNode;
+  readonly graph?: NamedNode | BlankNode | DefaultGraph;
+  readonly vocabularyGraph?: NamedNode | BlankNode | DefaultGraph;
+  readonly namespaces?: string[];
+  readonly headingType?: string;
 }
 
 export interface Props extends StateProps, OwnProps {}

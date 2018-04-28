@@ -1,6 +1,6 @@
-import PropertyTable from './components/PropertyTable';
 import GraphContext from './components/GraphContext';
-import GraphSource from './components/GraphSource';
+import Label from './components/Label';
+import PropertyTable from './components/PropertyTable';
 import DataFactory from './DataFactory';
 import renderComponent from './renderComponent';
 
@@ -9,9 +9,9 @@ type ComponentMap = {
 };
 
 const components: ComponentMap = {
-  PropertyTable,
   GraphContext,
-  GraphSource,
+  Label,
+  PropertyTable,
 };
 
 const getComponent: any = (name: string) => {
@@ -23,9 +23,9 @@ const getComponent: any = (name: string) => {
 };
 
 export {
-  PropertyTable,
   GraphContext,
-  GraphSource,
+  Label,
+  PropertyTable,
   DataFactory,
   renderComponent,
   getComponent,

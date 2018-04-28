@@ -31,14 +31,28 @@ Here is an example of using webcomponents within a React application:
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DataFactory, GraphContext, GraphSource, PropertyTable } from '@dotwebstack/webcomponents';
+import { DataFactory, GraphContext, PropertyTable } from '@dotwebstack/webcomponents';
 
 const dataFactory = new DataFactory();
 
+const sources = [
+  {
+    url: 'https://bag.basisregistraties.overheid.nl/def/bag',
+    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag'),
+  },
+  {
+    url: 'https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485',
+    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485'),
+  },
+];
+
 const App = () => (
-  <GraphContext>
-    <GraphSource url="https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485" />
-    <PropertyTable resource={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')} />
+  <GraphContext src={sources}>
+    <PropertyTable
+      resource={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')}
+      graph={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485')}
+      vocabularyGraph={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag')}
+      namespaces={['http://bag.basisregistraties.overheid.nl/def/bag#']} />
   </GraphContext>
 );
 
@@ -58,19 +72,30 @@ import { DataFactory, renderComponent } from '@dotwebstack/webcomponents';
 
 const dataFactory = new DataFactory();
 
+const sources = [
+  {
+    url: 'https://bag.basisregistraties.overheid.nl/def/bag',
+    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag'),
+  },
+  {
+    url: 'https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485',
+    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485'),
+  },
+];
+
 renderComponent({
   name: 'GraphContext',
+  props: {
+    src: sources,
+  }
   children: [
-    {
-      name: 'GraphSource',
-      props: {
-        url: 'https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485',
-      },
-    },
     {
       name: 'PropertyTable',
       props: {
         resource: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485'),
+        graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485'),
+        vocabularyGraph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag'),
+        namespaces: ['http://bag.basisregistraties.overheid.nl/def/bag#'],
       },
     },
   ],
