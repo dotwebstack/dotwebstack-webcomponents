@@ -4,6 +4,11 @@ import Quad from '../Quad';
 
 const dataFactory = new DataFactory();
 
+const s = dataFactory.namedNode('foo');
+const p = dataFactory.namedNode('bar');
+const o = dataFactory.namedNode('baz');
+const g = dataFactory.namedNode('qux');
+
 describe('DataFactory::namedNode', () => {
   it('should factor a named node', () => {
     const node = dataFactory.namedNode('foo');
@@ -58,9 +63,6 @@ describe('DataFactory::defaultGraph', () => {
 
 describe('DataFactory::triple', () => {
   it('should factor a quad in the default graph', () => {
-    const s = dataFactory.namedNode('foo');
-    const p = dataFactory.namedNode('bar');
-    const o = dataFactory.namedNode('baz');
     const node = dataFactory.triple(s, p, o);
     expect(node).toBeInstanceOf(Quad);
     expect(node.subject).toEqual(s);
@@ -72,9 +74,6 @@ describe('DataFactory::triple', () => {
 
 describe('DataFactory::quad', () => {
   it('should factor a quad in the default graph by default', () => {
-    const s = dataFactory.namedNode('foo');
-    const p = dataFactory.namedNode('bar');
-    const o = dataFactory.namedNode('baz');
     const node = dataFactory.quad(s, p, o);
     expect(node).toBeInstanceOf(Quad);
     expect(node.subject).toEqual(s);
@@ -84,10 +83,6 @@ describe('DataFactory::quad', () => {
   });
 
   it('should factor a quad in a named graph when passed', () => {
-    const s = dataFactory.namedNode('foo');
-    const p = dataFactory.namedNode('bar');
-    const o = dataFactory.namedNode('baz');
-    const g = dataFactory.namedNode('qux');
     const node = dataFactory.quad(s, p, o, g);
     expect(node).toBeInstanceOf(Quad);
     expect(node.subject).toEqual(s);
