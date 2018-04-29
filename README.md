@@ -2,7 +2,8 @@
 
 A set of embeddable Linked Data web components, built on React.
 
-[![npm (scoped)](https://img.shields.io/npm/v/@dotwebstack/webcomponents.svg)](https://www.npmjs.com/package/@dotwebstack/webcomponents)
+[![Build Status](https://travis-ci.org/dotwebstack/dotwebstack-webcomponents.svg?branch=master)](https://travis-ci.org/dotwebstack/dotwebstack-webcomponents)
+[![NPM (Scoped)](https://img.shields.io/npm/v/@dotwebstack/webcomponents.svg)](https://www.npmjs.com/package/@dotwebstack/webcomponents)
 
 ## Prerequisites
 
