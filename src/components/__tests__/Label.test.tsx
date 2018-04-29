@@ -1,12 +1,16 @@
 import * as React from 'react';
+import * as configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import { shallow } from 'enzyme';
-import { Label, mapStateToProps } from '../Label';
+import ConnectedLabel, { Label, mapStateToProps } from '../Label';
 import DataFactory from '../../DataFactory';
+import { DefaultGraph } from '../../term';
 
 const dataFactory = new DataFactory();
+const mockStore = configureStore([thunk]);
 const resource = dataFactory.namedNode('foo');
 
-describe('Label', () => {
+describe('Label::Label', () => {
   it('should render without throwing an error', () => {
     const resource = dataFactory.namedNode('foo');
     const wrapper = shallow(<Label resource={resource} value="bar" />);
@@ -65,5 +69,22 @@ describe('Label::mapStateToProps', () => {
 
     const props = mapStateToProps(state, { resource, graph });
     expect(props.value).toEqual('foo');
+  });
+});
+
+describe('Label::ConnectedLabel', () => {
+  it('should connect mapStateToProps to Label', () => {
+    const store = mockStore({
+      quads: [],
+      loading: false,
+    });
+
+    const wrapper = shallow(
+      <ConnectedLabel resource={resource} />,
+      { context: { store }},
+    );
+
+    expect(wrapper.prop('value')).toEqual('foo');
+    expect(wrapper.prop('graph')).toBeInstanceOf(DefaultGraph);
   });
 });
