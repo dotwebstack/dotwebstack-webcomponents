@@ -12,7 +12,8 @@
     "clean": "rm -rf ./build",
     "build": "NODE_ENV=production webpack",
     "start": "NODE_ENV=development webpack-dev-server --config webpack.development.js",
-    "prepublish": "npm run clean && npm run build"
+    "prepublish": "npm run clean && npm run build",
+    "test": "jest"
   },
   "dependencies": {
     "jsonld": "^0.4.12",
@@ -32,6 +33,7 @@
     "@types/redux-logger": "^3.0.6",
     "awesome-typescript-loader": "^5.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^22.4.3",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.8.0",
     "tslint-loader": "^3.6.0",
