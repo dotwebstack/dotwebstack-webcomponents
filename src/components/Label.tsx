@@ -8,7 +8,7 @@ import { findSingleStatement } from '../graph/utils';
 const dataFactory = new DataFactory();
 
 export interface StateProps {
-  readonly label: string;
+  readonly value: string;
 }
 
 export interface OwnProps {
@@ -18,11 +18,11 @@ export interface OwnProps {
 
 export interface Props extends StateProps, OwnProps {}
 
-const Label: React.StatelessComponent<Props> = ({ label }) => (
-  <React.Fragment>{label}</React.Fragment>
+export const Label: React.StatelessComponent<Props> = ({ value }) => (
+  <React.Fragment>{value}</React.Fragment>
 );
 
-const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => {
+export const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => {
   const quads = state.quads.filter(quad =>
     quad.subject.equals(ownProps.resource) &&
     quad.graph.equals(ownProps.graph!));
@@ -36,7 +36,7 @@ const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => {
   const label = labelStatement ? labelStatement.object.value : ownProps.resource.value;
 
   return {
-    label,
+    value: label,
   };
 };
 
