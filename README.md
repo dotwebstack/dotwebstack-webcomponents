@@ -123,7 +123,7 @@ npm run start
 
 ## Release
 
-When releasing a new version, manually increase the version number in `package.json` and commit/push this change.
+When releasing a new version, manually increase the version number in `package.json`/`package-lock.json` and commit/push this change.
 
 Create & push Git tag (change version number):
 
