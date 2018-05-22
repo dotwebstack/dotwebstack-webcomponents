@@ -37,36 +37,16 @@ The named graph wherein the resource resides.
 
 ## &lt;Model>
 
-A resource representation, which provides a representation of the data model (class & property hierarchy). Component must be wrapped within a `GraphContext`.
+A resource representation, which visualizes the data model (class & property hierarchy). Component must be wrapped within a `GraphContext`.
 
 ```jsx
-<Model iri="http://example.org/foo" />
+<Model />
 ```
-
-### `iri`: `string`
-
-The IRI of the resource to be represented.
-
-### `graph`: `string` (optional)
-
-Default: empty (default graph)
-
-The named graph wherein the resource resides.
 
 ## &lt;Vocabulary>
 
-A resource representation, which provides a representation of the vocabulary (concepts & definitions). Component must be wrapped within a `GraphContext`.
+A resource representation, which visualizes the vocabulary (concepts & definitions). Component must be wrapped within a `GraphContext`.
 
 ```jsx
-<Vocabulary iri="http://example.org/foo" />
+<Vocabulary />
 ```
-
-### `iri`: `string`
-
-The IRI of the resource to be represented.
-
-### `graph`: `string` (optional)
-
-Default: empty (default graph)
-
-The named graph wherein the resource resides.
