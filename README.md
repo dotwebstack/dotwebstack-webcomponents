@@ -25,6 +25,10 @@ And of course, also with Yarn:
 yarn add @dotwebstack/webcomponents
 ```
 
+## Documentation
+
+* [API Reference](./docs/api.md)
+
 ## Usage with React
 
 Here is an example of using webcomponents within a React application:
@@ -32,7 +36,7 @@ Here is an example of using webcomponents within a React application:
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DataFactory, GraphContext, PropertyTable } from '@dotwebstack/webcomponents';
+import { DataFactory, GraphContext, Resource } from '@dotwebstack/webcomponents';
 
 const dataFactory = new DataFactory();
 
@@ -49,8 +53,8 @@ const sources = [
 
 const App = () => (
   <GraphContext src={sources}>
-    <PropertyTable
-      resource={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')}
+    <Resource
+      iri={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')}
       graph={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485')}
       vocabularyGraph={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag')}
       namespaces={['http://bag.basisregistraties.overheid.nl/def/bag#']} />
@@ -91,7 +95,7 @@ renderComponent({
   },
   children: [
     {
-      name: 'PropertyTable',
+      name: 'Resource',
       props: {
         resource: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485'),
         graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485'),

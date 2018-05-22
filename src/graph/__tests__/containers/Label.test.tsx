@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { shallow } from 'enzyme';
-import ConnectedLabel, { Label, mapStateToProps } from '../Label';
-import DataFactory from '../../DataFactory';
-import { DefaultGraph } from '../../term';
+import ConnectedLabel, { Label, mapStateToProps } from '../../containers/Label';
+import DataFactory from '../../../DataFactory';
+import { DefaultGraph } from '../../../term';
 
 const dataFactory = new DataFactory();
 const mockStore = configureStore([thunk]);

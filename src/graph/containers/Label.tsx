@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { GraphState } from '../graph';
-import DataFactory from '../DataFactory';
-import { NamedNode, BlankNode, DefaultGraph } from '../term';
-import { findSingleStatement } from '../graph/utils';
+import { GraphState } from '..';
+import DataFactory from '../../DataFactory';
+import { NamedNode, BlankNode, DefaultGraph } from '../../term';
+import { findSingleStatement } from '../utils';
 
 const dataFactory = new DataFactory();
 

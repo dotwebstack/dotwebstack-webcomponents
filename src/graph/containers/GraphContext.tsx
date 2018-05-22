@@ -3,9 +3,9 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import GraphContextWrapper from './GraphContextWrapper';
-import { loadRdf } from '../graph/actions';
-import { GraphState, GraphSource } from '../graph';
-import reducer from '../graph/reducer';
+import { loadRdf } from '../actions';
+import { GraphState, GraphSource } from '..';
+import reducer from '../reducer';
 
 export interface Props {
   readonly src: GraphSource[];

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { DataFactory, GraphContext, PropertyTable } from '..';
+import { DataFactory, GraphContext, Resource } from '..';
 
 const dataFactory = new DataFactory();
 
@@ -19,7 +19,7 @@ const sources = [
 
 const App = () => (
   <GraphContext src={sources}>
-    <PropertyTable
+    <Resource
       resource={dataFactory.namedNode(
         'http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')}
       graph={dataFactory.namedNode(

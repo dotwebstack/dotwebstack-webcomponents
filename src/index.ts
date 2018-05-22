@@ -1,6 +1,8 @@
-import GraphContext from './components/GraphContext';
-import Label from './components/Label';
-import PropertyTable from './components/PropertyTable';
+import GraphContext from './graph/containers/GraphContext';
+import Label from './graph/containers/Label';
+import Model from './graph/containers/Model';
+import Resource from './graph/containers/Resource';
+import Vocabulary from './graph/containers/Vocabulary';
 import DataFactory from './DataFactory';
 import renderComponent from './renderComponent';
 
@@ -11,7 +13,8 @@ type ComponentMap = {
 const components: ComponentMap = {
   GraphContext,
   Label,
-  PropertyTable,
+  Model,
+  Resource,
 };
 
 const getComponent: any = (name: string) => {
@@ -25,7 +28,8 @@ const getComponent: any = (name: string) => {
 export {
   GraphContext,
   Label,
-  PropertyTable,
+  Resource,
+  Vocabulary,
   DataFactory,
   renderComponent,
   getComponent,

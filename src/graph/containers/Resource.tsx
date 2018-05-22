@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { GraphState } from '../graph';
-import Quad from '../Quad';
-import DataFactory from '../DataFactory';
+import { GraphState } from '..';
+import Quad from '../../Quad';
+import DataFactory from '../../DataFactory';
 import Label from './Label';
-import { NamedNode, BlankNode, DefaultGraph } from '../term';
+import { NamedNode, BlankNode, DefaultGraph } from '../../term';
 
 const dataFactory = new DataFactory();
 
@@ -13,7 +13,7 @@ export interface StateProps {
 }
 
 export interface OwnProps {
-  readonly resource: NamedNode | BlankNode;
+  readonly iri: NamedNode | BlankNode;
   readonly graph?: NamedNode | BlankNode | DefaultGraph;
   readonly vocabularyGraph?: NamedNode | BlankNode | DefaultGraph;
   readonly namespaces?: string[];
@@ -22,13 +22,13 @@ export interface OwnProps {
 
 export interface Props extends StateProps, OwnProps {}
 
-const PropertyTable: React.StatelessComponent<Props> = (props) => {
-  const { resource, graph, vocabularyGraph, resourceQuads, headingType } = props;
+const Resource: React.StatelessComponent<Props> = (props) => {
+  const { iri, graph, vocabularyGraph, resourceQuads, headingType } = props;
 
   return (
     <section>
       {React.createElement(headingType!, null, (
-        <Label resource={resource} graph={graph} />
+        <Label resource={iri} graph={graph} />
       ))}
       <table className="table">
         <thead>
@@ -60,7 +60,7 @@ const PropertyTable: React.StatelessComponent<Props> = (props) => {
 
 const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => ({
   resourceQuads: state.quads.filter(quad =>
-    quad.subject.equals(ownProps.resource) &&
+    quad.subject.equals(ownProps.iri) &&
     quad.graph.equals(ownProps.graph!) &&
     (ownProps.namespaces ? ownProps.namespaces.reduce(
       (acc, namespace) => acc || quad.predicate.value.startsWith(namespace),
@@ -69,12 +69,12 @@ const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => (
   ),
 });
 
-const ConnectedPropertyTable = connect<StateProps>(mapStateToProps)(PropertyTable);
+const ConnectedResource = connect<StateProps>(mapStateToProps)(Resource);
 
-ConnectedPropertyTable.defaultProps = {
+ConnectedResource.defaultProps = {
   graph: dataFactory.defaultGraph(),
   vocabularyGraph: dataFactory.defaultGraph(),
   headingType: 'h1',
 };
 
-export default ConnectedPropertyTable;
+export default ConnectedResource;
