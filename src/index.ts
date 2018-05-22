@@ -28,6 +28,7 @@ const getComponent: any = (name: string) => {
 export {
   GraphContext,
   Label,
+  Model,
   Resource,
   Vocabulary,
   DataFactory,

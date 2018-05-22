@@ -20,7 +20,7 @@ const sources = [
 const App = () => (
   <GraphContext src={sources}>
     <Resource
-      resource={dataFactory.namedNode(
+      iri={dataFactory.namedNode(
         'http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')}
       graph={dataFactory.namedNode(
         'http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485')}
