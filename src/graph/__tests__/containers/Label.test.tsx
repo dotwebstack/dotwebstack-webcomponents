@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as configureStore from 'redux-mock-store';
+import React from 'react';
+import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { shallow } from 'enzyme';
 import ConnectedLabel, { Label, mapStateToProps } from '../../containers/Label';

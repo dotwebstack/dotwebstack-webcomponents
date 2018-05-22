@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
@@ -13,7 +13,7 @@ export interface Props {
 }
 
 class GraphContext extends React.Component<Props> {
-  store: Store<GraphState | undefined>;
+  store: Store<GraphState>;
 
   constructor(props: Props) {
     super(props);
@@ -27,7 +27,7 @@ class GraphContext extends React.Component<Props> {
       middlewares.push(logger);
     }
 
-    this.store = createStore(reducer, applyMiddleware(...middlewares));
+    this.store = createStore<GraphState>(reducer, applyMiddleware(...middlewares));
   }
 
   componentDidMount() {

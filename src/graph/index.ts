@@ -6,11 +6,6 @@ export interface GraphState {
   readonly loading: boolean;
 }
 
-export interface GraphAction {
-  readonly type: string;
-  readonly payload: any;
-}
-
 export interface GraphSource {
   url: string;
   graph?: NamedNode | BlankNode | DefaultGraph;

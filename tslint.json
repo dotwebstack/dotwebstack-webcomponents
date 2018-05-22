@@ -2,6 +2,8 @@
   "extends": "tslint-config-airbnb",
   "rules": {
     "import-name": false,
+    "no-console": true,
+    "no-unused-variable": true,
     "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"]
   }
 }

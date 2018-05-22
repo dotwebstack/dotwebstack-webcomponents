@@ -1,12 +1,22 @@
-const path = require('path');
-
 module.exports = {
-  rootDir: path.join(__dirname, 'src'),
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-  setupTestFrameworkScriptFile: '<rootDir>/jest/setupTests.js',
+  roots: [
+    '<rootDir>/src'
+  ],
   transform: {
-    '^.+\\.tsx?$': '<rootDir>/jest/preprocessor.js',
+    '\\.tsx?$': 'ts-jest'
   },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
-  verbose: true,
+  moduleFileExtensions: [
+    'ts',
+    'tsx',
+    'js',
+    'jsx',
+    'json',
+  ],
+  testRegex: '\\.test\\.tsx?$',
+  setupTestFrameworkScriptFile: '<rootDir>/src/test/setupTests.ts',
+  collectCoverageFrom: [
+    '**/*.{ts,tsx}',
+    '!**/test/**',
+    '!src/index.tsx',
+  ],
 };

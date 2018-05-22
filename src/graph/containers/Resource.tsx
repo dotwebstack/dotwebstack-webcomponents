@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import R from 'ramda';
 import { GraphState } from '..';
 import Quad from '../../Quad';
 import DataFactory from '../../DataFactory';
@@ -63,13 +64,13 @@ const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => (
     quad.subject.equals(ownProps.iri) &&
     quad.graph.equals(ownProps.graph!) &&
     (ownProps.namespaces ? ownProps.namespaces.reduce(
-      (acc, namespace) => acc || quad.predicate.value.startsWith(namespace),
+      (acc, namespace) => acc || R.startsWith(namespace, quad.predicate.value),
       false) :
     true),
   ),
 });
 
-const ConnectedResource = connect<StateProps>(mapStateToProps)(Resource);
+const ConnectedResource = connect(mapStateToProps)(Resource);
 
 ConnectedResource.defaultProps = {
   graph: dataFactory.defaultGraph(),

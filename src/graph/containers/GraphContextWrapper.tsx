@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { GraphState } from '..';
 
@@ -30,4 +30,4 @@ const mapStateToProps = (state: GraphState): StateProps => ({
   loading: state.loading,
 });
 
-export default connect<StateProps>(mapStateToProps)(GraphContextWrapper);
+export default connect(mapStateToProps)(GraphContextWrapper);

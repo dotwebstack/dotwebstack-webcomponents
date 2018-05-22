@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { GraphState } from '..';
 import DataFactory from '../../DataFactory';
@@ -40,7 +40,7 @@ export const mapStateToProps = (state: GraphState, ownProps: OwnProps): StatePro
   };
 };
 
-const ConnectedLabel = connect<StateProps>(mapStateToProps)(Label);
+const ConnectedLabel = connect(mapStateToProps)(Label);
 
 ConnectedLabel.defaultProps = {
   graph: dataFactory.defaultGraph(),
