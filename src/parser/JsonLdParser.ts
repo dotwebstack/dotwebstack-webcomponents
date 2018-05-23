@@ -1,7 +1,6 @@
 import { promises } from 'jsonld';
-import Quad from './Quad';
-import DataFactory from './DataFactory';
-import { BlankNode, DefaultGraph, NamedNode, Literal } from './term';
+import { BlankNode, DefaultGraph, NamedNode, Literal, Quad } from '../model';
+import DataFactory from '../DataFactory';
 
 export interface JsonLdDocument {}
 
@@ -23,7 +22,6 @@ interface GraphCollection {
 }
 
 class JsonLdParser {
-
   dataFactory: DataFactory = new DataFactory();
 
   parse(doc: JsonLdDocument, graph?: NamedNode | BlankNode | DefaultGraph): Promise<Quad[]> {
@@ -91,7 +89,6 @@ class JsonLdParser {
 
     return this.dataFactory.namedNode(graph);
   }
-
 }
 
 export default JsonLdParser;

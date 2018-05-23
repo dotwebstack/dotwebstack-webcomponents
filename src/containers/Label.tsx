@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { GraphState } from '..';
-import DataFactory from '../../DataFactory';
-import { NamedNode, BlankNode, DefaultGraph } from '../../term';
+import DataFactory from '../DataFactory';
+import { NamedNode, BlankNode, DefaultGraph, GraphState } from '../model';
 import { findSingleStatement } from '../utils';
 
 const dataFactory = new DataFactory();

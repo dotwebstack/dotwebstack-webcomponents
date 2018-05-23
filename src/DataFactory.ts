@@ -1,8 +1,6 @@
-import Quad from './Quad';
-import { BlankNode, DefaultGraph, Literal, NamedNode } from './term';
+import { BlankNode, DefaultGraph, Literal, NamedNode, Quad } from './model';
 
 class DataFactory {
-
   namedNode(value: string): NamedNode {
     return new NamedNode(value);
   }
@@ -41,7 +39,6 @@ class DataFactory {
       graph?: NamedNode | BlankNode | DefaultGraph) {
     return new Quad(subject, predicate, object, graph);
   }
-
 }
 
 export default DataFactory;

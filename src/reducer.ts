@@ -1,6 +1,6 @@
 import { Reducer, AnyAction } from 'redux';
 import { FSA } from 'flux-standard-action';
-import { GraphState } from '.';
+import { GraphState } from './model';
 import { LOAD_RDF_REQUEST_SUCCESS, LOAD_RDF_COMPLETED } from './actions';
 
 const initialState: Readonly<GraphState> = {

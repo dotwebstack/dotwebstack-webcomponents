@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { ContextState } from '../model';
 
 export interface StateProps {
   readonly loading: boolean;
@@ -25,8 +26,8 @@ const ContextWrapper: React.StatelessComponent<Props> = ({ loading, children }) 
   );
 };
 
-const mapStateToProps = (state: any): StateProps => ({
-  loading: state.loading || false,
+const mapStateToProps = (state: ContextState): StateProps => ({
+  loading: state.loading,
 });
 
 export default connect(mapStateToProps)(ContextWrapper);

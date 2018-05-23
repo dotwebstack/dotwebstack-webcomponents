@@ -2,9 +2,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import ContextWrapper from '../../ContextWrapper';
+import ContextWrapper from './ContextWrapper';
 import { loadRdf } from '../actions';
-import { GraphState, GraphSource } from '..';
+import { GraphState, GraphSource } from '../model';
 import reducer from '../reducer';
 
 export interface Props {

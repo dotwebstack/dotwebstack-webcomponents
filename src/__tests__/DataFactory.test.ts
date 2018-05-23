@@ -1,6 +1,5 @@
 import DataFactory from '../DataFactory';
-import { Literal, BlankNode, NamedNode, DefaultGraph } from '../term';
-import Quad from '../Quad';
+import { Literal, BlankNode, NamedNode, DefaultGraph, Quad } from '../model';
 
 const dataFactory = new DataFactory();
 

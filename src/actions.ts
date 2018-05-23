@@ -1,7 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
-import { GraphState, GraphSource } from '.';
-import JsonLdParser from '../JsonLdParser';
-import Quad from '../Quad';
+import { GraphState, GraphSource, Quad } from './model';
+import JsonLdParser from './parser/JsonLdParser';
 
 const parser = new JsonLdParser();
 

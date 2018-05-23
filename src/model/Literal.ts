@@ -1,8 +1,6 @@
-import Term, { TermType } from './Term';
-import NamedNode from './NamedNode';
+import { NamedNode, Term, TermType } from '.';
 
 class Literal implements Term {
-
   readonly termType = TermType.Literal;
 
   constructor(
@@ -21,7 +19,6 @@ class Literal implements Term {
       && literal.language === this.language
       && literal.dataType.equals(this.dataType);
   }
-
 }
 
 export default Literal;

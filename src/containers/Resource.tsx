@@ -2,11 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, TableProps } from 'reactstrap';
 import * as R from 'ramda';
-import { GraphState } from '..';
-import Quad from '../../Quad';
-import DataFactory from '../../DataFactory';
+import { NamedNode, BlankNode, DefaultGraph, GraphState, Quad } from '../model';
+import DataFactory from '../DataFactory';
 import Label from './Label';
-import { NamedNode, BlankNode, DefaultGraph } from '../../term';
 
 const dataFactory = new DataFactory();
 

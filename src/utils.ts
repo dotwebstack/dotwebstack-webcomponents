@@ -1,5 +1,4 @@
-import Quad from '../Quad';
-import { NamedNode, BlankNode } from '../term';
+import { NamedNode, BlankNode, Quad } from './model';
 
 export const matchStatement = (
     subject?: NamedNode | BlankNode,

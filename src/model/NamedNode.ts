@@ -1,7 +1,6 @@
-import Term, { TermType } from './Term';
+import { Term, TermType } from '.';
 
 class NamedNode implements Term {
-
   readonly termType = TermType.NamedNode;
 
   constructor(readonly value: string) {}
@@ -15,7 +14,6 @@ class NamedNode implements Term {
 
     return namedNode.value === this.value;
   }
-
 }
 
 export default NamedNode;

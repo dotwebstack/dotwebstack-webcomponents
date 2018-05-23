@@ -1,8 +1,8 @@
-import GraphContext from './graph/containers/GraphContext';
-import Label from './graph/containers/Label';
-import ResourceList from './graph/containers/ResourceList';
-import Resource from './graph/containers/Resource';
-import Vocabulary from './graph/containers/Vocabulary';
+import GraphContext from './containers/GraphContext';
+import Label from './containers/Label';
+import ResourceList from './containers/ResourceList';
+import Resource from './containers/Resource';
+import Vocabulary from './containers/Vocabulary';
 import DataFactory from './DataFactory';
 import renderComponent from './renderComponent';
 
