@@ -12,7 +12,7 @@
     "clean": "rm -rf ./build",
     "build": "NODE_ENV=production webpack",
     "start": "NODE_ENV=development webpack-dev-server --config webpack.development.js",
-    "prepublish": "npm run clean && npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
     "test": "jest"
   },
   "dependencies": {

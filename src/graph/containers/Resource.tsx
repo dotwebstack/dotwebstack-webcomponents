@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import R from 'ramda';
+import * as R from 'ramda';
 import { GraphState } from '..';
 import Quad from '../../Quad';
 import DataFactory from '../../DataFactory';
