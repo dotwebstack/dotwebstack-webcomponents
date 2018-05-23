@@ -29,12 +29,6 @@ const Resource: React.StatelessComponent<Props> = (props) => {
   return (
     <section>
       <Table>
-        <thead>
-          <tr>
-            <th scope="col">Predicate</th>
-            <th scope="col">Object</th>
-          </tr>
-        </thead>
         <tbody>
           {resourceQuads.map(quad => (
             <tr key={quad.predicate.value.concat(quad.object.value)}>
