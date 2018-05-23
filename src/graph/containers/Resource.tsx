@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Table } from 'reactstrap';
 import * as R from 'ramda';
 import { GraphState } from '..';
 import Quad from '../../Quad';
@@ -18,32 +19,30 @@ export interface OwnProps {
   readonly graph?: NamedNode | BlankNode | DefaultGraph;
   readonly vocabularyGraph?: NamedNode | BlankNode | DefaultGraph;
   readonly namespaces?: string[];
-  readonly headingType?: string;
 }
 
 export interface Props extends StateProps, OwnProps {}
 
 const Resource: React.StatelessComponent<Props> = (props) => {
-  const { iri, graph, vocabularyGraph, resourceQuads, headingType } = props;
+  const { iri, graph, vocabularyGraph, resourceQuads } = props;
 
   return (
     <section>
-      {React.createElement(headingType!, null, (
-        <Label resource={iri} graph={graph} />
-      ))}
-      <table className="table">
+      <Table>
         <thead>
           <tr>
-            <th>Predicate</th>
-            <th>Object</th>
+            <th scope="col">Predicate</th>
+            <th scope="col">Object</th>
           </tr>
         </thead>
         <tbody>
           {resourceQuads.map(quad => (
             <tr key={quad.predicate.value.concat(quad.object.value)}>
-              <td>
-                <Label resource={quad.predicate} graph={vocabularyGraph} />
-              </td>
+              <th scope="row">
+                <a href={quad.predicate.value}>
+                  <Label resource={quad.predicate} graph={vocabularyGraph} />
+                </a>
+              </th>
               <td>
                 {quad.object instanceof NamedNode || quad.object instanceof BlankNode ? (
                   <a href={quad.object.value}>
@@ -54,7 +53,7 @@ const Resource: React.StatelessComponent<Props> = (props) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </section>
   );
 };
@@ -75,7 +74,6 @@ const ConnectedResource = connect(mapStateToProps)(Resource);
 ConnectedResource.defaultProps = {
   graph: dataFactory.defaultGraph(),
   vocabularyGraph: dataFactory.defaultGraph(),
-  headingType: 'h1',
 };
 
 export default ConnectedResource;

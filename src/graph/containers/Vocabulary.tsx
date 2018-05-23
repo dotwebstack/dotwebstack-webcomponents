@@ -1,13 +1,9 @@
 import React from 'react';
-import { Container } from 'reactstrap';
 
 export const Vocabulary: React.StatelessComponent<{}> = () => (
-  <Container fluid className="vocabulary">
-    <div className="page-header">
-      <h1>Vocabulary</h1>
-      <p>Placeholder for the vocabulary.</p>
-    </div>
-  </Container>
+  <section>
+    <p>Placeholder for the vocabulary.</p>
+  </section>
 );
 
 export default Vocabulary;
