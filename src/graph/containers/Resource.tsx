@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table } from 'reactstrap';
+import { Table, TableProps } from 'reactstrap';
 import * as R from 'ramda';
 import { GraphState } from '..';
 import Quad from '../../Quad';
@@ -19,7 +19,7 @@ export interface OwnProps {
   readonly graph?: NamedNode | BlankNode | DefaultGraph;
   readonly vocabularyGraph?: NamedNode | BlankNode | DefaultGraph;
   readonly namespaces?: string[];
-  readonly tableProps?: object;
+  readonly tableProps?: TableProps;
 }
 
 export interface Props extends StateProps, OwnProps {}
