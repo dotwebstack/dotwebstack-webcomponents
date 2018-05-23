@@ -35,18 +35,18 @@ Default: empty (default graph)
 
 The named graph wherein the resource resides.
 
-## &lt;Model>
-
-A resource representation, which visualizes the data model (class & property hierarchy). Component must be wrapped within a `GraphContext`.
-
-```jsx
-<Model />
-```
-
 ## &lt;Vocabulary>
 
 A resource representation, which visualizes the vocabulary (concepts & definitions). Component must be wrapped within a `GraphContext`.
 
 ```jsx
 <Vocabulary />
+```
+
+## &lt;ResourceList>
+
+A list of resources. Component must be wrapped within a `TupleContext`.
+
+```jsx
+<Model />
 ```
