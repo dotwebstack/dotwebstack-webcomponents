@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import GraphContextWrapper from './GraphContextWrapper';
+import ContextWrapper from '../../ContextWrapper';
 import { loadRdf } from '../actions';
 import { GraphState, GraphSource } from '..';
 import reducer from '../reducer';
@@ -37,9 +37,9 @@ class GraphContext extends React.Component<Props> {
   render() {
     return (
       <Provider store={this.store}>
-        <GraphContextWrapper>
+        <ContextWrapper>
           {this.props.children}
-        </GraphContextWrapper>
+        </ContextWrapper>
       </Provider>
     );
   }

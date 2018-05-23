@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { GraphState } from '..';
 
 export interface StateProps {
   readonly loading: boolean;
@@ -12,7 +11,7 @@ export interface OwnProps {
 
 export interface Props extends StateProps {}
 
-const GraphContextWrapper: React.StatelessComponent<Props> = ({ loading, children }) => {
+const ContextWrapper: React.StatelessComponent<Props> = ({ loading, children }) => {
   if (loading) {
     return (
       <p>Loading data...</p>
@@ -26,8 +25,8 @@ const GraphContextWrapper: React.StatelessComponent<Props> = ({ loading, childre
   );
 };
 
-const mapStateToProps = (state: GraphState): StateProps => ({
-  loading: state.loading,
+const mapStateToProps = (state: any): StateProps => ({
+  loading: state.loading || false,
 });
 
-export default connect(mapStateToProps)(GraphContextWrapper);
+export default connect(mapStateToProps)(ContextWrapper);
