@@ -1,6 +1,6 @@
 import GraphContext from './graph/containers/GraphContext';
 import Label from './graph/containers/Label';
-import Model from './graph/containers/Model';
+import ResourceList from './graph/containers/ResourceList';
 import Resource from './graph/containers/Resource';
 import Vocabulary from './graph/containers/Vocabulary';
 import DataFactory from './DataFactory';
@@ -13,7 +13,7 @@ type ComponentMap = {
 const components: ComponentMap = {
   GraphContext,
   Label,
-  Model,
+  ResourceList,
   Resource,
 };
 
@@ -28,7 +28,7 @@ const getComponent: any = (name: string) => {
 export {
   GraphContext,
   Label,
-  Model,
+  ResourceList,
   Resource,
   Vocabulary,
   DataFactory,

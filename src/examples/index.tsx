@@ -15,7 +15,7 @@ const vocabularyGraph = dataFactory.namedNode('http://bag.basisregistraties.over
 
 const sources = [
   {
-    url: 'https://bag.basisregistraties.overheid.nl/bag/doc/ligplaats/0003020000000004',
+    url: 'http://bag.basisregistraties.overheid.nl/bag/id/ligplaats/0003020000000004',
     graph: resourceGraph,
   },
   {
