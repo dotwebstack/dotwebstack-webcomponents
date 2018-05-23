@@ -40,7 +40,8 @@ const App = () => (
           iri={resource}
           graph={resourceGraph}
           vocabularyGraph={vocabularyGraph}
-          namespaces={['http://bag.basisregistraties.overheid.nl/def/bag#']} />
+          namespaces={['http://bag.basisregistraties.overheid.nl/def/bag#']}
+          tableProps={{ striped: true }} />
       </section>
     </Container>
   </GraphContext>

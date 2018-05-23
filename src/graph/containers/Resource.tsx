@@ -19,16 +19,17 @@ export interface OwnProps {
   readonly graph?: NamedNode | BlankNode | DefaultGraph;
   readonly vocabularyGraph?: NamedNode | BlankNode | DefaultGraph;
   readonly namespaces?: string[];
+  readonly tableProps?: object;
 }
 
 export interface Props extends StateProps, OwnProps {}
 
 const Resource: React.StatelessComponent<Props> = (props) => {
-  const { iri, graph, vocabularyGraph, resourceQuads } = props;
+  const { iri, graph, vocabularyGraph, resourceQuads, tableProps } = props;
 
   return (
     <section>
-      <Table>
+      <Table {...tableProps}>
         <tbody>
           {resourceQuads.map(quad => (
             <tr key={quad.predicate.value.concat(quad.object.value)}>
