@@ -1,7 +1,7 @@
 import { Reducer, AnyAction } from 'redux';
 import { FSA } from 'flux-standard-action';
 import { GraphState } from './model';
-import { LOAD_RDF_REQUEST_SUCCESS, LOAD_RDF_COMPLETED } from './actions';
+import { ActionTypes } from './actions';
 
 const initialState: Readonly<GraphState> = {
   quads: [],
@@ -10,12 +10,12 @@ const initialState: Readonly<GraphState> = {
 
 const reducer: Reducer<GraphState> = (prevState: GraphState = initialState, action: FSA<any>) => {
   switch (action.type) {
-    case LOAD_RDF_REQUEST_SUCCESS:
+    case ActionTypes.LOAD_RDF_REQUEST_SUCCESS:
       return {
         ...prevState,
         quads: [...prevState.quads, ...action.payload],
       };
-    case LOAD_RDF_COMPLETED:
+    case ActionTypes.LOAD_RDF_COMPLETED:
       return {
         ...prevState,
         loading: false,
