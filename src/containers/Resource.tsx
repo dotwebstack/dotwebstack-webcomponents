@@ -21,7 +21,7 @@ const Resource: React.StatelessComponent<Props> = (props) => {
   return (
     <PropertyTable
       quads={quads}
-         tableProps={tableProps}
+      tableProps={tableProps}
     />
   );
 };

@@ -16,6 +16,7 @@ module.exports = {
   setupTestFrameworkScriptFile: '<rootDir>/src/test/setupTests.ts',
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
+    '!**/*.d.ts',
     '!**/test/**',
   ],
 };

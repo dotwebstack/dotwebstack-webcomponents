@@ -10,10 +10,11 @@
   },
   "scripts": {
     "clean": "rm -rf ./build",
+    "test": "jest --verbose",
+    "test-cov": "jest --coverage",
     "build": "NODE_ENV=production webpack",
     "start": "NODE_ENV=development webpack-dev-server --config webpack.development.js",
-    "prepublishOnly": "npm run clean && npm run build",
-    "test": "jest"
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
     "flux-standard-action": "^2.0.3",

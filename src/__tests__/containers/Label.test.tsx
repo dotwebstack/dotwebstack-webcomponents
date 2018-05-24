@@ -10,7 +10,7 @@ const dataFactory = new DataFactory();
 const mockStore = configureStore([thunk]);
 const resource = dataFactory.namedNode('foo');
 
-describe('Label::Label', () => {
+describe('Label::render', () => {
   it('should render without throwing an error', () => {
     const resource = dataFactory.namedNode('foo');
     const wrapper = shallow(<Label resource={resource} value="bar" />);
