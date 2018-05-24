@@ -1,7 +1,7 @@
 import { getComponent, Label } from '../index';
 
-describe('index:getComponent', () => {
-  test('returns component when 0found', () => {
+describe('getComponent', () => {
+  test('returns component when found', () => {
     const component = getComponent('Label');
     expect(component).toEqual(Label);
   });
