@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
-import { GraphState, Quad, NamedNode } from './model';
+import { Quad, NamedNode } from './model';
 import JsonLdParser from './parser/JsonLdParser';
 
 export enum ActionTypes {
