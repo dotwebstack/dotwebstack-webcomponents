@@ -5,7 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import ContextWrapper from './ContextWrapper';
 import { loadRdf } from '../actions';
 import { GraphState, NamedNode } from '../model';
-import reducer from '../reducer';
+import graphReducer from '../graphReducer';
 
 export interface Props {
   readonly src: NamedNode | NamedNode[];
@@ -27,7 +27,7 @@ class GraphContext extends React.Component<Props> {
       middlewares.push(logger);
     }
 
-    this.store = createStore<GraphState>(reducer, applyMiddleware(...middlewares));
+    this.store = createStore<GraphState>(graphReducer, applyMiddleware(...middlewares));
   }
 
   componentDidMount() {

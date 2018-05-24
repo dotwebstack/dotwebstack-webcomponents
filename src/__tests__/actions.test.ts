@@ -2,11 +2,13 @@ import thunk from 'redux-thunk';
 import fetchMock from 'fetch-mock';
 import DataFactory from '../DataFactory';
 import { loadRdf, ActionTypes } from '../actions';
+import { NamedNode } from '../model';
 
 // Because of typing issues: https://github.com/arnaudbenard/redux-mock-store/issues/144
 const configureMockStore = require('redux-mock-store');
 
 const dataFactory = new DataFactory();
+
 const mockStore = configureMockStore([
   thunk,
 ]);
@@ -15,34 +17,90 @@ afterEach(fetchMock.restore);
 
 describe('loadRdf', () => {
   test('dispatches LOAD_RDF_REQUEST_SUCCESS event when HTTP request succeeds', () => {
-    const subject = dataFactory.namedNode('http://foo');
-    const predicate = dataFactory.namedNode('http://schema.org/name');
-    const object = dataFactory.literal('John');
+    const fooQuad = dataFactory.quad(
+      dataFactory.namedNode('http://foo'),
+      dataFactory.namedNode('http://schema.org/name'),
+      dataFactory.literal('Foo'),
+    );
 
-    const doc = {
-      '@context': { name: predicate.value },
-      '@id': subject.value,
-      name: object.value,
+    const fooDoc = {
+      '@context': { name: fooQuad.predicate.value },
+      '@id': fooQuad.subject.value,
+      name: fooQuad.object.value,
     };
 
-    fetchMock.getOnce('*', {
-      body: JSON.stringify(doc),
+    fetchMock.getOnce('http://foo', {
+      body: JSON.stringify(fooDoc),
       headers: {
         'content-type': 'application/ld+json',
       },
     });
 
-    const expectedQuads = [dataFactory.quad(subject, predicate, object)];
+    const expectedQuads = [fooQuad];
 
     const expectedActions = [
-      { type: ActionTypes.LOAD_RDF_REQUEST, payload: subject.value },
+      { type: ActionTypes.LOAD_RDF_REQUEST, payload: fooQuad.subject.value },
       { type: ActionTypes.LOAD_RDF_REQUEST_SUCCESS, payload: expectedQuads },
       { type: ActionTypes.LOAD_RDF_COMPLETED },
     ];
 
     const store = mockStore();
 
-    return store.dispatch(loadRdf(subject)).then(() => {
+    return store.dispatch(loadRdf(fooQuad.subject as NamedNode)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  test('dispatches LOAD_RDF_REQUEST_SUCCESS event when multiple HTTP requests succeed', () => {
+    const fooQuad = dataFactory.quad(
+      dataFactory.namedNode('http://foo'),
+      dataFactory.namedNode('http://schema.org/name'),
+      dataFactory.literal('Foo'),
+    );
+
+    const barQuad = dataFactory.quad(
+      dataFactory.namedNode('http://bar'),
+      dataFactory.namedNode('http://schema.org/name'),
+      dataFactory.literal('Bar'),
+    );
+
+    const fooDoc = {
+      '@context': { name: fooQuad.predicate.value },
+      '@id': fooQuad.subject.value,
+      name: fooQuad.object.value,
+    };
+
+    const barDoc = {
+      '@context': { name: barQuad.predicate.value },
+      '@id': barQuad.subject.value,
+      name: barQuad.object.value,
+    };
+
+    fetchMock.getOnce('http://foo', {
+      body: JSON.stringify(fooDoc),
+      headers: {
+        'content-type': 'application/ld+json',
+      },
+    });
+
+    fetchMock.getOnce('http://bar', {
+      body: JSON.stringify(barDoc),
+      headers: {
+        'content-type': 'application/ld+json',
+      },
+    });
+
+    const expectedActions = [
+      { type: ActionTypes.LOAD_RDF_REQUEST, payload: fooQuad.subject.value },
+      { type: ActionTypes.LOAD_RDF_REQUEST, payload: barQuad.subject.value },
+      { type: ActionTypes.LOAD_RDF_REQUEST_SUCCESS, payload: [fooQuad] },
+      { type: ActionTypes.LOAD_RDF_REQUEST_SUCCESS, payload: [barQuad] },
+      { type: ActionTypes.LOAD_RDF_COMPLETED },
+    ];
+
+    const store = mockStore();
+
+    return store.dispatch(loadRdf([fooQuad.subject, barQuad.subject] as NamedNode[])).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -57,7 +115,7 @@ describe('loadRdf', () => {
 
     const expectedActions = [
       { type: ActionTypes.LOAD_RDF_REQUEST, payload: subject.value },
-      { type: ActionTypes.LOAD_RDF_REQUEST_FAILURE, payload: error },
+      { type: ActionTypes.LOAD_RDF_REQUEST_FAILURE, payload: error, error: true },
       { type: ActionTypes.LOAD_RDF_COMPLETED },
     ];
 
@@ -78,7 +136,7 @@ describe('loadRdf', () => {
 
     const expectedActions = [
       { type: ActionTypes.LOAD_RDF_REQUEST, payload: subject.value },
-      { type: ActionTypes.LOAD_RDF_REQUEST_FAILURE, payload: error },
+      { type: ActionTypes.LOAD_RDF_REQUEST_FAILURE, payload: error, error: true },
       { type: ActionTypes.LOAD_RDF_COMPLETED },
     ];
 
