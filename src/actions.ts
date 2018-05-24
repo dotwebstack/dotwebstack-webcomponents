@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { GraphState, Quad, NamedNode } from './model';
 import JsonLdParser from './parser/JsonLdParser';
@@ -28,13 +29,9 @@ const loadRdfCompleted = () => ({
   type: ActionTypes.LOAD_RDF_COMPLETED,
 });
 
-export type LoadRdfResult = {
-  (src: NamedNode | NamedNode[]): ThunkAction<Promise<void>, GraphState, null>;
-};
-
 const parser = new JsonLdParser();
 
-export const loadRdf: LoadRdfResult = (src: NamedNode | NamedNode[]) => (dispatch) => {
+export const loadRdf = (src: NamedNode | NamedNode[]) => (dispatch: Dispatch<ActionTypes>) => {
   const opts = {
     headers: {
       Accept: 'application/ld+json',
@@ -43,19 +40,24 @@ export const loadRdf: LoadRdfResult = (src: NamedNode | NamedNode[]) => (dispatc
 
   const urls: string[] = ([] as NamedNode[]).concat(src).map(s => s.value);
 
-  return Promise.all(urls.map((url) => {
-    dispatch(loadRdfRequest(url));
+  return Promise.all(urls.map(async (url) => {
+    try {
+      dispatch(loadRdfRequest(url));
 
-    return fetch(url, opts)
-      .then(response => response.json())
-      .then(doc => parser.parse(doc))
-      .then((quads) => {
-        dispatch(loadRdfRequestSuccess(quads));
-      })
-      .catch((err) => {
-        dispatch(loadRdfRequestFailure(err));
-      });
-  })).then(() => {
-    dispatch(loadRdfCompleted());
-  });
+      const response = await fetch(url, opts);
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const doc = await response.json();
+      const quads = await parser.parse(doc);
+
+      dispatch(loadRdfRequestSuccess(quads));
+    } catch (err) {
+      dispatch(loadRdfRequestFailure(err));
+    } finally {
+      dispatch(loadRdfCompleted());
+    }
+  }));
 };
