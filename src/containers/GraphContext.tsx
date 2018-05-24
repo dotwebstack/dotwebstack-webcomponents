@@ -4,11 +4,11 @@ import { applyMiddleware, createStore, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import ContextWrapper from './ContextWrapper';
 import { loadRdf } from '../actions';
-import { GraphState, GraphSource } from '../model';
+import { GraphState, NamedNode } from '../model';
 import reducer from '../reducer';
 
 export interface Props {
-  readonly src: GraphSource[];
+  readonly src: NamedNode | NamedNode[];
   readonly children: any;
 }
 

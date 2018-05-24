@@ -1,4 +1,4 @@
-import { Reducer, AnyAction } from 'redux';
+import { Reducer } from 'redux';
 import { FSA } from 'flux-standard-action';
 import { GraphState } from './model';
 import { ActionTypes } from './actions';

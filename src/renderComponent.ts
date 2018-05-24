@@ -9,13 +9,13 @@ type ComponentProps = {
 type ComponentConfiguration = {
   name: string;
   props?: ComponentProps;
-  children?: ComponentConfiguration[];
+  children?: any[];
 };
 
 const createElement: any = (
     name: string,
     props?: ComponentProps,
-    children?: ComponentConfiguration[]) => {
+    children?: any[]) => {
   const component = getComponent(name);
 
   const childComponents = children ?

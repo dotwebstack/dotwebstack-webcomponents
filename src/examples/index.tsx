@@ -1,50 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Container } from 'reactstrap';
-import { DataFactory, GraphContext, Label, Resource } from '..';
-
-const dataFactory = new DataFactory();
-
-const resource = dataFactory.namedNode(
-  'http://bag.basisregistraties.overheid.nl/bag/id/ligplaats/0003020000000004');
-
-const resourceGraph = dataFactory.namedNode(
-  'http://bag.basisregistraties.overheid.nl/bag/doc/ligplaats/0003020000000004');
-
-const vocabularyGraph = dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
-
-const sources = [
-  {
-    url: 'http://bag.basisregistraties.overheid.nl/bag/id/ligplaats/0003020000000004',
-    graph: resourceGraph,
-  },
-  {
-    url: 'https://bag.basisregistraties.overheid.nl/def/bag',
-    graph: vocabularyGraph,
-  },
-];
+import { HashRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
+import { Container, Nav, Navbar, NavItem } from 'reactstrap';
+import ResourceExample from './ResourceExample';
+import ResourceListExample from './ResourceListExample';
+import VocabularyExample from './VocabularyExample';
 
 const App = () => (
-  <GraphContext src={sources}>
-    <Container>
-      <div className="page-header">
-        <h1>
-          <Label
-            resource={resource}
-            graph={resourceGraph} />
-        </h1>
-      </div>
-      <section>
-        <h2>Eigenschappen</h2>
-        <Resource
-          iri={resource}
-          graph={resourceGraph}
-          vocabularyGraph={vocabularyGraph}
-          namespaces={['http://bag.basisregistraties.overheid.nl/def/bag#']}
-          tableProps={{ striped: true }} />
-      </section>
-    </Container>
-  </GraphContext>
+  <HashRouter>
+    <div>
+      <header>
+        <Navbar color="light">
+          <Container>
+            <Nav>
+              <NavItem>
+                <Link to="/resource" className="nav-link">Resource</Link>
+              </NavItem>
+              <NavItem>
+                <Link to="/resource-list" className="nav-link">Resource List</Link>
+              </NavItem>
+              <NavItem>
+                <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
+              </NavItem>
+            </Nav>
+          </Container>
+        </Navbar>
+      </header>
+      <main className="mt-4">
+        <Container>
+          <Switch>
+            <Route exact path="/resource" component={ResourceExample} />
+            <Route exact path="/resource-list" component={ResourceListExample} />
+            <Route exact path="/vocabulary" component={VocabularyExample} />
+            <Redirect from="/" to="/resource" />
+          </Switch>
+        </Container>
+      </main>
+    </div>
+  </HashRouter>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

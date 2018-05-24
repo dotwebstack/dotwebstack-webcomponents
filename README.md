@@ -33,31 +33,17 @@ yarn add @dotwebstack/webcomponents
 
 Here is an example of using webcomponents within a React application:
 
-```js
+```jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { DataFactory, GraphContext, Resource } from '@dotwebstack/webcomponents';
 
 const dataFactory = new DataFactory();
-
-const sources = [
-  {
-    url: 'https://bag.basisregistraties.overheid.nl/def/bag',
-    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag'),
-  },
-  {
-    url: 'https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485',
-    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485'),
-  },
-];
+const resource = dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/ligplaats/0003020000000004');
+const vocab = dataFactory.namedNode('https://bag.basisregistraties.overheid.nl/def/bag');
 
 const App = () => (
-  <GraphContext src={sources}>
-    <Resource
-      iri={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485')}
-      graph={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485')}
-      vocabularyGraph={dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag')}
-      namespaces={['http://bag.basisregistraties.overheid.nl/def/bag#']} />
+  <GraphContext src={[resource, vocab]}>
+    <Resource iri={resource} />
   </GraphContext>
 );
 
@@ -76,31 +62,19 @@ import { DataFactory, renderComponent } from '@dotwebstack/webcomponents';
 // const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
 
 const dataFactory = new DataFactory();
-
-const sources = [
-  {
-    url: 'https://bag.basisregistraties.overheid.nl/def/bag',
-    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag'),
-  },
-  {
-    url: 'https://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485',
-    graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485'),
-  },
-];
+const resource = dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/ligplaats/0003020000000004');
+const vocab = dataFactory.namedNode('https://bag.basisregistraties.overheid.nl/def/bag');
 
 renderComponent({
   name: 'GraphContext',
   props: {
-    src: sources,
+    src: [resource, vocab],
   },
   children: [
     {
       name: 'Resource',
       props: {
-        resource: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0003100000117485'),
-        graph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/doc/pand/0003100000117485'),
-        vocabularyGraph: dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag'),
-        namespaces: ['http://bag.basisregistraties.overheid.nl/def/bag#'],
+        iri: resource,
       },
     },
   ],

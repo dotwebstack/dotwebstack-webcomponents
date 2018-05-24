@@ -24,13 +24,13 @@ interface GraphCollection {
 class JsonLdParser {
   dataFactory: DataFactory = new DataFactory();
 
-  parse(doc: JsonLdDocument, graph?: NamedNode | BlankNode | DefaultGraph): Promise<Quad[]> {
+  parse(doc: JsonLdDocument): Promise<Quad[]> {
     return promises.toRDF(doc)
       .then((graphs: GraphCollection) => {
         const quads: Quad[] = [];
 
         Object.keys(graphs).forEach((graphKey) => {
-          const targetGraph = graph || this.toGraph(graphKey);
+          const targetGraph = this.toGraph(graphKey);
 
           graphs[graphKey].forEach((statement) => {
             const quad = this.toQuad(statement, targetGraph);

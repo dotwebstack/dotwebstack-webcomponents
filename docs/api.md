@@ -5,17 +5,14 @@
 `GraphContext` is a wrapper for alle graph-based components.
 
 ```jsx
-<GraphContext src={{
-  url: 'http://example.org/foo',
-  graph: 'http://example.org/bar',
-}}>
+<GraphContext src={iri}>
   <SomeComponent />
 </GraphContext>
 ```
 
-### `src`: `object[]`
+### `src`: `NamedNode | NamedNode[]`
 
-One or more source URLs, where the RDF data will be retrieved from.
+One or more resource IRIs, which will be dereferenced to retrieve the RDF data.
 
 ## &lt;Resource>
 

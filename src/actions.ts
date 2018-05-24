@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
-import { GraphState, GraphSource, Quad } from './model';
+import { GraphState, Quad, NamedNode } from './model';
 import JsonLdParser from './parser/JsonLdParser';
 
 export enum ActionTypes {
@@ -9,9 +9,9 @@ export enum ActionTypes {
   LOAD_RDF_COMPLETED = 'LOAD_RDF_COMPLETED',
 }
 
-const loadRdfRequest = (source: GraphSource) => ({
+const loadRdfRequest = (url: string) => ({
   type: ActionTypes.LOAD_RDF_REQUEST,
-  payload: source,
+  payload: url,
 });
 
 const loadRdfRequestSuccess = (quads: Quad[]) => ({
@@ -29,33 +29,33 @@ const loadRdfCompleted = () => ({
 });
 
 export type LoadRdfResult = {
-  (sources: GraphSource[]): ThunkAction<Promise<void>, GraphState, null>;
+  (src: NamedNode | NamedNode[]): ThunkAction<Promise<void>, GraphState, null>;
 };
 
 const parser = new JsonLdParser();
 
-export const loadRdf: LoadRdfResult = (sources: GraphSource[]) => {
-  return (dispatch) => {
-    const opts = {
-      headers: {
-        Accept: 'application/ld+json',
-      },
-    };
-
-    return Promise.all(sources.map((source) => {
-      dispatch(loadRdfRequest(source));
-
-      return fetch(source.url, opts)
-        .then(response => response.json())
-        .then(doc => parser.parse(doc, source.graph))
-        .then((quads) => {
-          dispatch(loadRdfRequestSuccess(quads));
-        })
-        .catch((err) => {
-          dispatch(loadRdfRequestFailure(err));
-        });
-    })).then(() => {
-      dispatch(loadRdfCompleted());
-    });
+export const loadRdf: LoadRdfResult = (src: NamedNode | NamedNode[]) => (dispatch) => {
+  const opts = {
+    headers: {
+      Accept: 'application/ld+json',
+    },
   };
+
+  const urls: string[] = ([] as NamedNode[]).concat(src).map(s => s.value);
+
+  return Promise.all(urls.map((url) => {
+    dispatch(loadRdfRequest(url));
+
+    return fetch(url, opts)
+      .then(response => response.json())
+      .then(doc => parser.parse(doc))
+      .then((quads) => {
+        dispatch(loadRdfRequestSuccess(quads));
+      })
+      .catch((err) => {
+        dispatch(loadRdfRequestFailure(err));
+      });
+  })).then(() => {
+    dispatch(loadRdfCompleted());
+  });
 };

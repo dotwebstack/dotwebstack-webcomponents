@@ -24,15 +24,17 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
         enforce: 'pre',
+        test: /\.tsx?$/,
         loader: 'tslint-loader',
       },
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
         query: {
-          declaration: env === 'production',
+          compilerOptions: {
+            declaration: env === 'production',
+          },
         },
       },
     ],
