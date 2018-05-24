@@ -1,8 +1,7 @@
 import DataFactory from '../DataFactory';
 import graphReducer from '../graphReducer';
-import { ActionTypes, loadRdfRequest, loadRdfCompleted, loadRdfRequestSuccess, loadRdfRequestFailure } from '../actions';
+import { ActionTypes, loadRdfRequest, loadRdfCompleted, loadRdfRequestSuccess } from '../actions';
 import { GraphState } from '../model';
-import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 const dataFactory = new DataFactory();
 
