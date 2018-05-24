@@ -6,52 +6,52 @@ const foo = dataFactory.namedNode('foo');
 const bar = dataFactory.namedNode('bar');
 const literal = dataFactory.literal("literal");
 
-describe('utils:matchStatement', () => {
-  test('renders true when subject is equal', () => {
+describe('utils::matchStatement', () => {
+  it('renders true when subject is equal', () => {
     const match = matchStatement(foo);
     const isMatch = match(dataFactory.quad(foo, bar, literal));
     expect(isMatch).toEqual(true);
   });
 
-  test('renders false when subject is not equal', () => {
+  it('renders false when subject is not equal', () => {
     const match = matchStatement(bar);
     const isMatch = match(dataFactory.quad(foo, bar, literal));
     expect(isMatch).toEqual(false);
   });
 
-  test('renders true when predicate is equal', () => {
+  it('renders true when predicate is equal', () => {
     const match = matchStatement(undefined, bar);
     const isMatch = match(dataFactory.quad(foo, bar, literal));
     expect(isMatch).toEqual(true);
   });
 
-  test('renders false when predicate is not equal', () => {
+  it('renders false when predicate is not equal', () => {
     const match = matchStatement(undefined, foo);
     const isMatch = match(dataFactory.quad(foo, bar, literal));
     expect(isMatch).toEqual(false);
   });
 
-  test('renders true when subject and predicate are equal', () => {
+  it('renders true when subject and predicate are equal', () => {
     const match = matchStatement(foo, bar);
     const isMatch = match(dataFactory.quad(foo, bar, literal));
     expect(isMatch).toEqual(true);
   });
 
-  test('renders false when subject and predicate are not equal', () => {
+  it('renders false when subject and predicate are not equal', () => {
     const match = matchStatement(foo, bar);
     const isMatch = match(dataFactory.quad(bar, foo, literal));
     expect(isMatch).toEqual(false);
   });
 
-  test('renders false when subject or predicate is not equal', () => {
+  it('renders false when subject or predicate is not equal', () => {
     const match = matchStatement(foo, bar);
     const isMatch = match(dataFactory.quad(foo, foo, literal));
     expect(isMatch).toEqual(false);
   });
 })
 
-describe('utils:findStatements', () => {
-  test('filters matching statements by subject', () => {
+describe('utils::findStatements', () => {
+  it('filters matching statements by subject', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),
@@ -64,7 +64,7 @@ describe('utils:findStatements', () => {
     ]);
   });
 
-  test('filters matching statements by predicate', () => {
+  it('filters matching statements by predicate', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),
@@ -77,7 +77,7 @@ describe('utils:findStatements', () => {
     ]);
   });
 
-  test('filters matching statements by subject and predicate', () => {
+  it('filters matching statements by subject and predicate', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),
@@ -90,7 +90,7 @@ describe('utils:findStatements', () => {
     ]);
   });
 
-  test('returns empty array when no matches are found', () => {
+  it('returns empty array when no matches are found', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),
@@ -102,8 +102,8 @@ describe('utils:findStatements', () => {
   });
 });
 
-describe('utils:findSingleStatement', () => {
-  test('filters matching statement by subject', () => {
+describe('utils::findSingleStatement', () => {
+  it('filters matching statement by subject', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),
@@ -116,7 +116,7 @@ describe('utils:findSingleStatement', () => {
     );
   });
 
-  test('filters matching statement by predicate', () => {
+  it('filters matching statement by predicate', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),
@@ -129,7 +129,7 @@ describe('utils:findSingleStatement', () => {
     );
   });
 
-  test('filters matching statement by subject and predicate', () => {
+  it('filters matching statement by subject and predicate', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),
@@ -142,7 +142,7 @@ describe('utils:findSingleStatement', () => {
     );
   });
 
-  test('returns undefined when not matches are found', () => {
+  it('returns undefined when not matches are found', () => {
     const quads = [
       dataFactory.quad(foo, bar, literal),
       dataFactory.quad(bar, foo, literal),

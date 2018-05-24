@@ -15,8 +15,8 @@ const mockStore = configureMockStore([
 
 afterEach(fetchMock.restore);
 
-describe('loadRdf', () => {
-  test('dispatches LOAD_RDF_REQUEST_SUCCESS event when HTTP request succeeds', () => {
+describe('actions::loadRdf', () => {
+  it('dispatches LOAD_RDF_REQUEST_SUCCESS event when HTTP request succeeds', () => {
     const fooQuad = dataFactory.quad(
       dataFactory.namedNode('http://foo'),
       dataFactory.namedNode('http://schema.org/name'),
@@ -51,7 +51,7 @@ describe('loadRdf', () => {
     });
   });
 
-  test('dispatches LOAD_RDF_REQUEST_SUCCESS event when multiple HTTP requests succeed', () => {
+  it('dispatches LOAD_RDF_REQUEST_SUCCESS event when multiple HTTP requests succeed', () => {
     const fooQuad = dataFactory.quad(
       dataFactory.namedNode('http://foo'),
       dataFactory.namedNode('http://schema.org/name'),
@@ -105,7 +105,7 @@ describe('loadRdf', () => {
     });
   });
 
-  test('dispatches LOAD_RDF_REQUEST_FAILED event when HTTP request returns error status', () => {
+  it('dispatches LOAD_RDF_REQUEST_FAILED event when HTTP request returns error status', () => {
     const subject = dataFactory.namedNode('http://foo');
     const error = new Error('Not Found');
 
@@ -126,7 +126,7 @@ describe('loadRdf', () => {
     });
   });
 
-  test('dispatches LOAD_RDF_REQUEST_FAILED event when HTTP request fails', () => {
+  it('dispatches LOAD_RDF_REQUEST_FAILED event when HTTP request fails', () => {
     const subject = dataFactory.namedNode('http://foo');
     const error = new Error('Unknown Error');
 

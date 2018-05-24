@@ -13,7 +13,7 @@ export interface OwnProps {
 
 export interface Props extends StateProps, OwnProps {}
 
-const ContextWrapper: React.StatelessComponent<Props> = ({ loading, children }) => {
+export const ContextWrapper: React.StatelessComponent<Props> = ({ loading, children }) => {
   if (loading) {
     return (
       <LoadingIndicator />
@@ -27,7 +27,7 @@ const ContextWrapper: React.StatelessComponent<Props> = ({ loading, children }) 
   );
 };
 
-const mapStateToProps = (state: ContextState): StateProps => ({
+export const mapStateToProps = (state: ContextState): StateProps => ({
   loading: state.loading,
 });
 

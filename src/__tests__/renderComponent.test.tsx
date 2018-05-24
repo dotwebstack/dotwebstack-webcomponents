@@ -12,7 +12,7 @@ jest.mock('react-dom');
 afterEach(jest.resetAllMocks);
 
 describe('renderComponent', () => {
-  test('renders component when found', () => {
+  it('renders component when found', () => {
     const resource = dataFactory.namedNode('http://foo');
     const config = {
       name: 'Label',
@@ -25,7 +25,7 @@ describe('renderComponent', () => {
     expect(render).toHaveBeenCalledWith(<Label resource={resource} />, div);
   });
 
-  test('renders component with child components', () => {
+  it('renders component with child components', () => {
     const resource = dataFactory.namedNode('http://foo');
     const config = {
       name: 'GraphContext',
@@ -47,7 +47,7 @@ describe('renderComponent', () => {
       </GraphContext>, div);
   });
 
-  test('throws error when component not found', () => {
+  it('throws error when component not found', () => {
     const config = {
       name: 'Foo',
     };

@@ -5,8 +5,8 @@ import { GraphState } from '../model';
 
 const dataFactory = new DataFactory();
 
-describe(`graphReducer:${ActionTypes.LOAD_RDF_REQUEST}`, () => {
-  test('sets loading to true', () => {
+describe(`graphReducer::${ActionTypes.LOAD_RDF_REQUEST}`, () => {
+  it('sets loading to true', () => {
     const url = 'http://foo';
     const state = graphReducer(undefined, loadRdfRequest(url));
 
@@ -14,8 +14,8 @@ describe(`graphReducer:${ActionTypes.LOAD_RDF_REQUEST}`, () => {
   });
 });
 
-describe(`graphReducer:${ActionTypes.LOAD_RDF_REQUEST_SUCCESS}`, () => {
-  test('adds quads to the internal store', () => {
+describe(`graphReducer::${ActionTypes.LOAD_RDF_REQUEST_SUCCESS}`, () => {
+  it('adds quads to the internal store', () => {
     const fooQuad = dataFactory.quad(
       dataFactory.namedNode('http://foo'),
       dataFactory.namedNode('http://schema.org/name'),
@@ -35,8 +35,8 @@ describe(`graphReducer:${ActionTypes.LOAD_RDF_REQUEST_SUCCESS}`, () => {
   });
 });
 
-describe(`graphReducer:${ActionTypes.LOAD_RDF_COMPLETED}`, () => {
-  test('sets loading to false', () => {
+describe(`graphReducer::${ActionTypes.LOAD_RDF_COMPLETED}`, () => {
+  it('sets loading to false', () => {
     const prevState: GraphState = { loading: true, quads: [] };
     const state = graphReducer(prevState, loadRdfCompleted());
 
@@ -44,8 +44,8 @@ describe(`graphReducer:${ActionTypes.LOAD_RDF_COMPLETED}`, () => {
   });
 });
 
-describe('graphReducer:other', () => {
-  test('does not modify state', () => {
+describe('graphReducer::other', () => {
+  it('does not modify state', () => {
     const prevState: GraphState = { loading: true, quads: [] };
     const state = graphReducer(prevState, { type: 'OTHER' });
 
