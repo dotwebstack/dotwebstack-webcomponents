@@ -15,6 +15,7 @@ const components: ComponentMap = {
   Label,
   ResourceList,
   Resource,
+  Vocabulary,
 };
 
 const getComponent: any = (name: string) => {
