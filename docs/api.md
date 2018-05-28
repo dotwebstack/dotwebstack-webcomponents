@@ -45,5 +45,5 @@ A resource representation, which visualizes the vocabulary (concepts & definitio
 A list of resources. Component must be wrapped within a `TupleContext`.
 
 ```jsx
-<Model />
+<ResourceList />
 ```
