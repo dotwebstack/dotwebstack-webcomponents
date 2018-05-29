@@ -20,37 +20,35 @@ export interface SparqlResultsDocument {
 class SparqlResultsJsonParser {
   dataFactory: DataFactory = new DataFactory();
 
-  parse(doc: SparqlResultsDocument): Promise<BindingSet[]> {
-    return new Promise((resolve) => {
-      if (!doc.results || !Array.isArray(doc.results.bindings)) {
-        throw new Error('Invalid JSON document.');
-      }
+  parse(doc: SparqlResultsDocument): BindingSet[] {
+    if (!doc.results || !Array.isArray(doc.results.bindings)) {
+      throw new Error('Invalid JSON document.');
+    }
 
-      const bindingSets: BindingSet[] = doc.results.bindings.map((bindings) => {
-        return R.map((binding) => {
-          switch (binding.type) {
-            case 'uri':
-              return this.dataFactory.namedNode(binding.value);
-            case 'bnode':
-              return this.dataFactory.blankNode(binding.value);
-            case 'literal':
-              if (binding.datatype) {
-                return this.dataFactory.literal(binding.value, this.dataFactory.namedNode(binding.datatype));
-              }
+    const bindingSets: BindingSet[] = doc.results.bindings.map((bindings) => {
+      return R.map((binding) => {
+        switch (binding.type) {
+          case 'uri':
+            return this.dataFactory.namedNode(binding.value);
+          case 'bnode':
+            return this.dataFactory.blankNode(binding.value);
+          case 'literal':
+            if (binding.datatype) {
+              return this.dataFactory.literal(binding.value, this.dataFactory.namedNode(binding.datatype));
+            }
 
-              if (binding['xml:lang']) {
-                return this.dataFactory.literal(binding.value, binding['xml:lang']);
-              }
+            if (binding['xml:lang']) {
+              return this.dataFactory.literal(binding.value, binding['xml:lang']);
+            }
 
-              return this.dataFactory.literal(binding.value);
-            default:
-              throw new Error(`Unknown binding type: ${binding.type}`);
-          }
-        }, bindings);
-      });
-
-      resolve(bindingSets);
+            return this.dataFactory.literal(binding.value);
+          default:
+            throw new Error(`Unknown binding type: ${binding.type}`);
+        }
+      }, bindings);
     });
+
+    return bindingSets;
   }
 }
 

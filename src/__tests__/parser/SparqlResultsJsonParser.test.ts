@@ -4,17 +4,17 @@ import DataFactory from '../../DataFactory';
 const parser = new SparqlResultsJsonParser();
 const dataFactory = new DataFactory();
 
-describe('SparqlResultsJson::parse', () => {
-  it('returns an empty array when result is empty', async () => {
-    const bindingSets = await parser.parse({
+describe('SparqlResultsJsonParser::parse', () => {
+  it('returns an empty array when result is empty', () => {
+    const bindingSets = parser.parse({
       results: { bindings: [] },
     });
 
     expect(bindingSets).toHaveLength(0);
   });
 
-  it('parses named and blank nodes', async () => {
-    const bindingSets = await parser.parse({
+  it('parses named and blank nodes', () => {
+    const bindingSets = parser.parse({
       results: { bindings: [
         {
           foo: { type: 'uri', value: 'http://foo' },
@@ -28,8 +28,8 @@ describe('SparqlResultsJson::parse', () => {
     expect(bindingSets[0].bar).toEqual(dataFactory.blankNode('bar'));
   });
 
-  it('parses literals with and without datatype', async () => {
-    const bindingSets = await parser.parse({
+  it('parses literals with and without datatype', () => {
+    const bindingSets = parser.parse({
       results: { bindings: [
         {
           foo: { type: 'literal', value: 'foo' },
@@ -44,8 +44,8 @@ describe('SparqlResultsJson::parse', () => {
       dataFactory.namedNode('http://www.w3.org/2001/XMLSchema#boolean')));
   });
 
-  it('parses literals with and without language', async () => {
-    const bindingSets = await parser.parse({
+  it('parses literals with and without language', () => {
+    const bindingSets = parser.parse({
       results: { bindings: [
         {
           foo: { type: 'literal', value: 'foo' },
@@ -59,31 +59,36 @@ describe('SparqlResultsJson::parse', () => {
     expect(bindingSets[0].bar).toEqual(dataFactory.literal('true', 'en'));
   });
 
-  it('fails when document is not valid', async () => {
+  it('fails when document is not valid', () => {
     expect.assertions(1);
-    await expect(parser.parse({
+    expect(() => {
+      parser.parse({
+        // @ts-ignore
+        foo: 'bar',
+      });
+    }).toThrowError();
+  });
+
+  it('fails when bindings is not an array', () => {
+    expect.assertions(1);
+    expect(() => {
       // @ts-ignore
-      foo: 'bar',
-    })).rejects.toThrowError();
+      parser.parse({
+        results: { bindings: 'foo' },
+      });
+    }).toThrowError();
   });
 
-  it('fails when bindings is not an array', async () => {
+  it('fails when binding type is invalid', () => {
     expect.assertions(1);
-    // @ts-ignore
-    await expect(parser.parse({
-      results: { bindings: 'foo' },
-    })).rejects.toThrowError();
-  });
-
-  it('fails when binding type is invalid', async () => {
-    expect.assertions(1);
-    // @ts-ignore
-    await expect(parser.parse({
-      results: { bindings: [
-        {
-          foo: { type: 'foo', value: 'bar' },
-        },
-      ]},
-    })).rejects.toThrowError();
+    expect(() => {
+      parser.parse({
+        results: { bindings: [
+          {
+            foo: { type: 'foo', value: 'bar' },
+          },
+        ]},
+      });
+    }).toThrowError();
   });
 });
