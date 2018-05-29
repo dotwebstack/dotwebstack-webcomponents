@@ -1,3 +1,4 @@
+import BindingSet from './BindingSet';
 import BlankNode from './BlankNode';
 import ContextState from './ContextState';
 import DefaultGraph from './DefaultGraph';
@@ -10,6 +11,7 @@ import Term from './Term';
 import TermType from './TermType';
 
 export {
+  BindingSet,
   BlankNode,
   ContextState,
   DefaultGraph,
