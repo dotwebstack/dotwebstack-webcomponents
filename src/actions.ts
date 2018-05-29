@@ -46,7 +46,10 @@ export const loadRdf = (src: NamedNode | NamedNode[]) =>
       try {
         dispatch(loadRdfRequest(url));
 
-        const response = await fetch(url, opts);
+        const response = await fetch(
+          url.replace(/^http:\/\//, 'https://'),
+          opts,
+        );
 
         if (!response.ok) {
           throw new Error(response.statusText);

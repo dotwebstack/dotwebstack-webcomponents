@@ -29,7 +29,7 @@ describe('actions::loadRdf', () => {
       name: fooQuad.object.value,
     };
 
-    fetchMock.getOnce('http://foo', {
+    fetchMock.getOnce('https://foo', {
       body: JSON.stringify(fooDoc),
       headers: {
         'content-type': 'application/ld+json',
@@ -76,14 +76,14 @@ describe('actions::loadRdf', () => {
       name: barQuad.object.value,
     };
 
-    fetchMock.getOnce('http://foo', {
+    fetchMock.getOnce('https://foo', {
       body: JSON.stringify(fooDoc),
       headers: {
         'content-type': 'application/ld+json',
       },
     });
 
-    fetchMock.getOnce('http://bar', {
+    fetchMock.getOnce('https://bar', {
       body: JSON.stringify(barDoc),
       headers: {
         'content-type': 'application/ld+json',
