@@ -12,7 +12,21 @@
 
 ### `src`: `NamedNode | NamedNode[]`
 
-One or more resource IRIs, which will be dereferenced to retrieve the RDF data.
+One or more resource IRIs, which will be dereferenced to retrieve the RDF data (media type: `application/ld+json`).
+
+## &lt;TupleContext>
+
+`TupleContext` is a wrapper for alle tuple-based components.
+
+```jsx
+<TupleContext src={url}>
+  <SomeComponent />
+</TupleContext>
+```
+
+### `src`: `string`
+
+A single url, which will return a tuple result (media type: `application/sparql-results+json`).
 
 ## &lt;Resource>
 
@@ -40,10 +54,10 @@ A resource representation, which visualizes the vocabulary (concepts & definitio
 <Vocabulary />
 ```
 
-## &lt;ResourceList>
+## &lt;TupleList>
 
-A list of resources. Component must be wrapped within a `TupleContext`.
+A list of tuples. Component must be wrapped within a `TupleContext`.
 
 ```jsx
-<ResourceList />
+<TupleList />
 ```
