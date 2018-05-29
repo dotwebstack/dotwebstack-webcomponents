@@ -1,6 +1,7 @@
 import GraphContext from './containers/GraphContext';
+import TupleContext from './containers/TupleContext';
 import Label from './containers/Label';
-import ResourceList from './containers/ResourceList';
+import TupleList from './containers/TupleList';
 import Resource from './containers/Resource';
 import Vocabulary from './containers/Vocabulary';
 import DataFactory from './DataFactory';
@@ -12,8 +13,9 @@ type ComponentMap = {
 
 const components: ComponentMap = {
   GraphContext,
+  TupleContext,
   Label,
-  ResourceList,
+  TupleList,
   Resource,
   Vocabulary,
 };
@@ -28,8 +30,9 @@ const getComponent: any = (name: string) => {
 
 export {
   GraphContext,
+  TupleContext,
   Label,
-  ResourceList,
+  TupleList,
   Resource,
   Vocabulary,
   DataFactory,
