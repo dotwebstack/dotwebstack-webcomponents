@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { FSA, ErrorFSA } from 'flux-standard-action';
+import { FluxStandardAction, ErrorFluxStandardAction } from 'flux-standard-action';
 import { Quad, NamedNode } from './model';
 import JsonLdParser from './parser/JsonLdParser';
 
@@ -10,23 +10,23 @@ export enum ActionTypes {
   LOAD_RDF_COMPLETED = 'LOAD_RDF_COMPLETED',
 }
 
-export const loadRdfRequest = (url: string): FSA<string> => ({
+export const loadRdfRequest = (url: string): FluxStandardAction<string> => ({
   type: ActionTypes.LOAD_RDF_REQUEST,
   payload: url,
 });
 
-export const loadRdfRequestSuccess = (quads: Quad[]): FSA<Quad[]> => ({
+export const loadRdfRequestSuccess = (quads: Quad[]): FluxStandardAction<Quad[]> => ({
   type: ActionTypes.LOAD_RDF_REQUEST_SUCCESS,
   payload: quads,
 });
 
-export const loadRdfRequestFailure = (err: Error): ErrorFSA<Error> => ({
+export const loadRdfRequestFailure = (err: Error): ErrorFluxStandardAction<Error> => ({
   type: ActionTypes.LOAD_RDF_REQUEST_FAILURE,
   payload: err,
   error: true,
 });
 
-export const loadRdfCompleted = (): FSA<undefined> => ({
+export const loadRdfCompleted = (): FluxStandardAction<undefined> => ({
   type: ActionTypes.LOAD_RDF_COMPLETED,
 });
 

@@ -1,5 +1,8 @@
 .gitignore
+coverage
+docs
 src
+jest.config.js
 tsconfig.json
 tslint.json
 webpack.config.js

@@ -1,4 +1,4 @@
-import { FSA } from 'flux-standard-action';
+import { FluxStandardAction } from 'flux-standard-action';
 import { GraphState } from './model';
 import { ActionTypes } from './actions';
 
@@ -7,7 +7,7 @@ const initialState: Readonly<GraphState> = {
   loading: false,
 };
 
-const graphReducer = (prevState: GraphState = initialState, action: FSA<any>): GraphState => {
+const graphReducer = (prevState: GraphState = initialState, action: FluxStandardAction<any>): GraphState => {
   switch (action.type) {
     case ActionTypes.LOAD_RDF_REQUEST:
       return {

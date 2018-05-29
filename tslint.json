@@ -3,6 +3,7 @@
   "rules": {
     "import-name": false,
     "no-console": true,
+    "max-line-length": [true, 120],
     "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"]
   }
 }
