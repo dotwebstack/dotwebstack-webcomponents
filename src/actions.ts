@@ -1,7 +1,8 @@
 import { Dispatch } from 'redux';
 import { FluxStandardAction, ErrorFluxStandardAction } from 'flux-standard-action';
-import { Quad, NamedNode } from './model';
+import { Quad, NamedNode, BindingSet } from './model';
 import JsonLdParser from './parser/JsonLdParser';
+import SparqlResultsJsonParser from './parser/SparqlResultsJsonParser';
 
 export enum ActionTypes {
   LOAD_RDF_REQUEST = 'LOAD_RDF_REQUEST',
@@ -38,9 +39,9 @@ export const loadRdfTupleRequest = (url: string): FluxStandardAction<string> => 
   payload: url,
 });
 
-export const loadRdfTupleRequestSuccess = (jsonArray: JSON): FluxStandardAction<JSON> => ({
+export const loadRdfTupleRequestSuccess = (bindingSet: BindingSet[]): FluxStandardAction<BindingSet[]> => ({
   type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_SUCCESS,
-  payload: jsonArray,
+  payload: bindingSet,
 });
 
 export const loadRdfTupleRequestFailure = (err: Error): ErrorFluxStandardAction<Error> => ({
@@ -49,7 +50,7 @@ export const loadRdfTupleRequestFailure = (err: Error): ErrorFluxStandardAction<
   error: true,
 });
 
-const parser = new JsonLdParser();
+const jsonLdParser = new JsonLdParser();
 
 export const loadRdf = (src: NamedNode | NamedNode[]) =>
   async (dispatch: Dispatch<ActionTypes>) => {
@@ -75,7 +76,7 @@ export const loadRdf = (src: NamedNode | NamedNode[]) =>
         }
 
         const doc = await response.json();
-        const quads = await parser.parse(doc);
+        const quads = await jsonLdParser.parse(doc);
 
         dispatch(loadRdfRequestSuccess(quads));
       } catch (err) {
@@ -85,6 +86,8 @@ export const loadRdf = (src: NamedNode | NamedNode[]) =>
 
     dispatch(loadRdfCompleted());
   };
+
+const sparqlResultsJsonParser = new SparqlResultsJsonParser();
 
 export const loadRdfTuple = (url: string) =>
   async (dispatch: Dispatch<ActionTypes>) => {
@@ -107,8 +110,9 @@ export const loadRdfTuple = (url: string) =>
       }
 
       const jsonData = await response.json();
+      const bindingSet = await sparqlResultsJsonParser.parse(jsonData);
 
-      dispatch(loadRdfTupleRequestSuccess(jsonData));
+      dispatch(loadRdfTupleRequestSuccess(bindingSet));
     } catch (err) {
       dispatch(loadRdfTupleRequestFailure(err));
     }

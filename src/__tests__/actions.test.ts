@@ -3,6 +3,7 @@ import fetchMock from 'fetch-mock';
 import DataFactory from '../DataFactory';
 import { loadRdf, loadRdfTuple, ActionTypes } from '../actions';
 import { NamedNode } from '../model';
+import SparqlResultsJsonParser from '../parser/SparqlResultsJsonParser';
 
 // Because of typing issues: https://github.com/arnaudbenard/redux-mock-store/issues/144
 const configureMockStore = require('redux-mock-store');
@@ -188,9 +189,11 @@ describe('actions::loadRdfTuple', () => {
       },
     });
 
+    const sparqlResultsJsonParser = new SparqlResultsJsonParser();
+
     const expectedActions = [
       { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST, payload: url },
-      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_SUCCESS, payload: fooJson},
+      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_SUCCESS, payload: sparqlResultsJsonParser.parse(fooJson)},
     ];
 
     const store = mockStore();
