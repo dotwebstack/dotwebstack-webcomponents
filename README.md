@@ -107,7 +107,7 @@ Create & push Git tag (change version number):
 
 ```
 git tag v0.0.3
-git push origin v0.0.3
+git push origin master --tags
 ```
 
 To publish the new version to the NPM registry:
