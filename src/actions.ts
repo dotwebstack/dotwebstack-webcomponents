@@ -8,6 +8,9 @@ export enum ActionTypes {
   LOAD_RDF_REQUEST_SUCCESS = 'LOAD_RDF_REQUEST_SUCCESS',
   LOAD_RDF_REQUEST_FAILURE = 'LOAD_RDF_REQUEST_FAILURE',
   LOAD_RDF_COMPLETED = 'LOAD_RDF_COMPLETED',
+  LOAD_RDF_TUPLE_REQUEST = 'LOAD_RDF_TUPLE_REQUEST',
+  LOAD_RDF_TUPLE_REQUEST_SUCCESS = 'LOAD_RDF_TUPLE_REQUEST_SUCCESS',
+  LOAD_RDF_TUPLE_REQUEST_FAILURE = 'LOAD_RDF_TUPLE_REQUEST_FAILURE',
 }
 
 export const loadRdfRequest = (url: string): FluxStandardAction<string> => ({
@@ -28,6 +31,22 @@ export const loadRdfRequestFailure = (err: Error): ErrorFluxStandardAction<Error
 
 export const loadRdfCompleted = (): FluxStandardAction<undefined> => ({
   type: ActionTypes.LOAD_RDF_COMPLETED,
+});
+
+export const loadRdfTupleRequest = (url: string): FluxStandardAction<string> => ({
+  type: ActionTypes.LOAD_RDF_TUPLE_REQUEST,
+  payload: url,
+});
+
+export const loadRdfTupleRequestSuccess = (jsonArray: JSON): FluxStandardAction<JSON> => ({
+  type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_SUCCESS,
+  payload: jsonArray,
+});
+
+export const loadRdfTupleRequestFailure = (err: Error): ErrorFluxStandardAction<Error> => ({
+  type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_FAILURE,
+  payload: err,
+  error: true,
 });
 
 const parser = new JsonLdParser();
@@ -65,4 +84,32 @@ export const loadRdf = (src: NamedNode | NamedNode[]) =>
     }));
 
     dispatch(loadRdfCompleted());
+  };
+
+export const loadRdfTuple = (url: string) =>
+  async (dispatch: Dispatch<ActionTypes>) => {
+    const opts = {
+      headers: {
+        Accept: 'application/sparql-results+json',
+      },
+    };
+
+    try {
+      dispatch(loadRdfTupleRequest(url));
+
+      const response = await fetch(
+        url,
+        opts,
+      );
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const jsonData = await response.json();
+
+      dispatch(loadRdfTupleRequestSuccess(jsonData));
+    } catch (err) {
+      dispatch(loadRdfTupleRequestFailure(err));
+    }
   };
