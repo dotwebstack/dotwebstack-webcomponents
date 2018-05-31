@@ -16,8 +16,8 @@ const tupleReducer = (prevState: TupleState = initialState, action: FluxStandard
       };
     case ActionTypes.LOAD_TUPLES_REQUEST_SUCCESS:
       return {
-        ...prevState,
-        bindingSets: [...prevState.bindingSets, ...action.payload],
+        loading: false,
+        bindingSets: action.payload,
       };
     default:
       return prevState;
