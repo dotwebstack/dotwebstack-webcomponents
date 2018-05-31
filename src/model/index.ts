@@ -9,6 +9,7 @@ import Literal from './Literal';
 import Quad from './Quad';
 import Term from './Term';
 import TermType from './TermType';
+import TupleState from './TupleState';
 
 export {
   BindingSet,
@@ -22,4 +23,5 @@ export {
   Quad,
   Term,
   TermType,
+  TupleState,
 };

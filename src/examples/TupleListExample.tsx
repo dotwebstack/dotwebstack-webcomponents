@@ -1,7 +1,7 @@
 import React from 'react';
 import { TupleContext, TupleList } from '..';
 
-const url = 'https://bag.basisregistraties.overheid.nl/query/begrippen';
+const url = 'https://data.pdok.nl/ld/dws/v1/begrippen/bag';
 
 export default () => (
   <div>
