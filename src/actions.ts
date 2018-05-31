@@ -9,9 +9,9 @@ export enum ActionTypes {
   LOAD_RDF_REQUEST_SUCCESS = 'LOAD_RDF_REQUEST_SUCCESS',
   LOAD_RDF_REQUEST_FAILURE = 'LOAD_RDF_REQUEST_FAILURE',
   LOAD_RDF_COMPLETED = 'LOAD_RDF_COMPLETED',
-  LOAD_RDF_TUPLE_REQUEST = 'LOAD_RDF_TUPLE_REQUEST',
-  LOAD_RDF_TUPLE_REQUEST_SUCCESS = 'LOAD_RDF_TUPLE_REQUEST_SUCCESS',
-  LOAD_RDF_TUPLE_REQUEST_FAILURE = 'LOAD_RDF_TUPLE_REQUEST_FAILURE',
+  LOAD_TUPLES_REQUEST = 'LOAD_TUPLES_REQUEST',
+  LOAD_TUPLES_REQUEST_SUCCESS = 'LOAD_TUPLES_REQUEST_SUCCESS',
+  LOAD_TUPLES_REQUEST_FAILURE = 'LOAD_TUPLES_REQUEST_FAILURE',
 }
 
 export const loadRdfRequest = (url: string): FluxStandardAction<string> => ({
@@ -34,18 +34,18 @@ export const loadRdfCompleted = (): FluxStandardAction<undefined> => ({
   type: ActionTypes.LOAD_RDF_COMPLETED,
 });
 
-export const loadRdfTupleRequest = (url: string): FluxStandardAction<string> => ({
-  type: ActionTypes.LOAD_RDF_TUPLE_REQUEST,
+export const loadTuplesRequest = (url: string): FluxStandardAction<string> => ({
+  type: ActionTypes.LOAD_TUPLES_REQUEST,
   payload: url,
 });
 
-export const loadRdfTupleRequestSuccess = (bindingSet: BindingSet[]): FluxStandardAction<BindingSet[]> => ({
-  type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_SUCCESS,
-  payload: bindingSet,
+export const loadTuplesRequestSuccess = (bindingSets: BindingSet[]): FluxStandardAction<BindingSet[]> => ({
+  type: ActionTypes.LOAD_TUPLES_REQUEST_SUCCESS,
+  payload: bindingSets,
 });
 
-export const loadRdfTupleRequestFailure = (err: Error): ErrorFluxStandardAction<Error> => ({
-  type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_FAILURE,
+export const loadTuplesRequestFailure = (err: Error): ErrorFluxStandardAction<Error> => ({
+  type: ActionTypes.LOAD_TUPLES_REQUEST_FAILURE,
   payload: err,
   error: true,
 });
@@ -89,7 +89,7 @@ export const loadRdf = (src: NamedNode | NamedNode[]) =>
 
 const sparqlResultsJsonParser = new SparqlResultsJsonParser();
 
-export const loadRdfTuple = (url: string) =>
+export const loadTuples = (url: string) =>
   async (dispatch: Dispatch<ActionTypes>) => {
     const opts = {
       headers: {
@@ -98,7 +98,7 @@ export const loadRdfTuple = (url: string) =>
     };
 
     try {
-      dispatch(loadRdfTupleRequest(url));
+      dispatch(loadTuplesRequest(url));
 
       const response = await fetch(
         url,
@@ -110,10 +110,10 @@ export const loadRdfTuple = (url: string) =>
       }
 
       const jsonData = await response.json();
-      const bindingSet = await sparqlResultsJsonParser.parse(jsonData);
+      const bindingSets = sparqlResultsJsonParser.parse(jsonData);
 
-      dispatch(loadRdfTupleRequestSuccess(bindingSet));
+      dispatch(loadTuplesRequestSuccess(bindingSets));
     } catch (err) {
-      dispatch(loadRdfTupleRequestFailure(err));
+      dispatch(loadTuplesRequestFailure(err));
     }
   };

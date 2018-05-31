@@ -1,7 +1,7 @@
 import thunk from 'redux-thunk';
 import fetchMock from 'fetch-mock';
 import DataFactory from '../DataFactory';
-import { loadRdf, loadRdfTuple, ActionTypes } from '../actions';
+import { loadRdf, loadTuples, ActionTypes } from '../actions';
 import { NamedNode } from '../model';
 import SparqlResultsJsonParser from '../parser/SparqlResultsJsonParser';
 
@@ -149,38 +149,54 @@ describe('actions::loadRdf', () => {
   });
 });
 
-describe('actions::loadRdfTuple', () => {
-  it('dispatches LOAD_RDF_TUPLE_REQUEST_SUCCESS event when HTTP request succeeds', () => {
+describe('actions::loadTuples', () => {
+  it('dispatches LOAD_TUPLES_REQUEST_SUCCESS event when HTTP request succeeds', () => {
     const url = 'https://foo';
     const fooJson = {
-      "head": {
-          "vars": [
-              "begrip",
-              "label",
-              "definition"
-          ]
+      head: {
+        vars: [
+          'begrip',
+          'label',
+          'definition',
+        ],
       },
-      "results": {
-          "bindings": [
-              {
-                  "definition": {
-                      "xml:lang": "nl",
-                      "type": "literal",
-                      "value": "Formeel afgebakende ligplaats of standplaats."
-                  },
-                  "label": {
-                      "xml:lang": "nl",
-                      "type": "literal",
-                      "value": "Plaats aangewezen"
-                  },
-                  "begrip": {
-                      "type": "uri",
-                      "value": "http://bag.basisregistraties.overheid.nl/id/begrip/PlaatsAangewezen"
-                  }
-              }
-          ]
-      }
-    }; 
+      results: {
+        bindings: [
+          {
+            definition: {
+              'xml:lang': 'nl',
+              type: 'literal',
+              value: 'Formeel afgebakende ligplaats of standplaats.',
+            },
+            label: {
+              'xml:lang': 'nl',
+              type: 'literal',
+              value: 'Plaats aangewezen',
+            },
+            begrip: {
+              type: 'uri',
+              value: 'http://bag.basisregistraties.overheid.nl/id/begrip/PlaatsAangewezen',
+            },
+          },
+          {
+            definition: {
+              'xml:lang': 'nl',
+              type: 'literal',
+              value: 'Verdwenen ligplaats of standplaats.',
+            },
+            label: {
+              'xml:lang': 'nl',
+              type: 'literal',
+              value: 'Plaats ingetrokken',
+            },
+            begrip: {
+              type: 'uri',
+              value: 'http://bag.basisregistraties.overheid.nl/id/begrip/PlaatsIngetrokken',
+            },
+          },
+        ],
+      },
+    };
 
     fetchMock.getOnce(url, {
       body: JSON.stringify(fooJson),
@@ -192,18 +208,18 @@ describe('actions::loadRdfTuple', () => {
     const sparqlResultsJsonParser = new SparqlResultsJsonParser();
 
     const expectedActions = [
-      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST, payload: url },
-      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_SUCCESS, payload: sparqlResultsJsonParser.parse(fooJson)},
+      { type: ActionTypes.LOAD_TUPLES_REQUEST, payload: url },
+      { type: ActionTypes.LOAD_TUPLES_REQUEST_SUCCESS, payload: sparqlResultsJsonParser.parse(fooJson) },
     ];
 
     const store = mockStore();
 
-    return store.dispatch(loadRdfTuple('https://foo')).then(() => {
+    return store.dispatch(loadTuples('https://foo')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
 
-  it('dispatches LOAD_RDF_TUPLE_REQUEST_FAILED event when HTTP request returns error status', () => {
+  it('dispatches LOAD_TUPLES_REQUEST_FAILED event when HTTP request returns error status', () => {
     const url = 'https://foo';
     const error = new Error('Not Found');
 
@@ -212,18 +228,18 @@ describe('actions::loadRdfTuple', () => {
     });
 
     const expectedActions = [
-      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST, payload: url },
-      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_FAILURE, payload: error, error: true },
+      { type: ActionTypes.LOAD_TUPLES_REQUEST, payload: url },
+      { type: ActionTypes.LOAD_TUPLES_REQUEST_FAILURE, payload: error, error: true },
     ];
 
     const store = mockStore();
 
-    return store.dispatch(loadRdfTuple(url)).then(() => {
+    return store.dispatch(loadTuples(url)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
 
-  it('dispatches LOAD_RDF_TUPLE_REQUEST_FAILED event when HTTP request fails', () => {
+  it('dispatches LOAD_TUPLES_REQUEST_FAILED event when HTTP request fails', () => {
     const url = 'https://foo';
     const error = new Error('Unknown Error');
 
@@ -232,13 +248,13 @@ describe('actions::loadRdfTuple', () => {
     });
 
     const expectedActions = [
-      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST, payload: url },
-      { type: ActionTypes.LOAD_RDF_TUPLE_REQUEST_FAILURE, payload: error, error: true },
+      { type: ActionTypes.LOAD_TUPLES_REQUEST, payload: url },
+      { type: ActionTypes.LOAD_TUPLES_REQUEST_FAILURE, payload: error, error: true },
     ];
 
     const store = mockStore();
 
-    return store.dispatch(loadRdfTuple(url)).then(() => {
+    return store.dispatch(loadTuples(url)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
