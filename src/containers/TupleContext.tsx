@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import { ContextWrapper } from './ContextWrapper';
+import ContextWrapper from './ContextWrapper';
 import { loadTuples } from '../actions';
 import { TupleState } from '../model';
 import tupleReducer from '../tupleReducer';
