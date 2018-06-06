@@ -5,6 +5,22 @@ import { TupleState } from '../model';
 
 const dataFactory = new DataFactory();
 
+const fooTuple =
+  {
+    begrip: dataFactory.namedNode('http://www.foo.nl/def#foo'),
+    definition: dataFactory.literal('This is a Foo'),
+    label: dataFactory.literal('Foo'),
+  };
+
+const barTuple =
+  {
+    begrip: dataFactory.namedNode('http://www.bar.nl/def#bar'),
+    definition: dataFactory.literal('This is a Bar'),
+    label: dataFactory.literal('Bar'),
+  };
+
+const prevState: TupleState = { loading: true, bindingSets: [fooTuple] };
+
 describe(`tupleReducer::${ActionTypes.LOAD_TUPLES_REQUEST}`, () => {
   it('sets loading to true', () => {
     const url = 'http://foo';
@@ -16,12 +32,6 @@ describe(`tupleReducer::${ActionTypes.LOAD_TUPLES_REQUEST}`, () => {
 
 describe(`tupleReducer::${ActionTypes.LOAD_TUPLES_REQUEST_SUCCESS}`, () => {
   it('sets tuple in the internal store', () => {
-    const fooTuple =
-      {
-        begrip: dataFactory.namedNode('http://www.foo.nl/def#foo'),
-        definition: dataFactory.literal('This is a Foo'),
-        label: dataFactory.literal('Foo'),
-      };
     const state = tupleReducer(undefined, loadTuplesRequestSuccess([fooTuple]));
 
     expect(state.loading).toBe(false);
@@ -29,19 +39,6 @@ describe(`tupleReducer::${ActionTypes.LOAD_TUPLES_REQUEST_SUCCESS}`, () => {
   });
 
   it('replaces tuple in the internal store', () => {
-    const fooTuple =
-      {
-        begrip: dataFactory.namedNode('http://www.foo.nl/def#foo'),
-        definition: dataFactory.literal('This is a Foo'),
-        label: dataFactory.literal('Foo'),
-      };
-    const barTuple =
-      {
-        begrip: dataFactory.namedNode('http://www.bar.nl/def#bar'),
-        definition: dataFactory.literal('This is a Bar'),
-        label: dataFactory.literal('Bar'),
-      };
-    const prevState: TupleState = { loading: true, bindingSets: [fooTuple] };
     const state = tupleReducer(prevState, loadTuplesRequestSuccess([barTuple]));
 
     expect(state.loading).toBe(false);
@@ -52,14 +49,6 @@ describe(`tupleReducer::${ActionTypes.LOAD_TUPLES_REQUEST_SUCCESS}`, () => {
 
 describe(`tupleReducer::${ActionTypes.LOAD_TUPLES_REQUEST_FAILURE}`, () => {
   it('restores previous state in store', () => {
-    const fooTuple =
-      {
-        begrip: dataFactory.namedNode('http://www.foo.nl/def#foo'),
-        definition: dataFactory.literal('This is a Foo'),
-        label: dataFactory.literal('Foo'),
-      };
-
-    const prevState: TupleState = { loading: true, bindingSets: [fooTuple] };
     const state = tupleReducer(prevState, loadTuplesRequestFailure(new Error('oops')));
 
     expect(state.loading).toBe(true);
