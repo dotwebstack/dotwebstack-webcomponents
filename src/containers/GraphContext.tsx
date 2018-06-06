@@ -22,6 +22,7 @@ class GraphContext extends React.Component<Props> {
       thunkMiddleware,
     ];
 
+    /* istanbul ignore next */
     if (process.env.NODE_ENV === 'development') {
       const { logger } = require('redux-logger');
       middlewares.push(logger);
