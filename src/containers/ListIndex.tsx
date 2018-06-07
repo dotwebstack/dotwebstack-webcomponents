@@ -1,20 +1,19 @@
 import { Link } from 'react-scroll';
 import React from 'react';
 import { Nav } from 'reactstrap';
+import { lexicographicSort } from '../utils';
 
 export interface OwnProps {
   readonly keys: string[];
   readonly title?: string;
 }
 
-const lexicographic = (a: any, b: any) => (a.localeCompare(b));
-
 function getNavigationIndexFromSortedMapKeys(keys: string[], title?: string) {
   return <div className="sticky-top">
     <h2>{title}</h2>
     <Nav className="navbar navbar-default static ">
       <ol className="nav navbar-nav">
-        {keys.sort(lexicographic).map(key => (
+        {keys.sort(lexicographicSort).map(key => (
           <Link to={'container' + key} spy={true} smooth={true} key={key}>{key}</Link>
         ))}
       </ol>

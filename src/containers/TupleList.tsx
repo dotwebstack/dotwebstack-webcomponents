@@ -5,6 +5,7 @@ import { BindingSet, TupleState } from '../model';
 import { TupleListTable } from '..';
 import { Element } from 'react-scroll';
 import ListIndex from './ListIndex';
+import { lexicographicSort } from '../utils';
 
 export interface StateProps {
   readonly bindingSets: BindingSet[];
@@ -30,10 +31,8 @@ function defaultGroupingFunction(map: any, binding: BindingSet) {
   return map;
 }
 
-const lexicographic = (a: any, b: any) => (a.localeCompare(b));
-
 function getTupleListTablesFromSortedMap(sortedMap: any, tableProps?: TableProps, columns?: any) {
-  return Object.keys(sortedMap).sort(lexicographic).map(key => (
+  return Object.keys(sortedMap).sort(lexicographicSort).map(key => (
     <Element name={'container' + key} id={'container' + key} key={key}>
       <div className="sticky-top">
         <h1>
