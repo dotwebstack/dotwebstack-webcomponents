@@ -18,4 +18,6 @@ export const findSingleStatement = (
     predicate?: NamedNode) =>
   findStatements(quads, subject, predicate)[0];
 
-export const lexicographicSort = (a: any, b: any) => (a.localeCompare(b));
+export function lexicographicSort(a: any, b: any): number {
+  return a.localeCompare(b);
+}

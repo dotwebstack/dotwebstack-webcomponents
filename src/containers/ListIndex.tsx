@@ -6,7 +6,7 @@ import { lexicographicSort } from '../utils';
 export interface OwnProps {
   readonly keys: string[];
   readonly title?: string;
-  readonly sortFn?: any;
+  readonly sortFn?: (a: string, b: string) => number;
 }
 
 const ListIndex: React.StatelessComponent<OwnProps> = (props) => {
