@@ -16,8 +16,8 @@ export default () => (
         <TupleContext src={url}>
           <TupleList
             columns={[
-              { binding: 'begrip', labelBinding: 'label', header: 'row' , class: 'col-md-3' },
-              { binding: 'definition', class: 'col-md-9'  },
+              { binding: 'begrip', labelBinding: 'label', header: 'row' , className: 'col-md-3' },
+              { binding: 'definition', className: 'col-md-9'  },
             ]}
             tableProps={{ size: 'md' }}
             // Optional groupingFunction={groupingFunction}
