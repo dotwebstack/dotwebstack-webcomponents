@@ -19,7 +19,7 @@ export default () => (
               { binding: 'begrip', labelBinding: 'label', header: 'row' , class: 'col-md-3' },
               { binding: 'definition', class: 'col-md-9'  },
             ]}
-            tableProps={{ size: 'sm' }}
+            tableProps={{ size: 'md' }}
             // Optional groupingFunction={groupingFunction}
           />
         </TupleContext>
