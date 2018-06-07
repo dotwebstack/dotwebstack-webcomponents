@@ -1,67 +1,75 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
-
-import ListIndex from '../components/Vocabulary/ListIndex';
-import ClassList from '../components/Vocabulary/ClassList';
-import PropertyList from '../components/Vocabulary/PropertyList';
-import Quad from '../model/Quad';
 import { connect } from 'react-redux';
-import GraphState from '../model/GraphState';
+import { Container, Row, Col } from 'reactstrap';
+import { GraphState, Quad } from '../model';
+import { ListIndex, ClassList, PropertyList } from '..';
 import DataFactory from '../DataFactory';
 import { findSingleStatement } from '../utils';
-
 import { nest } from 'd3-collection';
 
 export interface StateProps {
   readonly quads: Quad[];
 }
 
-export function groupingFunction(map: any, quad: Quad) {
-  const groupBy = quad.subject.value.toLocaleUpperCase();
-  map[groupBy] = map[groupBy] || [];
-  map[groupBy].push(quad);
-
-  return map;
+export interface OwnProps {
 }
 
-class Vocabulary extends React.Component<StateProps> {
+export interface Props extends StateProps, OwnProps {}
 
-  // groupedQuads = this.props.quads.reduce(groupingFunction, Object.create(null));
+const dataFactory = new DataFactory();
+const predicate = dataFactory.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
+const types = ['Class', 'DatatypeProperty'];
 
-  groupedQuads = nest()
-    .key((quad: any) => (quad.subject.value))
-    .entries(this.props.quads);
-
-  console.log('grpupedQuads', groupedQuads);
-
-  dataFactory = new DataFactory();
-  groupedPerType = nest()
-    .key((quads: any) => (findSingleStatement(quads, undefined, this.dataFactory.namedNode('rdf:type')).object.value))
-    .entries(this.groupedQuads);
-  
-  console.log('groupedPerType', groupedPerType);
-
-  render() {
-    return (
-      <Container fluid>
-        <Row>
-          <Col md="3" className="hidden-xs hiddena-sm">
-            <ListIndex/>
-          </Col>
-          <Col md="7">
-            <section>
-              <ClassList clazzes={this.groupedPerType['http://www.w3.org/2002/07/owl#Class']}/>
-            </section>
-            <section>
-              <PropertyList/>
-            </section>
-          </Col>
-        </Row>
-
-      </Container>
-    );
-  }
+function getUniqueSubjects(quads: Quad[]) {
+  return [...new Set(quads.map(quad => quad.subject.value.split('#')[1]))];
+    // .filter(() => (findSingleStatement(quads, undefined, predicate) !== undefined)
+  // );
 }
+
+function getMappedQuads(quads: Quad[]) {
+  const uniqueSubjects = getUniqueSubjects(quads);
+
+  const getTypeKeys = (quad: any) => {
+    const element = quad.object.value.split('#')[1];
+    return types.indexOf(element) > -1 ? element : 'Overig';
+  };
+
+  const getSubjectGroupedQuads = (quad: any) => {
+    const element = quad.subject.value.split('#')[1];
+    return uniqueSubjects.indexOf(element) > -1 ? element : '';
+  };
+
+  return nest()
+    .key(getSubjectGroupedQuads)
+    .key(getTypeKeys)
+    .map(quads);
+}
+
+const Vocabulary: React.StatelessComponent<Props> = (props) => {
+  const { quads } = props;
+
+  const mapped = getMappedQuads(quads);
+  console.log(mapped);
+  return mapped.empty() ? null : (
+    <Container fluid>
+      <Row>
+        <Col md="3" className="hidden-xs hiddena-sm">
+          <ListIndex /> {/* keys={mapped.get('Class').keys()} */}
+          <ListIndex /> {/* keys={mapped.get('DatatypeProperty').keys()} */}
+        </Col>
+        <Col md="7">
+          <section>
+            {mapped.keys().filter(key => (types.indexOf(key) > -1)).map(key => (
+              <ClassList clazzes={mapped.get(key)} key={key}/>
+            ))}
+            <PropertyList/>
+          </section>
+        </Col>
+      </Row>
+
+    </Container>
+  );
+};
 
 const mapStateToProps = (state: GraphState): StateProps => ({
   quads: state.quads,
