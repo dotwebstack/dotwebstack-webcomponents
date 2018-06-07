@@ -2,6 +2,7 @@ import GraphContext from './containers/GraphContext';
 import TupleContext from './containers/TupleContext';
 import Label from './containers/Label';
 import TupleList from './containers/TupleList';
+import TupleListTable from './components/TupleListTable';
 import Resource from './containers/Resource';
 import Vocabulary from './containers/Vocabulary';
 import DataFactory from './DataFactory';
@@ -33,6 +34,7 @@ export {
   TupleContext,
   Label,
   TupleList,
+  TupleListTable,
   Resource,
   Vocabulary,
   DataFactory,
