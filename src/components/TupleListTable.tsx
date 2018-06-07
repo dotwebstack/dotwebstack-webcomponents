@@ -8,8 +8,7 @@ export interface Props {
   readonly tableProps?: TableProps;
 }
 
-function bindingSetToTableRow(key: number,
-                              bindingSet: BindingSet,
+function bindingSetToTableRow(key: number, bindingSet: BindingSet,
                               columns: [{ binding: string; labelBinding?: string; header?: string, class?: string }]) {
   return (
     <tr className="row" key={key}>
@@ -33,13 +32,6 @@ function bindingSetToTableRow(key: number,
 
 const TupleListTable: React.StatelessComponent<Props> = ({ bindingSets, tableProps, columns }) => (
     <Table {...tableProps}>
-      <thead>
-        <tr className="row" key={columns.length}>
-          {columns.map(column => (
-            <th className={column.class}  key={columns.indexOf(column)}>{column.binding}</th>
-          ))}
-        </tr>
-      </thead>
       <tbody>
         {bindingSets.map(bindingSet => bindingSetToTableRow(bindingSets.indexOf(bindingSet), bindingSet, columns))}
       </tbody>
