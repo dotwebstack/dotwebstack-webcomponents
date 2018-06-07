@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Badge, Col, Container, Row, TableProps } from 'reactstrap';
+import { Col, Container, Row, TableProps } from 'reactstrap';
 import { BindingSet, TupleState } from '../model';
 import { TupleListTable } from '..';
 import { Element } from 'react-scroll';
@@ -35,9 +35,7 @@ function getTupleListTablesFromSortedMap(sortedMap: any, tableProps?: TableProps
   return Object.keys(sortedMap).sort(lexicographicSort).map(key => (
     <Element name={'container' + key} id={'container' + key} key={key}>
       <div className="sticky-top">
-        <h1>
-          <Badge color="secondary">{key}</Badge>
-        </h1>
+        <h2>{key}</h2>
       </div>
       <TupleListTable bindingSets={sortedMap[key]} tableProps={tableProps} columns={columns}/>
     </Element>
@@ -57,7 +55,7 @@ const TupleList: React.StatelessComponent<Props> = (props) => {
         </Col>
         <Col md="11">
           {getTupleListTablesFromSortedMap(sortedMap, tableProps, columns)}
-        <div style={{ height: '300px' }}><br/></div>
+          <div style={{ height: '300px' }}><br/></div>
         </Col>
       </Row>
     </Container>
