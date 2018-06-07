@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TableProps, Container, Row, Col, Badge, Nav } from 'reactstrap';
-import { TupleState, BindingSet } from '../model';
+import { Badge, Col, Container, Row, TableProps } from 'reactstrap';
+import { BindingSet, TupleState } from '../model';
 import { TupleListTable } from '..';
-import { Element, Link } from 'react-scroll';
+import { Element } from 'react-scroll';
+import ListIndex from './ListIndex';
 
 export interface StateProps {
   readonly bindingSets: BindingSet[];
@@ -31,18 +32,6 @@ function defaultGroupingFunction(map: any, binding: BindingSet) {
 
 const lexicographic = (a: any, b: any) => (a.localeCompare(b));
 
-function getNavigationIndexFromSortedMapKeys(keys: string[]) {
-  return <div className="sticky-top">
-    <Nav className="navbar navbar-default static ">
-      <ol className="nav navbar-nav">
-        {keys.sort(lexicographic).map(key => (
-          <Link to={'container' + key} spy={true} smooth={true} key={key}>{key}</Link>
-        ))}
-      </ol>
-    </Nav>
-  </div>;
-}
-
 function getTupleListTablesFromSortedMap(sortedMap: any, tableProps?: TableProps, columns?: any) {
   return Object.keys(sortedMap).sort(lexicographic).map(key => (
     <Element name={'container' + key} id={'container' + key} key={key}>
@@ -65,7 +54,7 @@ const TupleList: React.StatelessComponent<Props> = (props) => {
     <Container fluid>
       <Row>
         <Col md="1">
-          {getNavigationIndexFromSortedMapKeys(Object.keys(sortedMap))}
+          <ListIndex keys={Object.keys(sortedMap)} title={'A-Z'}/>
         </Col>
         <Col md="11">
           {getTupleListTablesFromSortedMap(sortedMap, tableProps, columns)}
