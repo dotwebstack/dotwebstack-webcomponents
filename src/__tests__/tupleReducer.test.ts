@@ -5,19 +5,17 @@ import { TupleState } from '../model';
 
 const dataFactory = new DataFactory();
 
-const fooTuple =
-  {
-    begrip: dataFactory.namedNode('http://www.foo.nl/def#foo'),
-    definition: dataFactory.literal('This is a Foo'),
-    label: dataFactory.literal('Foo'),
-  };
+const fooTuple = {
+  begrip: dataFactory.namedNode('http://www.foo.nl/def#foo'),
+  definition: dataFactory.literal('This is a Foo'),
+  label: dataFactory.literal('Foo'),
+};
 
-const barTuple =
-  {
-    begrip: dataFactory.namedNode('http://www.bar.nl/def#bar'),
-    definition: dataFactory.literal('This is a Bar'),
-    label: dataFactory.literal('Bar'),
-  };
+const barTuple = {
+  begrip: dataFactory.namedNode('http://www.bar.nl/def#bar'),
+  definition: dataFactory.literal('This is a Bar'),
+  label: dataFactory.literal('Bar'),
+};
 
 const prevState: TupleState = { loading: true, bindingSets: [fooTuple] };
 

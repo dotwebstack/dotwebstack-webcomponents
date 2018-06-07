@@ -12,19 +12,21 @@ const mockStore = configureStore();
 let store: any;
 
 const dataFactory = new DataFactory();
-const bindingSets = [{
-  begrip: dataFactory.namedNode('http://foo.basisregistraties.nl/def#foo'),
-  definition: dataFactory.literal('This is a Foo'),
-  label: dataFactory.literal('Foo'),
-}, {
-  begrip: dataFactory.namedNode('http://bar.basisregistraties.nl/def#bar'),
-  definition: dataFactory.literal('This is a Bar'),
-  label: dataFactory.literal('Bar'),
-}, {
-  begrip: dataFactory.namedNode('http://bar.basisregistraties.nl/def#3'),
-  definition: dataFactory.literal('This is a 3'),
-  label: dataFactory.literal('3'),
-}];
+const bindingSets = [
+  {
+    begrip: dataFactory.namedNode('http://foo.basisregistraties.nl/def#foo'),
+    definition: dataFactory.literal('This is a Foo'),
+    label: dataFactory.literal('Foo'),
+  }, {
+    begrip: dataFactory.namedNode('http://bar.basisregistraties.nl/def#bar'),
+    definition: dataFactory.literal('This is a Bar'),
+    label: dataFactory.literal('Bar'),
+  }, {
+    begrip: dataFactory.namedNode('http://bar.basisregistraties.nl/def#3'),
+    definition: dataFactory.literal('This is a 3'),
+    label: dataFactory.literal('3'),
+  },
+];
 
 const columns: any = [
   { binding: 'begrip', labelBinding: 'label', header: 'row', class: 'col-md-3' },
