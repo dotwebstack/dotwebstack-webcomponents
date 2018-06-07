@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { Table } from 'reactstrap';
 import DataFactory from '../../DataFactory';
 import TupleListTable from '../../components/TupleListTable';
+import Column from '../../model/Column';
 
 const dataFactory = new DataFactory();
 const bindingSets = [{
@@ -11,10 +12,10 @@ const bindingSets = [{
   label: dataFactory.literal('Foo'),
 }];
 
-const columns: any = [
-  { binding: 'begrip', labelBinding: 'label', header: 'row', class: 'col-md-3' },
-  { binding: 'begrip', header: 'row', class: 'col-md-3' },
-  { binding: 'definition', class: 'col-md-9' },
+const columns: Column[] = [
+  { binding: 'begrip', labelBinding: 'label', header: 'row', className: 'col-md-3' },
+  { binding: 'begrip', header: 'row', className: 'col-md-3' },
+  { binding: 'definition', className: 'col-md-9' },
 ];
 
 const tableProps = { striped: true };

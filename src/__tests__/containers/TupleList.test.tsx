@@ -1,11 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Badge, Table } from 'reactstrap';
+import { Table } from 'reactstrap';
 import DataFactory from '../../DataFactory';
 import ConnectedTupleList from '../../containers/TupleList';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import { BindingSet } from '../../model';
+import { BindingSet, Column } from '../../model';
 import { Element, Link } from 'react-scroll';
 
 const mockStore = configureStore();
@@ -28,10 +28,10 @@ const bindingSets = [
   },
 ];
 
-const columns: any = [
-  { binding: 'begrip', labelBinding: 'label', header: 'row', class: 'col-md-3' },
-  { binding: 'label', header: 'row', class: 'col-md-3' },
-  { binding: 'definition', class: 'col-md-9' },
+const columns: Column[] = [
+  { binding: 'begrip', labelBinding: 'label', header: 'row', className: 'col-md-3' },
+  { binding: 'label', header: 'row', className: 'col-md-3' },
+  { binding: 'definition', className: 'col-md-9' },
 ];
 
 const groupingFunction = (map: any, binding: BindingSet) => {
@@ -68,7 +68,6 @@ describe('TupleListTable::render', () => {
         <ConnectedTupleList columns={columns} tableProps={{ size: 'sm' }} groupingFunction={groupingFunction}/>
       </Provider>);
     expect(wrapper.find(Element).first().prop('name')).toBe('containerBAR');
-    expect(wrapper.find(Badge).first().text()).toContain('BAR');
     expect(wrapper.find(Link).first().text()).toContain('BAR');
   });
 
@@ -79,9 +78,6 @@ describe('TupleListTable::render', () => {
       </Provider>);
     expect(wrapper.find(Element).first().prop('name')).toBe('container0-9');
     expect(wrapper.find(Element).last().prop('name')).toBe('containerF');
-
-    expect(wrapper.find(Badge).first().text()).toContain('0-9');
-    expect(wrapper.find(Badge).last().text()).toContain('F');
 
     expect(wrapper.find(Link).first().text()).toContain('0-9');
     expect(wrapper.find(Link).last().text()).toContain('F');
