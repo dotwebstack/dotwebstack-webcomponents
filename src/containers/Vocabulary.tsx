@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { GraphState, Quad } from '../model';
 import { Dictionary, groupBy } from 'ramda';
 import { Col, Container, Row } from 'reactstrap';
-import ListIndex from '../components/Vocabulary/ListIndex';
+import ListIndex from './ListIndex';
 import ClassListTable from '../components/Vocabulary/ClassListTable';
 import PropertyList from '../components/Vocabulary/PropertyList';
 import DataFactory from '../DataFactory';
+import VocabObject from '../components/Vocabulary/VocabObject';
 
 export interface StateProps {
   readonly quads: Quad[];
@@ -27,6 +28,7 @@ const shacl = 'http://www.w3.org/ns/shacl#';
 
 const rdfType = dataFactory.namedNode(rdf + 'type');
 const rdfsLabel = dataFactory.namedNode(rdfs + 'label');
+const prefLabel = dataFactory.namedNode(core + 'prefLabel');
 const coreConcept = dataFactory.namedNode(core + 'Concept');
 const coreDefinition = dataFactory.namedNode(core + 'definition');
 const coreBroader = dataFactory.namedNode(core + 'broader');
@@ -69,8 +71,9 @@ function groupByRdfType(quads: Quad[]) {
 }
 
 function getSubjectAndLabel(subject: string, quads: Dictionary<Quad[]>) {
-  const label = quads[subject].find(quad => quad.predicate.equals(rdfsLabel));
-  return { link: subject, label: label ? label.object.value : null };
+  const label = quads[subject].find(quad => quad.predicate.equals(rdfsLabel) || quad.predicate.equals(prefLabel));
+
+  return { link: subject, label: label ? label.object.value : '' };
 }
 
 function getSubjectAndLabelForProperty(subject: string, properties: Dictionary<Quad[]>,
@@ -84,63 +87,70 @@ function getSubjectAndLabelForProperty(subject: string, properties: Dictionary<Q
 
 function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>, properties: Dictionary<Quad[]>,
                          nodeShapes: Dictionary<Quad[]>, propertyShapes: Dictionary<Quad[]>) {
-  let definitionQuad = null;
-  let narrowerQuad = null;
-  let broaderQuad = null;
   const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
-  definitionQuad = termSubject ? concepts[termSubject.object.value].find(
-    concept => concept.predicate.equals(coreDefinition)) : null;
-  narrowerQuad = termSubject ? concepts[termSubject.object.value].filter(
-      concept => concept.predicate.equals(coreNarrower)) : null;
-  broaderQuad = termSubject ? concepts[termSubject.object.value].filter(
-      concept => concept.predicate.equals(coreBroader)) : null;
 
+  const termConcepts = termSubject ? concepts[termSubject.object.value] : [];
+
+  const definitionQuad = termConcepts.find(concept => concept.predicate.equals(coreDefinition));
+  const narrowerQuad: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreNarrower));
+  const broaderQuad: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreBroader));
   const subjectHack = subject.replace('#', '/'); // dirty hack (JA)
   const shaclProperties = nodeShapes.hasOwnProperty(subjectHack) ? nodeShapes[subjectHack].filter(
-    quad => quad.predicate.equals(shaclProperty)) : null;
+    quad => quad.predicate.equals(shaclProperty)) : [];
 
-  return (
-    {
-      link: subject,
-      title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
-        { object: { value: 'no title' } }).object.value,
-      description: definitionQuad ? definitionQuad.object.value : 'no definition',
-      Narrower: narrowerQuad ? narrowerQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) :
-        'no narrower',
-      'Has subclasses': broaderQuad ? broaderQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) :
-        'no broader',
-      properties: shaclProperties ? shaclProperties.map(
-        shaclProp => getSubjectAndLabelForProperty(shaclProp.object.value, properties, propertyShapes))
-        : 'no properties',
-    });
+  const vocabObject = {
+    link: subject,
+    title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
+      { object: { value: 'no title' } }).object.value,
+    description: definitionQuad ? definitionQuad.object.value : 'no definition',
+    values:
+      {},
+  };
+
+  if (broaderQuad.length !== 0) {
+    vocabObject.values['Broader'] = broaderQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts));
+  }
+  if (narrowerQuad.length !== 0) {
+    vocabObject.values['Narrower'] = narrowerQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts));
+  }
+
+  if (shaclProperties.length !== 0) {
+    vocabObject.values['Properties'] = shaclProperties.map(
+      quad => getSubjectAndLabelForProperty(quad.object.value, properties, propertyShapes));
+  }
+
+  return vocabObject;
 }
 
-function getClassListFromMap(clazzes: any, concepts: any, properties: any, nodeShapes: any, propertyShapes: any) {
-  return Object.keys(clazzes).map(key => (
-    <ClassListTable clazz={mapQuadsToClass(key, clazzes[key], concepts, properties, nodeShapes, propertyShapes)}
-                    key={key}/>
-  ));
+function getClassListFromMap(grouped: any[]) {
+  const [clazzes, concepts, properties, nodeShapes, propertyShapes] = grouped;
+  const mapped = new Map();
+
+  Object.keys(clazzes).map((key: string) => {
+    const quadsToClass = mapQuadsToClass(key, clazzes[key], concepts, properties, nodeShapes, propertyShapes);
+    mapped[quadsToClass.title] = quadsToClass;
+  });
+
+  return mapped;
 }
 
 const Vocabulary: React.StatelessComponent<Props> = (props) => {
   const { quads } = props;
 
-  const [clazzes, concepts, properties, nodeShapes, propertyShapes] = groupByRdfType(quads);
+  const mappedClasses = getClassListFromMap(groupByRdfType(quads));
+
   return (
     <Container fluid>
       <Row>
         <Col md="3" className="hidden-xs hidden-sm">
-          <ListIndex />
-          <ListIndex />
+          <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'}/>
+          {/*<ListIndex />*/}
         </Col>
         <Col md="7">
-          <section>
-            {getClassListFromMap(clazzes, concepts, properties, nodeShapes, propertyShapes)}
-            <PropertyList/>
-          </section>
+          <ClassListTable clazzes={mappedClasses}/>
+          <PropertyList/>
         </Col>
       </Row>
-
     </Container>
   );
 };

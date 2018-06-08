@@ -1,31 +1,20 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Container } from 'reactstrap';
+import VocabObject from './VocabObject';
 
 export interface Props {
-  readonly clazz : any;
+  readonly clazzes: any;
 }
 
 const ClassListTable: React.StatelessComponent<Props> = (props) => {
-  const { clazz } = props;
+  const { clazzes } = props;
 
   return (
-    <section>
-        <div className="block">
-          <div className="block-intro">
-            <h2>{clazz.title}</h2>
-            <a href={clazz.link}>{clazz.link}</a>
-            <div className="wysiwyg">
-              <p>
-                {clazz.description}
-              </p>
-            </div>
-          </div>
-          <div className="block-content">
-            <Table></Table>
-            <div className="panel-group"></div>
-          </div>
-        </div>
-    </section>
+    <Container fluid>
+      {Object.keys(clazzes).map(key => (
+        <VocabObject clazz={clazzes[key]} key={key}/>
+      ))}
+    </Container>
   );
 };
 
