@@ -4,10 +4,8 @@ import { GraphState, Quad } from '../model';
 import { Dictionary, groupBy } from 'ramda';
 import { Col, Container, Row } from 'reactstrap';
 import ListIndex from './ListIndex';
-import ClassListTable from '../components/Vocabulary/ClassListTable';
-import PropertyList from '../components/Vocabulary/PropertyList';
+import VocabListTable from '../components/VocabListTable';
 import DataFactory from '../DataFactory';
-import VocabObject from '../components/Vocabulary/VocabObject';
 
 export interface StateProps {
   readonly quads: Quad[];
@@ -56,9 +54,7 @@ function groupByRdfType(quads: Quad[]) {
         clazzes[subject] = allQuads[subject];
       } else if (type && type.object.equals(coreConcept)) {
         concepts[subject] = allQuads[subject];
-      } else if (type && type.object.equals(owlDatatypeProperty)) {
-        properties[subject] = allQuads[subject];
-      } else if (type && type.object.equals(owlObjectProperty)) {
+      } else if (type && (type.object.equals(owlDatatypeProperty || type.object.equals(owlObjectProperty)))) {
         properties[subject] = allQuads[subject];
       } else if (type && type.object.equals(shaclNodeShape)) {
         nodeShapes[subject] = allQuads[subject];
@@ -122,33 +118,62 @@ function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Qu
   return vocabObject;
 }
 
-function getClassListFromMap(grouped: any[]) {
+function mapQuadsToProperty(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
+  const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
+
+  const termConcepts = termSubject ? concepts[termSubject.object.value] : [];
+
+  const definitionQuad = termConcepts.find(concept => concept.predicate.equals(coreDefinition));
+
+  const vocabObject = {
+    link: subject,
+    title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
+      { object: { value: 'no title' } }).object.value,
+    description: definitionQuad ? definitionQuad.object.value : 'no definition',
+    values:
+      {},
+  };
+
+  return vocabObject;
+}
+
+function getClazzesAndPropertiesFromMap(grouped: any[]) {
   const [clazzes, concepts, properties, nodeShapes, propertyShapes] = grouped;
-  const mapped = new Map();
+  const mappedClazzes = new Map();
+  const mappedProperties = new Map();
 
   Object.keys(clazzes).map((key: string) => {
     const quadsToClass = mapQuadsToClass(key, clazzes[key], concepts, properties, nodeShapes, propertyShapes);
-    mapped[quadsToClass.title] = quadsToClass;
+    mappedClazzes[quadsToClass.title] = quadsToClass;
   });
 
-  return mapped;
+  Object.keys(properties).map((key: string) => {
+    const quadsToProperty = mapQuadsToProperty(key, properties[key], concepts);
+    mappedProperties[quadsToProperty.title] = quadsToProperty;
+  });
+
+  return [mappedClazzes, mappedProperties];
 }
 
 const Vocabulary: React.StatelessComponent<Props> = (props) => {
   const { quads } = props;
 
-  const mappedClasses = getClassListFromMap(groupByRdfType(quads));
+  const [mappedClasses, mappedProperties] = getClazzesAndPropertiesFromMap(groupByRdfType(quads));
 
   return (
     <Container fluid>
       <Row>
         <Col md="3" className="hidden-xs hidden-sm">
-          <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'}/>
-          {/*<ListIndex />*/}
+          <div>
+            <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'}/>
+          </div>
+          <div>
+            <ListIndex keys={Object.keys(mappedProperties)} title={'Properties'}/>
+          </div>
         </Col>
         <Col md="7">
-          <ClassListTable clazzes={mappedClasses}/>
-          <PropertyList/>
+          <VocabListTable clazzes={mappedClasses}/>
+          <VocabListTable clazzes={mappedProperties}/>
         </Col>
       </Row>
     </Container>

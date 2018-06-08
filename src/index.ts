@@ -7,9 +7,7 @@ import Resource from './containers/Resource';
 import Vocabulary from './containers/Vocabulary';
 import DataFactory from './DataFactory';
 import renderComponent from './renderComponent';
-import ClassListTable from './components/Vocabulary/ClassListTable';
-import ListIndex from './components/Vocabulary/ListIndex';
-import PropertyList from './components/Vocabulary/PropertyList';
+import VocabListTable from './components/VocabListTable';
 
 type ComponentMap = {
   [name: string]: any;
@@ -39,9 +37,7 @@ export {
   TupleList,
   TupleListTable,
   Resource,
-  ClassListTable,
-  ListIndex,
-  PropertyList,
+  VocabListTable,
   Vocabulary,
   DataFactory,
   renderComponent,
