@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { GraphState, Quad } from '../model';
-import {Dictionary, groupBy} from 'ramda';
+import { Dictionary, groupBy } from 'ramda';
 import { Col, Container, Row } from 'reactstrap';
 import ListIndex from '../components/Vocabulary/ListIndex';
 import ClassList from '../components/Vocabulary/ClassList';
