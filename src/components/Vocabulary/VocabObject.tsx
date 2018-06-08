@@ -31,8 +31,8 @@ const VocabObject: React.StatelessComponent<OwnProps> = (props) => {
                       <td>
                         {clazz.values[key].map(item => (
                           <p key={key + clazz.values[key].indexOf(item)}>
-                            <Link to={'container' + item.label} smooth>
-                              <a href={item.link}>{item.label}</a>
+                            <Link to={'container' + item.label} smooth href={'#'}>
+                              {item.label}
                             </Link>
                           </p>
                         ))}

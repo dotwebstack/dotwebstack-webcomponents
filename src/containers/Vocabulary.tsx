@@ -122,8 +122,8 @@ function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Qu
   return vocabObject;
 }
 
-function getClassListFromMap(grouped: any[]) {
-  const [clazzes, concepts, properties, nodeShapes, propertyShapes] = grouped;
+function getClassListFromQuads(quads: Quad[]) {
+  const [clazzes, concepts, properties, nodeShapes, propertyShapes] = groupByRdfType(quads);
   const mapped = new Map();
 
   Object.keys(clazzes).map((key: string) => {
@@ -137,7 +137,7 @@ function getClassListFromMap(grouped: any[]) {
 const Vocabulary: React.StatelessComponent<Props> = (props) => {
   const { quads } = props;
 
-  const mappedClasses = getClassListFromMap(groupByRdfType(quads));
+  const mappedClasses = getClassListFromQuads(quads);
 
   return (
     <Container fluid>
