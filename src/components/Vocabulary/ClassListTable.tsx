@@ -5,7 +5,7 @@ export interface Props {
   readonly clazz : any;
 }
 
-const ClassList: React.StatelessComponent<Props> = (props) => {
+const ClassListTable: React.StatelessComponent<Props> = (props) => {
   const { clazz } = props;
 
   return (
@@ -32,4 +32,4 @@ const ClassList: React.StatelessComponent<Props> = (props) => {
   );
 };
 
-export default ClassList;
+export default ClassListTable;

@@ -2,11 +2,12 @@ import GraphContext from './containers/GraphContext';
 import TupleContext from './containers/TupleContext';
 import Label from './containers/Label';
 import TupleList from './containers/TupleList';
+import TupleListTable from './components/TupleListTable';
 import Resource from './containers/Resource';
 import Vocabulary from './containers/Vocabulary';
 import DataFactory from './DataFactory';
 import renderComponent from './renderComponent';
-import ClassList from './components/Vocabulary/ClassList';
+import ClassListTable from './components/Vocabulary/ClassListTable';
 import ListIndex from './components/Vocabulary/ListIndex';
 import PropertyList from './components/Vocabulary/PropertyList';
 
@@ -36,8 +37,9 @@ export {
   TupleContext,
   Label,
   TupleList,
+  TupleListTable,
   Resource,
-  ClassList,
+  ClassListTable,
   ListIndex,
   PropertyList,
   Vocabulary,

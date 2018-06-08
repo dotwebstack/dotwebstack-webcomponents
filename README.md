@@ -97,13 +97,17 @@ npm run start
 
 ## Release
 
-When releasing a new version, manually increase the version number in `package.json`/`package-lock.json` and commit/push this change.
+Prepare a new version (change update type to `minor` or `major` when relevant):
+
+```
+npm version patch
+```
 
 Create & push Git tag (change version number):
 
 ```
 git tag v0.0.3
-git push origin v0.0.3
+git push origin master --tags
 ```
 
 To publish the new version to the NPM registry:

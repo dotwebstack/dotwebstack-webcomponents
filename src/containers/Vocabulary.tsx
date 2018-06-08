@@ -4,7 +4,7 @@ import { GraphState, Quad } from '../model';
 import { Dictionary, groupBy } from 'ramda';
 import { Col, Container, Row } from 'reactstrap';
 import ListIndex from '../components/Vocabulary/ListIndex';
-import ClassList from '../components/Vocabulary/ClassList';
+import ClassListTable from '../components/Vocabulary/ClassListTable';
 import PropertyList from '../components/Vocabulary/PropertyList';
 import DataFactory from '../DataFactory';
 
@@ -68,7 +68,7 @@ function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Qu
 
 function getClassListFromMap(clazzes: any, concepts: any) {
   return Object.keys(clazzes).map(key => (
-    <ClassList clazz={mapQuadsToClass(key, clazzes[key], concepts)} key={key}/>
+    <ClassListTable clazz={mapQuadsToClass(key, clazzes[key], concepts)} key={key}/>
   ));
 }
 

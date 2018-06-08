@@ -27,7 +27,7 @@ const App = () => (
         </Navbar>
       </header>
       <main className="mt-4">
-        <Container>
+        <Container fluid>
           <Switch>
             <Route exact path="/resource" component={ResourceExample} />
             <Route exact path="/tuple-list" component={TupleListExample} />

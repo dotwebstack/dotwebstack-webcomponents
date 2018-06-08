@@ -17,3 +17,7 @@ export const findSingleStatement = (
     subject?: NamedNode | BlankNode,
     predicate?: NamedNode) =>
   findStatements(quads, subject, predicate)[0];
+
+export function lexicographicSort(a: any, b: any): number {
+  return a.localeCompare(b);
+}
