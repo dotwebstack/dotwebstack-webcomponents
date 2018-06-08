@@ -18,9 +18,6 @@ const ClassListTable: React.StatelessComponent<Props> = (props) => {
               <p>
                 {clazz.definition}
               </p>
-              <p>
-                {clazz.subject}
-              </p>
             </div>
           </div>
           <div className="block-content">
