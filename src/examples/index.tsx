@@ -5,6 +5,7 @@ import { Container, Nav, Navbar, NavItem } from 'reactstrap';
 import ResourceExample from './ResourceExample';
 import TupleListExample from './TupleListExample';
 import VocabularyExample from './VocabularyExample';
+import VocabularyBrtExample from './VocabularyBrtExample';
 
 const App = () => (
   <HashRouter>
@@ -22,6 +23,9 @@ const App = () => (
               <NavItem>
                 <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
               </NavItem>
+              <NavItem>
+                <Link to="/vocabulary-brt" className="nav-link">Vocabulary brt</Link>
+              </NavItem>
             </Nav>
           </Container>
         </Navbar>
@@ -32,6 +36,7 @@ const App = () => (
             <Route exact path="/resource" component={ResourceExample} />
             <Route exact path="/tuple-list" component={TupleListExample} />
             <Route exact path="/vocabulary" component={VocabularyExample} />
+            <Route exact path="/vocabulary-brt" component={VocabularyBrtExample} />
             <Redirect from="/" to="/resource" />
           </Switch>
         </Container>
