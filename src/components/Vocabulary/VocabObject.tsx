@@ -32,7 +32,7 @@ const VocabObject: React.StatelessComponent<OwnProps> = (props) => {
                         {clazz.values[key].map(item => (
                           <p key={key + clazz.values[key].indexOf(item)}>
                             <Link to={'container' + item.label} smooth>
-                              {item.label}
+                              <a href={item.link}>{item.label}</a>
                             </Link>
                           </p>
                         ))}
