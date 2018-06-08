@@ -28,6 +28,8 @@ const rdfType = dataFactory.namedNode(rdf + 'type');
 const rdfsLabel = dataFactory.namedNode(rdfs + 'label');
 const coreConcept = dataFactory.namedNode(core + 'Concept');
 const coreDefinition = dataFactory.namedNode(core + 'definition');
+const coreBroader = dataFactory.namedNode(core + 'broader');
+const coreNarrower = dataFactory.namedNode(core + 'narrower');
 const owlClass = dataFactory.namedNode((owl + 'Class'));
 const termsSubject = dataFactory.namedNode(terms + 'subject');
 
@@ -48,21 +50,32 @@ function groupByRdfType(quads: Quad[]) {
   return [clazzes, concepts];
 }
 
+function getSubjectAndLabel(subject: string, quads: Dictionary<Quad[]>) {
+  const label = quads[subject].find(quad => quad.predicate.equals(rdfsLabel));
+  return [subject, label ? label : null];
+}
+
 function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
+  let definitionQuad = null;
+  let narrowerQuad = null;
+  let broaderQuad = null;
   const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
-  let definition = 'no definition';
-  if (termSubject) {
-    const quadsConcept = concepts[termSubject.object.value];
-    const definitionQuad = quadsConcept.find(concept => concept.predicate.equals(coreDefinition));
-    if (definitionQuad) { definition = definitionQuad.object.value; }
-  }
+  definitionQuad = termSubject ? concepts[termSubject.object.value].find(
+    concept => concept.predicate.equals(coreDefinition)) : null;
+  narrowerQuad = termSubject ? concepts[termSubject.object.value].filter(
+      concept => concept.predicate.equals(coreNarrower)) : null;
+  broaderQuad = termSubject ? concepts[termSubject.object.value].filter(
+      concept => concept.predicate.equals(coreBroader)) : null;
 
   return (
     {
       link: subject,
       title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
         { object: { value: 'no title' } }).object.value,
-      description: definition,
+      description: definitionQuad ? definitionQuad.object.value : 'no definition',
+      narrower: narrowerQuad ? narrowerQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) :
+        'no narrower',
+      broader: broaderQuad ? broaderQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) : 'no broader',
     });
 }
 
