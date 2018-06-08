@@ -54,7 +54,9 @@ function groupByRdfType(quads: Quad[]) {
         clazzes[subject] = allQuads[subject];
       } else if (type && type.object.equals(coreConcept)) {
         concepts[subject] = allQuads[subject];
-      } else if (type && (type.object.equals(owlDatatypeProperty || type.object.equals(owlObjectProperty)))) {
+      } else if (type && type.object.equals(owlDatatypeProperty)) {
+        properties[subject] = allQuads[subject];
+      } else if (type && type.object.equals(owlObjectProperty)) {
         properties[subject] = allQuads[subject];
       } else if (type && type.object.equals(shaclNodeShape)) {
         nodeShapes[subject] = allQuads[subject];
