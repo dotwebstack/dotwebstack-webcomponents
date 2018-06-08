@@ -137,8 +137,8 @@ function mapQuadsToProperty(subject: string, quads: Quad[], concepts: Dictionary
   return vocabObject;
 }
 
-function getClazzesAndPropertiesFromMap(grouped: any[]) {
-  const [clazzes, concepts, properties, nodeShapes, propertyShapes] = grouped;
+function getClazzesAndPropertiesFromMap(quads: Quad[]) {
+  const [clazzes, concepts, properties, nodeShapes, propertyShapes] = groupByRdfType(quads);
   const mappedClazzes = new Map();
   const mappedProperties = new Map();
 
@@ -158,7 +158,7 @@ function getClazzesAndPropertiesFromMap(grouped: any[]) {
 const Vocabulary: React.StatelessComponent<Props> = (props) => {
   const { quads } = props;
 
-  const [mappedClasses, mappedProperties] = getClazzesAndPropertiesFromMap(groupByRdfType(quads));
+  const [mappedClasses, mappedProperties] = getClazzesAndPropertiesFromMap(quads);
 
   return (
     <Container fluid>
