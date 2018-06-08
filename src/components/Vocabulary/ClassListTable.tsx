@@ -16,7 +16,7 @@ const ClassListTable: React.StatelessComponent<Props> = (props) => {
             <a href={clazz.link}>{clazz.link}</a>
             <div className="wysiwyg">
               <p>
-                {clazz.definition}
+                {clazz.description}
               </p>
             </div>
           </div>

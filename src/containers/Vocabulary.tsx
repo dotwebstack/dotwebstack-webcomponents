@@ -50,11 +50,11 @@ function groupByRdfType(quads: Quad[]) {
 
 function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
   const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
-  let def = 'no definition';
+  let definition = 'no definition';
   if (termSubject) {
     const quadsConcept = concepts[termSubject.object.value];
     const definitionQuad = quadsConcept.find(concept => concept.predicate.equals(coreDefinition));
-    if (definitionQuad) { def = definitionQuad.object.value; }
+    if (definitionQuad) { definition = definitionQuad.object.value; }
   }
 
   return (
@@ -62,7 +62,7 @@ function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Qu
       link: subject,
       title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
         { object: { value: 'no title' } }).object.value,
-      definition: def,
+      description: definition,
     });
 }
 
