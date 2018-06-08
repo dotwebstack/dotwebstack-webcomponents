@@ -52,7 +52,7 @@ function groupByRdfType(quads: Quad[]) {
 
 function getSubjectAndLabel(subject: string, quads: Dictionary<Quad[]>) {
   const label = quads[subject].find(quad => quad.predicate.equals(rdfsLabel));
-  return [subject, label ? label : null];
+  return { link: subject, label: label ? label : null };
 }
 
 function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
@@ -73,9 +73,10 @@ function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Qu
       title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
         { object: { value: 'no title' } }).object.value,
       description: definitionQuad ? definitionQuad.object.value : 'no definition',
-      narrower: narrowerQuad ? narrowerQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) :
+      Narrower: narrowerQuad ? narrowerQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) :
         'no narrower',
-      broader: broaderQuad ? broaderQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) : 'no broader',
+      'Has subclasses': broaderQuad ? broaderQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts)) :
+        'no broader',
     });
 }
 
