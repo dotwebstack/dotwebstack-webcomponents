@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Row, Col } from 'reactstrap';
 import { GraphState, Quad } from '../model';
-import { ListIndex, ClassList, PropertyList } from '..';
+import {Dictionary, groupBy} from 'ramda';
+import { Col, Container, Row } from 'reactstrap';
+import ListIndex from '../components/Vocabulary/ListIndex';
+import ClassList from '../components/Vocabulary/ClassList';
+import PropertyList from '../components/Vocabulary/PropertyList';
 import DataFactory from '../DataFactory';
-import { findSingleStatement } from '../utils';
-import { nest } from 'd3-collection';
 
 export interface StateProps {
   readonly quads: Quad[];
@@ -17,51 +18,74 @@ export interface OwnProps {
 export interface Props extends StateProps, OwnProps {}
 
 const dataFactory = new DataFactory();
-const predicate = dataFactory.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
-const types = ['Class', 'DatatypeProperty'];
+const rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+const rdfs = 'http://www.w3.org/2000/01/rdf-schema#';
+const core = 'http://www.w3.org/2004/02/skos/core#';
+const owl = 'http://www.w3.org/2002/07/owl#';
+const terms = 'http://purl.org/dc/terms/';
 
-function getUniqueSubjects(quads: Quad[]) {
-  return [...new Set(quads.map(quad => quad.subject.value.split('#')[1]))];
-    // .filter(() => (findSingleStatement(quads, undefined, predicate) !== undefined)
-  // );
+const rdfType = dataFactory.namedNode(rdf + 'type');
+const rdfsLabel = dataFactory.namedNode(rdfs + 'label');
+const coreConcept = dataFactory.namedNode(core + 'Concept');
+const coreDefinition = dataFactory.namedNode(core + 'definition');
+const owlClass = dataFactory.namedNode((owl + 'Class'));
+const termsSubject = dataFactory.namedNode(terms + 'subject');
+
+function groupByRdfType(quads: Quad[]) {
+  const allQuads = groupBy(quad => quad.subject.value, quads);
+  const clazzes = Object.create({});
+  const concepts = Object.create({});
+  Object.keys(allQuads).forEach(
+    (subject) => {
+      const type = allQuads[subject].find(q => q.predicate.equals(rdfType));
+      if (type && type.object.equals(owlClass)) {
+        clazzes[subject] = allQuads[subject];
+      } else if (type && type.object.equals(coreConcept)) {
+        concepts[subject] = allQuads[subject];
+      }
+    });
+
+  return [clazzes, concepts];
 }
 
-function getMappedQuads(quads: Quad[]) {
-  const uniqueSubjects = getUniqueSubjects(quads);
+function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
+  const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
+  let def = 'no definition';
+  if (termSubject) {
+    const quadsConcept = concepts[termSubject.object.value];
+    const definitionQuad = quadsConcept.find(concept => concept.predicate.equals(coreDefinition));
+    if (definitionQuad) { def = definitionQuad.object.value; }
+  }
 
-  const getTypeKeys = (quad: any) => {
-    const element = quad.object.value.split('#')[1];
-    return types.indexOf(element) > -1 ? element : 'Overig';
-  };
+  return (
+    {
+      link: subject,
+      title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
+        { object: { value: 'no title' } }).object.value,
+      definition: def,
+    });
+}
 
-  const getSubjectGroupedQuads = (quad: any) => {
-    const element = quad.subject.value.split('#')[1];
-    return uniqueSubjects.indexOf(element) > -1 ? element : '';
-  };
-
-  return nest()
-    .key(getSubjectGroupedQuads)
-    .key(getTypeKeys)
-    .map(quads);
+function getClassListFromMap(clazzes: any, concepts: any) {
+  return Object.keys(clazzes).map(key => (
+    <ClassList clazz={mapQuadsToClass(key, clazzes[key], concepts)} key={key}/>
+  ));
 }
 
 const Vocabulary: React.StatelessComponent<Props> = (props) => {
   const { quads } = props;
 
-  const mapped = getMappedQuads(quads);
-  console.log(mapped);
-  return mapped.empty() ? null : (
+  const [clazzes, concepts] = groupByRdfType(quads);
+  return (
     <Container fluid>
       <Row>
-        <Col md="3" className="hidden-xs hiddena-sm">
-          <ListIndex /> {/* keys={mapped.get('Class').keys()} */}
-          <ListIndex /> {/* keys={mapped.get('DatatypeProperty').keys()} */}
+        <Col md="3" className="hidden-xs hidden-sm">
+          <ListIndex />
+          <ListIndex />
         </Col>
         <Col md="7">
           <section>
-            {mapped.keys().filter(key => (types.indexOf(key) > -1)).map(key => (
-              <ClassList clazzes={mapped.get(key)} key={key}/>
-            ))}
+            {getClassListFromMap(clazzes, concepts)}
             <PropertyList/>
           </section>
         </Col>
