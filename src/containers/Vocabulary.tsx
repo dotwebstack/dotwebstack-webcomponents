@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { GraphState, Quad } from '../model';
 import { Dictionary, groupBy } from 'ramda';
-import { Col, Container, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import ListIndex from './ListIndex';
 import VocabListTable from '../components/VocabListTable';
 import DataFactory from '../DataFactory';
+import Vocab from '../model/Vocab';
 
 export interface StateProps {
   readonly quads: Quad[];
@@ -47,94 +48,88 @@ function groupByRdfType(quads: Quad[]) {
   const properties = Object.create({});
   const nodeShapes = Object.create({});
   const propertyShapes = Object.create({});
-  Object.keys(allQuads).forEach(
-    (subject) => {
-      const type = allQuads[subject].find(q => q.predicate.equals(rdfType));
-      if (type && type.object.equals(owlClass)) {
-        clazzes[subject] = allQuads[subject];
-      } else if (type && type.object.equals(coreConcept)) {
-        concepts[subject] = allQuads[subject];
-      } else if (type && type.object.equals(owlDatatypeProperty)) {
-        properties[subject] = allQuads[subject];
-      } else if (type && type.object.equals(owlObjectProperty)) {
-        properties[subject] = allQuads[subject];
-      } else if (type && type.object.equals(shaclNodeShape)) {
-        nodeShapes[subject] = allQuads[subject];
-      } else if (type && type.object.equals(shaclPropertyShape)) {
-        propertyShapes[subject] = allQuads[subject];
+
+  function mapToMap(subject: string) {
+    const type = allQuads[subject].find(q => q.predicate.equals(rdfType)) || '';
+
+    if (type) {
+      switch (type.object.value) {
+        case owlClass.value: {
+          clazzes[subject] = allQuads[subject];
+          break;
+        }
+        case coreConcept.value: {
+          concepts[subject] = allQuads[subject];
+          break;
+        }
+        case owlDatatypeProperty.value: {
+          properties[subject] = allQuads[subject];
+          break;
+        }
+        case owlObjectProperty.value: {
+          properties[subject] = allQuads[subject];
+          break;
+        }
+        case shaclNodeShape.value: {
+          nodeShapes[subject] = allQuads[subject];
+          break;
+        }
+        case shaclPropertyShape.value: {
+          propertyShapes[subject] = allQuads[subject];
+          break;
+        }
+        default: {
+          return;
+        }
       }
-    });
+    }
+  }
+
+  Object.keys(allQuads).forEach(mapToMap);
 
   return [clazzes, concepts, properties, nodeShapes, propertyShapes];
 }
 
-function getSubjectAndLabel(subject: string, quads: Dictionary<Quad[]>) {
-  const label = quads[subject].find(quad => quad.predicate.equals(rdfsLabel) || quad.predicate.equals(prefLabel));
+function getSubjectAndLabel(quad: Quad, quads: Dictionary<Quad[]>,
+                            propertyShapes?: Dictionary<Quad[]>) {
+  const path = propertyShapes && propertyShapes.hasOwnProperty(quad.object.value) ? propertyShapes[quad.object.value]
+    .find(quad => quad.predicate.equals(shaclPath)) || quad : quad;
 
-  return { link: subject, label: label ? label.object.value : '' };
+  const label = quads.hasOwnProperty(path.object.value) ? quads[path.object.value]
+    .find(quad => quad.predicate.equals(prefLabel) || quad.predicate.equals(rdfsLabel)) : '';
+
+  return { link: quad.object.value, label: label ? label.object.value : '' };
 }
 
-function getSubjectAndLabelForProperty(subject: string, properties: Dictionary<Quad[]>,
-                                       propertyShapes: Dictionary<Quad[]>) {
-  const path = propertyShapes.hasOwnProperty(subject) ? propertyShapes[subject].find(
-    quad => quad.predicate.equals(shaclPath)) : null;
-  const label = path ? properties.hasOwnProperty(path.object.value) ? properties[path.object.value].find(
-    quad => quad.predicate.equals(rdfsLabel)) : null : null;
-  return { link: subject, label: label ? label.object.value : null };
-}
-
-function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>, properties: Dictionary<Quad[]>,
-                         nodeShapes: Dictionary<Quad[]>, propertyShapes: Dictionary<Quad[]>) {
+function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>, properties?: Dictionary<Quad[]>,
+                         nodeShapes?: Dictionary<Quad[]>, propertyShapes?: Dictionary<Quad[]>) {
   const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
-
-  const termConcepts = termSubject ? concepts[termSubject.object.value] : [];
-
-  const definitionQuad = termConcepts.find(concept => concept.predicate.equals(coreDefinition));
-  const narrowerQuad: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreNarrower));
-  const broaderQuad: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreBroader));
   const subjectHack = subject.replace('#', '/'); // dirty hack (JA)
-  const shaclProperties = nodeShapes.hasOwnProperty(subjectHack) ? nodeShapes[subjectHack].filter(
-    quad => quad.predicate.equals(shaclProperty)) : [];
-
-  const vocabObject = {
-    link: subject,
-    title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
-      { object: { value: 'no title' } }).object.value,
-    description: definitionQuad ? definitionQuad.object.value : 'no definition',
-    values:
-      {},
-  };
-
-  if (broaderQuad.length !== 0) {
-    vocabObject.values['Broader'] = broaderQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts));
-  }
-  if (narrowerQuad.length !== 0) {
-    vocabObject.values['Narrower'] = narrowerQuad.map(quad => getSubjectAndLabel(quad.object.value, concepts));
-  }
-
-  if (shaclProperties.length !== 0) {
-    vocabObject.values['Properties'] = shaclProperties.map(
-      quad => getSubjectAndLabelForProperty(quad.object.value, properties, propertyShapes));
-  }
-
-  return vocabObject;
-}
-
-function mapQuadsToProperty(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
-  const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
 
   const termConcepts = termSubject ? concepts[termSubject.object.value] : [];
+  const propertyConcepts = nodeShapes && nodeShapes.hasOwnProperty(subjectHack) ? nodeShapes[subjectHack] : [];
 
+  const titleQuad = quads.find(concept => concept.predicate.equals(prefLabel) || concept.predicate.equals(rdfsLabel));
   const definitionQuad = termConcepts.find(concept => concept.predicate.equals(coreDefinition));
+  const narrowerQuads: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreNarrower));
+  const broaderQuads: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreBroader));
+  const shaclProperties: Quad[] = propertyConcepts.filter(concept => concept.predicate.equals(shaclProperty));
 
-  const vocabObject = {
-    link: subject,
-    title: (quads.find(quad => quad.predicate.equals(rdfsLabel)) ||
-      { object: { value: 'no title' } }).object.value,
-    description: definitionQuad ? definitionQuad.object.value : 'no definition',
-    values:
-      {},
-  };
+  const title = titleQuad ? titleQuad.object.value : 'no title';
+  const description = definitionQuad ? definitionQuad.object.value : 'no definition';
+  const vocabObject = new Vocab(subject, title, description);
+
+  if (broaderQuads.length !== 0) {
+    vocabObject.add('Broader', broaderQuads.map(quad => getSubjectAndLabel(quad, concepts)));
+  }
+  if (narrowerQuads.length !== 0) {
+    vocabObject.add('Narrower', narrowerQuads.map(quad => getSubjectAndLabel(quad, concepts)));
+  }
+
+  if (shaclProperties.length !== 0 && properties && propertyShapes) {
+    vocabObject.add('Properties', shaclProperties.map(
+      quad => getSubjectAndLabel(quad, properties, propertyShapes)));
+  }
 
   return vocabObject;
 }
@@ -144,15 +139,19 @@ function getClazzesAndPropertiesFromMap(quads: Quad[]) {
   const mappedClazzes = new Map();
   const mappedProperties = new Map();
 
-  Object.keys(clazzes).map((key: string) => {
-    const quadsToClass = mapQuadsToClass(key, clazzes[key], concepts, properties, nodeShapes, propertyShapes);
-    mappedClazzes[quadsToClass.title] = quadsToClass;
-  });
+  Object.keys(clazzes)
+    .filter(subject => (subject.includes('.basisregistraties.overheid.nl')))
+    .map((key: string) => {
+      const quadsToClass = mapQuadsToClass(key, clazzes[key], concepts, properties, nodeShapes, propertyShapes);
+      mappedClazzes.set(quadsToClass.title, quadsToClass);
+    });
 
-  Object.keys(properties).map((key: string) => {
-    const quadsToProperty = mapQuadsToProperty(key, properties[key], concepts);
-    mappedProperties[quadsToProperty.title] = quadsToProperty;
-  });
+  Object.keys(properties)
+    .filter(subject => (subject.includes('.basisregistraties.overheid.nl')))
+    .map((key: string) => {
+      const quadsToProperty = mapQuadsToClass(key, properties[key], concepts);
+      mappedProperties.set(quadsToProperty.title, quadsToProperty);
+    });
 
   return [mappedClazzes, mappedProperties];
 }
@@ -163,22 +162,18 @@ const Vocabulary: React.StatelessComponent<Props> = (props) => {
   const [mappedClasses, mappedProperties] = getClazzesAndPropertiesFromMap(quads);
 
   return (
-    <Container fluid>
-      <Row>
-        <Col md="3" className="hidden-xs hidden-sm">
-          <div>
-            <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'}/>
-          </div>
-          <div>
-            <ListIndex keys={Object.keys(mappedProperties)} title={'Properties'}/>
-          </div>
-        </Col>
-        <Col md="7">
-          <VocabListTable clazzes={mappedClasses}/>
-          <VocabListTable clazzes={mappedProperties}/>
-        </Col>
-      </Row>
-    </Container>
+    <Row>
+      <Col md="3" className="sticky-top scrollable">
+        <Row>
+          <ListIndex keys={Array.from(mappedClasses.keys())} title={'Klassen'} className=""/>
+          <ListIndex keys={Array.from(mappedProperties.keys())} title={'Eigenschappen'} className=""/>
+        </Row>
+      </Col>
+      <Col md="7">
+        <VocabListTable clazzes={Array.from(mappedClasses.values())}/>
+        <VocabListTable clazzes={Array.from(mappedProperties.values())}/>
+      </Col>
+    </Row>
   );
 };
 

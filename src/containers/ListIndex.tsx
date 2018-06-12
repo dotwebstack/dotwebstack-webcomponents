@@ -7,12 +7,13 @@ export interface OwnProps {
   readonly keys: string[];
   readonly title?: string;
   readonly sortFn?: (a: string, b: string) => number;
+  readonly className?: string;
 }
 
 const ListIndex: React.StatelessComponent<OwnProps> = (props) => {
-  const { keys, title, sortFn = lexicographicSort } = props;
+  const { keys, title, sortFn = lexicographicSort, className = 'sticky-top' } = props;
 
-  return <div className="sticky-top">
+  return <div className={className}>
     <h2>{title}</h2>
     <Nav vertical>
       {keys.sort(sortFn).map(key => (

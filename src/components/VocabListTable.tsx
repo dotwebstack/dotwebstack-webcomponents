@@ -1,20 +1,20 @@
 import React from 'react';
-import { Container } from 'reactstrap';
-import VocabObject from './VocabObject';
+import VocabElement from './VocabElement';
+import Vocab from '../model/Vocab';
 
 export interface Props {
-  readonly clazzes: any;
+  readonly clazzes: Vocab[];
 }
 
 const VocabListTable: React.StatelessComponent<Props> = (props) => {
   const { clazzes } = props;
 
   return (
-    <Container fluid>
-      {Object.keys(clazzes).map(key => (
-        <VocabObject clazz={clazzes[key]} key={key}/>
+    <div>
+      {clazzes.map(entry => (
+        <VocabElement vocab={entry} key={entry.link}/>
       ))}
-    </Container>
+    </div>
   );
 };
 
