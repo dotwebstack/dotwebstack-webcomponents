@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Row, Col } from 'reactstrap';
+import { Table } from 'reactstrap';
 import { Element, Link } from 'react-scroll';
 import Vocab from '../model/Vocab';
 
@@ -32,20 +32,10 @@ const VocabElement: React.StatelessComponent<OwnProps> = (props) => {
   const { vocab } = props;
   return (
     <Element name={'container' + vocab.title}>
-      <Row>
-        <Col>
-          <Row>
-            <h2>{vocab.title}</h2>
-          </Row>
-          <Row>
-            <a href={vocab.link}>{vocab.link}</a>
-          </Row>
-          <Row>
-            <p>{vocab.description}</p>
-          </Row>
-          {createTableForVocabObject(vocab)}
-        </Col>
-      </Row>
+      <h2>{vocab.title}</h2>
+      <a href={vocab.link}>{vocab.link}</a>
+      <p>{vocab.description}</p>
+      {createTableForVocabObject(vocab)}
     </Element>
   );
 };
