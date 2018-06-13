@@ -7,20 +7,22 @@ export interface OwnProps {
   readonly keys: string[];
   readonly title?: string;
   readonly sortFn?: (a: string, b: string) => number;
-  readonly className?: string;
+  readonly sticky?: boolean;
 }
 
 const ListIndex: React.StatelessComponent<OwnProps> = (props) => {
-  const { keys, title, sortFn = lexicographicSort, className = 'sticky-top' } = props;
+  const { keys, title, sortFn = lexicographicSort, sticky = true } = props;
 
-  return <div className={className}>
-    <h2>{title}</h2>
-    <Nav vertical>
-      {keys.sort(sortFn).map(key => (
-        <Link to={'container' + key} spy={true} smooth={true} key={key}>{key}</Link>
-      ))}
-    </Nav>
-  </div>;
+  return (
+    <div className={sticky ? 'sticky-top' : '' }>
+      <h2>{title}</h2>
+      <Nav vertical>
+        {keys.sort(sortFn).map(key => (
+          <Link to={'container' + key} spy={true} smooth={true} key={key}>{key}</Link>
+        ))}
+      </Nav>
+    </div>
+  );
 };
 
 export default ListIndex;

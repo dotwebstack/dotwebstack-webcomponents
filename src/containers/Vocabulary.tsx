@@ -4,9 +4,9 @@ import { GraphState, Quad } from '../model';
 import { Dictionary, groupBy } from 'ramda';
 import { Col, Row } from 'reactstrap';
 import ListIndex from './ListIndex';
-import VocabListTable from '../components/VocabListTable';
+import Concepts from '../components/Concepts';
 import DataFactory from '../DataFactory';
-import Vocab from '../model/Vocab';
+import Concept from '../model/Concept';
 
 export interface StateProps {
   readonly quads: Quad[];
@@ -117,7 +117,7 @@ function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Qu
 
   const title = titleQuad ? titleQuad.object.value : 'no title';
   const description = definitionQuad ? definitionQuad.object.value : 'no definition';
-  const vocabObject = new Vocab(subject, title, description);
+  const vocabObject = new Concept(subject, title, description);
 
   if (broaderQuads.length !== 0) {
     vocabObject.add('Broader', broaderQuads.map(quad => getSubjectAndLabel(quad, concepts)));
@@ -165,13 +165,13 @@ const Vocabulary: React.StatelessComponent<Props> = (props) => {
     <Row>
       <Col md="3" className="sticky-top scrollable">
         <Row>
-          <ListIndex keys={Array.from(mappedClasses.keys())} title={'Klassen'} className=""/>
-          <ListIndex keys={Array.from(mappedProperties.keys())} title={'Eigenschappen'} className=""/>
+          <ListIndex keys={Array.from(mappedClasses.keys())} title={'Klassen'} sticky={false}/>
+          <ListIndex keys={Array.from(mappedProperties.keys())} title={'Eigenschappen'} sticky={false}/>
         </Row>
       </Col>
       <Col md="7">
-        <VocabListTable clazzes={Array.from(mappedClasses.values())}/>
-        <VocabListTable clazzes={Array.from(mappedProperties.values())}/>
+        <Concepts concepts={Array.from(mappedClasses.values())}/>
+        <Concepts concepts={Array.from(mappedProperties.values())}/>
       </Col>
     </Row>
   );

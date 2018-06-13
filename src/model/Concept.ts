@@ -1,4 +1,4 @@
-class Vocab {
+class Concept {
   readonly properties: string[];
   readonly values: Map<string, {link: string, label: string}[]>;
 
@@ -21,4 +21,4 @@ class Vocab {
   }
 }
 
-export default Vocab;
+export default Concept;

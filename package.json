@@ -17,8 +17,6 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
-    "@types/d3-collection": "^1.0.7",
-    "d3-collection": "^1.0.4",
     "@types/react-scroll": "^1.5.3",
     "flux-standard-action": "^2.0.3",
     "jsonld": "^0.4.12",
