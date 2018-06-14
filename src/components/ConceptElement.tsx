@@ -3,7 +3,7 @@ import { Table } from 'reactstrap';
 import { Element, Link } from 'react-scroll';
 import Concept from '../model/Concept';
 
-interface OwnProps {
+export interface OwnProps {
   readonly concept: Concept;
 }
 
