@@ -46,8 +46,6 @@ function groupByRdfType(quads: Quad[]) {
   const clazzes = Object.create({});
   const concepts = Object.create({});
   const properties = Object.create({});
-  const nodeShapes = Object.create({});
-  const propertyShapes = Object.create({});
 
   function mapToMap(subject: string) {
     const type = allQuads[subject].find(q => q.predicate.equals(rdfType)) || '';
@@ -63,19 +61,21 @@ function groupByRdfType(quads: Quad[]) {
           break;
         }
         case owlDatatypeProperty.value: {
+          concepts[subject] = allQuads[subject];
           properties[subject] = allQuads[subject];
           break;
         }
         case owlObjectProperty.value: {
+          concepts[subject] = allQuads[subject];
           properties[subject] = allQuads[subject];
           break;
         }
         case shaclNodeShape.value: {
-          nodeShapes[subject] = allQuads[subject];
+          concepts[subject] = allQuads[subject];
           break;
         }
         case shaclPropertyShape.value: {
-          propertyShapes[subject] = allQuads[subject];
+          concepts[subject] = allQuads[subject];
           break;
         }
         default: {
@@ -87,12 +87,11 @@ function groupByRdfType(quads: Quad[]) {
 
   Object.keys(allQuads).forEach(mapToMap);
 
-  return [clazzes, concepts, properties, nodeShapes, propertyShapes];
+  return [clazzes, properties, concepts];
 }
 
-function getSubjectAndLabel(quad: Quad, quads: Dictionary<Quad[]>,
-                            propertyShapes?: Dictionary<Quad[]>) {
-  const path = propertyShapes && propertyShapes.hasOwnProperty(quad.object.value) ? propertyShapes[quad.object.value]
+function getSubjectAndLabel(quad: Quad, quads: Dictionary<Quad[]>) {
+  const path = quads.hasOwnProperty(quad.object.value) ? quads[quad.object.value]
     .find(quad => quad.predicate.equals(shaclPath)) || quad : quad;
 
   const label = quads.hasOwnProperty(path.object.value) ? quads[path.object.value]
@@ -101,13 +100,12 @@ function getSubjectAndLabel(quad: Quad, quads: Dictionary<Quad[]>,
   return { link: quad.object.value, label: label ? label.object.value : '' };
 }
 
-function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>, properties?: Dictionary<Quad[]>,
-                         nodeShapes?: Dictionary<Quad[]>, propertyShapes?: Dictionary<Quad[]>) {
+function mapQuadsToConcept(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
   const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
   const subjectHack = subject.replace('#', '/'); // dirty hack (JA)
 
   const termConcepts = termSubject ? concepts[termSubject.object.value] : [];
-  const propertyConcepts = nodeShapes && nodeShapes.hasOwnProperty(subjectHack) ? nodeShapes[subjectHack] : [];
+  const propertyConcepts = concepts && concepts.hasOwnProperty(subjectHack) ? concepts[subjectHack] : [];
 
   const titleQuad = quads.find(concept => concept.predicate.equals(prefLabel) || concept.predicate.equals(rdfsLabel));
   const definitionQuad = termConcepts.find(concept => concept.predicate.equals(coreDefinition));
@@ -115,50 +113,44 @@ function mapQuadsToClass(subject: string, quads: Quad[], concepts: Dictionary<Qu
   const broaderQuads: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreBroader));
   const shaclProperties: Quad[] = propertyConcepts.filter(concept => concept.predicate.equals(shaclProperty));
 
-  const title = titleQuad ? titleQuad.object.value : 'no title';
+  const title = titleQuad ? titleQuad.object.value : '';
   const description = definitionQuad ? definitionQuad.object.value : 'no definition';
   const vocabObject = new Concept(subject, title, description);
+  const quadToPropertyObject = (quad: Quad) => getSubjectAndLabel(quad, concepts);
 
   if (broaderQuads.length !== 0) {
-    vocabObject.add('Broader', broaderQuads.map(quad => getSubjectAndLabel(quad, concepts)));
+    vocabObject.add('Broader', broaderQuads.map(quadToPropertyObject));
   }
   if (narrowerQuads.length !== 0) {
-    vocabObject.add('Narrower', narrowerQuads.map(quad => getSubjectAndLabel(quad, concepts)));
+    vocabObject.add('Narrower', narrowerQuads.map(quadToPropertyObject));
   }
 
-  if (shaclProperties.length !== 0 && properties && propertyShapes) {
-    vocabObject.add('Properties', shaclProperties.map(
-      quad => getSubjectAndLabel(quad, properties, propertyShapes)));
+  if (shaclProperties.length !== 0) {
+    vocabObject.add('Properties', shaclProperties.map(quadToPropertyObject));
   }
 
   return vocabObject;
 }
 
 function getClazzesAndPropertiesFromMap(quads: Quad[]) {
-  const [clazzes, concepts, properties, nodeShapes, propertyShapes] = groupByRdfType(quads);
-  const mappedClazzes = new Map();
-  const mappedProperties = new Map();
+  const [clazzes, properties, concepts] = groupByRdfType(quads);
 
-  Object.keys(clazzes)
+  const mappedClazzes = Object.keys(clazzes)
     .filter(subject => (subject.includes('.basisregistraties.overheid.nl')))
-    .map((key: string) => {
-      const quadsToClass = mapQuadsToClass(key, clazzes[key], concepts, properties, nodeShapes, propertyShapes);
-      mappedClazzes.set(quadsToClass.title, quadsToClass);
-    });
+    .map((subject: string) => (mapQuadsToConcept(subject, clazzes[subject], concepts)))
+    .filter((concept: Concept) => (concept.title !== ''))
+    .reduce((map: Map<string, Concept>, concept: Concept) => (map.set(concept.title, concept)), new Map);
 
-  Object.keys(properties)
+  const mappedProperties = Object.keys(properties)
     .filter(subject => (subject.includes('.basisregistraties.overheid.nl')))
-    .map((key: string) => {
-      const quadsToProperty = mapQuadsToClass(key, properties[key], concepts);
-      mappedProperties.set(quadsToProperty.title, quadsToProperty);
-    });
+    .map((subject: string) => (mapQuadsToConcept(subject, properties[subject], concepts)))
+    .filter((concept: Concept) => (concept.title !== ''))
+    .reduce((map: Map<string, Concept>, concept: Concept) => (map.set(concept.title, concept)), new Map);
 
   return [mappedClazzes, mappedProperties];
 }
 
-const Vocabulary: React.StatelessComponent<Props> = (props) => {
-  const { quads } = props;
-
+const Vocabulary: React.StatelessComponent<Props> = ({ quads }) => {
   const [mappedClasses, mappedProperties] = getClazzesAndPropertiesFromMap(quads);
 
   return (
