@@ -97,16 +97,17 @@ npm run start
 
 ## Release
 
+Make sure to switch to the `master` branch first.
+
 Prepare a new version (change update type to `minor` or `major` when relevant):
 
 ```
 npm version patch
 ```
 
-Create & push Git tag (change version number):
+Push commit & tag:
 
 ```
-git tag v0.0.3
 git push origin master --tags
 ```
 
