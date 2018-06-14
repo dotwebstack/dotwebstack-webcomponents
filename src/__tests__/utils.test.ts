@@ -4,7 +4,7 @@ import DataFactory from '../DataFactory';
 const dataFactory = new DataFactory();
 const foo = dataFactory.namedNode('foo');
 const bar = dataFactory.namedNode('bar');
-const literal = dataFactory.literal("literal");
+const literal = dataFactory.literal('literal');
 
 describe('utils::matchStatement', () => {
   it('renders true when subject is equal', () => {
