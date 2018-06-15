@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@types/react-scroll": "^1.5.3",
+    "es6-promise": "^4.2.4",
     "flux-standard-action": "^2.0.3",
     "jsonld": "^0.4.12",
     "ramda": "^0.25.0",

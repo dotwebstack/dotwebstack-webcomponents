@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { GraphState, Quad } from '../model';
-import { Dictionary, groupBy } from 'ramda';
+import { Dictionary, find, groupBy, values } from 'ramda';
 import { Col, Row } from 'reactstrap';
 import ListIndex from './ListIndex';
 import Concepts from '../components/Concepts';
@@ -12,8 +12,7 @@ export interface StateProps {
   readonly quads: Quad[];
 }
 
-export interface OwnProps {
-}
+export interface OwnProps {}
 
 export interface Props extends StateProps, OwnProps {}
 
@@ -43,17 +42,17 @@ const termsSubject = dataFactory.namedNode(terms + 'subject');
 
 function groupByRdfType(quads: Quad[]) {
   const allQuads = groupBy(quad => quad.subject.value, quads);
-  const clazzes = Object.create({});
+  const classes = Object.create({});
   const concepts = Object.create({});
   const properties = Object.create({});
 
   function mapToMap(subject: string) {
-    const type = allQuads[subject].find(q => q.predicate.equals(rdfType)) || '';
+    const type = find(q => q.predicate.equals(rdfType), allQuads[subject]) || '';
 
     if (type) {
       switch (type.object.value) {
         case owlClass.value: {
-          clazzes[subject] = allQuads[subject];
+          classes[subject] = allQuads[subject];
           break;
         }
         case coreConcept.value: {
@@ -87,28 +86,28 @@ function groupByRdfType(quads: Quad[]) {
 
   Object.keys(allQuads).forEach(mapToMap);
 
-  return [clazzes, properties, concepts];
+  return [classes, properties, concepts];
 }
 
 function getSubjectAndLabel(quad: Quad, quads: Dictionary<Quad[]>) {
-  const path = quads.hasOwnProperty(quad.object.value) ? quads[quad.object.value]
-    .find(quad => quad.predicate.equals(shaclPath)) || quad : quad;
+  const path = quads.hasOwnProperty(quad.object.value) ?
+    find(quad => quad.predicate.equals(shaclPath), quads[quad.object.value]) || quad : quad;
 
-  const label = quads.hasOwnProperty(path.object.value) ? quads[path.object.value]
-    .find(quad => quad.predicate.equals(prefLabel) || quad.predicate.equals(rdfsLabel)) : '';
+  const label = quads.hasOwnProperty(path.object.value) ?
+    find(quad => quad.predicate.equals(prefLabel) || quad.predicate.equals(rdfsLabel), quads[path.object.value]) : '';
 
   return { link: quad.object.value, label: label ? label.object.value : '' };
 }
 
 function mapQuadsToConcept(subject: string, quads: Quad[], concepts: Dictionary<Quad[]>) {
-  const termSubject: Quad | undefined = quads.find(quad => quad.predicate.equals(termsSubject));
+  const termSubject: Quad | undefined = find(quad => quad.predicate.equals(termsSubject), quads);
   const subjectHack = subject.replace('#', '/'); // dirty hack (JA)
 
   const termConcepts = termSubject ? concepts[termSubject.object.value] : [];
   const propertyConcepts = concepts && concepts.hasOwnProperty(subjectHack) ? concepts[subjectHack] : [];
 
-  const titleQuad = quads.find(concept => concept.predicate.equals(prefLabel) || concept.predicate.equals(rdfsLabel));
-  const definitionQuad = termConcepts.find(concept => concept.predicate.equals(coreDefinition));
+  const titleQuad = find(concept => concept.predicate.equals(prefLabel) || concept.predicate.equals(rdfsLabel), quads);
+  const definitionQuad = find(concept => concept.predicate.equals(coreDefinition), termConcepts);
   const narrowerQuads: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreNarrower));
   const broaderQuads: Quad[] = termConcepts.filter(concept => concept.predicate.equals(coreBroader));
   const shaclProperties: Quad[] = propertyConcepts.filter(concept => concept.predicate.equals(shaclProperty));
@@ -132,38 +131,38 @@ function mapQuadsToConcept(subject: string, quads: Quad[], concepts: Dictionary<
   return vocabObject;
 }
 
-function getClazzesAndPropertiesFromMap(quads: Quad[]) {
-  const [clazzes, properties, concepts] = groupByRdfType(quads);
+function getClassesAndPropertiesFromMap(quads: Quad[]) {
+  const [classes, properties, concepts] = groupByRdfType(quads);
 
-  const mappedClazzes = Object.keys(clazzes)
-    .filter(subject => (subject.includes('.basisregistraties.overheid.nl')))
-    .map((subject: string) => (mapQuadsToConcept(subject, clazzes[subject], concepts)))
+  const mappedClasses = Object.keys(classes)
+    .filter(subject => (subject.match(/\.basisregistraties\.overheid\.nl/)))
+    .map((subject: string) => (mapQuadsToConcept(subject, classes[subject], concepts)))
     .filter((concept: Concept) => (concept.title !== ''))
-    .reduce((map: Map<string, Concept>, concept: Concept) => (map.set(concept.title, concept)), new Map);
+    .reduce((map, concept: Concept) => ({ ...map, 'concept.title': concept }), {});
 
   const mappedProperties = Object.keys(properties)
-    .filter(subject => (subject.includes('.basisregistraties.overheid.nl')))
+    .filter(subject => (subject.match(/\.basisregistraties\.overheid\.nl/)))
     .map((subject: string) => (mapQuadsToConcept(subject, properties[subject], concepts)))
     .filter((concept: Concept) => (concept.title !== ''))
-    .reduce((map: Map<string, Concept>, concept: Concept) => (map.set(concept.title, concept)), new Map);
+    .reduce((map, concept: Concept) => ({ ...map, 'concept.title': concept }), {});
 
-  return [mappedClazzes, mappedProperties];
+  return [mappedClasses, mappedProperties];
 }
 
 const Vocabulary: React.StatelessComponent<Props> = ({ quads }) => {
-  const [mappedClasses, mappedProperties] = getClazzesAndPropertiesFromMap(quads);
+  const [mappedClasses, mappedProperties] = getClassesAndPropertiesFromMap(quads);
 
   return (
     <Row>
       <Col md="3" className="sticky-top scrollable">
         <Row>
-          <ListIndex keys={Array.from(mappedClasses.keys())} title={'Klassen'} sticky={false}/>
-          <ListIndex keys={Array.from(mappedProperties.keys())} title={'Eigenschappen'} sticky={false}/>
+          <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'} sticky={false}/>
+          <ListIndex keys={Object.keys(mappedProperties)} title={'Eigenschappen'} sticky={false}/>
         </Row>
       </Col>
       <Col md="7">
-        <Concepts concepts={Array.from(mappedClasses.values())}/>
-        <Concepts concepts={Array.from(mappedProperties.values())}/>
+        <Concepts concepts={values(mappedClasses)}/>
+        <Concepts concepts={values(mappedProperties)}/>
       </Col>
     </Row>
   );

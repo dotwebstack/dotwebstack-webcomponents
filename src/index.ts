@@ -1,3 +1,4 @@
+import './polyfills';
 import GraphContext from './containers/GraphContext';
 import TupleContext from './containers/TupleContext';
 import Label from './containers/Label';
