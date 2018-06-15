@@ -154,13 +154,13 @@ const Vocabulary: React.StatelessComponent<Props> = ({ quads }) => {
 
   return (
     <Row>
-      <Col md="4">
+      <Col md="3">
         <div className="sticky-top">
           <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'} sticky={false}/>
           <ListIndex keys={Object.keys(mappedProperties)} title={'Eigenschappen'} sticky={false}/>
         </div>
       </Col>
-      <Col md="8">
+      <Col md="9">
         <Concepts concepts={values(mappedClasses)}/>
         <Concepts concepts={values(mappedProperties)}/>
       </Col>
