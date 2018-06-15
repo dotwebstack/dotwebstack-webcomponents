@@ -1,6 +1,6 @@
 import { Link } from 'react-scroll';
 import React from 'react';
-import { Nav } from 'reactstrap';
+import { Nav, NavItem } from 'reactstrap';
 import { lexicographicSort } from '../utils';
 
 export interface OwnProps {
@@ -18,7 +18,9 @@ const ListIndex: React.StatelessComponent<OwnProps> = (props) => {
       <h2>{title}</h2>
       <Nav vertical>
         {keys.sort(sortFn).map(key => (
-          <Link to={'container' + key} spy={true} smooth={true} key={key}>{key}</Link>
+          <NavItem key={key}>
+            <Link to={'container' + key} spy={true} smooth={true}>{key}</Link>
+          </NavItem>
         ))}
       </Nav>
     </div>

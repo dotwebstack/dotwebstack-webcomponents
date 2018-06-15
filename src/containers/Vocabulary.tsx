@@ -138,13 +138,13 @@ function getClassesAndPropertiesFromMap(quads: Quad[]) {
     .filter(subject => (subject.match(/\.basisregistraties\.overheid\.nl/)))
     .map((subject: string) => (mapQuadsToConcept(subject, classes[subject], concepts)))
     .filter((concept: Concept) => (concept.title !== ''))
-    .reduce((map, concept: Concept) => ({ ...map, 'concept.title': concept }), {});
+    .reduce((map, concept: Concept) => ({ ...map, [concept.title]: concept }), {});
 
   const mappedProperties = Object.keys(properties)
     .filter(subject => (subject.match(/\.basisregistraties\.overheid\.nl/)))
     .map((subject: string) => (mapQuadsToConcept(subject, properties[subject], concepts)))
     .filter((concept: Concept) => (concept.title !== ''))
-    .reduce((map, concept: Concept) => ({ ...map, 'concept.title': concept }), {});
+    .reduce((map, concept: Concept) => ({ ...map, [concept.title]: concept }), {});
 
   return [mappedClasses, mappedProperties];
 }
@@ -154,13 +154,11 @@ const Vocabulary: React.StatelessComponent<Props> = ({ quads }) => {
 
   return (
     <Row>
-      <Col md="3" className="sticky-top scrollable">
-        <Row>
-          <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'} sticky={false}/>
-          <ListIndex keys={Object.keys(mappedProperties)} title={'Eigenschappen'} sticky={false}/>
-        </Row>
+      <Col md="4" className="sticky-top scrollable">
+        <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'} sticky={false}/>
+        <ListIndex keys={Object.keys(mappedProperties)} title={'Eigenschappen'} sticky={false}/>
       </Col>
-      <Col md="7">
+      <Col md="8">
         <Concepts concepts={values(mappedClasses)}/>
         <Concepts concepts={values(mappedProperties)}/>
       </Col>
