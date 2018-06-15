@@ -154,9 +154,11 @@ const Vocabulary: React.StatelessComponent<Props> = ({ quads }) => {
 
   return (
     <Row>
-      <Col md="4" className="sticky-top scrollable">
-        <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'} sticky={false}/>
-        <ListIndex keys={Object.keys(mappedProperties)} title={'Eigenschappen'} sticky={false}/>
+      <Col md="4">
+        <div className="sticky-top">
+          <ListIndex keys={Object.keys(mappedClasses)} title={'Klassen'} sticky={false}/>
+          <ListIndex keys={Object.keys(mappedProperties)} title={'Eigenschappen'} sticky={false}/>
+        </div>
       </Col>
       <Col md="8">
         <Concepts concepts={values(mappedClasses)}/>
