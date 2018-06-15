@@ -27,6 +27,9 @@ module.exports = {
         enforce: 'pre',
         test: /\.tsx?$/,
         loader: 'tslint-loader',
+        options: {
+          typeCheck: true,
+        },
       },
       {
         test: /\.tsx?$/,
