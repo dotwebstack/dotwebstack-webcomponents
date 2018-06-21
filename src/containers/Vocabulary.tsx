@@ -13,7 +13,7 @@ export interface StateProps {
 }
 
 export interface OwnProps {
-  readonly subjectFilter: string;
+  readonly subjectFilter?: string;
 }
 
 export interface Props extends StateProps, OwnProps {}
@@ -135,7 +135,6 @@ function mapQuadsToConcept(subject: string, quads: Quad[], concepts: Dictionary<
 
 function getClassesAndPropertiesFromMap(quads: Quad[], subjectFilter: string) {
   const [classes, properties, concepts] = groupByRdfType(quads);
-  console.log(subjectFilter);
 
   const mappedClasses = Object.keys(classes)
     .filter(subject => (subject.match(subjectFilter)))
@@ -153,7 +152,7 @@ function getClassesAndPropertiesFromMap(quads: Quad[], subjectFilter: string) {
 }
 
 const Vocabulary: React.StatelessComponent<Props> = ({ quads, subjectFilter }) => {
-  const [mappedClasses, mappedProperties] = getClassesAndPropertiesFromMap(quads, subjectFilter);
+  const [mappedClasses, mappedProperties] = getClassesAndPropertiesFromMap(quads, subjectFilter || '');
 
   return (
     <Row>
