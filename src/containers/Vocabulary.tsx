@@ -12,7 +12,9 @@ export interface StateProps {
   readonly quads: Quad[];
 }
 
-export interface OwnProps {}
+export interface OwnProps {
+  readonly subjectFilter: string;
+}
 
 export interface Props extends StateProps, OwnProps {}
 
@@ -131,17 +133,18 @@ function mapQuadsToConcept(subject: string, quads: Quad[], concepts: Dictionary<
   return vocabObject;
 }
 
-function getClassesAndPropertiesFromMap(quads: Quad[]) {
+function getClassesAndPropertiesFromMap(quads: Quad[], subjectFilter: string) {
   const [classes, properties, concepts] = groupByRdfType(quads);
+  console.log(subjectFilter);
 
   const mappedClasses = Object.keys(classes)
-    .filter(subject => (subject.match(/\.basisregistraties\.overheid\.nl/)))
+    .filter(subject => (subject.match(subjectFilter)))
     .map((subject: string) => (mapQuadsToConcept(subject, classes[subject], concepts)))
     .filter((concept: Concept) => (concept.title !== ''))
     .reduce((map, concept: Concept) => ({ ...map, [concept.title]: concept }), {});
 
   const mappedProperties = Object.keys(properties)
-    .filter(subject => (subject.match(/\.basisregistraties\.overheid\.nl/)))
+    .filter(subject => (subject.match(subjectFilter)))
     .map((subject: string) => (mapQuadsToConcept(subject, properties[subject], concepts)))
     .filter((concept: Concept) => (concept.title !== ''))
     .reduce((map, concept: Concept) => ({ ...map, [concept.title]: concept }), {});
@@ -149,8 +152,8 @@ function getClassesAndPropertiesFromMap(quads: Quad[]) {
   return [mappedClasses, mappedProperties];
 }
 
-const Vocabulary: React.StatelessComponent<Props> = ({ quads }) => {
-  const [mappedClasses, mappedProperties] = getClassesAndPropertiesFromMap(quads);
+const Vocabulary: React.StatelessComponent<Props> = ({ quads, subjectFilter }) => {
+  const [mappedClasses, mappedProperties] = getClassesAndPropertiesFromMap(quads, subjectFilter);
 
   return (
     <Row>
