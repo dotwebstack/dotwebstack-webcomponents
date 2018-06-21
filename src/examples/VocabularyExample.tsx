@@ -3,8 +3,7 @@ import { DataFactory, GraphContext, Vocabulary } from '..';
 
 const dataFactory = new DataFactory();
 const vocab = dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
-// const subjectFilter = 'basisregistraties\.overheid\.nl';
-const subjectFilter = '';
+const subjectFilter = 'basisregistraties\.overheid\.nl';
 
 export default () => (
   <div>
