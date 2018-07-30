@@ -40,8 +40,9 @@ describe('SparqlResultsJsonParser::parse', () => {
 
     expect(bindingSets).toHaveLength(1);
     expect(bindingSets[0].foo).toEqual(dataFactory.literal('foo'));
-    expect(bindingSets[0].bar).toEqual(dataFactory.literal('true',
-      dataFactory.namedNode('http://www.w3.org/2001/XMLSchema#boolean')));
+    expect(bindingSets[0].bar).toEqual(
+      dataFactory.literal('true', dataFactory.namedNode('http://www.w3.org/2001/XMLSchema#boolean'),
+    ));
   });
 
   it('parses literals with and without language', () => {

@@ -1,47 +1,52 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore, Store } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import ContextWrapper from './ContextWrapper';
-import { loadRdf } from '../actions';
-import { GraphState, NamedNode } from '../model';
-import graphReducer from '../graphReducer';
+import { NamedNode, Quad } from 'rdf-js';
+import JsonLdParser from 'rdf-parser-jsonld';
+import QuadCollector from '../stream/QuadCollector';
+import ResponseReader from '../stream/ResponseReader';
 
-export interface Props {
-  readonly src: NamedNode | NamedNode[];
-  readonly children: any;
-}
+type Props = {
+  src: NamedNode | NamedNode[],
+  children: any,
+};
 
-class GraphContext extends React.Component<Props> {
-  store: Store<GraphState>;
+type State = {
+  quads: Quad[],
+};
 
-  constructor(props: Props) {
-    super(props);
+class GraphContext extends React.Component<Props, State> {
+  state = {
+    quads: [],
+  };
 
-    const middlewares = [
-      thunkMiddleware,
-    ];
+  async componentDidMount() {
+    const urls: string[] = ([] as NamedNode[])
+      .concat(this.props.src)
+      .map(s => s.value.replace(/^http:\/\//, 'https://'));
 
-    /* istanbul ignore next */
-    if (process.env.NODE_ENV === 'development') {
-      const { logger } = require('redux-logger');
-      middlewares.push(logger);
-    }
+    const parser = new JsonLdParser();
 
-    this.store = createStore<GraphState>(graphReducer, applyMiddleware(...middlewares));
-  }
+    const fetchOpts = {
+      headers: {
+        Accept: 'application/ld+json',
+      },
+    };
 
-  componentDidMount() {
-    this.store.dispatch(loadRdf(this.props.src));
+    await Promise.all(urls.map(async (url) => {
+      const response = await fetch(url, fetchOpts);
+
+      if (!response.ok) {
+        throw new Error('Failed reading data from URL.');
+      }
+
+      parser
+        .import(new ResponseReader(response))
+        .pipe(new QuadCollector(quads => this.setState({ quads })));
+    }));
   }
 
   render() {
     return (
-      <Provider store={this.store}>
-        <ContextWrapper>
-          {this.props.children}
-        </ContextWrapper>
-      </Provider>
+      <p>{this.state.quads.length}</p>
     );
   }
 }

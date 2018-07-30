@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import ContextWrapper from './ContextWrapper';
-import { loadTuples } from '../actions';
+// import { loadTuples } from '../actions';
 import { TupleState } from '../model';
 import tupleReducer from '../tupleReducer';
 
@@ -32,7 +32,7 @@ class TupleContext extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.store.dispatch(loadTuples(this.props.src));
+    // this.store.dispatch(loadTuples(this.props.src));
   }
 
   render() {
