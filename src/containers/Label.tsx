@@ -1,48 +1,60 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import DataFactory from '../DataFactory';
-import { NamedNode, BlankNode, DefaultGraph, GraphState } from '../model';
-import { findSingleStatement } from '../utils';
+import { Term } from 'rdf-js';
 
-const dataFactory = new DataFactory();
+type Props = {
+  resource: Term,
+};
 
-export interface StateProps {
-  readonly value: string;
-}
-
-export interface OwnProps {
-  readonly resource: NamedNode | BlankNode;
-  readonly graph?: NamedNode | BlankNode | DefaultGraph;
-}
-
-export interface Props extends StateProps, OwnProps {}
-
-export const Label: React.StatelessComponent<Props> = ({ value }) => (
-  <React.Fragment>{value}</React.Fragment>
+const Label: React.StatelessComponent<Props> = ({ resource }) => (
+  <p>{resource.value}</p>
 );
 
-export const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => {
-  const quads = state.quads.filter(quad =>
-    quad.subject.equals(ownProps.resource) &&
-    quad.graph.equals(ownProps.graph!));
+export default Label;
 
-  const labelStatement = findSingleStatement(
-    quads,
-    ownProps.resource,
-    dataFactory.namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
-  );
+// import { connect } from 'react-redux';
+// import DataFactory from '../DataFactory';
+// import { NamedNode, BlankNode, DefaultGraph } from 'rdf-js';
+// import { findSingleStatement } from '../utils';
 
-  const label = labelStatement ? labelStatement.object.value : ownProps.resource.value;
+// const dataFactory = new DataFactory();
 
-  return {
-    value: label,
-  };
-};
+// export interface StateProps {
+//   readonly value: string;
+// }
 
-const ConnectedLabel = connect(mapStateToProps)(Label);
+// export interface OwnProps {
+//   readonly resource: NamedNode | BlankNode;
+//   readonly graph?: NamedNode | BlankNode | DefaultGraph;
+// }
 
-ConnectedLabel.defaultProps = {
-  graph: dataFactory.defaultGraph(),
-};
+// export interface Props extends StateProps, OwnProps {}
 
-export default ConnectedLabel;
+// export const Label: React.StatelessComponent<Props> = ({ value }) => (
+//   <React.Fragment>{value}</React.Fragment>
+// );
+
+// export const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => {
+//   const quads = state.quads.filter(quad =>
+//     quad.subject.equals(ownProps.resource) &&
+//     quad.graph.equals(ownProps.graph!));
+
+//   const labelStatement = findSingleStatement(
+//     quads,
+//     ownProps.resource,
+//     dataFactory.namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
+//   );
+
+//   const label = labelStatement ? labelStatement.object.value : ownProps.resource.value;
+
+//   return {
+//     value: label,
+//   };
+// };
+
+// const ConnectedLabel = connect(mapStateToProps)(Label);
+
+// ConnectedLabel.defaultProps = {
+//   graph: dataFactory.defaultGraph(),
+// };
+
+// export default ConnectedLabel;

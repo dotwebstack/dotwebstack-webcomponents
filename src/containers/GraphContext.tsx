@@ -1,54 +1,50 @@
 import React from 'react';
 import { NamedNode, Quad } from 'rdf-js';
-import JsonLdParser from 'rdf-parser-jsonld';
-import QuadCollector from '../stream/QuadCollector';
-import ResponseReader from '../stream/ResponseReader';
+import QuadLoader from '../lib/QuadLoader';
+
+export type GraphContextProps = {
+  store: Quad[];
+};
 
 type Props = {
   src: NamedNode | NamedNode[],
   children: any,
 };
 
-type State = {
-  quads: Quad[],
+type State = GraphContextProps;
+
+const defaultValue = {
+  store: [],
 };
 
-class GraphContext extends React.Component<Props, State> {
+const GraphContext = React.createContext<GraphContextProps>(defaultValue);
+
+export class GraphProvider extends React.Component<Props, State> {
   state = {
-    quads: [],
+    store: [],
   };
 
   async componentDidMount() {
+    const quadLoader = new QuadLoader();
+
     const urls: string[] = ([] as NamedNode[])
       .concat(this.props.src)
       .map(s => s.value.replace(/^http:\/\//, 'https://'));
 
-    const parser = new JsonLdParser();
-
-    const fetchOpts = {
-      headers: {
-        Accept: 'application/ld+json',
-      },
-    };
-
-    await Promise.all(urls.map(async (url) => {
-      const response = await fetch(url, fetchOpts);
-
-      if (!response.ok) {
-        throw new Error('Failed reading data from URL.');
-      }
-
-      parser
-        .import(new ResponseReader(response))
-        .pipe(new QuadCollector(quads => this.setState({ quads })));
-    }));
+    await Promise.all(urls.map(quadLoader.loadFromUrl))
+      .then(result => result.reduce((acc, quads) => [...acc, ...quads]))
+      .then(quads => this.setState({
+        store: quads,
+      }));
   }
 
   render() {
     return (
-      <p>{this.state.quads.length}</p>
+      <GraphContext.Provider value={this.state}>
+        {this.props.children}
+      </GraphContext.Provider>
     );
   }
 }
 
-export default GraphContext;
+export const GraphConsumer = GraphContext.Consumer;

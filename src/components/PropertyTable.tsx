@@ -1,18 +1,18 @@
 import React from 'react';
 import { Table, TableProps } from 'reactstrap';
-import { NamedNode, BlankNode, Quad } from '../model';
+import { Quad } from 'rdf-js';
 import Label from '../containers/Label';
 
-export interface Props {
-  readonly quads: Quad[];
-  readonly tableProps?: TableProps;
-}
+type Props = {
+  store: Quad[],
+  tableProps?: TableProps,
+};
 
-const PropertyTable: React.StatelessComponent<Props> = ({ quads, tableProps }) => (
+const PropertyTable: React.StatelessComponent<Props> = ({ store, tableProps }) => (
   <section>
     <Table {...tableProps}>
       <tbody>
-        {quads.map(quad => (
+        {store.map(quad => (
           <tr key={quad.predicate.value.concat(quad.object.value)}>
             <th scope="row">
               <a href={quad.predicate.value}>
@@ -20,7 +20,7 @@ const PropertyTable: React.StatelessComponent<Props> = ({ quads, tableProps }) =
               </a>
             </th>
             <td>
-              {quad.object instanceof NamedNode || quad.object instanceof BlankNode ? (
+              {quad.object.termType === 'NamedNode' || quad.object.termType === 'BlankNode' ? (
                 <a href={quad.object.value}>
                   <Label resource={quad.object} />
                 </a>

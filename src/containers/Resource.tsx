@@ -1,33 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { TableProps } from 'reactstrap';
-import { NamedNode, BlankNode, GraphState, Quad } from '../model';
+import { Term } from 'rdf-js';
 import PropertyTable from '../components/PropertyTable';
+import { GraphContextProps } from '..';
 
-export interface StateProps {
-  readonly quads: Quad[];
-}
+type Props = {
+  readonly iri: Term,
+  readonly tableProps?: TableProps,
+};
 
-export interface OwnProps {
-  readonly iri: NamedNode | BlankNode;
-  readonly tableProps?: TableProps;
-}
-
-export interface Props extends StateProps, OwnProps {}
-
-const Resource: React.StatelessComponent<Props> = (props) => {
-  const { quads, tableProps } = props;
+const Resource: React.StatelessComponent<Props & GraphContextProps> = (props) => {
+  const { store, tableProps } = props;
 
   return (
     <PropertyTable
-      quads={quads}
+      store={store}
       tableProps={tableProps}
     />
   );
 };
 
-const mapStateToProps = (state: GraphState, ownProps: OwnProps): StateProps => ({
-  quads: state.quads.filter(quad => quad.subject.equals(ownProps.iri)),
-});
-
-export default connect(mapStateToProps)(Resource);
+export default Resource;
