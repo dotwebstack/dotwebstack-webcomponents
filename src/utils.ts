@@ -2,12 +2,7 @@ import { Term, Quad } from 'rdf-js';
 import { any, groupWith, last } from 'ramda';
 import Resource from './lib/Resource';
 
-export const localName = (term: Term) =>
-  term.termType === 'NamedNode' ? last(term.value.split(/[\#\/]/)) : undefined;
-
-export const isNamedNode = (term: Term) => term.termType === 'NamedNode';
-
-export const isBlankNode = (term: Term) => term.termType === 'BlankNode';
+export const localName = (term: Term) => last(term.value.split(/[\#\/]/)) || term.value;
 
 export const quadsToResources = (quads: Quad[]): Resource[] =>
   groupWith((a, b) => a.subject.equals(b.subject), quads)
@@ -23,8 +18,6 @@ export const matchResource = (subject?: Term, predicate?: Term, object?: Term | 
 
 export const matchResourceIri = (iri: Term) => (resource: Resource) => iri.equals(resource.iri);
 
-export const lexicographicSort = (a: any, b: any): number => a.localeCompare(b);
-
-export const compareTerm = (a: Term, b: Term) => lexicographicSort(localName(a), localName(b));
+export const compareTerm = (a: Term, b: Term) => localName(a).localeCompare(localName(b));
 
 export const compareResource = (a: Resource, b: Resource) => compareTerm(a.iri, b.iri);

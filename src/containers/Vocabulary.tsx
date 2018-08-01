@@ -1,10 +1,10 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
 import { NamedNode } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import { GraphContextProps } from '..';
 import ClassList from '../components/ClassList';
 import PropertyList from '../components/PropertyList';
+import ListIndex from '../components/ListIndex';
 import { compareResource, matchResource, quadsToResources } from '../utils';
 import { OWL, RDF, RDFS, SHACL } from '../namespaces';
 
@@ -39,20 +39,31 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontologyIri, store }) => 
     ]));
 
   return (
-    <Row>
-      <Col md="3">
-        {ontologyIri.value}
-      </Col>
-      <Col md="9">
-        <ClassList
-          classResources={classResources}
-          shapeResources={shapeResources}
-        />
-        <PropertyList
-          propertyResources={propertyResources}
-        />
-      </Col>
-    </Row>
+    <div className="row">
+      <div className="col-md-3">
+        <section>
+          <h2>Klassen</h2>
+          <ListIndex resources={classResources} />
+        </section>
+        <section>
+          <h2>Eigenschappen</h2>
+          <ListIndex resources={propertyResources} />
+        </section>
+      </div>
+      <div className="col-md-9">
+        <section>
+          <ClassList
+            classResources={classResources}
+            shapeResources={shapeResources}
+          />
+        </section>
+        <section>
+          <PropertyList
+            propertyResources={propertyResources}
+          />
+        </section>
+      </div>
+    </div>
   );
 };
 

@@ -18,8 +18,8 @@ const propertyList: React.StatelessComponent<Props> = ({ propertyResources }) =>
         matchResource(propertyResource.iri, namedNode(RDFS + 'subPropertyOf')));
 
       return (
-        <li key={propertyResource.iri.value}>
-          <h2>{localName(propertyResource.iri)}</h2>
+        <li key={propertyResource.iri.value} id={localName(propertyResource.iri)}>
+          <h3>{localName(propertyResource.iri)}</h3>
           <a href={propertyResource.iri.value}>{propertyResource.iri.value}</a>
           <table className="table">
             <tbody>

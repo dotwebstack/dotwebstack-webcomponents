@@ -1,9 +1,10 @@
 import React from 'react';
 import { NamedNode, Quad } from 'rdf-js';
 import QuadLoader from '../lib/QuadLoader';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 export type GraphContextProps = {
-  store: Quad[];
+  store: Quad[],
 };
 
 type Props = {
@@ -11,7 +12,10 @@ type Props = {
   children: any,
 };
 
-type State = GraphContextProps;
+type State = {
+  store: Quad[],
+  loading: boolean,
+};
 
 const defaultValue = {
   store: [],
@@ -22,6 +26,7 @@ const GraphContext = React.createContext<GraphContextProps>(defaultValue);
 export class GraphProvider extends React.Component<Props, State> {
   state = {
     store: [],
+    loading: true,
   };
 
   async componentDidMount() {
@@ -35,12 +40,19 @@ export class GraphProvider extends React.Component<Props, State> {
       .then(result => result.reduce((acc, quads) => [...acc, ...quads]))
       .then(quads => this.setState({
         store: quads,
+        loading: false,
       }));
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <LoadingIndicator />
+      );
+    }
+
     return (
-      <GraphContext.Provider value={this.state}>
+      <GraphContext.Provider value={{ store: this.state.store }}>
         {this.props.children}
       </GraphContext.Provider>
     );

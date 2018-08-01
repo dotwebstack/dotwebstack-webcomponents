@@ -1,38 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
-import { Container, Nav, Navbar, NavItem } from 'reactstrap';
-import ResourceExample from './ResourceExample';
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import VocabularyExample from './VocabularyExample';
 
 const App = () => (
-  <HashRouter>
+  <BrowserRouter>
     <div>
       <header>
-        <Navbar color="light">
-          <Container>
-            <Nav>
-              <NavItem>
-                <Link to="/resource" className="nav-link">Resource</Link>
-              </NavItem>
-              <NavItem>
+        <div className="navbar bg-light">
+          <div className="container">
+            <ul className="nav">
+              <li className="nav-item">
                 <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
-              </NavItem>
-            </Nav>
-          </Container>
-        </Navbar>
+              </li>
+            </ul>
+          </div>
+        </div>
       </header>
       <main className="mt-4">
-        <Container fluid>
+        <div className="container">
           <Switch>
-            <Route exact path="/resource" component={ResourceExample} />
             <Route exact path="/vocabulary" component={VocabularyExample} />
-            <Redirect from="/" to="/resource" />
+            <Redirect from="/" to="/vocabulary" />
           </Switch>
-        </Container>
+        </div>
       </main>
     </div>
-  </HashRouter>
+  </BrowserRouter>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

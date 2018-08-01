@@ -11,10 +11,14 @@ type Props = {
   shapeResources: Resource[],
 };
 
-const findSuperClassIris = (classResource: Resource, classResources: Resource[]): Term[] => {
+const findSuperClassIris = (classResource: Resource, classResources: Resource[], recursive: boolean): Term[] => {
   const superClassIris = classResource.quads
     .filter(matchQuad(classResource.iri, namedNode(RDFS + 'subClassOf')))
     .map(subClassStatement => subClassStatement.object);
+
+  if (!recursive) {
+    return superClassIris;
+  }
 
   return superClassIris.reduce(
     (acc, superClassIri) => {
@@ -24,7 +28,7 @@ const findSuperClassIris = (classResource: Resource, classResources: Resource[])
         return [...acc, superClassIri];
       }
 
-      return [...acc, superClassIri, ...findSuperClassIris(superClassResource, classResources)];
+      return [...acc, superClassIri, ...findSuperClassIris(superClassResource, classResources, true)];
     },
     [] as Term[],
   );
@@ -78,13 +82,14 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
   <ol className="list-unstyled">
     {classResources.map((classResource) => {
       const subClassIris = findSubClassIris(classResource.iri, classResources).sort(compareTerm);
-      const superClassIris = findSuperClassIris(classResource, classResources).sort(compareTerm);
-      const propertyIris: Term[] = findPropertyIris(classResource.iri, shapeResources).sort(compareTerm);
-      const inheritedPropertyIris: Term[] = findInheritedPropertyIris(superClassIris, shapeResources).sort(compareTerm);
+      const superClassIris = findSuperClassIris(classResource, classResources, false).sort(compareTerm);
+      const propertyIris = findPropertyIris(classResource.iri, shapeResources).sort(compareTerm);
+      const ancestorClassIris = findSuperClassIris(classResource, classResources, true);
+      const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, shapeResources).sort(compareTerm);
 
       return (
-        <li key={classResource.iri.value}>
-          <h2>{localName(classResource.iri)}</h2>
+        <li key={classResource.iri.value} id={localName(classResource.iri)}>
+          <h3>{localName(classResource.iri)}</h3>
           <a href={classResource.iri.value}>{classResource.iri.value}</a>
           <table className="table">
             <tbody>
@@ -92,7 +97,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                 <tr>
                   <th scope="row">Subklasse van:</th>
                   <td>
-                    <ul className="list-unstyled">
+                    <ol className="list-unstyled">
                       {superClassIris.map(superClassIri => (
                         <li key={superClassIri.value}>
                           <a href={superClassIri.value}>
@@ -100,7 +105,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                           </a>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               )}
@@ -108,7 +113,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                 <tr>
                   <th scope="row">Heeft subklassen:</th>
                   <td>
-                    <ul className="list-unstyled">
+                    <ol className="list-unstyled">
                       {subClassIris.map(subClassIri => (
                         <li key={subClassIri.value}>
                           <a href={subClassIri.value}>
@@ -116,7 +121,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                           </a>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               )}
@@ -124,7 +129,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                 <tr>
                   <th scope="row">Eigenschappen:</th>
                   <td>
-                    <ul className="list-unstyled">
+                    <ol className="list-unstyled">
                       {propertyIris.map(propertyIri => (
                         <li key={propertyIri.value}>
                           <a href={propertyIri.value}>
@@ -132,7 +137,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                           </a>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               )}
@@ -140,7 +145,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                 <tr>
                   <th scope="row">Ge&euml;rfde Eigenschappen:</th>
                   <td>
-                    <ul className="list-unstyled">
+                    <ol className="list-unstyled">
                       {inheritedPropertyIris.map(inheritedPropertyIri => (
                         <li key={inheritedPropertyIri.value}>
                           <a href={inheritedPropertyIri.value}>
@@ -148,7 +153,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResou
                           </a>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               )}
