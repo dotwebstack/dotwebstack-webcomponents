@@ -34,11 +34,10 @@ const findSuperClassIris = (classResource: Resource, classResources: Resource[],
   );
 };
 
-const findSubClassIris = (classIri: Term, classResources: Resource[]): Term[] => {
-  return classResources
+const findSubClassIris = (classIri: Term, classResources: Resource[]): Term[] =>
+  classResources
     .filter(matchResource(undefined, namedNode(RDFS + 'subClassOf'), classIri))
     .map(subClassResource => subClassResource.iri);
-};
 
 const findPropertyIris = (classIri: Term, shapeResources: Resource[]): Term[] => {
   const classShapeResource = find(

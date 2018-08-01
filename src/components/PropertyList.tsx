@@ -1,21 +1,29 @@
 import React from 'react';
+import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import Resource from '../lib/Resource';
-import { localName, matchResource } from '../utils';
+import { compareTerm, localName, matchQuad, matchResource } from '../utils';
 import { RDFS } from '../namespaces';
 
 type Props = {
   propertyResources: Resource[],
 };
 
+const findSuperPropertyIris = (propertyResource: Resource): Term[] =>
+  propertyResource.quads
+    .filter(matchQuad(propertyResource.iri, namedNode(RDFS + 'subPropertyOf')))
+    .map(subClassStatement => subClassStatement.object);
+
+const findSubPropertyIris = (propertyIri: Term, propertyResources: Resource[]): Term[] =>
+  propertyResources
+    .filter(matchResource(undefined, namedNode(RDFS + 'subPropertyOf'), propertyIri))
+    .map(subClassResource => subClassResource.iri);
+
 const propertyList: React.StatelessComponent<Props> = ({ propertyResources }) => (
   <ol className="list-unstyled">
     {propertyResources.map((propertyResource) => {
-      const subPropertyResources = propertyResources.filter(
-        matchResource(undefined, namedNode(RDFS + 'subPropertyOf'), propertyResource.iri));
-
-      const superPropertyResources = propertyResources.filter(
-        matchResource(propertyResource.iri, namedNode(RDFS + 'subPropertyOf')));
+      const superPropertyIris = findSuperPropertyIris(propertyResource).sort(compareTerm);
+      const subPropertyIris = findSubPropertyIris(propertyResource.iri, propertyResources).sort(compareTerm);
 
       return (
         <li key={propertyResource.iri.value} id={localName(propertyResource.iri)}>
@@ -23,28 +31,28 @@ const propertyList: React.StatelessComponent<Props> = ({ propertyResources }) =>
           <a href={propertyResource.iri.value}>{propertyResource.iri.value}</a>
           <table className="table">
             <tbody>
-              {superPropertyResources.length > 0 && (
+              {superPropertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">Subklasse van:</th>
+                  <th scope="row">Subeigenschap van:</th>
                   <td>
                     <ul className="list-unstyled">
-                      {superPropertyResources.map(superPropertyResource => (
-                        <li key={superPropertyResource.iri.value}>
-                          <a href={superPropertyResource.iri.value}>{localName(superPropertyResource.iri)}</a>
+                      {superPropertyIris.map(superPropertyIri => (
+                        <li key={superPropertyIri.value}>
+                          <a href={superPropertyIri.value}>{localName(superPropertyIri)}</a>
                         </li>
                       ))}
                     </ul>
                   </td>
                 </tr>
               )}
-              {subPropertyResources.length > 0 && (
+              {subPropertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">Heeft subklassen:</th>
+                  <th scope="row">Heeft subeigenschappen:</th>
                   <td>
                     <ul className="list-unstyled">
-                      {subPropertyResources.map(subPropertyResource => (
-                        <li key={subPropertyResource.iri.value}>
-                          <a href={subPropertyResource.iri.value}>{localName(subPropertyResource.iri)}</a>
+                      {subPropertyIris.map(subPropertyIri => (
+                        <li key={subPropertyIri.value}>
+                          <a href={subPropertyIri.value}>{localName(subPropertyIri)}</a>
                         </li>
                       ))}
                     </ul>
