@@ -9,10 +9,10 @@ import { compareResource, matchResource, quadsToResources } from '../utils';
 import { OWL, RDF, RDFS, SHACL } from '../namespaces';
 
 type Props = {
-  ontologyIri: NamedNode,
+  ontology: NamedNode,
 } & GraphContextProps;
 
-const Vocabulary: React.StatelessComponent<Props> = ({ ontologyIri, store }) => {
+const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
   const resources = quadsToResources(store);
 
   const classResources = resources
@@ -20,7 +20,7 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontologyIri, store }) => 
       namedNode(RDFS + 'Class'),
       namedNode(OWL + 'Class'),
     ]))
-    .filter(matchResource(undefined, namedNode(RDFS + 'isDefinedBy'), ontologyIri))
+    .filter(matchResource(undefined, namedNode(RDFS + 'isDefinedBy'), ontology))
     .sort(compareResource);
 
   const propertyResources = resources
@@ -29,7 +29,7 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontologyIri, store }) => 
       namedNode(OWL + 'DatatypeProperty'),
       namedNode(OWL + 'ObjectProperty'),
     ]))
-    .filter(matchResource(undefined, namedNode(RDFS + 'isDefinedBy'), ontologyIri))
+    .filter(matchResource(undefined, namedNode(RDFS + 'isDefinedBy'), ontology))
     .sort(compareResource);
 
   const shapeResources = resources

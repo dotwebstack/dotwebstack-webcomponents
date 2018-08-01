@@ -19,9 +19,9 @@ One or more resource IRIs, which will be dereferenced to retrieve the RDF data (
 A resource representation, which visualizes the vocabulary (classes & properties). Component must be wrapped within a `GraphContext`.
 
 ```jsx
-<Vocabulary ontologyIri={iri} />
+<Vocabulary ontology={iri} />
 ```
 
-### `ontologyIri`: `NamedNode`
+### `ontology`: `NamedNode`
 
 The IRI of the OWL ontology resource.
