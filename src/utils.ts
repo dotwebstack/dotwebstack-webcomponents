@@ -4,3 +4,5 @@ import { last } from 'ramda';
 export const localName = (term: Term) => last(term.value.split(/[\#\/]/)) || term.value;
 
 export const compareTerm = (a: Term, b: Term) => localName(a).localeCompare(localName(b));
+
+export const isNamedNode = (term: Term) => term.termType === 'NamedNode';

@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
-import VocabularyExample from './VocabularyExample';
+import BagExample from './BagExample';
+import CdocExample from './CdocExample';
+import CspecExample from './CspecExample';
 
 const App = () => (
   <BrowserRouter>
@@ -11,7 +13,13 @@ const App = () => (
           <div className="container">
             <ul className="nav">
               <li className="nav-item">
-                <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
+                <Link to="/bag" className="nav-link">BAG</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/cdoc" className="nav-link">Documentschema</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/cspec" className="nav-link">Specificatieschema</Link>
               </li>
             </ul>
           </div>
@@ -20,8 +28,10 @@ const App = () => (
       <main className="mt-4">
         <div className="container">
           <Switch>
-            <Route exact path="/vocabulary" component={VocabularyExample} />
-            <Redirect from="/" to="/vocabulary" />
+            <Route exact path="/bag" component={BagExample} />
+            <Route exact path="/cdoc" component={CdocExample} />
+            <Route exact path="/cspec" component={CspecExample} />
+            <Redirect from="/" to="/bag" />
           </Switch>
         </div>
       </main>

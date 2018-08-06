@@ -2,7 +2,7 @@ import React from 'react';
 import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
-import { compareTerm, localName } from '../utils';
+import { compareTerm, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 
 type Props = {
@@ -21,7 +21,9 @@ const findConceptDefinition = (classIri: Term, store: Store): Term | undefined =
 };
 
 const findSuperClassIris = (classIri: Term, store: Store): Term[] =>
-  store.findObjects(classIri, namedNode(RDFS + 'subClassOf'));
+  store
+    .findObjects(classIri, namedNode(RDFS + 'subClassOf'))
+    .filter(isNamedNode);
 
 const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
   const superClassIris = findSuperClassIris(classIri, store);
@@ -34,7 +36,9 @@ const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
 };
 
 const findSubClassIris = (classIri: Term, store: Store): Term[] =>
-  store.findSubjects(namedNode(RDFS + 'subClassOf'), classIri);
+  store
+    .findSubjects(namedNode(RDFS + 'subClassOf'), classIri)
+    .filter(isNamedNode);
 
 const findPropertyIris = (classIri: Term, store: Store): Term[] => {
   const shapeIri = store.findSubjects(namedNode(SHACL + 'targetClass'), classIri)[0];
