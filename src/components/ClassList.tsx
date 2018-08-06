@@ -1,95 +1,86 @@
 import React from 'react';
-import { find } from 'ramda';
 import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
-import Resource from '../lib/Resource';
-import { compareTerm, localName, matchQuad, matchResource, matchResourceIri } from '../utils';
-import { RDFS, SHACL } from '../namespaces';
+import Store from '../lib/Store';
+import { compareTerm, localName } from '../utils';
+import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 
 type Props = {
-  classResources: Resource[],
-  shapeResources: Resource[],
+  classIris: Term[],
+  store: Store,
 };
 
-const findSuperClassIris = (classResource: Resource, classResources: Resource[], recursive: boolean): Term[] => {
-  const superClassIris = classResource.quads
-    .filter(matchQuad(classResource.iri, namedNode(RDFS + 'subClassOf')))
-    .map(subClassStatement => subClassStatement.object);
+const findConceptDefinition = (classIri: Term, store: Store): Term | undefined => {
+  const conceptIri = store.findObjects(classIri, namedNode(DCT + 'subject'))[0];
 
-  if (!recursive) {
-    return superClassIris;
+  if (conceptIri === undefined) {
+    return undefined;
   }
 
-  return superClassIris.reduce(
-    (acc, superClassIri) => {
-      const superClassResource = find(matchResourceIri(superClassIri), classResources);
+  return store.findObjects(conceptIri, namedNode(SKOS + 'definition'))[0];
+};
 
-      if (superClassResource === undefined) {
-        return [...acc, superClassIri];
-      }
+const findSuperClassIris = (classIri: Term, store: Store): Term[] =>
+  store.findObjects(classIri, namedNode(RDFS + 'subClassOf'));
 
-      return [...acc, superClassIri, ...findSuperClassIris(superClassResource, classResources, true)];
-    },
-    [] as Term[],
+const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
+  const superClassIris = findSuperClassIris(classIri, store);
+
+  return findSuperClassIris(classIri, store).reduce(
+    (acc: Term[], superClassIri: Term) =>
+      [...acc, ...findAncestorClassIris(superClassIri, store)],
+    superClassIris,
   );
 };
 
-const findSubClassIris = (classIri: Term, classResources: Resource[]): Term[] =>
-  classResources
-    .filter(matchResource(undefined, namedNode(RDFS + 'subClassOf'), classIri))
-    .map(subClassResource => subClassResource.iri);
+const findSubClassIris = (classIri: Term, store: Store): Term[] =>
+  store.findSubjects(namedNode(RDFS + 'subClassOf'), classIri);
 
-const findPropertyIris = (classIri: Term, shapeResources: Resource[]): Term[] => {
-  const classShapeResource = find(
-    matchResource(undefined, namedNode(SHACL + 'targetClass'), classIri), shapeResources);
+const findPropertyIris = (classIri: Term, store: Store): Term[] => {
+  const shapeIri = store.findSubjects(namedNode(SHACL + 'targetClass'), classIri)[0];
 
-  if (!classShapeResource) {
+  if (!shapeIri) {
     return [];
   }
 
-  return classShapeResource.quads
-    .filter(matchQuad(classShapeResource.iri, namedNode(SHACL + 'property')))
-    .map((propertyStatement) => {
-      const propertyShapeResource = find(matchResourceIri(propertyStatement.object), shapeResources);
+  return store
+    .findObjects(shapeIri, namedNode(SHACL + 'property'))
+    .map((propertyShapeIri) => {
+      const propertyIri = store.findObjects(propertyShapeIri, namedNode(SHACL + 'path'))[0];
 
-      if (propertyShapeResource === undefined) {
-        throw new Error(`Property shape ${propertyStatement.object.value} not found.`);
+      if (propertyIri === undefined) {
+        throw new Error(`Path statement for ${propertyShapeIri.value} not found.`);
       }
 
-      return propertyShapeResource;
-    })
-    .map((propertyShapeResource) => {
-      const pathStatement = find(
-        matchQuad(propertyShapeResource.iri, namedNode(SHACL + 'path')), propertyShapeResource.quads);
-
-      if (pathStatement === undefined) {
-        throw new Error(`Path statement for ${propertyShapeResource.iri.value} not found.`);
-      }
-
-      return pathStatement.object;
+      return propertyIri;
     });
 };
 
-const findInheritedPropertyIris = (superClassIris: Term[], shapeResources: Resource[]): Term[] => {
-  return superClassIris.reduce(
-    (acc: Term[], superClassIri: Term): Term[] => [...acc, ...findPropertyIris(superClassIri, shapeResources)],
+const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Term[] => {
+  return ancestorClassIris.reduce(
+    (acc: Term[], superClassIri: Term): Term[] =>
+      [...acc, ...findPropertyIris(superClassIri, store)],
     [],
   );
 };
 
-const ClassList: React.StatelessComponent<Props> = ({ classResources, shapeResources }) => (
+const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
   <ol className="list-unstyled">
-    {classResources.map((classResource) => {
-      const subClassIris = findSubClassIris(classResource.iri, classResources).sort(compareTerm);
-      const superClassIris = findSuperClassIris(classResource, classResources, false).sort(compareTerm);
-      const propertyIris = findPropertyIris(classResource.iri, shapeResources).sort(compareTerm);
-      const ancestorClassIris = findSuperClassIris(classResource, classResources, true);
-      const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, shapeResources).sort(compareTerm);
+    {classIris.map((classIri) => {
+      const conceptDefinition = findConceptDefinition(classIri, store);
+      const superClassIris = findSuperClassIris(classIri, store).sort(compareTerm);
+      const subClassIris = findSubClassIris(classIri, store).sort(compareTerm);
+      const propertyIris = findPropertyIris(classIri, store).sort(compareTerm);
+      const ancestorClassIris = findAncestorClassIris(classIri, store);
+      const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, store).sort(compareTerm);
 
       return (
-        <li key={classResource.iri.value} id={localName(classResource.iri)}>
-          <h3>{localName(classResource.iri)}</h3>
-          <a href={classResource.iri.value}>{classResource.iri.value}</a>
+        <li key={classIri.value} id={localName(classIri)}>
+          <h3>{localName(classIri)}</h3>
+          <a href={classIri.value}>{classIri.value}</a>
+          {conceptDefinition && (
+            <p>{conceptDefinition.value}</p>
+          )}
           <table className="table">
             <tbody>
               {superClassIris.length > 0 && (

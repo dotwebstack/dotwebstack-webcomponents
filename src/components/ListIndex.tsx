@@ -1,18 +1,18 @@
 import React from 'react';
-import Resource from '../lib/Resource';
+import { Term } from 'rdf-js';
 import { localName } from '../utils';
 
 type Props = {
-  resources: Resource[];
+  resourceIris: Term[];
 };
 
-const ListIndex: React.StatelessComponent<Props> = ({ resources }) => {
+const ListIndex: React.StatelessComponent<Props> = ({ resourceIris }) => {
   return (
     <ul className="nav flex-column">
-      {resources.map(resource => (
-        <li key={resource.iri.value} className="nav-item">
-          <a href={'#' + localName(resource.iri)}>
-            {localName(resource.iri)}
+      {resourceIris.map(resourceIri => (
+        <li key={resourceIri.value} className="nav-item">
+          <a href={'#' + localName(resourceIri)}>
+            {localName(resourceIri)}
           </a>
         </li>
       ))}

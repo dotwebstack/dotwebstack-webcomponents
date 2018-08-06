@@ -1,34 +1,31 @@
 import React from 'react';
 import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
-import Resource from '../lib/Resource';
-import { compareTerm, localName, matchQuad, matchResource } from '../utils';
+import Store from '../lib/Store';
+import { compareTerm, localName } from '../utils';
 import { RDFS } from '../namespaces';
 
 type Props = {
-  propertyResources: Resource[],
+  propertyIris: Term[],
+  store: Store,
 };
 
-const findSuperPropertyIris = (propertyResource: Resource): Term[] =>
-  propertyResource.quads
-    .filter(matchQuad(propertyResource.iri, namedNode(RDFS + 'subPropertyOf')))
-    .map(subClassStatement => subClassStatement.object);
+const findSuperPropertyIris = (classIri: Term, store: Store): Term[] =>
+  store.findObjects(classIri, namedNode(RDFS + 'subPropertyOf'));
 
-const findSubPropertyIris = (propertyIri: Term, propertyResources: Resource[]): Term[] =>
-  propertyResources
-    .filter(matchResource(undefined, namedNode(RDFS + 'subPropertyOf'), propertyIri))
-    .map(subClassResource => subClassResource.iri);
+const findSubPropertyIris = (classIri: Term, store: Store): Term[] =>
+  store.findSubjects(namedNode(RDFS + 'subPropertyOf'), classIri);
 
-const propertyList: React.StatelessComponent<Props> = ({ propertyResources }) => (
+const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) => (
   <ol className="list-unstyled">
-    {propertyResources.map((propertyResource) => {
-      const superPropertyIris = findSuperPropertyIris(propertyResource).sort(compareTerm);
-      const subPropertyIris = findSubPropertyIris(propertyResource.iri, propertyResources).sort(compareTerm);
+    {propertyIris.map((propertyIri) => {
+      const superPropertyIris = findSuperPropertyIris(propertyIri, store).sort(compareTerm);
+      const subPropertyIris = findSubPropertyIris(propertyIri, store).sort(compareTerm);
 
       return (
-        <li key={propertyResource.iri.value} id={localName(propertyResource.iri)}>
-          <h3>{localName(propertyResource.iri)}</h3>
-          <a href={propertyResource.iri.value}>{propertyResource.iri.value}</a>
+        <li key={propertyIri.value} id={localName(propertyIri)}>
+          <h3>{localName(propertyIri)}</h3>
+          <a href={propertyIri.value}>{propertyIri.value}</a>
           <table className="table">
             <tbody>
               {superPropertyIris.length > 0 && (
