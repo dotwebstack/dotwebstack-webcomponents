@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import BagExample from './BagExample';
 import CdocExample from './CdocExample';
 import CspecExample from './CspecExample';
+import ImborExample from './ImborExample';
 
 const App = () => (
   <BrowserRouter>
@@ -21,6 +22,9 @@ const App = () => (
               <li className="nav-item">
                 <Link to="/cspec" className="nav-link">Specificatieschema</Link>
               </li>
+              <li className="nav-item">
+                <Link to="/imbor" className="nav-link">IMBOR</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -31,6 +35,7 @@ const App = () => (
             <Route exact path="/bag" component={BagExample} />
             <Route exact path="/cdoc" component={CdocExample} />
             <Route exact path="/cspec" component={CspecExample} />
+            <Route exact path="/imbor" component={ImborExample} />
             <Redirect from="/" to="/bag" />
           </Switch>
         </div>

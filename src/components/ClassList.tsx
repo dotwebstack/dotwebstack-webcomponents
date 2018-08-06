@@ -10,7 +10,13 @@ type Props = {
   store: Store,
 };
 
-const findConceptDefinition = (classIri: Term, store: Store): Term | undefined => {
+const findDefinition = (classIri: Term, store: Store): Term | undefined => {
+  const definition = store.findObjects(classIri, namedNode(SKOS + 'definition'))[0];
+
+  if (definition !== undefined) {
+    return definition;
+  }
+
   const conceptIri = store.findObjects(classIri, namedNode(DCT + 'subject'))[0];
 
   if (conceptIri === undefined) {
@@ -71,7 +77,7 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
 const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
-      const conceptDefinition = findConceptDefinition(classIri, store);
+      const definition = findDefinition(classIri, store);
       const superClassIris = findSuperClassIris(classIri, store).sort(compareTerm);
       const subClassIris = findSubClassIris(classIri, store).sort(compareTerm);
       const propertyIris = findPropertyIris(classIri, store).sort(compareTerm);
@@ -82,8 +88,8 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
         <li key={classIri.value} id={localName(classIri)}>
           <h3>{localName(classIri)}</h3>
           <a href={classIri.value}>{classIri.value}</a>
-          {conceptDefinition && (
-            <p>{conceptDefinition.value}</p>
+          {definition && (
+            <p>{definition.value}</p>
           )}
           <table className="table">
             <tbody>
