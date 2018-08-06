@@ -3,11 +3,27 @@ import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
 import { compareTerm, localName } from '../utils';
-import { RDFS } from '../namespaces';
+import { DCT, RDFS, SKOS } from '../namespaces';
 
 type Props = {
   propertyIris: Term[],
   store: Store,
+};
+
+const findDefinition = (propertyIri: Term, store: Store): Term | undefined => {
+  const definition = store.findObjects(propertyIri, namedNode(SKOS + 'definition'))[0];
+
+  if (definition !== undefined) {
+    return definition;
+  }
+
+  const conceptIri = store.findObjects(propertyIri, namedNode(DCT + 'subject'))[0];
+
+  if (conceptIri === undefined) {
+    return undefined;
+  }
+
+  return store.findObjects(conceptIri, namedNode(SKOS + 'definition'))[0];
 };
 
 const findSuperPropertyIris = (classIri: Term, store: Store): Term[] =>
@@ -19,6 +35,7 @@ const findSubPropertyIris = (classIri: Term, store: Store): Term[] =>
 const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
+      const definition = findDefinition(propertyIri, store);
       const superPropertyIris = findSuperPropertyIris(propertyIri, store).sort(compareTerm);
       const subPropertyIris = findSubPropertyIris(propertyIri, store).sort(compareTerm);
 
@@ -26,6 +43,9 @@ const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
         <li key={propertyIri.value} id={localName(propertyIri)}>
           <h3>{localName(propertyIri)}</h3>
           <a href={propertyIri.value}>{propertyIri.value}</a>
+          {definition && (
+            <p>{definition.value}</p>
+          )}
           <table className="table">
             <tbody>
               {superPropertyIris.length > 0 && (
