@@ -35,7 +35,7 @@ export class GraphProvider extends React.Component<Props, State> {
 
     const urls: string[] = ([] as NamedNode[])
       .concat(this.props.src)
-      .map(s => s.value.replace(/^http:\/\//, 'https://'));
+      .map(s => s.value);
 
     await Promise.all(urls.map(quadLoader.loadFromUrl))
       .then(result => result.reduce((acc, quads) => [...acc, ...quads]))

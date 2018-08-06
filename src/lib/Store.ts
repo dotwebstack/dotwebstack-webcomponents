@@ -47,6 +47,10 @@ export default class Store {
     )
 
   findSubjects = (predicate: Term, object: Term | Term[]): Term[] => {
+    if (this.posMap[predicate.value] === undefined) {
+      return [];
+    }
+
     const objects = Array.isArray(object) ? object : [object];
 
     return reduce(
@@ -60,6 +64,10 @@ export default class Store {
   }
 
   findObjects = (subject: Term, predicate: Term | Term[]): Term[] => {
+    if (this.spoMap[subject.value] === undefined) {
+      return [];
+    }
+
     const predicates = Array.isArray(predicate) ? predicate : [predicate];
 
     return reduce(
