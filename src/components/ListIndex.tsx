@@ -11,7 +11,7 @@ const ListIndex: React.StatelessComponent<Props> = ({ resourceIris }) => {
     <ul className="nav flex-column">
       {resourceIris.map(resourceIri => (
         <li key={resourceIri.value} className="nav-item">
-          <a href={'#' + localName(resourceIri)}>
+          <a href={'#' + localName(resourceIri)} title={localName(resourceIri)} className="nav-link">
             {localName(resourceIri)}
           </a>
         </li>

@@ -85,13 +85,13 @@ const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                 <tr>
                   <th scope="row">Subeigenschap van:</th>
                   <td>
-                    <ul className="list-unstyled">
+                    <ol className="list-unstyled">
                       {superPropertyIris.map(superPropertyIri => (
                         <li key={superPropertyIri.value}>
                           <a href={superPropertyIri.value}>{localName(superPropertyIri)}</a>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               )}
@@ -99,13 +99,13 @@ const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                 <tr>
                   <th scope="row">Heeft subeigenschappen:</th>
                   <td>
-                    <ul className="list-unstyled">
+                    <ol className="list-unstyled">
                       {subPropertyIris.map(subPropertyIri => (
                         <li key={subPropertyIri.value}>
                           <a href={subPropertyIri.value}>{localName(subPropertyIri)}</a>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               )}
@@ -113,13 +113,13 @@ const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                 <tr>
                   <th scope="row">Eigenschap van:</th>
                   <td>
-                    <ul className="list-unstyled">
+                    <ol className="list-unstyled">
                       {usedInClassIris.map(classIris => (
                         <li key={classIris.value}>
                           <a href={classIris.value}>{localName(classIris)}</a>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               )}
