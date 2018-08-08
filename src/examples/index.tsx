@@ -5,6 +5,7 @@ import BagExample from './BagExample';
 import CdocExample from './CdocExample';
 import CspecExample from './CspecExample';
 import ImborExample from './ImborExample';
+import ThesaurusExample from './ThesaurusExample';
 
 const App = () => (
   <BrowserRouter>
@@ -25,6 +26,9 @@ const App = () => (
               <li className="nav-item">
                 <Link to="/imbor" className="nav-link">IMBOR</Link>
               </li>
+              <li className="nav-item">
+                <Link to="/thesaurus" className="nav-link">Thesaurus</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -36,6 +40,7 @@ const App = () => (
             <Route exact path="/cdoc" component={CdocExample} />
             <Route exact path="/cspec" component={CspecExample} />
             <Route exact path="/imbor" component={ImborExample} />
+            <Route exact path="/thesaurus" component={ThesaurusExample} />
             <Redirect from="/" to="/bag" />
           </Switch>
         </div>
