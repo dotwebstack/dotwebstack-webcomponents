@@ -5,7 +5,7 @@ import { RDF, RDFS, SKOS } from '../namespaces';
 import { localName } from '../utils';
 
 const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => {
-  const conceptIris = store.findSubjects(namedNode(RDF + 'type'), namedNode(SKOS + 'Concept'))
+  const conceptIris = store.findSubjects(namedNode(RDF + 'type'), namedNode(SKOS + 'Concept'));
 
   return (
     <section>
