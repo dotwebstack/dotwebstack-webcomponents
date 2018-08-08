@@ -34,21 +34,27 @@ const findSubPropertyIris = (propertyIri: Term, store: Store): Term[] =>
 
 const findUsedInClassIris = (propertyIri: Term, store: Store): Term[] =>
   store.findSubjects(namedNode(SHACL + 'path'), propertyIri)
-    .map((propertyShapeIri) => {
-      const classShapeIri = store.findSubjects(namedNode(SHACL + 'property'), propertyShapeIri)[0];
+    .reduce(
+      (acc: Term[], propertyShapeIri: Term) => {
+        const classShapeIri = store.findSubjects(namedNode(SHACL + 'property'), propertyShapeIri)[0];
 
-      if (classShapeIri === undefined) {
-        throw new Error(`No class shape found for property shape ${propertyShapeIri.value}`);
-      }
+        if (classShapeIri === undefined) {
+          return acc;
+        }
 
-      const classIri = store.findObjects(classShapeIri, namedNode(SHACL + 'targetClass'))[0];
+        const classIri = store.findObjects(classShapeIri, namedNode(SHACL + 'targetClass'))[0];
 
-      if (classIri === undefined) {
-        throw new Error(`No class found for class shape ${classShapeIri.value}`);
-      }
+        if (classIri === undefined) {
+          throw new Error(`No class found for class shape ${classShapeIri.value}`);
+        }
 
-      return classIri;
-    });
+        return [
+          ...acc,
+          classIri,
+        ];
+      },
+      [],
+    );
 
 const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined =>
   store.findSubjects(namedNode(SHACL + 'path'), propertyIri)

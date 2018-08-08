@@ -55,15 +55,13 @@ const findPropertyIris = (classIri: Term, store: Store): Term[] => {
 
   return store
     .findObjects(shapeIri, namedNode(SHACL + 'property'))
-    .map((propertyShapeIri) => {
-      const propertyIri = store.findObjects(propertyShapeIri, namedNode(SHACL + 'path'))[0];
-
-      if (propertyIri === undefined) {
-        throw new Error(`Path statement for ${propertyShapeIri.value} not found.`);
-      }
-
-      return propertyIri;
-    });
+    .reduce(
+      (acc: Term[], propertyShapeIri: Term) => [
+        ...acc,
+        ...store.findObjects(propertyShapeIri, namedNode(SHACL + 'path')),
+      ],
+      [],
+    );
 };
 
 const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Term[] => {
