@@ -69,7 +69,7 @@ const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined 
       undefined,
     );
 
-const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) => (
+const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
       const definition = findDefinition(propertyIri, store);
@@ -145,4 +145,4 @@ const propertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
   </ol>
 );
 
-export default propertyList;
+export default PropertyList;

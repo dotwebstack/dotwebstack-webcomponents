@@ -8,10 +8,12 @@ type IndexMap = {
 };
 
 export default class Store {
+  private quads: Quad[];
   private spoMap: IndexMap;
   private posMap: IndexMap;
 
   constructor(quads: Quad[]) {
+    this.quads = quads;
     this.spoMap = this.buildSpoMap(quads);
     this.posMap = this.buildPosMap(quads);
   }
@@ -45,6 +47,10 @@ export default class Store {
       }),
       {},
     )
+
+  findStatements = (subject: Term): Quad[] => {
+    return this.quads.filter(quad => quad.subject.equals(subject));
+  }
 
   findSubjects = (predicate: Term, object: Term | Term[]): Term[] => {
     if (this.posMap[predicate.value] === undefined) {
