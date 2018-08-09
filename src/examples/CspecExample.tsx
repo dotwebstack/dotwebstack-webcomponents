@@ -2,7 +2,7 @@ import React from 'react';
 import { namedNode } from 'rdf-data-model';
 import { GraphConsumer, GraphProvider, Vocabulary } from '..';
 
-const endpoint = namedNode('http://localhost:8080/bibliotheekspecificatie/201711/');
+const endpoint = namedNode('http://data.crow.nl:8080/bibliotheekspecificatie/201711/');
 const ontology = namedNode('http://ontologie.crow.nl/bibliotheekspecificatie/201711/');
 
 export default () => (

@@ -2,7 +2,7 @@ import React from 'react';
 import { namedNode } from 'rdf-data-model';
 import { GraphConsumer, GraphProvider, Vocabulary } from '..';
 
-const endpoint = namedNode('http://localhost:8080/imbor');
+const endpoint = namedNode('http://data.crow.nl:8080/imbor');
 const ontology = namedNode('http://www.buildingbits.nl/coins2/draft/IMBOR.rdf');
 
 export default () => (

@@ -2,7 +2,7 @@ import React from 'react';
 import { namedNode } from 'rdf-data-model';
 import { ConceptList, GraphConsumer, GraphProvider } from '..';
 
-const endpoint = namedNode('http://localhost:8080/thesaurus');
+const endpoint = namedNode('http://data.crow.nl:8080/thesaurus');
 
 export default () => (
   <div>
