@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
@@ -79,67 +80,69 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
       const relatedClassIri = findRelatedClassIri(propertyIri, store);
 
       return (
-        <li key={propertyIri.value} id={localName(propertyIri)}>
-          <h3>{localName(propertyIri)}</h3>
-          <a href={propertyIri.value}>{propertyIri.value}</a>
-          {definition && (
-            <p>{definition.value}</p>
-          )}
-          <table className="table">
-            <tbody>
-              {superPropertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">Subeigenschap van:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {superPropertyIris.map(superPropertyIri => (
-                        <li key={superPropertyIri.value}>
-                          <a href={superPropertyIri.value}>{localName(superPropertyIri)}</a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
+        <ScrollableAnchor key={localName(propertyIri)} id={localName(propertyIri)}>
+            <li>
+              <h3>{localName(propertyIri)}</h3>
+              <a href={propertyIri.value}>{propertyIri.value}</a>
+              {definition && (
+                <p>{definition.value}</p>
               )}
-              {subPropertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">Heeft subeigenschappen:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {subPropertyIris.map(subPropertyIri => (
-                        <li key={subPropertyIri.value}>
-                          <a href={subPropertyIri.value}>{localName(subPropertyIri)}</a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {usedInClassIris.length > 0 && (
-                <tr>
-                  <th scope="row">Eigenschap van:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {usedInClassIris.map(classIris => (
-                        <li key={classIris.value}>
-                          <a href={classIris.value}>{localName(classIris)}</a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {relatedClassIri && (
-                <tr>
-                  <th scope="row">Gerelateerde klasse:</th>
-                  <td>
-                    <a href={relatedClassIri.value}>{localName(relatedClassIri)}</a>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </li>
+              <table className="table">
+                <tbody>
+                  {superPropertyIris.length > 0 && (
+                    <tr>
+                      <th scope="row">Subeigenschap van:</th>
+                      <td>
+                        <ol className="list-unstyled">
+                          {superPropertyIris.map(superPropertyIri => (
+                            <li key={superPropertyIri.value}>
+                              <a href={superPropertyIri.value}>{localName(superPropertyIri)}</a>
+                            </li>
+                          ))}
+                        </ol>
+                      </td>
+                    </tr>
+                  )}
+                  {subPropertyIris.length > 0 && (
+                    <tr>
+                      <th scope="row">Heeft subeigenschappen:</th>
+                      <td>
+                        <ol className="list-unstyled">
+                          {subPropertyIris.map(subPropertyIri => (
+                            <li key={subPropertyIri.value}>
+                              <a href={subPropertyIri.value}>{localName(subPropertyIri)}</a>
+                            </li>
+                          ))}
+                        </ol>
+                      </td>
+                    </tr>
+                  )}
+                  {usedInClassIris.length > 0 && (
+                    <tr>
+                      <th scope="row">Eigenschap van:</th>
+                      <td>
+                        <ol className="list-unstyled">
+                          {usedInClassIris.map(classIris => (
+                            <li key={classIris.value}>
+                              <a href={classIris.value}>{localName(classIris)}</a>
+                            </li>
+                          ))}
+                        </ol>
+                      </td>
+                    </tr>
+                  )}
+                  {relatedClassIri && (
+                    <tr>
+                      <th scope="row">Gerelateerde klasse:</th>
+                      <td>
+                        <a href={relatedClassIri.value}>{localName(relatedClassIri)}</a>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </li>
+        </ScrollableAnchor>
       );
     })}
   </ol>
