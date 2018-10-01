@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
@@ -81,83 +82,84 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
       const propertyIris = findPropertyIris(classIri, store).sort(compareTerm);
       const ancestorClassIris = findAncestorClassIris(classIri, store);
       const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, store).sort(compareTerm);
-
       return (
-        <li key={classIri.value} id={localName(classIri)}>
-          <h3>{localName(classIri)}</h3>
-          <a href={classIri.value}>{classIri.value}</a>
-          {definition && (
-            <p>{definition.value}</p>
-          )}
-          <table className="table">
-            <tbody>
-              {superClassIris.length > 0 && (
-                <tr>
-                  <th scope="row">Subklasse van:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {superClassIris.map(superClassIri => (
-                        <li key={superClassIri.value}>
-                          <a href={superClassIri.value}>
-                            {localName(superClassIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {subClassIris.length > 0 && (
-                <tr>
-                  <th scope="row">Heeft subklassen:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {subClassIris.map(subClassIri => (
-                        <li key={subClassIri.value}>
-                          <a href={subClassIri.value}>
-                            {localName(subClassIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {propertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">Eigenschappen:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {propertyIris.map(propertyIri => (
-                        <li key={propertyIri.value}>
-                          <a href={propertyIri.value}>
-                            {localName(propertyIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {inheritedPropertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">Ge&euml;rfde Eigenschappen:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {inheritedPropertyIris.map(inheritedPropertyIri => (
-                        <li key={inheritedPropertyIri.value}>
-                          <a href={inheritedPropertyIri.value}>
-                            {localName(inheritedPropertyIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </li>
+        <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
+          <li>
+            <h3>{localName(classIri)}</h3>
+            <a href={classIri.value}>{classIri.value}</a>
+            {definition && (
+              <p>{definition.value}</p>
+            )}
+            <table className="table">
+              <tbody>
+                {superClassIris.length > 0 && (
+                  <tr>
+                    <th scope="row">Subklasse van:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {superClassIris.map(superClassIri => (
+                          <li key={superClassIri.value}>
+                            <a href={superClassIri.value}>
+                              {localName(superClassIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+                {subClassIris.length > 0 && (
+                  <tr>
+                    <th scope="row">Heeft subklassen:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {subClassIris.map(subClassIri => (
+                          <li key={subClassIri.value}>
+                            <a href={subClassIri.value}>
+                              {localName(subClassIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+                {propertyIris.length > 0 && (
+                  <tr>
+                    <th scope="row">Eigenschappen:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {propertyIris.map(propertyIri => (
+                          <li key={propertyIri.value}>
+                            <a href={propertyIri.value}>
+                              {localName(propertyIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+                {inheritedPropertyIris.length > 0 && (
+                  <tr>
+                    <th scope="row">Ge&euml;rfde Eigenschappen:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {inheritedPropertyIris.map(inheritedPropertyIri => (
+                          <li key={inheritedPropertyIri.value}>
+                            <a href={inheritedPropertyIri.value}>
+                              {localName(inheritedPropertyIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </li>
+        </ScrollableAnchor>
       );
     })}
   </ol>
