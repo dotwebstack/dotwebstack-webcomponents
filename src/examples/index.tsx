@@ -1,43 +1,57 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
-import { Container, Nav, Navbar, NavItem } from 'reactstrap';
-import ResourceExample from './ResourceExample';
-import TupleListExample from './TupleListExample';
-import VocabularyExample from './VocabularyExample';
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
+import BagExample from './BagExample';
+import CdocExample from './CdocExample';
+import CspecExample from './CspecExample';
+import ImborExample from './ImborExample';
+import ThesaurusExample from './ThesaurusExample';
+import PilotSpecificationExample from './PilotSpecificationExample';
 
 const App = () => (
-  <HashRouter>
+  <BrowserRouter>
     <div>
       <header>
-        <Navbar color="light">
-          <Container>
-            <Nav>
-              <NavItem>
-                <Link to="/resource" className="nav-link">Resource</Link>
-              </NavItem>
-              <NavItem>
-                <Link to="/tuple-list" className="nav-link">Tuple List</Link>
-              </NavItem>
-              <NavItem>
-                <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
-              </NavItem>
-            </Nav>
-          </Container>
-        </Navbar>
+        <div className="navbar bg-light">
+          <div className="container">
+            <ul className="nav">
+              <li className="nav-item">
+                <Link to="/bag" className="nav-link">BAG</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/cdoc" className="nav-link">Documentschema</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/cspec" className="nav-link">Specificatieschema</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/imbor" className="nav-link">IMBOR</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/thesaurus" className="nav-link">Thesaurus</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/specificatie" className="nav-link">Pilot Specificatie</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
       </header>
       <main className="mt-4">
-        <Container fluid>
+        <div className="container">
           <Switch>
-            <Route exact path="/resource" component={ResourceExample} />
-            <Route exact path="/tuple-list" component={TupleListExample} />
-            <Route exact path="/vocabulary" component={VocabularyExample} />
-            <Redirect from="/" to="/resource" />
+            <Route exact path="/bag" component={BagExample} />
+            <Route exact path="/cdoc" component={CdocExample} />
+            <Route exact path="/cspec" component={CspecExample} />
+            <Route exact path="/imbor" component={ImborExample} />
+            <Route exact path="/thesaurus" component={ThesaurusExample} />
+            <Route exact path="/specificatie" component={PilotSpecificationExample} />
+            <Redirect from="/" to="/bag" />
           </Switch>
-        </Container>
+        </div>
       </main>
     </div>
-  </HashRouter>
+  </BrowserRouter>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

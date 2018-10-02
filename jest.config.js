@@ -19,4 +19,5 @@ module.exports = {
     '!**/*.d.ts',
     '!**/{examples,test}/**',
   ],
+  testURL: 'http://localhost/'
 };

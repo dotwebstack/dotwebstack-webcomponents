@@ -1,49 +1,63 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore, Store } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import ContextWrapper from './ContextWrapper';
-import { loadRdf } from '../actions';
-import { GraphState, NamedNode } from '../model';
-import graphReducer from '../graphReducer';
+import { NamedNode } from 'rdf-js';
+import QuadLoader from '../lib/QuadLoader';
+import Store from '../lib/Store';
+import LoadingIndicator from '../components/LoadingIndicator';
 
-export interface Props {
-  readonly src: NamedNode | NamedNode[];
-  readonly children: any;
-}
+export type GraphContextProps = {
+  store: Store,
+};
 
-class GraphContext extends React.Component<Props> {
-  store: Store<GraphState>;
+type Props = {
+  src: NamedNode | NamedNode[],
+  children: any,
+};
 
-  constructor(props: Props) {
-    super(props);
+type State = {
+  store: Store,
+  loading: boolean,
+};
 
-    const middlewares = [
-      thunkMiddleware,
-    ];
+const defaultValue = {
+  store: new Store([]),
+};
 
-    /* istanbul ignore next */
-    if (process.env.NODE_ENV === 'development') {
-      const { logger } = require('redux-logger');
-      middlewares.push(logger);
-    }
+const GraphContext = React.createContext<GraphContextProps>(defaultValue);
 
-    this.store = createStore<GraphState>(graphReducer, applyMiddleware(...middlewares));
-  }
+export class GraphProvider extends React.Component<Props, State> {
+  state = {
+    store: new Store([]),
+    loading: true,
+  };
 
-  componentDidMount() {
-    this.store.dispatch(loadRdf(this.props.src));
+  async componentDidMount() {
+    const quadLoader = new QuadLoader();
+
+    const urls: string[] = ([] as NamedNode[])
+      .concat(this.props.src)
+      .map(s => s.value);
+
+    await Promise.all(urls.map(quadLoader.loadFromUrl))
+      .then(result => result.reduce((acc, quads) => [...acc, ...quads]))
+      .then(quads => this.setState({
+        store: new Store(quads),
+        loading: false,
+      }));
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <LoadingIndicator />
+      );
+    }
+
     return (
-      <Provider store={this.store}>
-        <ContextWrapper>
-          {this.props.children}
-        </ContextWrapper>
-      </Provider>
+      <GraphContext.Provider value={{ store: this.state.store }}>
+        {this.props.children}
+      </GraphContext.Provider>
     );
   }
 }
 
-export default GraphContext;
+export const GraphConsumer = GraphContext.Consumer;

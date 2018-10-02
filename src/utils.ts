@@ -1,23 +1,8 @@
-import { NamedNode, BlankNode, Quad } from './model';
+import { Term } from 'rdf-js';
+import { last } from 'ramda';
 
-export const matchStatement = (
-    subject?: NamedNode | BlankNode,
-    predicate?: NamedNode) => (quad: Quad) =>
-  (subject ? quad.subject.equals(subject) : true) &&
-  (predicate ? quad.predicate.equals(predicate) : true);
+export const localName = (term: Term) => last(term.value.split(/[\#\/]/)) || term.value;
 
-export const findStatements = (
-    quads: Quad[],
-    subject?: NamedNode | BlankNode,
-    predicate?: NamedNode) =>
-  quads.filter(matchStatement(subject, predicate));
+export const compareTerm = (a: Term, b: Term) => localName(a).localeCompare(localName(b));
 
-export const findSingleStatement = (
-    quads: Quad[],
-    subject?: NamedNode | BlankNode,
-    predicate?: NamedNode) =>
-  findStatements(quads, subject, predicate)[0];
-
-export function lexicographicSort(a: any, b: any): number {
-  return a.localeCompare(b);
-}
+export const isNamedNode = (term: Term) => term.termType === 'NamedNode';
