@@ -4,6 +4,7 @@ import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
 import { compareTerm, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
+import i18n from '../i18n';
 
 type Props = {
   propertyIris: Term[],
@@ -89,7 +90,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
             <tbody>
               {superPropertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">Subeigenschap van:</th>
+                  <th scope="row">{i18n.t('subeigenschap')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {superPropertyIris.map(superPropertyIri => (
@@ -103,7 +104,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
               )}
               {subPropertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">Heeft subeigenschappen:</th>
+                  <th scope="row">{i18n.t('heeftsubeigenschap')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {subPropertyIris.map(subPropertyIri => (
@@ -117,7 +118,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
               )}
               {usedInClassIris.length > 0 && (
                 <tr>
-                  <th scope="row">Eigenschap van:</th>
+                  <th scope="row">{i18n.t('eigenschapvan')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {usedInClassIris.map(classIris => (
@@ -131,7 +132,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
               )}
               {relatedClassIri && (
                 <tr>
-                  <th scope="row">Gerelateerde klasse:</th>
+                  <th scope="row">{i18n.t('gerelateerdeklassen')}:</th>
                   <td>
                     <a href={relatedClassIri.value}>{localName(relatedClassIri)}</a>
                   </td>

@@ -8,7 +8,7 @@ i18n
     resources: {
       nl: {
         translation: {
-          bag: 'BAGF',
+          bag: 'BAG',
           bagextended: 'Basisregistratie FleirAdressen en Gebouwen',
           documentschema: 'Documentschema',
           specificatieschema: 'Specificatieschema',
@@ -24,13 +24,14 @@ i18n
           breder: 'Breder',
           gerelateerd: 'Gerelateerd',
           subklasse: 'Subklasse van',
-          heeftsubklasse: 'Heeft subklassen',
-          geerfde: 'Ge&euml;rfde Eigenschappen',
+          heeftsubklassen: 'Heeft subklassen',
+          geerfde: 'Geërfde Eigenschappen',
+          dataladen: 'Data aan het laden...',
         },
       },
       en: {
         translation: {
-          bag: 'BAGE',
+          bag: 'BAG',
           bagextended: 'Basic registration Addresses and Buildings',
           documentschema: 'Document scheme',
           specificatieschema: 'Specification scheme',
@@ -46,13 +47,17 @@ i18n
           breder: 'Wider',
           gerelateerd: 'Related',
           subklasse: 'Sub class of',
-          heeftsubklasse: 'Has sub classes',
+          heeftsubklassen: 'Has sub classes',
           geerfde: 'Inherited properties',
+          dataladen: 'Loading data...',
         },
       },
     },
     fallbackLng: 'nl',
     debug: true,
+    interpolation: {
+      escapeValue: false,
+    },
     detection: {
       order: ['navigator', 'localStorage', 'cookie', 'querystring', 'htmlTag', 'path', 'subdomain'],
     },

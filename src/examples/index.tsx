@@ -22,19 +22,19 @@ const App = () => (
                   <Link to="/bag" className="nav-link">{i18n.t('bag')}</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/cdoc" className="nav-link">Documentschema</Link>
+                  <Link to="/cdoc" className="nav-link">{i18n.t('documentschema')}</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/cspec" className="nav-link">Specificatieschema</Link>
+                  <Link to="/cspec" className="nav-link">{i18n.t('specificatieschema')}</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/imbor" className="nav-link">IMBOR</Link>
+                  <Link to="/imbor" className="nav-link">{i18n.t('imbor')}</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/thesaurus" className="nav-link">Thesaurus</Link>
+                  <Link to="/thesaurus" className="nav-link">{i18n.t('thesaurus')}</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/specificatie" className="nav-link">Pilot Specificatie</Link>
+                  <Link to="/specificatie" className="nav-link">{i18n.t('pilot')}</Link>
                 </li>
               </ul>
             </div>
