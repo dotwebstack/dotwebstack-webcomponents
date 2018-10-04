@@ -58,12 +58,14 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
         <section>
           <ClassList
             classIris={classIris}
+            propertyIris={propertyIris}
             store={store}
           />
         </section>
         <section>
           <PropertyList
             propertyIris={propertyIris}
+            classIris={classIris}
             store={store}
           />
         </section>

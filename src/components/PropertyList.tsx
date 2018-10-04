@@ -8,6 +8,7 @@ import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 
 type Props = {
   propertyIris: Term[],
+  classIris: Term[],
   store: Store,
 };
 
@@ -70,7 +71,15 @@ const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined 
       undefined,
     );
 
-const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) => (
+const determineHref = (termList: Term[], toFindTerm: Term) : string => {
+  const foundClassIri = termList.filter(term => term.equals(toFindTerm));
+  if (foundClassIri.length === 0) {
+    return toFindTerm.value;
+  }
+  return '#' + localName(toFindTerm);
+};
+
+const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
       const definition = findDefinition(propertyIri, store);
@@ -96,7 +105,9 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                         <ol className="list-unstyled">
                           {superPropertyIris.map(superPropertyIri => (
                             <li key={superPropertyIri.value}>
-                              <a href={superPropertyIri.value}>{localName(superPropertyIri)}</a>
+                              <a href={determineHref(propertyIris, superPropertyIri)}>
+                                {localName(superPropertyIri)}
+                                </a>
                             </li>
                           ))}
                         </ol>
@@ -110,7 +121,9 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                         <ol className="list-unstyled">
                           {subPropertyIris.map(subPropertyIri => (
                             <li key={subPropertyIri.value}>
-                              <a href={subPropertyIri.value}>{localName(subPropertyIri)}</a>
+                              <a href={determineHref(propertyIris, subPropertyIri)}>
+                                {localName(subPropertyIri)}
+                                </a>
                             </li>
                           ))}
                         </ol>
@@ -122,9 +135,11 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                       <th scope="row">Eigenschap van:</th>
                       <td>
                         <ol className="list-unstyled">
-                          {usedInClassIris.map(classIris => (
-                            <li key={classIris.value}>
-                              <a href={classIris.value}>{localName(classIris)}</a>
+                          {usedInClassIris.map(propertyClassIris => (
+                            <li key={propertyClassIris.value}>
+                              <a href={determineHref(classIris, propertyClassIris)}>
+                                {localName(propertyClassIris)}
+                              </a>
                             </li>
                           ))}
                         </ol>
@@ -135,7 +150,9 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                     <tr>
                       <th scope="row">Gerelateerde klasse:</th>
                       <td>
-                        <a href={relatedClassIri.value}>{localName(relatedClassIri)}</a>
+                        <a href={determineHref(classIris, relatedClassIri)}>
+                          {localName(relatedClassIri)}
+                          </a>
                       </td>
                     </tr>
                   )}
