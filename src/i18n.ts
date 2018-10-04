@@ -1,65 +1,48 @@
-import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from 'i18next';
 
-i18n
+const i18next = i18n
   .use(LanguageDetector)
   .init({
     // we init with resources
     resources: {
       nl: {
         translation: {
-          bag: 'BAG',
-          bagextended: 'Basisregistratie Adressen en Gebouwen',
-          documentschema: 'Documentschema',
-          specificatieschema: 'Specificatieschema',
-          imbor: 'IMBOR',
-          thesaurus: 'Thesaurus',
-          pilot: 'Pilot Specificatie',
-          klassen: 'Klassen',
-          gerelateerdeklassen: 'Gerelateerde klasse',
-          eigenschappen: 'Eigenschappen',
-          eigenschapvan: 'Eigenschap van',
-          subeigenschap: 'Subeigenschap van',
-          heeftsubeigenschap: 'Heeft subeigenschappen',
-          breder: 'Breder',
-          gerelateerd: 'Gerelateerd',
-          subklasse: 'Subklasse van',
-          heeftsubklassen: 'Heeft subklassen',
-          geerfde: 'Geërfde Eigenschappen',
-          dataladen: 'Data aan het laden...',
+          classes: 'Klassen',
+          relatedClasses: 'Gerelateerde klasse',
+          properties: 'Eigenschappen',
+          propertyOf: 'Eigenschap van',
+          subproperty: 'Subeigenschap van',
+          hasSubproperty: 'Heeft subeigenschappen',
+          broader: 'Breder',
+          related: 'Gerelateerd',
+          subclass: 'Subklasse van',
+          hasSubclasses: 'Heeft subklassen',
+          inherited: 'Geërfde Eigenschappen',
+          loadData: 'Data aan het laden...',
         },
       },
       en: {
         translation: {
-          bag: 'BAG',
-          bagextended: 'Basic registration Addresses and Buildings',
-          documentschema: 'Document scheme',
-          specificatieschema: 'Specification scheme',
-          imbor: 'IMBOR',
-          thesaurus: 'Thesaurus',
-          pilot: 'Pilot Specificatie',
-          klassen: 'Classes',
-          gerelateerdeklassen: 'Related classes',
-          eigenschappen: 'Properties',
-          eigenschapvan: 'Property of',
-          subeigenschap: 'Sub property of',
-          heeftsubeigenschap: 'Has sub properties',
-          breder: 'Wider',
-          gerelateerd: 'Related',
-          subklasse: 'Sub class of',
-          heeftsubklassen: 'Has sub classes',
-          geerfde: 'Inherited properties',
-          dataladen: 'Loading data...',
+          classes: 'Classes',
+          relatedClasses: 'Related classes',
+          properties: 'Properties',
+          propertyOf: 'Property of',
+          subproperty: 'Subproperty of',
+          hasSubproperty: 'Has subproperties',
+          broader: 'Broader',
+          related: 'Related',
+          subclass: 'Subclass of',
+          hasSubclasses: 'Has subclasses',
+          inherited: 'Inherited properties',
+          loadData: 'Loading data...',
         },
       },
     },
     fallbackLng: 'nl',
-    interpolation: {
-      escapeValue: false,
-    },
     detection: {
-      order: ['navigator', 'localStorage', 'cookie', 'querystring', 'htmlTag', 'path', 'subdomain'],
+      order: ['navigator', 'htmlTag'],
     },
   });
 
-export default i18n;
+export default i18next;

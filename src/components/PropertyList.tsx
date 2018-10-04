@@ -4,7 +4,7 @@ import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
 import { compareTerm, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
-import i18n from '../i18n';
+import i18next from '../i18n';
 
 type Props = {
   propertyIris: Term[],
@@ -90,7 +90,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
             <tbody>
               {superPropertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">{i18n.t('subeigenschap')}:</th>
+                  <th scope="row">{i18next.t('subproperty')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {superPropertyIris.map(superPropertyIri => (
@@ -104,7 +104,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
               )}
               {subPropertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">{i18n.t('heeftsubeigenschap')}:</th>
+                  <th scope="row">{i18next.t('hasSubproperty')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {subPropertyIris.map(subPropertyIri => (
@@ -118,7 +118,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
               )}
               {usedInClassIris.length > 0 && (
                 <tr>
-                  <th scope="row">{i18n.t('eigenschapvan')}:</th>
+                  <th scope="row">{i18next.t('propertyOf')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {usedInClassIris.map(classIris => (
@@ -132,7 +132,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
               )}
               {relatedClassIri && (
                 <tr>
-                  <th scope="row">{i18n.t('gerelateerdeklassen')}:</th>
+                  <th scope="row">{i18next.t('relatedClasses')}:</th>
                   <td>
                     <a href={relatedClassIri.value}>{localName(relatedClassIri)}</a>
                   </td>

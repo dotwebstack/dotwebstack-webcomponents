@@ -9,7 +9,7 @@ import PropertyList from '../components/PropertyList';
 import ListIndex from '../components/ListIndex';
 import { OWL, RDF, RDFS } from '../namespaces';
 import { compareTerm } from '../utils';
-import i18n from '../i18n';
+import i18next from '../i18n';
 
 type Props = {
   ontology: NamedNode,
@@ -47,11 +47,11 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
     <div className="row">
       <div className="col-md-3">
         <section>
-          <h2>{i18n.t('klassen')}</h2>
+          <h2>{i18next.t('classes')}</h2>
           <ListIndex resourceIris={classIris} />
         </section>
         <section>
-          <h2>{i18n.t('eigenschappen')}</h2>
+          <h2>{i18next.t('properties')}</h2>
           <ListIndex resourceIris={propertyIris} />
         </section>
       </div>

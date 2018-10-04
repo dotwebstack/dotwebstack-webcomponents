@@ -8,10 +8,10 @@ import CspecExample from './CspecExample';
 import ImborExample from './ImborExample';
 import ThesaurusExample from './ThesaurusExample';
 import PilotSpecificationExample from './PilotSpecificationExample';
-import i18n from '../i18n';
+import i18next from '../i18n';
 
 const App = () => (
-  <I18nextProvider i18n={ i18n }>
+  <I18nextProvider i18n={i18next}>
     <BrowserRouter>
       <div>
         <header>
@@ -19,22 +19,22 @@ const App = () => (
             <div className="container">
               <ul className="nav">
                 <li className="nav-item">
-                  <Link to="/bag" className="nav-link">{i18n.t('bag')}</Link>
+                  <Link to="/bag" className="nav-link">BAG</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/cdoc" className="nav-link">{i18n.t('documentschema')}</Link>
+                  <Link to="/cdoc" className="nav-link">Documentschema</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/cspec" className="nav-link">{i18n.t('specificatieschema')}</Link>
+                  <Link to="/cspec" className="nav-link">Specificatieschema</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/imbor" className="nav-link">{i18n.t('imbor')}</Link>
+                  <Link to="/imbor" className="nav-link">IMBOR</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/thesaurus" className="nav-link">{i18n.t('thesaurus')}</Link>
+                  <Link to="/thesaurus" className="nav-link">Thesaurus</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/specificatie" className="nav-link">{i18n.t('pilot')}</Link>
+                  <Link to="/specificatie" className="nav-link">Pilot Specificatie</Link>
                 </li>
               </ul>
             </div>

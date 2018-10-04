@@ -3,7 +3,7 @@ import { namedNode } from 'rdf-data-model';
 import { GraphContextProps } from '..';
 import { RDF, RDFS, SKOS } from '../namespaces';
 import { localName } from '../utils';
-import i18n from '../i18n';
+import i18next from '../i18n';
 
 const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => {
   const conceptIris = store.findSubjects(namedNode(RDF + 'type'), namedNode(SKOS + 'Concept'));
@@ -29,7 +29,7 @@ const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => 
                   <tbody>
                     {broaderConceptIris.length > 0 && (
                       <tr>
-                        <th scope="row">{i18n.t('breder')}:</th>
+                        <th scope="row">{i18next.t('broader')}:</th>
                         <td>
                           <ol className="list-unstyled">
                             {broaderConceptIris.map((broaderConceptIri) => {
@@ -49,7 +49,7 @@ const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => 
                     )}
                     {relatedConceptIris.length > 0 && (
                       <tr>
-                        <th scope="row">{i18n.t('gerelateerd')}:</th>
+                        <th scope="row">{i18next.t('related')}:</th>
                         <td>
                           <ol className="list-unstyled">
                             {relatedConceptIris.map((relatedConceptIri) => {
