@@ -4,6 +4,7 @@ import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
 import { compareTerm, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
+import i18next from '../i18n';
 
 type Props = {
   classIris: Term[],
@@ -93,7 +94,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
             <tbody>
               {superClassIris.length > 0 && (
                 <tr>
-                  <th scope="row">Subklasse van:</th>
+                  <th scope="row">{i18next.t('subclass')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {superClassIris.map(superClassIri => (
@@ -109,7 +110,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
               )}
               {subClassIris.length > 0 && (
                 <tr>
-                  <th scope="row">Heeft subklassen:</th>
+                  <th scope="row">{i18next.t('hasSubclasses')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {subClassIris.map(subClassIri => (
@@ -125,7 +126,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
               )}
               {propertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">Eigenschappen:</th>
+                  <th scope="row">{i18next.t('properties')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {propertyIris.map(propertyIri => (
@@ -141,7 +142,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
               )}
               {inheritedPropertyIris.length > 0 && (
                 <tr>
-                  <th scope="row">Ge&euml;rfde Eigenschappen:</th>
+                  <th scope="row">{i18next.t('inherited')}:</th>
                   <td>
                     <ol className="list-unstyled">
                       {inheritedPropertyIris.map(inheritedPropertyIri => (

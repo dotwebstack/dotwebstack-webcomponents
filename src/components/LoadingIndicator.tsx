@@ -1,7 +1,8 @@
 import React from 'react';
+import i18next from '../i18n';
 
 const LoadingIndicator: React.StatelessComponent = () => (
-  <p>Loading data...</p>
+  <p>{i18next.t('loadData')}</p>
 );
 
 export default LoadingIndicator;
