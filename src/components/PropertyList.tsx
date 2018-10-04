@@ -72,11 +72,10 @@ const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined 
     );
 
 const determineHref = (termList: Term[], toFindTerm: Term) : string => {
-  const foundClassIri = termList.filter(term => term.equals(toFindTerm));
-  if (foundClassIri.length === 0) {
-    return toFindTerm.value;
+  if (termList.some(term => term.equals(toFindTerm))) {
+    return '#' + localName(toFindTerm);
   }
-  return '#' + localName(toFindTerm);
+  return toFindTerm.value;
 };
 
 const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => (

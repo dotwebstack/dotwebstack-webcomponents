@@ -75,11 +75,10 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
 };
 
 const determineHref = (termList: Term[], toFindTerm: Term) : string => {
-  const foundClassIri = termList.filter(term => term.equals(toFindTerm));
-  if (foundClassIri.length === 0) {
-    return toFindTerm.value;
+  if (termList.some(term => term.equals(toFindTerm))) {
+    return '#' + localName(toFindTerm);
   }
-  return '#' + localName(toFindTerm);
+  return toFindTerm.value;
 };
 
 const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
