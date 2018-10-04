@@ -38,7 +38,7 @@ const i18next = i18n
         },
       },
     },
-    fallbackLng: 'nl',
+    fallbackLng: 'en',
     detection: {
       order: ['navigator', 'htmlTag'],
     },
