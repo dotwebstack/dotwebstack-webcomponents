@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
@@ -8,6 +9,7 @@ import i18next from '../i18n';
 
 type Props = {
   propertyIris: Term[],
+  classIris: Term[],
   store: Store,
 };
 
@@ -70,7 +72,14 @@ const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined 
       undefined,
     );
 
-const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) => (
+const determineHref = (termList: Term[], toFindTerm: Term) : string => {
+  if (termList.some(term => term.equals(toFindTerm))) {
+    return '#' + localName(toFindTerm);
+  }
+  return toFindTerm.value;
+};
+
+const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
       const definition = findDefinition(propertyIri, store);
@@ -80,67 +89,77 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
       const relatedClassIri = findRelatedClassIri(propertyIri, store);
 
       return (
-        <li key={propertyIri.value} id={localName(propertyIri)}>
-          <h3>{localName(propertyIri)}</h3>
-          <a href={propertyIri.value}>{propertyIri.value}</a>
-          {definition && (
-            <p>{definition.value}</p>
-          )}
-          <table className="table">
-            <tbody>
-              {superPropertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">{i18next.t('subproperty')}:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {superPropertyIris.map(superPropertyIri => (
-                        <li key={superPropertyIri.value}>
-                          <a href={superPropertyIri.value}>{localName(superPropertyIri)}</a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
+        <ScrollableAnchor key={localName(propertyIri)} id={localName(propertyIri)}>
+            <li>
+              <h3>{localName(propertyIri)}</h3>
+              <a href={propertyIri.value}>{propertyIri.value}</a>
+              {definition && (
+                <p>{definition.value}</p>
               )}
-              {subPropertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">{i18next.t('hasSubproperty')}:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {subPropertyIris.map(subPropertyIri => (
-                        <li key={subPropertyIri.value}>
-                          <a href={subPropertyIri.value}>{localName(subPropertyIri)}</a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {usedInClassIris.length > 0 && (
-                <tr>
-                  <th scope="row">{i18next.t('propertyOf')}:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {usedInClassIris.map(classIris => (
-                        <li key={classIris.value}>
-                          <a href={classIris.value}>{localName(classIris)}</a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {relatedClassIri && (
-                <tr>
-                  <th scope="row">{i18next.t('relatedClasses')}:</th>
-                  <td>
-                    <a href={relatedClassIri.value}>{localName(relatedClassIri)}</a>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </li>
+              <table className="table">
+                <tbody>
+                  {superPropertyIris.length > 0 && (
+                    <tr>
+                      <th scope="row">{i18next.t('subproperty')}:</th>
+                      <td>
+                        <ol className="list-unstyled">
+                          {superPropertyIris.map(superPropertyIri => (
+                            <li key={superPropertyIri.value}>
+                              <a href={determineHref(propertyIris, superPropertyIri)}>
+                                {localName(superPropertyIri)}
+                                </a>
+                            </li>
+                          ))}
+                        </ol>
+                      </td>
+                    </tr>
+                  )}
+                  {subPropertyIris.length > 0 && (
+                    <tr>
+                      <th scope="row">{i18next.t('hasSubproperty')}:</th>
+                      <td>
+                        <ol className="list-unstyled">
+                          {subPropertyIris.map(subPropertyIri => (
+                            <li key={subPropertyIri.value}>
+                              <a href={determineHref(propertyIris, subPropertyIri)}>
+                                {localName(subPropertyIri)}
+                                </a>
+                            </li>
+                          ))}
+                        </ol>
+                      </td>
+                    </tr>
+                  )}
+                  {usedInClassIris.length > 0 && (
+                    <tr>
+                      <th scope="row">{i18next.t('propertyOf')}:</th>
+                      <td>
+                        <ol className="list-unstyled">
+                          {usedInClassIris.map(propertyClassIris => (
+                            <li key={propertyClassIris.value}>
+                              <a href={determineHref(classIris, propertyClassIris)}>
+                                {localName(propertyClassIris)}
+                              </a>
+                            </li>
+                          ))}
+                        </ol>
+                      </td>
+                    </tr>
+                  )}
+                  {relatedClassIri && (
+                    <tr>
+                      <th scope="row">{i18next.t('relatedClasses')}:</th>
+                      <td>
+                        <a href={determineHref(classIris, relatedClassIri)}>
+                          {localName(relatedClassIri)}
+                          </a>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </li>
+        </ScrollableAnchor>
       );
     })}
   </ol>

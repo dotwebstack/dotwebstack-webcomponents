@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
@@ -8,6 +9,7 @@ import i18next from '../i18n';
 
 type Props = {
   classIris: Term[],
+  propertyIris: Term[],
   store: Store,
 };
 
@@ -73,92 +75,101 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
   );
 };
 
-const ClassList: React.StatelessComponent<Props> = ({ classIris, store }) => (
+const determineHref = (termList: Term[], toFindTerm: Term) : string => {
+  if (termList.some(term => term.equals(toFindTerm))) {
+    return '#' + localName(toFindTerm);
+  }
+  return toFindTerm.value;
+};
+
+const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
       const definition = findDefinition(classIri, store);
       const superClassIris = findSuperClassIris(classIri, store).sort(compareTerm);
       const subClassIris = findSubClassIris(classIri, store).sort(compareTerm);
-      const propertyIris = findPropertyIris(classIri, store).sort(compareTerm);
+      const classPropertyIris = findPropertyIris(classIri, store).sort(compareTerm);
       const ancestorClassIris = findAncestorClassIris(classIri, store);
       const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, store).sort(compareTerm);
 
       return (
-        <li key={classIri.value} id={localName(classIri)}>
-          <h3>{localName(classIri)}</h3>
-          <a href={classIri.value}>{classIri.value}</a>
-          {definition && (
-            <p>{definition.value}</p>
-          )}
-          <table className="table">
-            <tbody>
-              {superClassIris.length > 0 && (
-                <tr>
-                  <th scope="row">{i18next.t('subclass')}:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {superClassIris.map(superClassIri => (
-                        <li key={superClassIri.value}>
-                          <a href={superClassIri.value}>
-                            {localName(superClassIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {subClassIris.length > 0 && (
-                <tr>
-                  <th scope="row">{i18next.t('hasSubclasses')}:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {subClassIris.map(subClassIri => (
-                        <li key={subClassIri.value}>
-                          <a href={subClassIri.value}>
-                            {localName(subClassIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {propertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">{i18next.t('properties')}:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {propertyIris.map(propertyIri => (
-                        <li key={propertyIri.value}>
-                          <a href={propertyIri.value}>
-                            {localName(propertyIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-              {inheritedPropertyIris.length > 0 && (
-                <tr>
-                  <th scope="row">{i18next.t('inherited')}:</th>
-                  <td>
-                    <ol className="list-unstyled">
-                      {inheritedPropertyIris.map(inheritedPropertyIri => (
-                        <li key={inheritedPropertyIri.value}>
-                          <a href={inheritedPropertyIri.value}>
-                            {localName(inheritedPropertyIri)}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </li>
+        <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
+          <li>
+            <h3>{localName(classIri)}</h3>
+            <a href={classIri.value}>{classIri.value}</a>
+            {definition && (
+              <p>{definition.value}</p>
+            )}
+            <table className="table">
+              <tbody>
+                {superClassIris.length > 0 && (
+                  <tr>
+                    <th scope="row">{i18next.t('subclass')}:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {superClassIris.map(superClassIri => (
+                          <li key={superClassIri.value}>
+                            <a href={determineHref(classIris, superClassIri)}>
+                              {localName(superClassIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+                {subClassIris.length > 0 && (
+                  <tr>
+                    <th scope="row">{i18next.t('hasSubclasses')}:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {subClassIris.map(subClassIri => (
+                          <li key={subClassIri.value}>
+                            <a href={determineHref(classIris, subClassIri)}>
+                              {localName(subClassIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+                {classPropertyIris.length > 0 && (
+                  <tr>
+                    <th scope="row">{i18next.t('properties')}:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {propertyIris.map(propertyIri => (
+                          <li key={propertyIri.value}>
+                            <a href={determineHref(propertyIris, propertyIri)}>
+                              {localName(propertyIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+                {inheritedPropertyIris.length > 0 && (
+                  <tr>
+                    <th scope="row">{i18next.t('inherited')}:</th>
+                    <td>
+                      <ol className="list-unstyled">
+                        {inheritedPropertyIris.map(inheritedPropertyIri => (
+                          <li key={inheritedPropertyIri.value}>
+                            <a href={determineHref(propertyIris, inheritedPropertyIri)}>
+                              {localName(inheritedPropertyIri)}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </li>
+        </ScrollableAnchor>
       );
     })}
   </ol>
