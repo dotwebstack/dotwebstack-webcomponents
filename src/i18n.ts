@@ -54,7 +54,6 @@ i18n
       },
     },
     fallbackLng: 'nl',
-    debug: true,
     interpolation: {
       escapeValue: false,
     },
