@@ -5,6 +5,7 @@ import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
 import { compareTerm, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
+import i18next from '../i18n';
 
 type Props = {
   classIris: Term[],
@@ -90,6 +91,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
       const classPropertyIris = findPropertyIris(classIri, store).sort(compareTerm);
       const ancestorClassIris = findAncestorClassIris(classIri, store);
       const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, store).sort(compareTerm);
+
       return (
         <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
           <li>
@@ -102,7 +104,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
               <tbody>
                 {superClassIris.length > 0 && (
                   <tr>
-                    <th scope="row">Subklasse van:</th>
+                    <th scope="row">{i18next.t('subclass')}:</th>
                     <td>
                       <ol className="list-unstyled">
                         {superClassIris.map(superClassIri => (
@@ -118,7 +120,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                 )}
                 {subClassIris.length > 0 && (
                   <tr>
-                    <th scope="row">Heeft subklassen:</th>
+                    <th scope="row">{i18next.t('hasSubclasses')}:</th>
                     <td>
                       <ol className="list-unstyled">
                         {subClassIris.map(subClassIri => (
@@ -134,7 +136,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                 )}
                 {classPropertyIris.length > 0 && (
                   <tr>
-                    <th scope="row">Eigenschappen:</th>
+                    <th scope="row">{i18next.t('properties')}:</th>
                     <td>
                       <ol className="list-unstyled">
                         {propertyIris.map(propertyIri => (
@@ -150,7 +152,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                 )}
                 {inheritedPropertyIris.length > 0 && (
                   <tr>
-                    <th scope="row">Ge&euml;rfde Eigenschappen:</th>
+                    <th scope="row">{i18next.t('inherited')}:</th>
                     <td>
                       <ol className="list-unstyled">
                         {inheritedPropertyIris.map(inheritedPropertyIri => (

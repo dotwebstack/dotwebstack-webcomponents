@@ -5,6 +5,7 @@ import { RDF, RDFS, SKOS } from '../namespaces';
 import { localName } from '../utils';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
+import i18next from '../i18n';
 
 const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => {
   const conceptIris = store.findSubjects(namedNode(RDF + 'type'), namedNode(SKOS + 'Concept'));
@@ -38,7 +39,7 @@ const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => 
                     <tbody>
                       {broaderConceptIris.length > 0 && (
                         <tr>
-                          <th scope="row">Breder:</th>
+                          <th scope="row">{i18next.t('broader')}:</th>
                           <td>
                             <ol className="list-unstyled">
                               {broaderConceptIris.map((broaderConceptIri) => {
@@ -57,7 +58,7 @@ const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => 
                       )}
                       {relatedConceptIris.length > 0 && (
                         <tr>
-                          <th scope="row">Gerelateerd:</th>
+                          <th scope="row">{i18next.t('related')}:</th>
                           <td>
                             <ol className="list-unstyled">
                               {relatedConceptIris.map((relatedConceptIri) => {

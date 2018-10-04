@@ -5,6 +5,7 @@ import { namedNode } from 'rdf-data-model';
 import Store from '../lib/Store';
 import { compareTerm, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
+import i18next from '../i18n';
 
 type Props = {
   propertyIris: Term[],
@@ -99,7 +100,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                 <tbody>
                   {superPropertyIris.length > 0 && (
                     <tr>
-                      <th scope="row">Subeigenschap van:</th>
+                      <th scope="row">{i18next.t('subproperty')}:</th>
                       <td>
                         <ol className="list-unstyled">
                           {superPropertyIris.map(superPropertyIri => (
@@ -115,7 +116,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                   )}
                   {subPropertyIris.length > 0 && (
                     <tr>
-                      <th scope="row">Heeft subeigenschappen:</th>
+                      <th scope="row">{i18next.t('hasSubproperty')}:</th>
                       <td>
                         <ol className="list-unstyled">
                           {subPropertyIris.map(subPropertyIri => (
@@ -131,7 +132,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                   )}
                   {usedInClassIris.length > 0 && (
                     <tr>
-                      <th scope="row">Eigenschap van:</th>
+                      <th scope="row">{i18next.t('propertyOf')}:</th>
                       <td>
                         <ol className="list-unstyled">
                           {usedInClassIris.map(propertyClassIris => (
@@ -147,7 +148,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                   )}
                   {relatedClassIri && (
                     <tr>
-                      <th scope="row">Gerelateerde klasse:</th>
+                      <th scope="row">{i18next.t('relatedClasses')}:</th>
                       <td>
                         <a href={determineHref(classIris, relatedClassIri)}>
                           {localName(relatedClassIri)}
