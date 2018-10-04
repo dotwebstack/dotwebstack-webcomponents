@@ -9,7 +9,7 @@ i18n
       nl: {
         translation: {
           bag: 'BAG',
-          bagextended: 'Basisregistratie FleirAdressen en Gebouwen',
+          bagextended: 'Basisregistratie Adressen en Gebouwen',
           documentschema: 'Documentschema',
           specificatieschema: 'Specificatieschema',
           imbor: 'IMBOR',
