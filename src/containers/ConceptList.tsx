@@ -3,9 +3,18 @@ import { namedNode } from 'rdf-data-model';
 import { GraphContextProps } from '..';
 import { RDF, RDFS, SKOS } from '../namespaces';
 import { localName } from '../utils';
+import ScrollableAnchor from 'react-scrollable-anchor';
+import { Term } from 'rdf-js';
 
 const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => {
   const conceptIris = store.findSubjects(namedNode(RDF + 'type'), namedNode(SKOS + 'Concept'));
+
+  const determineHref = (toFindTerm: Term) : string => {
+    if (conceptIris.some(term => term.equals(toFindTerm))) {
+      return '#' + localName(toFindTerm);
+    }
+    return toFindTerm.value;
+  };
 
   return (
     <section>
@@ -17,59 +26,59 @@ const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => 
           const relatedConceptIris = store.findObjects(conceptIri, namedNode(SKOS + 'related'));
 
           return (
-            <li key={conceptIri.value} id={localName(conceptIri)}>
-              <h3>{label ? label.value : localName(conceptIri)}</h3>
-              <a href={conceptIri.value}>{conceptIri.value}</a>
-              {definition && (
-                <p>{definition.value}</p>
-              )}
-              {(broaderConceptIris.length > 0 || relatedConceptIris.length) > 0 && (
-                <table className="table">
-                  <tbody>
-                    {broaderConceptIris.length > 0 && (
-                      <tr>
-                        <th scope="row">Breder:</th>
-                        <td>
-                          <ol className="list-unstyled">
-                            {broaderConceptIris.map((broaderConceptIri) => {
-                              const label = store.findObjects(broaderConceptIri, namedNode(RDFS + 'label'))[0];
-
-                              return (
-                                <li key={broaderConceptIri.value}>
-                                  <a href={broaderConceptIri.value}>
-                                    {label ? label.value : localName(broaderConceptIri)}
-                                  </a>
-                                </li>
-                              );
-                            })}
-                          </ol>
-                        </td>
-                      </tr>
-                    )}
-                    {relatedConceptIris.length > 0 && (
-                      <tr>
-                        <th scope="row">Gerelateerd:</th>
-                        <td>
-                          <ol className="list-unstyled">
-                            {relatedConceptIris.map((relatedConceptIri) => {
-                              const label = store.findObjects(relatedConceptIri, namedNode(RDFS + 'label'))[0];
-
-                              return (
-                                <li key={relatedConceptIri.value}>
-                                  <a href={relatedConceptIri.value}>
-                                    {label ? label.value : localName(relatedConceptIri)}
-                                  </a>
-                                </li>
-                              );
-                            })}
-                          </ol>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              )}
-            </li>
+            <ScrollableAnchor key={localName(conceptIri)} id={localName(conceptIri)}>
+              <li>
+                <h3>{label ? label.value : localName(conceptIri)}</h3>
+                <a href={conceptIri.value}>{conceptIri.value}</a>
+                {definition && (
+                  <p>{definition.value}</p>
+                )}
+                {(broaderConceptIris.length > 0 || relatedConceptIris.length) > 0 && (
+                  <table className="table">
+                    <tbody>
+                      {broaderConceptIris.length > 0 && (
+                        <tr>
+                          <th scope="row">Breder:</th>
+                          <td>
+                            <ol className="list-unstyled">
+                              {broaderConceptIris.map((broaderConceptIri) => {
+                                const label = store.findObjects(broaderConceptIri, namedNode(RDFS + 'label'))[0];
+                                return (
+                                  <li key={broaderConceptIri.value}>
+                                    <a href={determineHref(broaderConceptIri)}>
+                                      {label ? label.value : localName(broaderConceptIri)}
+                                    </a>
+                                  </li>
+                                );
+                              })}
+                            </ol>
+                          </td>
+                        </tr>
+                      )}
+                      {relatedConceptIris.length > 0 && (
+                        <tr>
+                          <th scope="row">Gerelateerd:</th>
+                          <td>
+                            <ol className="list-unstyled">
+                              {relatedConceptIris.map((relatedConceptIri) => {
+                                const label = store.findObjects(relatedConceptIri, namedNode(RDFS + 'label'))[0];
+                                return (
+                                  <li key={relatedConceptIri.value}>
+                                    <a href={determineHref(relatedConceptIri)}>
+                                      {label ? label.value : localName(relatedConceptIri)}
+                                    </a>
+                                  </li>
+                                );
+                              })}
+                            </ol>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                )}
+              </li>
+            </ScrollableAnchor>
           );
         })}
       </ol>
