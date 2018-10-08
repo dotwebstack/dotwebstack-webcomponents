@@ -3,7 +3,7 @@ import { NamedNode, Term } from 'rdf-js';
 import { namedNode } from 'rdf-data-model';
 // @ts-ignore Ignore because Ramda type definitions are not up-to-date
 import { innerJoin } from 'ramda';
-import { GraphContextProps } from '..';
+import Store from '../lib/Store';
 import ClassList from '../components/ClassList';
 import PropertyList from '../components/PropertyList';
 import ListIndex from '../components/ListIndex';
@@ -12,8 +12,9 @@ import { compareTerm } from '../utils';
 import i18next from '../i18n';
 
 type Props = {
+  store: Store,
   ontology: NamedNode,
-} & GraphContextProps;
+};
 
 const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
   const ontologyIris = store.findSubjects(namedNode(RDFS + 'isDefinedBy'), ontology);
