@@ -1,7 +1,7 @@
 import React from 'react';
 import QuadLoader from '../lib/QuadLoader';
 import Store from '../lib/Store';
-import LoadingIndicator from '../components/LoadingIndicator';
+import LoadingIndicator from './LoadingIndicator';
 
 type Props = {
   src: string | string[],

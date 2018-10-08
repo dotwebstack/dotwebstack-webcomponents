@@ -4,9 +4,9 @@ import { namedNode } from '@rdfjs/data-model';
 // @ts-ignore Ignore because Ramda type definitions are not up-to-date
 import { innerJoin } from 'ramda';
 import Store from '../lib/Store';
-import ClassList from '../components/ClassList';
-import PropertyList from '../components/PropertyList';
-import ListIndex from '../components/ListIndex';
+import ClassList from './ClassList';
+import PropertyList from './PropertyList';
+import ListIndex from './ListIndex';
 import { OWL, RDF, RDFS } from '../namespaces';
 import { compareTerm } from '../utils';
 import i18next from '../i18n';
