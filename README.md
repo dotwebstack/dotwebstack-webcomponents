@@ -39,7 +39,7 @@ import { namedNode } from '@rdfjs/data-model';
 import { GraphContext, Vocabulary } from '@dotwebstack/webcomponents';
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag')
+const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
 
 const App = () => (
   <GraphContext src={endpoint}>
@@ -65,7 +65,7 @@ import { renderComponent } from '@dotwebstack/webcomponents';
 // const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag')
+const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
 
 graphContext(endpoint)
   .then((store) => {
