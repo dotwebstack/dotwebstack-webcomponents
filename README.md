@@ -69,11 +69,14 @@ const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag'
 
 graphContext(endpoint)
   .then((store) => {
-    renderComponent('Vocabulary', {
-      store: store,
-      iri: ontologyIRI,
-    }),
-    document.getElementById('root'),
+    renderComponent(
+      document.getElementById('root'),
+      'Vocabulary',
+      {
+        store: store,
+        iri: ontologyIRI,
+      },
+    );
   });
 ```
 
