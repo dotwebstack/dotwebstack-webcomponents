@@ -1,5 +1,5 @@
 import React from 'react';
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 import { Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { RDF, RDFS, SKOS } from '../namespaces';
@@ -16,7 +16,7 @@ const ConceptList: React.StatelessComponent<Props> = ({ store }) => {
 
   const determineHref = (toFindTerm: Term) : string => {
     if (conceptIris.some(term => term.equals(toFindTerm))) {
-      return '#' + localName(toFindTerm);
+      return `#${localName(toFindTerm)}`;
     }
     return toFindTerm.value;
   };

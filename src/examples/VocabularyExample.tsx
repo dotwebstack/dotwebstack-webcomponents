@@ -1,5 +1,5 @@
 import React from 'react';
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 import { GraphContext, Vocabulary } from '..';
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';

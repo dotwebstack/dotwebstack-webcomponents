@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
 import { compareTerm, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';

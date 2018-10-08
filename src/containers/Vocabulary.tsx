@@ -1,6 +1,6 @@
 import React from 'react';
 import { NamedNode, Term } from 'rdf-js';
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 // @ts-ignore Ignore because Ramda type definitions are not up-to-date
 import { innerJoin } from 'ramda';
 import Store from '../lib/Store';

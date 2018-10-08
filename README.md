@@ -16,13 +16,13 @@ The following tools are required:
 These webcomponents can be installed using NPM:
 
 ```bash
-npm install --save @dotwebstack/webcomponents rdf-data-model
+npm install --save @dotwebstack/webcomponents @rdfjs/data-model
 ```
 
 And of course, also with Yarn:
 
 ```bash
-yarn add @dotwebstack/webcomponents rdf-data-model
+yarn add @dotwebstack/webcomponents @rdfjs/data-model
 ```
 
 ## Documentation
@@ -35,7 +35,7 @@ Here is an example of using webcomponents within a React application:
 
 ```jsx
 import React from 'react';
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 import { GraphContext, Vocabulary } from '@dotwebstack/webcomponents';
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
@@ -57,11 +57,11 @@ ReactDOM.render(<App />, document.getElementById('root'));
 Here is an example of using webcomponents in a non-React application:
 
 ```js
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 import { renderComponent } from '@dotwebstack/webcomponents';
 
 // Alternative method when not using ES6 modules:
-// const namedNode = require('rdf-data-model').namedNode;
+// const namedNode = require('@rdfjs/data-model').namedNode;
 // const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
