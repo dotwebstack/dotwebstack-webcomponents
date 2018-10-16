@@ -2,8 +2,8 @@ import * as React from 'react';
 import renderComponent from '../renderComponent';
 import { render } from 'react-dom';
 import { namedNode } from 'rdf-data-model';
-import Vocabulary from '../containers/Vocabulary';
 import Store from '../lib/Store';
+import Vocabulary from '../components/Vocabulary';
 
 jest.mock('react-dom');
 
