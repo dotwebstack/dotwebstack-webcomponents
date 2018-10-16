@@ -1,18 +1,22 @@
 import React from 'react';
-import { namedNode } from 'rdf-data-model';
-import { GraphContextProps } from '..';
+import { namedNode } from '@rdfjs/data-model';
+import { Term } from 'rdf-js';
+import Store from '../lib/Store';
 import { RDF, RDFS, SKOS } from '../namespaces';
 import { localName } from '../utils';
 import ScrollableAnchor from 'react-scrollable-anchor';
-import { Term } from 'rdf-js';
 import i18next from '../i18n';
 
-const ConceptList: React.StatelessComponent<GraphContextProps> = ({ store }) => {
+type Props = {
+  store: Store,
+};
+
+const ConceptList: React.StatelessComponent<Props> = ({ store }) => {
   const conceptIris = store.findSubjects(namedNode(RDF + 'type'), namedNode(SKOS + 'Concept'));
 
   const determineHref = (toFindTerm: Term) : string => {
     if (conceptIris.some(term => term.equals(toFindTerm))) {
-      return '#' + localName(toFindTerm);
+      return `#${localName(toFindTerm)}`;
     }
     return toFindTerm.value;
   };

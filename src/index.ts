@@ -1,9 +1,9 @@
 import './polyfills';
-import { GraphConsumer, GraphContextProps, GraphProvider } from './containers/GraphContext';
-import ConceptList from './containers/ConceptList';
+import ConceptList from './components/ConceptList';
+import GraphContext from './components/GraphContext';
 import Resource from './components/Resource';
-import Vocabulary from './containers/Vocabulary';
 import renderComponent from './renderComponent';
+import Vocabulary from './components/Vocabulary';
 
 type ComponentMap = {
   [name: string]: any;
@@ -11,8 +11,7 @@ type ComponentMap = {
 
 const components: ComponentMap = {
   ConceptList,
-  GraphConsumer,
-  GraphProvider,
+  GraphContext,
   Resource,
   Vocabulary,
 };
@@ -26,12 +25,10 @@ const getComponent: any = (name: string) => {
 };
 
 export {
+  getComponent,
+  renderComponent
   ConceptList,
-  GraphConsumer,
-  GraphContextProps,
-  GraphProvider,
+  GraphContext,
   Resource,
   Vocabulary,
-  getComponent,
-  renderComponent,
 };
