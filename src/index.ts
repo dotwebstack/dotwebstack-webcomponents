@@ -2,6 +2,7 @@ import './polyfills';
 import ConceptList from './components/ConceptList';
 import GraphContext from './components/GraphContext';
 import Resource from './components/Resource';
+import renderComponent from './renderComponent';
 import Vocabulary from './components/Vocabulary';
 
 type ComponentMap = {
@@ -25,6 +26,7 @@ const getComponent: any = (name: string) => {
 
 export {
   getComponent,
+  renderComponent,
   ConceptList,
   GraphContext,
   Resource,
