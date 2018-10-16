@@ -1,4 +1,3 @@
-
 import { Quad } from 'rdf-js';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import QuadCollector from './QuadCollector';
