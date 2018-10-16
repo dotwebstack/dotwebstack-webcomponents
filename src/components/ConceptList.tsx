@@ -5,7 +5,7 @@ import { RDF, RDFS, SKOS } from '../namespaces';
 import { localName } from '../utils';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import i18next from '../i18n';
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 
 type Props = {
   store: Store,

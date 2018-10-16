@@ -1,7 +1,7 @@
 import * as React from 'react';
 import renderComponent from '../renderComponent';
 import { render } from 'react-dom';
-import { namedNode } from 'rdf-data-model';
+import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
 import Vocabulary from '../components/Vocabulary';
 
