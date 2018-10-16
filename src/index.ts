@@ -26,7 +26,7 @@ const getComponent: any = (name: string) => {
 
 export {
   getComponent,
-  renderComponent
+  renderComponent,
   ConceptList,
   GraphContext,
   Resource,
