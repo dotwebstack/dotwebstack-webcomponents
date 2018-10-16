@@ -1,4 +1,4 @@
-import { defaultGraph, literal, namedNode, quad } from 'rdf-data-model';
+import { defaultGraph, literal, namedNode, quad } from '@rdfjs/data-model';
 
 export const namedNodeSubject1 = namedNode('https://example.org/test');
 export const namedNodeSubject2 = namedNode('https://example.org/test5');
@@ -23,3 +23,25 @@ export const quadWithObject2 = quad(namedNodeSubject1, namedNodePredicate1, name
 export const quadWithSubject2 = quad(namedNodeSubject2, namedNodePredicate1, namedNodeObject2, defaultGraph1);
 
 export const quadWithPredicate2 = quad(namedNodeSubject2, namedNodePredicate2, namedNodeObject1, defaultGraph1);
+
+export const fooJsonLd = {
+  'http://schema.org/name': [{ '@value': 'Manu Sporny' }],
+  'http://schema.org/url': [{ '@id': 'http://manu.sporny.org/' }],
+  'http://schema.org/image': [{ '@id': 'http://manu.sporny.org/images/manu.png' }],
+};
+
+export const parsedJsonLd = [{
+  graph: { value: '' },
+  object: { value: 'http://manu.sporny.org/images/manu.png' },
+  predicate: { value: 'http://schema.org/image' },
+  subject: { value: 'b0' },
+}, {
+  graph:{ value: '' },
+  object: {datatype: { value: 'http://www.w3.org/2001/XMLSchema#string' },
+    language: '', value: 'Manu Sporny'},
+  predicate: { value: 'http://schema.org/name' },
+  subject: { value: 'b0' }}, {graph: { value: '' },
+    object: { value: 'http://manu.sporny.org/' },
+    predicate: { value: 'http://schema.org/url' },
+    subject: { value: 'b0' },
+  }];
