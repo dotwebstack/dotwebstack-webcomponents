@@ -3,6 +3,7 @@ import { GraphConsumer, GraphContextProps, GraphProvider } from './containers/Gr
 import ConceptList from './containers/ConceptList';
 import Resource from './components/Resource';
 import Vocabulary from './containers/Vocabulary';
+import renderComponent from './renderComponent';
 
 type ComponentMap = {
   [name: string]: any;
@@ -32,4 +33,5 @@ export {
   Resource,
   Vocabulary,
   getComponent,
+  renderComponent,
 };
