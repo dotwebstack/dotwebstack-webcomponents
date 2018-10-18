@@ -48,7 +48,9 @@ const findUsedInClassIris = (propertyIri: Term, store: Store): Term[] =>
         const classIri = store.findObjects(classShapeIri, namedNode(SHACL + 'targetClass'))[0];
 
         if (classIri === undefined) {
-          throw new Error(`No class found for class shape ${classShapeIri.value}`);
+          // tslint:disable-next-line:no-console
+          console.warn(`No class found for class shape ${classShapeIri.value}`);
+          return [...acc];
         }
 
         return [
