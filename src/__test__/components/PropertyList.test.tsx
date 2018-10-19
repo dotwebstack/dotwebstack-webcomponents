@@ -3,7 +3,7 @@ import { Quad } from 'rdf-js';
 import React from 'react';
 import PropertyList from '../../components/PropertyList';
 import Store from '../../lib/Store';
-import { literal2, objectTest1, objectTest2, objectTest4, quadWithDCSubject,
+import { objectTest1, objectTest2, quadWithDCSubject,
   quadWithDefinition, quadWithDefintionLiteral, quadWithSubProperty,
   quadWithSuperClass, quadWithSuperProperty, quadWithTargetClass, subjectTest5,
   quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5,
@@ -22,20 +22,20 @@ describe('<PropertyList />', () => {
     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[subjectTest5]}
       store={createStore([quadWithDefintionLiteral])}
       />);
-    expect(wrapper.find('p').text()).toEqual(literal2.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
   });
 
   it('shows linked subject definition when no linked definition found', () => {
     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[subjectTest5]}
       store={createStore([quadWithDCSubject, quadWithDefinition])}
       />);
-    expect(wrapper.find('p').text()).toEqual(objectTest4.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
   });
   it('shows super properties when linked', () => {
     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest2]}
       store={createStore([quadWithTargetClass, quadWithSuperProperty])}
       />);
-    expect(wrapper.find({ href: subjectTest5.value })
+    expect(wrapper.find({ href: quadWithSuperProperty.object.value })
     .getElements().length).toBeGreaterThan(0);
   });
 
@@ -43,7 +43,7 @@ describe('<PropertyList />', () => {
     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest2]}
       store={createStore([quadWithSuperClass, quadWithSubProperty])}
       />);
-    expect(wrapper.find({ href: subjectTest5.value })
+    expect(wrapper.find({ href: quadWithSubProperty.subject.value })
     .getElements().length).toBeGreaterThan(0);
   });
 
@@ -51,7 +51,7 @@ describe('<PropertyList />', () => {
     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
       store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5])}
       />);
-    expect(wrapper.find({ href: objectTest2.value })
+    expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value })
     .getElements().length).toBeGreaterThan(0);
   });
 
@@ -59,7 +59,7 @@ describe('<PropertyList />', () => {
     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
       store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2])}
       />);
-    expect(wrapper.find({ href: objectTest2.value })
+    expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value })
     .getElements().length).toEqual(0);
   });
 
@@ -67,7 +67,7 @@ describe('<PropertyList />', () => {
     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
       store={createStore([quadWithPathToObject2, quadWithClass])}
       />);
-    expect(wrapper.find({ href: objectTest2.value })
+    expect(wrapper.find({ href: quadWithClass.object.value })
     .getElements().length).toBeGreaterThan(0);
   });
 });

@@ -23,7 +23,7 @@ describe('Store::findStatements', () => {
 describe('Store::findSubject', () => {
   it('returns result when subject found', () => {
     const result = createStore([quadWith1]).findSubjects(predicatePropertyRdf, objectConceptSkos);
-    expect(result).toEqual([subjectTypeRdf]);
+    expect(result).toEqual([quadWith1.subject]);
   });
 
   it('returns empty list when no subject found', () => {
@@ -34,23 +34,24 @@ describe('Store::findSubject', () => {
   it('returns multiple results when multiple objects are given', () => {
     const result = createStore([quadWith1, quadWithObject2])
     .findSubjects(predicatePropertyRdf, [objectConceptSkos, objectTest1]);
-    expect(result).toEqual([subjectTypeRdf, subjectTypeRdf]);
+    expect(result).toEqual([quadWith1.subject, quadWithObject2.subject]);
   });
 });
 
 describe('Store::findObject', () => {
   it('returns result when object found', () => {
     const result = createStore([quadWith1]).findObjects(subjectTypeRdf, predicatePropertyRdf);
-    expect(result).toEqual([objectConceptSkos]);
+    expect(result).toEqual([quadWith1.object]);
   });
 
   it('returns empty list when no object found', () => {
     const result = createStore([quadWithSubject2]).findObjects(subjectTypeRdf, predicatePropertyRdf);
     expect(result).toEqual([]);
   });
+
   it('returns multiple results when multiple predicates are given', () => {
     const result = createStore([quadWith1, quadWithPredicateObject2])
     .findObjects(subjectTypeRdf, [predicatePropertyRdf, predicateType]);
-    expect(result).toEqual([objectConceptSkos, objectTest1]);
+    expect(result).toEqual([quadWith1.object, quadWithPredicateObject2.object]);
   });
 });

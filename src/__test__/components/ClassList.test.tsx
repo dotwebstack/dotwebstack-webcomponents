@@ -7,7 +7,7 @@ import { objectTest1, objectTest2, quadWithLabelLiteral, quadWithPredicate2,
   quadWithSuperClass, objectTest4, subjectTest5, quadWithSubClass, quadWithTargetClass,
   quadWithProperty, quadWithPath, quadWithReversedTargetClass,
    quadWithReversedProperty, quadWithPathToObject2, quadWithDefintionLiteral,
-  literal2, quadWithDCSubject, quadWithDefinition } from '../TestData';
+   quadWithDCSubject, quadWithDefinition } from '../TestData';
 import { localName } from '../../utils';
 
 describe('<ClassList />', () => {
@@ -23,25 +23,23 @@ describe('<ClassList />', () => {
     const wrapper = shallow(<ClassList classIris={[subjectTest5]} propertyIris={[]}
       store={createStore([quadWithDefintionLiteral])}
       />);
-    // tslint:disable-next-line:no-console
-    console.log(wrapper.html());
-    expect(wrapper.find('p').text()).toEqual(literal2.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
   });
 
   it('shows linked subject definition when no linked definition found', () => {
     const wrapper = shallow(<ClassList classIris={[subjectTest5]} propertyIris={[]}
       store={createStore([quadWithDCSubject, quadWithDefinition])}
       />);
-    expect(wrapper.find('p').text()).toEqual(objectTest4.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
   });
 
   it('shows superclass when found', () => {
     const wrapper = shallow(<ClassList classIris={[objectTest4]} propertyIris={[objectTest2]}
       store={createStore([quadWithPredicate2, quadWithLabelLiteral, quadWithSuperClass])}
       />);
-    expect(wrapper.find({ href: objectTest4.value })
+    expect(wrapper.find({ href: quadWithSuperClass.subject.value })
     .getElements().length).toBeGreaterThan(0);
-    expect(wrapper.find({ href: subjectTest5.value })
+    expect(wrapper.find({ href: quadWithLabelLiteral.subject.value })
     .getElements().length).toBeGreaterThan(0);
   });
 
@@ -59,7 +57,7 @@ describe('<ClassList />', () => {
     const wrapper = shallow(<ClassList classIris={[objectTest4]} propertyIris={[objectTest2]}
       store={createStore([quadWithTargetClass, quadWithProperty, quadWithPath])}
       />);
-    expect(wrapper.find({ href: '#' + localName(objectTest2) })
+    expect(wrapper.find({ href: '#' + localName(quadWithPath.object) })
     .getElements().length).toBeGreaterThan(0);
   });
 
@@ -68,7 +66,7 @@ describe('<ClassList />', () => {
       store={createStore([quadWithSuperClass, quadWithReversedTargetClass,
         quadWithReversedProperty, quadWithPathToObject2])}
       />);
-    expect(wrapper.find({ href: objectTest1.value })
+    expect(wrapper.find({ href: quadWithPathToObject2.object.value })
     .getElements().length).toBeGreaterThan(0);
   });
 });

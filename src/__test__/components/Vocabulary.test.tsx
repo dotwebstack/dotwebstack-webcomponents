@@ -2,8 +2,7 @@ import { mount } from 'enzyme';
 import { Quad } from 'rdf-js';
 import Store from '../../lib/Store';
 import Vocabulary from '../../components/Vocabulary';
-import { subjectTest5, quadWithIsDefinedBy, quadWithTypeClassOwl,
-  objectTest1, quadWithTypeClassRdfs, quadWithTypeToPropertyRdf,
+import { subjectTest5, quadWithIsDefinedBy, quadWithTypeClassOwl, quadWithTypeClassRdfs, quadWithTypeToPropertyRdf,
   quadWithTypeToDatatypeProperty, quadWithTypeToObjectProperty } from '../TestData';
 import React from 'react';
 
@@ -18,7 +17,7 @@ describe('<Vocabulary />', () => {
       store={createStore([quadWithIsDefinedBy, quadWithTypeClassOwl])}
       ontology={subjectTest5}
       />);
-    expect(wrapper.find('ClassList').prop('classIris')).toEqual([objectTest1]);
+    expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with RDFS class', () => {
@@ -26,7 +25,7 @@ describe('<Vocabulary />', () => {
       store={createStore([quadWithIsDefinedBy, quadWithTypeClassRdfs])}
       ontology={subjectTest5}
       />);
-    expect(wrapper.find('ClassList').prop('classIris')).toEqual([objectTest1]);
+    expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with RDF property', () => {
@@ -34,7 +33,7 @@ describe('<Vocabulary />', () => {
       store={createStore([quadWithIsDefinedBy, quadWithTypeToPropertyRdf])}
       ontology={subjectTest5}
       />);
-    expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([objectTest1]);
+    expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with OWL DatatypeProperty', () => {
@@ -42,7 +41,7 @@ describe('<Vocabulary />', () => {
       store={createStore([quadWithIsDefinedBy, quadWithTypeToDatatypeProperty])}
       ontology={subjectTest5}
       />);
-    expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([objectTest1]);
+    expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with OWL ObjectProperty', () => {
@@ -50,7 +49,7 @@ describe('<Vocabulary />', () => {
       store={createStore([quadWithIsDefinedBy, quadWithTypeToObjectProperty])}
       ontology={subjectTest5}
       />);
-    expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([objectTest1]);
+    expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 });
 
