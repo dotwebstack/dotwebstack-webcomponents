@@ -3,7 +3,8 @@ module.exports = {
     '<rootDir>/src'
   ],
   transform: {
-    '\\.tsx?$': 'ts-jest'
+    '\\.tsx?$': 'ts-jest',
+    "\\.(css|less)$": "<rootDir>/src/__test__/styleMock.ts" 
   },
   moduleFileExtensions: [
     'ts',
@@ -11,6 +12,7 @@ module.exports = {
     'js',
     'jsx',
     'json',
+    'css',
   ],
   testRegex: '\\.test\\.tsx?$',
   setupTestFrameworkScriptFile: '<rootDir>/src/test/setupTests.ts',
