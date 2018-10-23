@@ -1,82 +1,80 @@
 # API Reference
 
 ## &lt;ClassList>
-
-`ClassList` returns list of classes with properties
-
+`ClassList` creates list of classes with its properties
 ```jsx
-<ClassList src={classIris, propertyIris, store}>
-  <SomeComponent />
-</ClassList>
+<ClassList
+  classIris={classIris}
+  propertyIris={propertyIris}
+  store={store}
+/>
 ```
+### `classIris`: `Term[]`
+### `propertyIris`: `Term[]`
+### `store`: `Store`
 
 ## &lt;ConceptList>
-
-`ConceptList` returns list of concepts 
-
+`ConceptList` creates list of concepts
 ```jsx
-<ConceptList src={store}>
-  <SomeComponent />
+<ConceptList store={store}>  
 </ConceptList>
 ```
+### `store`: `Store`
 
 ## &lt;GraphContext>
-
 `GraphContext` is a wrapper for all graph-based components.
-
 ```jsx
-<GraphContext src={iri}>
+<GraphContext src={endpoint}>
   <SomeComponent />
 </GraphContext>
 ```
+### `endpoint`: `Iri`
 
 ## &lt;ListIndex>
-
-`ListIndex` return index of classes
-
+`ListIndex` creates index of classes
 ```jsx
-<ListIndex src={resourceIris}>
-  <SomeComponent />
+<ListIndex resourceIris={propertyIris}> 
+</ListIndex>
+<ListIndex resourceIris={classIris}> 
 </ListIndex>
 ```
+### `propertyIris`: `Term[]`
+### `classIris`: `Term[]`
 
 ## &lt;LoadingIndicator>
-
-`LoadingIndicator` Loads data (?)
-
+`LoadingIndicator` Indicates data is being loaded
 ```jsx
-<LoadingIndicator>
-  <SomeComponent />
+<LoadingIndicator> 
 </LoadingIndicator>
 ```
 
 ## &lt;PropertyList>
-
-`PropertyList` returns list of properties
-
+`PropertyList` creates a list of properties
 ```jsx
-<PropertyList src={classIris, propertyIris, store}>
-  <SomeComponent />
+<PropertyList classIris={classIris}
+              propertyIris={propertyIris}  
+              store={store}>  
 </PropertyList>
 ```
+### `classIris`: `Term[]`
+### `propertyIris`: `Term[]`
+### `store`: `Store`
 
 ## &lt;Resource>
-
 `Resource` Returns a resource (?)
-
 ```jsx
-<Resource src={ResourceIris, store}>
-  <SomeComponent />
+<Resource>  
 </Resource>
 ```
 
 ## &lt;Vocabulary>
-
 A resource representation, which visualizes the vocabulary (classes & properties). Component must be wrapped within a `GraphContext`.
-
 ```jsx
-<Vocabulary ontology={iri} />
+<Vocabulary store={store} 
+            ontology={ontologyIRI} />
 ```
+### `store`: `Store`
+### `ontologyIRI`: `Term[]`
 
 
 
