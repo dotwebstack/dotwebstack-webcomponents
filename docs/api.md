@@ -14,12 +14,12 @@
 ### `store`: `Store`
 
 ## &lt;ConceptList>
-`ConceptList` creates list of concepts
+`ConceptList` creates list of Concepts. Component must be wrapped in a `GraphContext`.
 ```jsx
-<ConceptList store={store}>  
-</ConceptList>
+<ConceptList store={store} />
 ```
 ### `store`: `Store`
+The data source.
 
 ## &lt;GraphContext>
 `GraphContext` is a wrapper for all graph-based components.
@@ -59,11 +59,17 @@
 ### `store`: `Store`
 
 ## &lt;Resource>
-`Resource` Returns a resource (?)
+`Resource` Creates the default Resource detail view, which provides a simple list of properties.
 ```jsx
-<Resource>  
-</Resource>
+<Resource
+  resourceIri={resourceIri}  
+  store={store}
+/>
 ```
+### `resourceIri`: `Term`
+The IRI of the Resource which is represented.
+### `store`: `Store`
+The data source.
 
 ## &lt;Vocabulary>
 A resource representation, which visualizes the vocabulary (classes & properties). Component must be wrapped within a `GraphContext`.
