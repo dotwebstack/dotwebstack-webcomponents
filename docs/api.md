@@ -35,8 +35,6 @@
 ```jsx
 <ListIndex resourceIris={propertyIris}> 
 </ListIndex>
-<ListIndex resourceIris={classIris}> 
-</ListIndex>
 ```
 ### `propertyIris`: `Term[]`
 ### `classIris`: `Term[]`
@@ -74,7 +72,7 @@ A resource representation, which visualizes the vocabulary (classes & properties
             ontology={ontologyIRI} />
 ```
 ### `store`: `Store`
-### `ontologyIRI`: `Term[]`
+### `ontologyIRI`: `namedNode`
 
 
 
