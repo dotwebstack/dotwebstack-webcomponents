@@ -44,11 +44,6 @@ const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
   );
 };
 
-const findSubClassIris = (classIri: Term, store: Store): Term[] =>
-  store
-    .findSubjects(namedNode(RDFS + 'subClassOf'), classIri)
-    .filter(isNamedNode);
-
 const findPropertyIris = (classIri: Term, store: Store): Term[] => {
   const shapeIri = store.findSubjects(namedNode(SHACL + 'targetClass'), classIri)[0];
 
@@ -80,7 +75,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
     {classIris.map((classIri) => {
       const definition = findDefinition(classIri, store);
       const superClassIris = findSuperClassIris(classIri, store).sort(compareTerm);
-      const subClassIris = findSubClassIris(classIri, store).sort(compareTerm);
+      const subClassIris = store.findSubIris(classIri, 'subClassOf').sort(compareTerm);
       const classPropertyIris = findPropertyIris(classIri, store).sort(compareTerm);
       const ancestorClassIris = findAncestorClassIris(classIri, store);
       const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, store).sort(compareTerm);
