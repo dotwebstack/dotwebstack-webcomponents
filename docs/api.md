@@ -10,8 +10,11 @@
 />
 ```
 ### `classIris`: `Term[]`
+The IRI's of the Classes which are represented.
 ### `propertyIris`: `Term[]`
+The IRI's of the Properties which are represented.
 ### `store`: `Store`
+The data source.
 
 ## &lt;ConceptList>
 `ConceptList` creates list of Concepts. Component must be wrapped in a `GraphContext`.
@@ -29,25 +32,28 @@ The data source.
 </GraphContext>
 ```
 ### `endpoint`: `Iri`
+The endpoint used by the backend to retrieve the data.
 
 ## &lt;ListIndex>
-`ListIndex` creates index of classes
+`ListIndex` creates index of classes.
 ```jsx
 <ListIndex resourceIris={propertyIris}> 
 </ListIndex>
 ```
-### `propertyIris`: `Term[]`
 ### `classIris`: `Term[]`
+The IRI's of the Classes which are represented.
+### `propertyIris`: `Term[]`
+The IRI's of the Properties which are represented.
 
 ## &lt;LoadingIndicator>
-`LoadingIndicator` Indicates data is being loaded
+`LoadingIndicator` indicates data is being loaded.
 ```jsx
 <LoadingIndicator> 
 </LoadingIndicator>
 ```
 
 ## &lt;PropertyList>
-`PropertyList` creates a list of properties
+`PropertyList` creates a list of properties.
 ```jsx
 <PropertyList classIris={classIris}
               propertyIris={propertyIris}  
@@ -55,8 +61,11 @@ The data source.
 </PropertyList>
 ```
 ### `classIris`: `Term[]`
+The IRI's of the Classes which are represented.
 ### `propertyIris`: `Term[]`
+The IRI's of the Properties which are represented.
 ### `store`: `Store`
+The data source.
 
 ## &lt;Resource>
 `Resource` Creates the default Resource detail view, which provides a simple list of properties.
@@ -78,7 +87,9 @@ A resource representation, which visualizes the vocabulary (classes & properties
             ontology={ontologyIRI} />
 ```
 ### `store`: `Store`
+The data source.
 ### `ontologyIRI`: `namedNode`
+The endpoint which is used by the backend to retrieve the data.
 
 
 
