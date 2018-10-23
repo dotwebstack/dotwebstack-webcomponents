@@ -2,13 +2,19 @@
 
 ## &lt;ClassList>
 
-`ClassList` returns list of classes with properties
+`ClassList` creates a list of classes with its properties
 
 ```jsx
-<ClassList src={classIris, propertyIris, store}>
-  <SomeComponent />
-</ClassList>
+<ClassList
+  classIris={classIris}
+  propertyIris={propertyIris}
+  store={store}
+/>
 ```
+
+### `classIris`: `Term[]`
+### `propertyIris`: `Term[]`
+### `store`: `Store`
 
 ## &lt;ConceptList>
 
