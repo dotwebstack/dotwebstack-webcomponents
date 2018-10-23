@@ -1,8 +1,28 @@
 # API Reference
 
+## &lt;ClassList>
+
+`ClassList` returns list of classes with properties
+
+```jsx
+<ClassList src={classIris, propertyIris, store}>
+  <SomeComponent />
+</ClassList>
+```
+
+## &lt;ConceptList>
+
+`ConceptList` returns list of concepts 
+
+```jsx
+<ConceptList src={store}>
+  <SomeComponent />
+</ConceptList>
+```
+
 ## &lt;GraphContext>
 
-`GraphContext` is a wrapper for alle graph-based components.
+`GraphContext` is a wrapper for all graph-based components.
 
 ```jsx
 <GraphContext src={iri}>
@@ -10,9 +30,45 @@
 </GraphContext>
 ```
 
-### `src`: `NamedNode | NamedNode[]`
+## &lt;ListIndex>
 
-One or more resource IRIs, which will be dereferenced to retrieve the RDF data (media type: `application/ld+json`).
+`ListIndex` return index of classes
+
+```jsx
+<ListIndex src={resourceIris}>
+  <SomeComponent />
+</ListIndex>
+```
+
+## &lt;LoadingIndicator>
+
+`LoadingIndicator` Loads data (?)
+
+```jsx
+<LoadingIndicator>
+  <SomeComponent />
+</LoadingIndicator>
+```
+
+## &lt;PropertyList>
+
+`PropertyList` returns list of properties
+
+```jsx
+<PropertyList src={classIris, propertyIris, store}>
+  <SomeComponent />
+</PropertyList>
+```
+
+## &lt;Resource>
+
+`Resource` Returns a resource (?)
+
+```jsx
+<Resource src={ResourceIris, store}>
+  <SomeComponent />
+</Resource>
+```
 
 ## &lt;Vocabulary>
 
@@ -22,6 +78,6 @@ A resource representation, which visualizes the vocabulary (classes & properties
 <Vocabulary ontology={iri} />
 ```
 
-### `ontology`: `NamedNode`
 
-The IRI of the OWL ontology resource.
+
+
