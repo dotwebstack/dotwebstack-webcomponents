@@ -3,7 +3,7 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, isNamedNode, localName } from '../utils';
+import { compareTerm, isNamedNode, localName, getUrl } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 
@@ -75,13 +75,6 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
   );
 };
 
-const determineHref = (termList: Term[], toFindTerm: Term) : string => {
-  if (termList.some(term => term.equals(toFindTerm))) {
-    return '#' + localName(toFindTerm);
-  }
-  return toFindTerm.value;
-};
-
 const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
@@ -109,7 +102,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                       <ol className="list-unstyled">
                         {superClassIris.map(superClassIri => (
                           <li key={superClassIri.value}>
-                            <a href={determineHref(classIris, superClassIri)}>
+                            <a href={getUrl(superClassIri, classIris)}>
                               {localName(superClassIri)}
                             </a>
                           </li>
@@ -125,7 +118,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                       <ol className="list-unstyled">
                         {subClassIris.map(subClassIri => (
                           <li key={subClassIri.value}>
-                            <a href={determineHref(classIris, subClassIri)}>
+                            <a href={getUrl(subClassIri, classIris)}>
                               {localName(subClassIri)}
                             </a>
                           </li>
@@ -141,7 +134,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                       <ol className="list-unstyled">
                         {propertyIris.map(propertyIri => (
                           <li key={propertyIri.value}>
-                            <a href={determineHref(propertyIris, propertyIri)}>
+                            <a href={getUrl(propertyIri, propertyIris)}>
                               {localName(propertyIri)}
                             </a>
                           </li>
@@ -157,7 +150,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                       <ol className="list-unstyled">
                         {inheritedPropertyIris.map(inheritedPropertyIri => (
                           <li key={inheritedPropertyIri.value}>
-                            <a href={determineHref(propertyIris, inheritedPropertyIri)}>
+                            <a href={getUrl(inheritedPropertyIri, propertyIris)}>
                               {localName(inheritedPropertyIri)}
                             </a>
                           </li>

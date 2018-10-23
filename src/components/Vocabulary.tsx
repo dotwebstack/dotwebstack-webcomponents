@@ -11,6 +11,7 @@ import { OWL, RDF, RDFS } from '../namespaces';
 import { compareTerm } from '../utils';
 import i18next from '../i18n';
 import ClassTree from './ClassTree';
+import PropertyTree from './PropertyTree';
 
 type Props = {
   store: Store,
@@ -55,7 +56,9 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
           />
         </div>
         <div className="col-md-6">
-
+          <PropertyTree
+          store={store}
+          propertyIris={propertyIris}/>
         </div>
       </div>
       <div className="row">
