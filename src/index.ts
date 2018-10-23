@@ -1,6 +1,6 @@
 import './polyfills';
 import ConceptList from './components/ConceptList';
-import GraphContext from './components/GraphContext';
+import GraphContext, { graphContext } from './components/GraphContext';
 import Resource from './components/Resource';
 import renderComponent from './renderComponent';
 import Vocabulary from './components/Vocabulary';
@@ -27,6 +27,7 @@ const getComponent: any = (name: string) => {
 export {
   getComponent,
   renderComponent,
+  graphContext,
   ConceptList,
   GraphContext,
   Resource,

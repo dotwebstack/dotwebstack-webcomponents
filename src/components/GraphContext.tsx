@@ -15,8 +15,8 @@ type State = {
 
 async function retrieveStore(urls: string[], quadLoader: QuadLoader): Promise<Store> {
   return Promise.all(urls.map(quadLoader.loadFromUrl))
-  .then(result => result.reduce((acc, quads) => [...acc, ...quads]))
-  .then(quads => new Store(quads));
+    .then(result => result.reduce((acc, quads) => [...acc, ...quads]))
+    .then(quads => new Store(quads));
 }
 
 class GraphContext extends React.Component<Props, State> {
@@ -30,10 +30,10 @@ class GraphContext extends React.Component<Props, State> {
     const urls = ([] as string[]).concat(this.props.src);
 
     await retrieveStore(urls, quadLoader)
-    .then(store => this.setState({
-      store,
-      loading: false,
-    }));
+      .then(store => this.setState({
+        store,
+        loading: false,
+      }));
   }
 
   render() {
