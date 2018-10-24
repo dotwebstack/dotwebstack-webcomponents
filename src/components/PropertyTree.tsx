@@ -24,13 +24,16 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
       const label2 = <a href={getUrl(child, propertyIris)} title={localName(child)}>
         <span className="node">{localName(child)}</span>
       </a>;
-      return <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
+      return (
+        <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
           {buildTree(children, store, propertyIris, true)}
-        </TreeView>;
+        </TreeView>
+      );
     }
-    return <a href={getUrl(child, propertyIris)} key={child + '|' + i} title={localName(child)}>
-      <div className="info" style={leafStyling}>{localName(child)}</div>
-    </a>;
+    return (
+      <a href={getUrl(child, propertyIris)} key={child + '|' + i} title={localName(child)}>
+        <div className="info" style={leafStyling}>{localName(child)}</div>
+      </a>);
   });
 };
 
@@ -39,7 +42,9 @@ const PropertyTree: React.StatelessComponent<Props> = ({ propertyIris, store }) 
     const parents: Term[] = store.findRoots(propertyIris, [], 'subPropertyOf');
     return buildTree(parents, store, propertyIris, false);
   } catch (e) {
-    return <div>error</div>;
+    return (
+      <p>Something went wrong</p>
+    );
   }
 };
 export default PropertyTree;
