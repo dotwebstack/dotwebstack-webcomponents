@@ -13,6 +13,12 @@ type State = {
   loading: boolean,
 };
 
+async function retrieveStore(urls: string[], quadLoader: QuadLoader): Promise<Store> {
+  return Promise.all(urls.map(quadLoader.loadFromUrl))
+    .then(result => result.reduce((acc, quads) => [...acc, ...quads]))
+    .then(quads => new Store(quads));
+}
+
 class GraphContext extends React.Component<Props, State> {
   state = {
     store: new Store([]),
@@ -23,10 +29,9 @@ class GraphContext extends React.Component<Props, State> {
     const quadLoader = new QuadLoader();
     const urls = ([] as string[]).concat(this.props.src);
 
-    await Promise.all(urls.map(quadLoader.loadFromUrl))
-      .then(result => result.reduce((acc, quads) => [...acc, ...quads]))
-      .then(quads => this.setState({
-        store: new Store(quads),
+    await retrieveStore(urls, quadLoader)
+      .then(store => this.setState({
+        store,
         loading: false,
       }));
   }
@@ -41,5 +46,9 @@ class GraphContext extends React.Component<Props, State> {
     return this.props.children(this.state.store);
   }
 }
+
+export const graphContext = async (endpoint: string): Promise<Store> => {
+  return retrieveStore([endpoint], new QuadLoader());
+};
 
 export default GraphContext;
