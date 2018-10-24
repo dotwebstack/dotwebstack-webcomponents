@@ -33,7 +33,11 @@ const buildTree = (parents: Term[], store: Store, classIris: Term[], collapsed: 
 };
 
 const ClassTree: React.StatelessComponent<Props> = ({ classIris, store }) => {
-  const parents = store.findRoots(classIris, [], 'subClassOf');
-  return buildTree(parents, store, classIris, false);
+  try {
+    const parents = store.findRoots(classIris, [], 'subClassOf');
+    return buildTree(parents, store, classIris, false);
+  } catch (e) {
+    return <h2>error</h2>;
+  }
 };
 export default ClassTree;
