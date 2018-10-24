@@ -1,8 +1,11 @@
 import './polyfills';
 import ConceptList from './components/ConceptList';
-import GraphContext from './components/GraphContext';
+import GraphContext, { graphContext } from './components/GraphContext';
 import Resource from './components/Resource';
+import renderComponent from './renderComponent';
 import Vocabulary from './components/Vocabulary';
+import PropertyList from './components/PropertyList';
+import ClassList from './components/ClassList';
 import ClassTree from './components/ClassTree';
 import PropertyTree from './components/PropertyTree';
 
@@ -15,6 +18,8 @@ const components: ComponentMap = {
   GraphContext,
   Resource,
   Vocabulary,
+  PropertyList,
+  ClassList,
   ClassTree,
   PropertyTree,
 };
@@ -29,10 +34,14 @@ const getComponent: any = (name: string) => {
 
 export {
   getComponent,
+  renderComponent,
+  graphContext,
   ConceptList,
   GraphContext,
   Resource,
   Vocabulary,
   ClassTree,
   PropertyTree,
+  PropertyList,
+  ClassList,
 };
