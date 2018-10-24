@@ -1,9 +1,10 @@
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { Quad } from 'rdf-js';
 import React from 'react';
 import PropertyTree from '../../components/PropertyTree';
 import Store from '../../lib/Store';
-import { objectTest1 } from '../TestData';
+import { objectTest1, quadTree1, quadTree2, quadTree3, quadTree4, quadTree5 } from '../TestData';
+import { localName } from '../../utils';
 //      objectTest2, quadWithDCSubject,
 //   quadWithDefinition, quadWithDefintionLiteral, quadWithSubProperty,
 //   quadWithSuperClass, quadWithSuperProperty, quadWithTargetClass, subjectTest5,
@@ -11,68 +12,53 @@ import { objectTest1 } from '../TestData';
 //   quadWithClass } from '../TestData';
 
 describe('<PropertyTree />', () => {
-  it('shows property IRI when nothing else provided', () => {
+  it('shows name when propertyIri and empty store provided', () => {
     const wrapper = shallow(<PropertyTree propertyIris={[objectTest1]}
       store={createStore([])}
       />);
-      // tslint:disable-next-line:no-console
-    console.log(wrapper.html());
-    expect(wrapper.find({ href: objectTest1.value })
+      // tslint:disable-next-line
+    console.log(wrapper.html(), localName(objectTest1));
+    expect(wrapper.find({ href: '#' + localName(objectTest1) })
     .getElements().length).toBeGreaterThan(0);
   });
 
-//   it('shows linked definition when found', () => {
-//     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[subjectTest5]}
-//       store={createStore([quadWithDefintionLiteral])}
-//       />);
-//     expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
-//   });
+  it('shows nested tree', () => {
+    const wrapper = mount(<PropertyTree propertyIris={[objectTest1]}
+      store={createStore([quadTree1, quadTree2, quadTree3])}
+      />);
+      // tslint:disable-next-line
+    console.log(wrapper.html(), quadTree1.object.value );
+    expect(wrapper.find({ href: quadTree2.object.value })
+    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadTree3.object.value })
+    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadTree1.object.value })
+    .getElements().length).toBeGreaterThan(0);
+  });
 
-//   it('shows linked subject definition when no linked definition found', () => {
-//     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[subjectTest5]}
-//       store={createStore([quadWithDCSubject, quadWithDefinition])}
-//       />);
-//     expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
-//   });
-//   it('shows super properties when linked', () => {
-//     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest2]}
-//       store={createStore([quadWithTargetClass, quadWithSuperProperty])}
-//       />);
-//     expect(wrapper.find({ href: quadWithSuperProperty.object.value })
-//     .getElements().length).toBeGreaterThan(0);
-//   });
+  it('shows multiple unlinked trees', () => {
+    const wrapper = mount(<PropertyTree propertyIris={[objectTest1]}
+      store={createStore([quadTree1, quadTree4, quadTree5])}
+      />);
+    expect(wrapper.find({ href: quadTree5.object.value })
+    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadTree4.object.value })
+    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadTree1.object.value })
+    .getElements().length).toBeGreaterThan(0);
+  });
 
-//   it('shows sub properties when found', () => {
-//     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest2]}
-//       store={createStore([quadWithSuperClass, quadWithSubProperty])}
-//       />);
-//     expect(wrapper.find({ href: quadWithSubProperty.subject.value })
-//     .getElements().length).toBeGreaterThan(0);
-//   });
-
-//   it('shows used in different class', () => {
-//     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
-//       store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5])}
-//       />);
-//     expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value })
-//     .getElements().length).toBeGreaterThan(0);
-//   });
-
-//   it('hides class when linked no SHACL TargetClass found', () => {
-//     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
-//       store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2])}
-//       />);
-//     expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value })
-//     .getElements().length).toEqual(0);
-//   });
-
-//   it('shows related class from path', () => {
-//     const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
-//       store={createStore([quadWithPathToObject2, quadWithClass])}
-//       />);
-//     expect(wrapper.find({ href: quadWithClass.object.value })
-//     .getElements().length).toBeGreaterThan(0);
-//   });
+  it('shows multiple trees with one nested', () => {
+    const wrapper = mount(<PropertyTree propertyIris={[objectTest1]}
+      store={createStore([quadTree1, quadTree4, quadTree3])}
+      />);
+    expect(wrapper.find({ href: quadTree3.object.value })
+    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadTree4.object.value })
+    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadTree1.object.value })
+    .getElements().length).toBeGreaterThan(0);
+  });
 });
 
 function createStore(quads: Quad[]) {
