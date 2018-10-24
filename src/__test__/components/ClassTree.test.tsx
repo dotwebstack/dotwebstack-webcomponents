@@ -16,15 +16,15 @@ describe('<ClassTree />', () => {
     .getElements().length).toBeGreaterThan(0);
   });
 
-  it('shows tree', () => {
+  it('shows nested tree, grandchildren collapsed', () => {
     const wrapper = mount(<ClassTree classIris={[objectTest1]}
       store={createStore([quadTree6, quadTree7, quadTree8])}
       />);
+    // tslint:disable-next-line:no-console
+    console.log(wrapper.html());
     expect(wrapper.find({ href: quadTree7.object.value })
     .getElements().length).toBeGreaterThan(0);
     expect(wrapper.find({ href: quadTree8.object.value })
-    .getElements().length).toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadTree6.object.value })
     .getElements().length).toBeGreaterThan(0);
   });
 

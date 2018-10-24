@@ -16,15 +16,13 @@ describe('<PropertyTree />', () => {
     .getElements().length).toBeGreaterThan(0);
   });
 
-  it('shows nested tree', () => {
+  it('shows nested tree, grandchildren collapsed', () => {
     const wrapper = mount(<PropertyTree propertyIris={[objectTest1]}
       store={createStore([quadTree1, quadTree2, quadTree3])}
       />);
     expect(wrapper.find({ href: quadTree2.object.value })
     .getElements().length).toBeGreaterThan(0);
     expect(wrapper.find({ href: quadTree3.object.value })
-    .getElements().length).toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadTree1.object.value })
     .getElements().length).toBeGreaterThan(0);
   });
 
