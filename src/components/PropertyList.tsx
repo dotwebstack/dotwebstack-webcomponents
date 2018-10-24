@@ -6,6 +6,7 @@ import Store from '../lib/Store';
 import { compareTerm, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
+import * as log from 'loglevel';
 
 type Props = {
   propertyIris: Term[],
@@ -48,7 +49,8 @@ const findUsedInClassIris = (propertyIri: Term, store: Store): Term[] =>
         const classIri = store.findObjects(classShapeIri, namedNode(SHACL + 'targetClass'))[0];
 
         if (classIri === undefined) {
-          throw new Error(`No class found for class shape ${classShapeIri.value}`);
+          log.warn(`No class found for class shape ${classShapeIri.value}`);
+          return [...acc];
         }
 
         return [
