@@ -37,9 +37,10 @@ The endpoint used by the backend to retrieve the data.
 ## &lt;PropertyList>
 `PropertyList` creates a list of properties.
 ```jsx
-  <PropertyList classIris={classIris}
-                propertyIris={propertyIris}  
-                store={store}>  
+  <PropertyList 
+    classIris={classIris} 
+    propertyIris={propertyIris} 
+    store={store}>  
   </PropertyList>
 ```
 ### `classIris`: `Term[]`
