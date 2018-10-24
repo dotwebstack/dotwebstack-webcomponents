@@ -3,6 +3,8 @@ import ConceptList from './components/ConceptList';
 import GraphContext from './components/GraphContext';
 import Resource from './components/Resource';
 import Vocabulary from './components/Vocabulary';
+import ClassTree from './components/ClassTree';
+import PropertyTree from './components/PropertyTree';
 
 type ComponentMap = {
   [name: string]: any;
@@ -13,6 +15,8 @@ const components: ComponentMap = {
   GraphContext,
   Resource,
   Vocabulary,
+  ClassTree,
+  PropertyTree,
 };
 
 const getComponent: any = (name: string) => {
@@ -29,4 +33,6 @@ export {
   GraphContext,
   Resource,
   Vocabulary,
+  ClassTree,
+  PropertyTree,
 };
