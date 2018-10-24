@@ -3,8 +3,7 @@ module.exports = {
     '<rootDir>/src'
   ],
   transform: {
-    '\\.tsx?$': 'ts-jest',
-    '\\.(css|less)$': '<rootDir>/src/__test__/styleMock.ts'
+    '\\.tsx?$': 'ts-jest'
   },
   moduleFileExtensions: [
     'ts',
@@ -21,5 +20,8 @@ module.exports = {
     '!**/*.d.ts',
     '!**/{examples,test}/**',
   ],
-  testURL: 'http://localhost/'
+  testURL: 'http://localhost/',
+  moduleNameMapper: {
+    '\\.(css|less)$': '<rootDir>/src/__test__/styleMock.ts'
+  }
 };
