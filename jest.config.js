@@ -4,7 +4,7 @@ module.exports = {
   ],
   transform: {
     '\\.tsx?$': 'ts-jest',
-    "\\.(css|less)$": "<rootDir>/src/__test__/styleMock.ts" 
+    '\\.(css|less)$': '<rootDir>/src/__test__/styleMock.ts'
   },
   moduleFileExtensions: [
     'ts',
