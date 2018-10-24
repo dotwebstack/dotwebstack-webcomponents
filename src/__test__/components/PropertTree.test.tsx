@@ -82,7 +82,7 @@ describe('<PropertyTree />', () => {
               store={createStore([quadTreeLoop5, quadTreeLoop6, quadTreeLoop7, quadTreeLoop8])}
             />,
       );
-    expect(wrapper.html()).toMatch('error');
+    expect(wrapper.html()).toMatch('Something went wrong');
   });
 });
 

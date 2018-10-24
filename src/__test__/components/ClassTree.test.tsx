@@ -86,7 +86,7 @@ describe('<ClassTree />', () => {
               store={createStore([quadTreeLoop1, quadTreeLoop2, quadTreeLoop3, quadTreeLoop4])}
             />,
       );
-    expect(wrapper.html()).toMatch('error');
+    expect(wrapper.html()).toMatch('Something went wrong');
   });
 });
 
