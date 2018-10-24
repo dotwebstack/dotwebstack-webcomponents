@@ -48,17 +48,23 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
 
   return (
     <div>
-      <div className="row">
+      <div className="row tree-section">
         <div className="col-md-6">
-          <ClassTree
-            store={store}
-            classIris={classIris}
-          />
+          <section>
+            <h2>{i18next.t('classes')}</h2>
+              <ClassTree
+                store={store}
+                classIris={classIris}
+              />
+          </section>
         </div>
         <div className="col-md-6">
-          <PropertyTree
-          store={store}
-          propertyIris={propertyIris}/>
+          <section>
+            <h2>{i18next.t('properties')}</h2>
+              <PropertyTree
+              store={store}
+              propertyIris={propertyIris}/>
+          </section>
         </div>
       </div>
       <div className="row">
