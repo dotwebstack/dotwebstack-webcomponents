@@ -17,7 +17,7 @@ The IRI's of the Properties which are represented.
 The data source.
 
 ## &lt;ConceptList>
-`ConceptList` creates list of Concepts. Component must be wrapped in a `GraphContext`.
+`ConceptList` creates list of Concepts.
 ```jsx
 <ConceptList store={store} />
 ```
@@ -27,30 +27,12 @@ The data source.
 ## &lt;GraphContext>
 `GraphContext` is a wrapper for all graph-based components.
 ```jsx
-<GraphContext src={endpoint}>
+<GraphContext src={src}>
   <SomeComponent />
 </GraphContext>
 ```
-### `endpoint`: `Iri`
+### `src`: `String`
 The endpoint used by the backend to retrieve the data.
-
-## &lt;ListIndex>
-`ListIndex` creates index of classes.
-```jsx
-<ListIndex resourceIris={propertyIris}> 
-</ListIndex>
-```
-### `classIris`: `Term[]`
-The IRI's of the Classes which are represented.
-### `propertyIris`: `Term[]`
-The IRI's of the Properties which are represented.
-
-## &lt;LoadingIndicator>
-`LoadingIndicator` indicates data is being loaded.
-```jsx
-<LoadingIndicator> 
-</LoadingIndicator>
-```
 
 ## &lt;PropertyList>
 `PropertyList` creates a list of properties.
@@ -88,8 +70,8 @@ A resource representation, which visualizes the vocabulary (classes & properties
 ```
 ### `store`: `Store`
 The data source.
-### `ontologyIRI`: `namedNode`
-The endpoint which is used by the backend to retrieve the data.
+### `ontologyIRI`: `NamedNode`
+The IRI of the ontology, used as a filter based on the `isDefinedBy` statements.
 
 
 
