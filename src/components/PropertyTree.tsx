@@ -3,7 +3,7 @@ import { Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { namedNode } from '@rdfjs/data-model';
 import { RDFS } from '../namespaces';
-import { compareTerm, getUrl, localName } from '../utils';
+import { compareTerm, isLocal, localName } from '../utils';
 import TreeView from 'react-treeview';
 
 require('react-treeview/react-treeview.css');
@@ -22,7 +22,8 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
   return parents.map((child, i) => {
     const children = store.findSubjects(namedNode(RDFS + 'subPropertyOf'), child).sort(compareTerm);
     if (children.length > 0) {
-      const label2 = <a href={getUrl(child, propertyIris)} title={localName(child)}>
+      const label2 = <a href={isLocal(child, propertyIris) ? `#${localName(child)}` : child.value}
+                        title={localName(child)}>
         <span className="node">{localName(child)}</span>
       </a>;
       return (
@@ -32,14 +33,15 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
       );
     }
     return (
-      <a href={getUrl(child, propertyIris)} key={child + '|' + i} title={localName(child)}>
+      <a href={isLocal(child, propertyIris) ? `#${localName(child)}` : child.value}
+         key={child + '|' + i} title={localName(child)}>
         <span style={leafStyling}>{localName(child)}</span>
       </a>
     );
   });
 };
 
-const PropertyTree: React.StatelessComponent<Props> = ({ propertyIris, store }) => {
+const PropertyTree: React.StatelessComponent<Props> = ({propertyIris, store}) => {
   try {
     const parents: Term[] = store.findRoots(propertyIris, [], 'subPropertyOf');
     return buildTree(parents, store, propertyIris, false);

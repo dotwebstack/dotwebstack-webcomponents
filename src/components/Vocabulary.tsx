@@ -10,7 +10,6 @@ import ListIndex from './ListIndex';
 import { OWL, RDF, RDFS } from '../namespaces';
 import { compareTerm } from '../utils';
 import i18next from '../i18n';
-import TermWrapper from './TermWrapper';
 import ClassTree from './ClassTree';
 import PropertyTree from './PropertyTree';
 
