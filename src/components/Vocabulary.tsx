@@ -10,6 +10,7 @@ import ListIndex from './ListIndex';
 import { OWL, RDF, RDFS } from '../namespaces';
 import { compareTerm } from '../utils';
 import i18next from '../i18n';
+import TermComponent from './Term';
 
 type Props = {
   store: Store,
@@ -46,6 +47,11 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
 
   return (
     <div className="row">
+      <div>
+        <section>
+          <TermComponent />
+        </section>
+      </div>
       <div className="col-md-3">
         <section>
           <h2>{i18next.t('classes')}</h2>

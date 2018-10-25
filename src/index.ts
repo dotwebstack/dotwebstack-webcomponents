@@ -1,9 +1,9 @@
 import './polyfills';
 import ConceptList from './components/ConceptList';
-import GraphContext, { graphContext } from './components/GraphContext';
 import Resource from './components/Resource';
 import renderComponent from './renderComponent';
 import Vocabulary from './components/Vocabulary';
+import GraphContext, { graphContext } from './components/GraphContext';
 
 type ComponentMap = {
   [name: string]: any;
