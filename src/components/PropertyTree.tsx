@@ -31,8 +31,8 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
       );
     }
     return (
-      <a href={getUrl(child, propertyIris)} key={child + '|' + i} title={localName(child)}>
-        <div className="info" style={leafStyling}>{localName(child)}</div>
+      <a href={getUrl(child, propertyIris)} className="info" key={child + '|' + i} title={localName(child)}>
+        <div style={leafStyling}>{localName(child)}</div>
       </a>);
   });
 };
