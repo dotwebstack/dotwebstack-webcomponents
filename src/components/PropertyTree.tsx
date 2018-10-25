@@ -14,7 +14,7 @@ type Props = {
 };
 
 const leafStyling = {
-  paddingLeft: '20px',
+  marginLeft: '20px',
 };
 
 const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapsed: boolean): any => {
