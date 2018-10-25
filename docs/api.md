@@ -1,63 +1,104 @@
 # API Reference
 
+## &lt;ClassList>
+`ClassList` creates list of classes with its properties
+```jsx
+  <ClassList
+    classIris={classIris}
+    propertyIris={propertyIris}
+    store={store}
+  />
+```
+### `classIris`: `Term[]`
+The IRI's of the Classes which are represented.
+### `propertyIris`: `Term[]`
+The IRI's of the Properties which are represented.
+### `store`: `Store`
+The data source.
+
+## &lt;ConceptList>
+`ConceptList` creates list of Concepts.
+```jsx
+  <ConceptList store={store} />
+```
+### `store`: `Store`
+The data source.
+
 ## &lt;GraphContext>
-
-`GraphContext` is a wrapper for alle graph-based components.
-
+`GraphContext` is a wrapper for all graph-based components.
 ```jsx
-<GraphContext src={iri}>
-  <SomeComponent />
-</GraphContext>
+  <GraphContext src={src}>
+    <SomeComponent />
+  </GraphContext>
 ```
+### `src`: `String`
+The endpoint used by the backend to retrieve the data.
 
-### `src`: `NamedNode | NamedNode[]`
-
-One or more resource IRIs, which will be dereferenced to retrieve the RDF data (media type: `application/ld+json`).
-
-## &lt;TupleContext>
-
-`TupleContext` is a wrapper for alle tuple-based components.
-
+## &lt;PropertyList>
+`PropertyList` creates a list of properties.
 ```jsx
-<TupleContext src={url}>
-  <SomeComponent />
-</TupleContext>
+  <PropertyList 
+    classIris={classIris} 
+    propertyIris={propertyIris} 
+    store={store}>  
+  </PropertyList>
 ```
-
-### `src`: `string`
-
-A single url, which will return a tuple result (media type: `application/sparql-results+json`).
+### `classIris`: `Term[]`
+The IRI's of the Classes which are represented.
+### `propertyIris`: `Term[]`
+The IRI's of the Properties which are represented.
+### `store`: `Store`
+The data source.
 
 ## &lt;Resource>
-
-The default resource representation, which provides a simple list of properties. Component must be wrapped within a `GraphContext`.
-
+`Resource` Creates the default Resource detail view, which provides a simple list of properties.
 ```jsx
-<Resource iri="http://example.org/foo" />
+  <Resource
+    resourceIri={resourceIri}  
+    store={store}
+  />
 ```
-
-### `iri`: `string`
-
-The IRI of the resource to be represented.
-
-### `graph`: `string` (optional)
-
-Default: empty (default graph)
-
-The named graph wherein the resource resides.
+### `resourceIri`: `Term`
+The IRI of the Resource which is represented.
+### `store`: `Store`
+The data source.
 
 ## &lt;Vocabulary>
-
-A resource representation, which visualizes the vocabulary (concepts & definitions). Component must be wrapped within a `GraphContext`.
-
+A resource representation, which visualizes the vocabulary (classes & properties). Component must be wrapped within a `GraphContext`.
 ```jsx
-<Vocabulary />
+  <Vocabulary store={store} ontology={ontologyIRI} />
+```
+### `store`: `Store`
+The data source.
+### `ontologyIRI`: `NamedNode`
+The IRI of the ontology, used as a filter based on the `isDefinedBy` statements.
+
+```jsx harmony
+<ClassTree
+  store={store}
+  classIris={classIris}
+/>
 ```
 
-## &lt;TupleList>
+### `store`: `Store`
+The data source.
 
-A list of tuples. Component must be wrapped within a `TupleContext`.
+### `classIris`: `Term[]`
+The IRI's of the Classes which are represented.
 
-```jsx
-<TupleList />
+## &lt;PropertyTree>
+
+`PropertyTree` is a Tree view representation of the Properties and its children.
+
+```jsx harmony
+<PropertyTree
+  store={store}
+  propertyIris={propertyIris}
+/>
 ```
+
+### `store`: `Store`
+The data source.
+
+### `propertyIris`: `Term[]`
+The IRI's of the Properties which are represented.

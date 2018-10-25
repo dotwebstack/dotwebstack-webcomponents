@@ -6,26 +6,9 @@ type ComponentProps = {
   [key: string]: any;
 };
 
-type ComponentConfiguration = {
-  name: string;
-  props?: ComponentProps;
-  children?: any[];
-};
-
-const createElement: any = (
-    name: string,
-    props?: ComponentProps,
-    children?: any[]) => {
+const renderComponent = (container: HTMLElement, name: string, props?: ComponentProps) => {
   const component = getComponent(name);
-
-  const childComponents = children ?
-    children.map(child => createElement(child.name, child.props, child.children)) : [];
-
-  return React.createElement(component, props, ...childComponents);
-};
-
-const renderComponent = (component: ComponentConfiguration, container: HTMLElement) => {
-  const element = createElement(component.name, component.props, component.children);
+  const element = React.createElement(component, props);
   ReactDOM.render(element, container);
 };
 

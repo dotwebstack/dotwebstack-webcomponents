@@ -1,26 +1,27 @@
 import './polyfills';
-import GraphContext from './containers/GraphContext';
-import TupleContext from './containers/TupleContext';
-import Label from './containers/Label';
-import TupleList from './containers/TupleList';
-import TupleListTable from './components/TupleListTable';
-import Resource from './containers/Resource';
-import Vocabulary from './containers/Vocabulary';
-import DataFactory from './DataFactory';
+import ConceptList from './components/ConceptList';
+import GraphContext, { graphContext } from './components/GraphContext';
+import Resource from './components/Resource';
 import renderComponent from './renderComponent';
-import Concepts from './components/Concepts';
+import Vocabulary from './components/Vocabulary';
+import PropertyList from './components/PropertyList';
+import ClassList from './components/ClassList';
+import ClassTree from './components/ClassTree';
+import PropertyTree from './components/PropertyTree';
 
 type ComponentMap = {
   [name: string]: any;
 };
 
 const components: ComponentMap = {
+  ConceptList,
   GraphContext,
-  TupleContext,
-  Label,
-  TupleList,
   Resource,
   Vocabulary,
+  PropertyList,
+  ClassList,
+  ClassTree,
+  PropertyTree,
 };
 
 const getComponent: any = (name: string) => {
@@ -32,15 +33,15 @@ const getComponent: any = (name: string) => {
 };
 
 export {
-  GraphContext,
-  TupleContext,
-  Label,
-  TupleList,
-  TupleListTable,
-  Resource,
-  Concepts,
-  Vocabulary,
-  DataFactory,
-  renderComponent,
   getComponent,
+  renderComponent,
+  graphContext,
+  ConceptList,
+  GraphContext,
+  Resource,
+  Vocabulary,
+  ClassTree,
+  PropertyTree,
+  PropertyList,
+  ClassList,
 };

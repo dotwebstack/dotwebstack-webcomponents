@@ -1,43 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
-import { Container, Nav, Navbar, NavItem } from 'reactstrap';
-import ResourceExample from './ResourceExample';
-import TupleListExample from './TupleListExample';
+import { I18nextProvider } from 'react-i18next';
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import VocabularyExample from './VocabularyExample';
+import i18next from '../i18n';
 
 const App = () => (
-  <HashRouter>
-    <div>
-      <header>
-        <Navbar color="light">
-          <Container>
-            <Nav>
-              <NavItem>
-                <Link to="/resource" className="nav-link">Resource</Link>
-              </NavItem>
-              <NavItem>
-                <Link to="/tuple-list" className="nav-link">Tuple List</Link>
-              </NavItem>
-              <NavItem>
-                <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
-              </NavItem>
-            </Nav>
-          </Container>
-        </Navbar>
-      </header>
-      <main className="mt-4">
-        <Container fluid>
-          <Switch>
-            <Route exact path="/resource" component={ResourceExample} />
-            <Route exact path="/tuple-list" component={TupleListExample} />
-            <Route exact path="/vocabulary" component={VocabularyExample} />
-            <Redirect from="/" to="/resource" />
-          </Switch>
-        </Container>
-      </main>
-    </div>
-  </HashRouter>
+  <I18nextProvider i18n={i18next}>
+    <BrowserRouter>
+      <div>
+        <header>
+          <div className="navbar bg-light">
+            <div className="container">
+              <ul className="nav">
+                <li className="nav-item">
+                  <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+        <main className="mt-4">
+          <div className="container">
+            <Switch>
+              <Route exact path="/vocabulary" component={VocabularyExample} />
+              <Redirect from="/" to="/vocabulary" />
+            </Switch>
+          </div>
+        </main>
+      </div>
+    </BrowserRouter>
+  </I18nextProvider>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

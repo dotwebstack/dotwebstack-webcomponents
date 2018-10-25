@@ -16,13 +16,13 @@ The following tools are required:
 These webcomponents can be installed using NPM:
 
 ```bash
-npm install --save @dotwebstack/webcomponents
+npm install --save @dotwebstack/webcomponents @rdfjs/data-model
 ```
 
 And of course, also with Yarn:
 
 ```bash
-yarn add @dotwebstack/webcomponents
+yarn add @dotwebstack/webcomponents @rdfjs/data-model
 ```
 
 ## Documentation
@@ -35,15 +35,17 @@ Here is an example of using webcomponents within a React application:
 
 ```jsx
 import React from 'react';
-import { DataFactory, GraphContext, Resource } from '@dotwebstack/webcomponents';
+import { namedNode } from '@rdfjs/data-model';
+import { GraphContext, Vocabulary } from '@dotwebstack/webcomponents';
 
-const dataFactory = new DataFactory();
-const resource = dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/ligplaats/0003020000000004');
-const vocab = dataFactory.namedNode('https://bag.basisregistraties.overheid.nl/def/bag');
+const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
+const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
 
 const App = () => (
-  <GraphContext src={[resource, vocab]}>
-    <Resource iri={resource} />
+  <GraphContext src={endpoint}>
+    {(store) => (
+      <Vocabulary store={store} ontology={ontologyIRI} />
+    )}
   </GraphContext>
 );
 
@@ -55,30 +57,27 @@ ReactDOM.render(<App />, document.getElementById('root'));
 Here is an example of using webcomponents in a non-React application:
 
 ```js
-import { DataFactory, renderComponent } from '@dotwebstack/webcomponents';
+import { namedNode } from '@rdfjs/data-model';
+import { renderComponent } from '@dotwebstack/webcomponents';
 
 // Alternative method when not using ES6 modules:
-// const DataFactory = require('@dotwebstack/webcomponents').DataFactory;
+// const namedNode = require('@rdfjs/data-model').namedNode;
 // const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
 
-const dataFactory = new DataFactory();
-const resource = dataFactory.namedNode('http://bag.basisregistraties.overheid.nl/bag/id/ligplaats/0003020000000004');
-const vocab = dataFactory.namedNode('https://bag.basisregistraties.overheid.nl/def/bag');
+const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
+const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
 
-renderComponent({
-  name: 'GraphContext',
-  props: {
-    src: [resource, vocab],
-  },
-  children: [
-    {
-      name: 'Resource',
-      props: {
-        iri: resource,
+graphContext(endpoint)
+  .then((store) => {
+    renderComponent(
+      document.getElementById('root'),
+      'Vocabulary',
+      {
+        store: store,
+        iri: ontologyIRI,
       },
-    },
-  ],
-}, document.getElementById('root'));
+    );
+  });
 ```
 
 ## Development
