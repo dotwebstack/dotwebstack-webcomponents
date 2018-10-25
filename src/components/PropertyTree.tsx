@@ -15,6 +15,7 @@ type Props = {
 
 const leafStyling = {
   marginLeft: '20px',
+  display: 'block',
 };
 
 const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapsed: boolean): any => {
@@ -31,9 +32,10 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
       );
     }
     return (
-      <a href={getUrl(child, propertyIris)} className="info" key={child + '|' + i} title={localName(child)}>
-        <div style={leafStyling}>{localName(child)}</div>
-      </a>);
+      <a href={getUrl(child, propertyIris)} key={child + '|' + i} title={localName(child)}>
+        <span style={leafStyling}>{localName(child)}</span>
+      </a>
+    );
   });
 };
 
