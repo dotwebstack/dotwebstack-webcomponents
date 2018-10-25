@@ -6,6 +6,7 @@ import Store from '../lib/Store';
 import { compareTerm, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
+import TermWrapper from './TermWrapper';
 
 type Props = {
   classIris: Term[],
@@ -75,14 +76,14 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
   );
 };
 
-const determineHref = (termList: Term[], toFindTerm: Term) : string => {
+export const determineHref = (termList: Term[], toFindTerm: Term): string => {
   if (termList.some(term => term.equals(toFindTerm))) {
     return '#' + localName(toFindTerm);
   }
   return toFindTerm.value;
 };
 
-const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
+const ClassList: React.StatelessComponent<Props> = ({classIris, propertyIris, store}) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
       const definition = findDefinition(classIri, store);
@@ -102,70 +103,62 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
             )}
             <table className="table">
               <tbody>
-                {superClassIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('subclass')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {superClassIris.map(superClassIri => (
-                          <li key={superClassIri.value}>
-                            <a href={determineHref(classIris, superClassIri)}>
-                              {localName(superClassIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {subClassIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('hasSubclasses')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {subClassIris.map(subClassIri => (
-                          <li key={subClassIri.value}>
-                            <a href={determineHref(classIris, subClassIri)}>
-                              {localName(subClassIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {classPropertyIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('properties')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {propertyIris.map(propertyIri => (
-                          <li key={propertyIri.value}>
-                            <a href={determineHref(propertyIris, propertyIri)}>
-                              {localName(propertyIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {inheritedPropertyIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('inherited')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {inheritedPropertyIris.map(inheritedPropertyIri => (
-                          <li key={inheritedPropertyIri.value}>
-                            <a href={determineHref(propertyIris, inheritedPropertyIri)}>
-                              {localName(inheritedPropertyIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
+              {superClassIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('subclass')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {superClassIris.map(superClassIri => (
+                        <li key={superClassIri.value}>
+                          <TermWrapper value={superClassIri}/>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {subClassIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('hasSubclasses')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {subClassIris.map(subClassIri => (
+                        <li key={subClassIri.value}>
+                          <TermWrapper value={subClassIri}/>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {classPropertyIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('properties')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {propertyIris.map(propertyIri => (
+                        <li key={propertyIri.value}>
+                          <TermWrapper value={propertyIri}/>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {inheritedPropertyIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('inherited')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {inheritedPropertyIris.map(inheritedPropertyIri => (
+                        <li key={inheritedPropertyIri.value}>
+                          <TermWrapper value={inheritedPropertyIri}/>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
               </tbody>
             </table>
           </li>

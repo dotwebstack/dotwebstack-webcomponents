@@ -7,6 +7,7 @@ import { compareTerm, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import * as log from 'loglevel';
+import TermWrapper from './TermWrapper';
 
 type Props = {
   propertyIris: Term[],
@@ -107,9 +108,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                         <ol className="list-unstyled">
                           {superPropertyIris.map(superPropertyIri => (
                             <li key={superPropertyIri.value}>
-                              <a href={determineHref(propertyIris, superPropertyIri)}>
-                                {localName(superPropertyIri)}
-                                </a>
+                              <TermWrapper value={superPropertyIri}/>
                             </li>
                           ))}
                         </ol>
@@ -123,9 +122,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                         <ol className="list-unstyled">
                           {subPropertyIris.map(subPropertyIri => (
                             <li key={subPropertyIri.value}>
-                              <a href={determineHref(propertyIris, subPropertyIri)}>
-                                {localName(subPropertyIri)}
-                                </a>
+                              <TermWrapper value={subPropertyIri}/>
                             </li>
                           ))}
                         </ol>
@@ -139,9 +136,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                         <ol className="list-unstyled">
                           {usedInClassIris.map(propertyClassIris => (
                             <li key={propertyClassIris.value}>
-                              <a href={determineHref(classIris, propertyClassIris)}>
-                                {localName(propertyClassIris)}
-                              </a>
+                              <TermWrapper value={propertyClassIris}/>
                             </li>
                           ))}
                         </ol>
@@ -152,9 +147,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                     <tr>
                       <th scope="row">{i18next.t('relatedClasses')}:</th>
                       <td>
-                        <a href={determineHref(classIris, relatedClassIri)}>
-                          {localName(relatedClassIri)}
-                          </a>
+                        <TermWrapper value={relatedClassIri}/>
                       </td>
                     </tr>
                   )}
