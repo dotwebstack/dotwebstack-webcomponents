@@ -6,6 +6,8 @@ import renderComponent from './renderComponent';
 import Vocabulary from './components/Vocabulary';
 import PropertyList from './components/PropertyList';
 import ClassList from './components/ClassList';
+import ClassTree from './components/ClassTree';
+import PropertyTree from './components/PropertyTree';
 
 type ComponentMap = {
   [name: string]: any;
@@ -18,6 +20,8 @@ const components: ComponentMap = {
   Vocabulary,
   PropertyList,
   ClassList,
+  ClassTree,
+  PropertyTree,
 };
 
 const getComponent: any = (name: string) => {
@@ -36,6 +40,8 @@ export {
   GraphContext,
   Resource,
   Vocabulary,
+  ClassTree,
+  PropertyTree,
   PropertyList,
   ClassList,
 };

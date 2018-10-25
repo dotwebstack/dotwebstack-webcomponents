@@ -12,16 +12,18 @@ function createStore(quads: Quad[]) {
 describe('<Resource />', () => {
 
   it('shows predicates and objects linked to given resourceIRI', () => {
-    const wrapper = shallow(<Resource resourceIri={subjectTypeRdf}
-      store={createStore([quadWith1, quadWithPredicateObject2])}
-    />);
-    expect(wrapper.find({ href: quadWith1.predicate.value })
-    .getElements().length).toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadWith1.object.value })
-    .getElements().length).toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadWithPredicateObject2.predicate.value })
-    .getElements().length).toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadWithPredicateObject2.object.value })
-    .getElements().length).toBeGreaterThan(0);
+    const wrapper = shallow(
+      <Resource
+        resourceIri={subjectTypeRdf}
+        store={createStore([quadWith1, quadWithPredicateObject2])}
+      />);
+    expect(wrapper.find({ href: quadWith1.predicate.value }).getElements().length)
+      .toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWith1.object.value }).getElements().length)
+      .toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWithPredicateObject2.predicate.value }).getElements().length)
+      .toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWithPredicateObject2.object.value }).getElements().length)
+      .toBeGreaterThan(0);
   });
 });

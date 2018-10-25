@@ -3,7 +3,7 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, localName } from '../utils';
+import { compareTerm, getUrl, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import * as log from 'loglevel';
@@ -74,13 +74,6 @@ const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined 
       undefined,
     );
 
-const determineHref = (termList: Term[], toFindTerm: Term) : string => {
-  if (termList.some(term => term.equals(toFindTerm))) {
-    return '#' + localName(toFindTerm);
-  }
-  return toFindTerm.value;
-};
-
 const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
@@ -107,7 +100,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                         <ol className="list-unstyled">
                           {superPropertyIris.map(superPropertyIri => (
                             <li key={superPropertyIri.value}>
-                              <a href={determineHref(propertyIris, superPropertyIri)}>
+                              <a href={getUrl(superPropertyIri, propertyIris)}>
                                 {localName(superPropertyIri)}
                                 </a>
                             </li>
@@ -123,7 +116,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                         <ol className="list-unstyled">
                           {subPropertyIris.map(subPropertyIri => (
                             <li key={subPropertyIri.value}>
-                              <a href={determineHref(propertyIris, subPropertyIri)}>
+                              <a href={getUrl(subPropertyIri, propertyIris)}>
                                 {localName(subPropertyIri)}
                                 </a>
                             </li>
@@ -139,7 +132,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                         <ol className="list-unstyled">
                           {usedInClassIris.map(propertyClassIris => (
                             <li key={propertyClassIris.value}>
-                              <a href={determineHref(classIris, propertyClassIris)}>
+                              <a href={getUrl(propertyClassIris, classIris)}>
                                 {localName(propertyClassIris)}
                               </a>
                             </li>
@@ -152,7 +145,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                     <tr>
                       <th scope="row">{i18next.t('relatedClasses')}:</th>
                       <td>
-                        <a href={determineHref(classIris, relatedClassIri)}>
+                        <a href={getUrl(relatedClassIri, classIris)}>
                           {localName(relatedClassIri)}
                           </a>
                       </td>

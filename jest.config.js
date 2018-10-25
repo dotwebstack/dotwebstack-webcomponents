@@ -11,6 +11,7 @@ module.exports = {
     'js',
     'jsx',
     'json',
+    'css',
   ],
   testRegex: '\\.test\\.tsx?$',
   setupTestFrameworkScriptFile: '<rootDir>/src/test/setupTests.ts',
@@ -19,5 +20,8 @@ module.exports = {
     '!**/*.d.ts',
     '!**/{examples,test}/**',
   ],
-  testURL: 'http://localhost/'
+  testURL: 'http://localhost/',
+  moduleNameMapper: {
+    '\\.(css|less)$': '<rootDir>/src/__test__/styleMock.ts'
+  }
 };

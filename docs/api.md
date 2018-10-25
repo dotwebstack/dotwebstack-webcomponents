@@ -73,6 +73,32 @@ The data source.
 ### `ontologyIRI`: `NamedNode`
 The IRI of the ontology, used as a filter based on the `isDefinedBy` statements.
 
+```jsx harmony
+<ClassTree
+  store={store}
+  classIris={classIris}
+/>
+```
 
+### `store`: `Store`
+The data source.
 
+### `classIris`: `Term[]`
+The IRI's of the Classes which are represented.
 
+## &lt;PropertyTree>
+
+`PropertyTree` is a Tree view representation of the Properties and its children.
+
+```jsx harmony
+<PropertyTree
+  store={store}
+  propertyIris={propertyIris}
+/>
+```
+
+### `store`: `Store`
+The data source.
+
+### `propertyIris`: `Term[]`
+The IRI's of the Properties which are represented.

@@ -10,6 +10,8 @@ import ListIndex from './ListIndex';
 import { OWL, RDF, RDFS } from '../namespaces';
 import { compareTerm } from '../utils';
 import i18next from '../i18n';
+import ClassTree from './ClassTree';
+import PropertyTree from './PropertyTree';
 
 type Props = {
   store: Store,
@@ -45,32 +47,54 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
   ).sort(compareTerm);
 
   return (
-    <div className="row">
-      <div className="col-md-3">
-        <section>
-          <h2>{i18next.t('classes')}</h2>
-          <ListIndex resourceIris={classIris} />
-        </section>
-        <section>
-          <h2>{i18next.t('properties')}</h2>
-          <ListIndex resourceIris={propertyIris} />
-        </section>
+    <div>
+      <div className="row tree-section">
+        <div className="col-md-6">
+          <section>
+            <h2>{i18next.t('classes')}</h2>
+              <ClassTree
+                store={store}
+                classIris={classIris}
+              />
+          </section>
+        </div>
+        <div className="col-md-6">
+          <section>
+            <h2>{i18next.t('properties')}</h2>
+              <PropertyTree
+                store={store}
+                propertyIris={propertyIris}
+              />
+          </section>
+        </div>
       </div>
-      <div className="col-md-9">
-        <section>
-          <ClassList
-            classIris={classIris}
-            propertyIris={propertyIris}
-            store={store}
-          />
-        </section>
-        <section>
-          <PropertyList
-            propertyIris={propertyIris}
-            classIris={classIris}
-            store={store}
-          />
-        </section>
+      <div className="row">
+        <div className="col-md-3">
+          <section>
+            <h2>{i18next.t('classes')}</h2>
+            <ListIndex resourceIris={classIris}/>
+          </section>
+          <section>
+            <h2>{i18next.t('properties')}</h2>
+            <ListIndex resourceIris={propertyIris}/>
+          </section>
+        </div>
+        <div className="col-md-9">
+          <section>
+            <ClassList
+              classIris={classIris}
+              propertyIris={propertyIris}
+              store={store}
+            />
+          </section>
+          <section>
+            <PropertyList
+              propertyIris={propertyIris}
+              classIris={classIris}
+              store={store}
+            />
+          </section>
+        </div>
       </div>
     </div>
   );

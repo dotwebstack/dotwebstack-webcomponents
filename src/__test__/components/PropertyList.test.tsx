@@ -3,72 +3,98 @@ import { Quad } from 'rdf-js';
 import React from 'react';
 import PropertyList from '../../components/PropertyList';
 import Store from '../../lib/Store';
-import { objectTest1, objectTest2, quadWithDCSubject,
+import {
+  objectTest1, objectTest2, quadWithDCSubject,
   quadWithDefinition, quadWithDefintionLiteral, quadWithSubProperty,
   quadWithSuperClass, quadWithSuperProperty, quadWithTargetClass, subjectTest5,
   quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5,
-  quadWithClass } from '../TestData';
+  quadWithClass,
+} from '../TestData';
 
 describe('<PropertyList />', () => {
   it('shows property IRI when nothing else provided', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
-      store={createStore([])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([])}
       />);
-    expect(wrapper.find({ href: objectTest1.value })
-    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: objectTest1.value }).getElements().length)
+      .toBeGreaterThan(0);
   });
 
   it('shows linked definition when found', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[subjectTest5]}
-      store={createStore([quadWithDefintionLiteral])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[subjectTest5]}
+        store={createStore([quadWithDefintionLiteral])}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
   });
 
   it('shows linked subject definition when no linked definition found', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[subjectTest5]}
-      store={createStore([quadWithDCSubject, quadWithDefinition])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[subjectTest5]}
+        store={createStore([quadWithDCSubject, quadWithDefinition])}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
   });
   it('shows super properties when linked', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest2]}
-      store={createStore([quadWithTargetClass, quadWithSuperProperty])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest2]}
+        store={createStore([quadWithTargetClass, quadWithSuperProperty])}
       />);
-    expect(wrapper.find({ href: quadWithSuperProperty.object.value })
-    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWithSuperProperty.object.value }).getElements().length)
+      .toBeGreaterThan(0);
   });
 
   it('shows sub properties when found', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest2]}
-      store={createStore([quadWithSuperClass, quadWithSubProperty])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest2]}
+        store={createStore([quadWithSuperClass, quadWithSubProperty])}
       />);
-    expect(wrapper.find({ href: quadWithSubProperty.subject.value })
-    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWithSubProperty.subject.value }).getElements().length)
+      .toBeGreaterThan(0);
   });
 
   it('shows used in different class', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
-      store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5])}
       />);
-    expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value })
-    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value }).getElements().length)
+      .toBeGreaterThan(0);
   });
 
   it('hides class when linked no SHACL TargetClass found', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
-      store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2])}
       />);
-    expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value })
-    .getElements().length).toEqual(0);
+    expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value }).getElements().length)
+      .toEqual(0);
   });
 
   it('shows related class from path', () => {
-    const wrapper = shallow(<PropertyList classIris={[]} propertyIris={[objectTest1]}
-      store={createStore([quadWithPathToObject2, quadWithClass])}
+    const wrapper = shallow(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithPathToObject2, quadWithClass])}
       />);
-    expect(wrapper.find({ href: quadWithClass.object.value })
-    .getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWithClass.object.value }).getElements().length)
+      .toBeGreaterThan(0);
   });
 });
 
