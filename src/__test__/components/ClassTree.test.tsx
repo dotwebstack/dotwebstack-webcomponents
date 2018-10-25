@@ -13,8 +13,8 @@ describe('<ClassTree />', () => {
   it('shows name when propertyIri and empty store provided', () => {
     const wrapper = shallow(
       <ClassTree
-              classIris={[objectTest1]}
-              store={createStore([])}
+             classIris={[objectTest1]}
+             store={createStore([])}
             />,
       );
     expect(wrapper.find({ href: '#' + localName(objectTest1) }).getElements().length)
@@ -24,8 +24,8 @@ describe('<ClassTree />', () => {
   it('shows nested tree, grandchildren collapsed', () => {
     const wrapper = mount(
       <ClassTree
-              classIris={[objectTest1]}
-              store={createStore([quadTree6, quadTree7, quadTree8])}
+             classIris={[objectTest1]}
+             store={createStore([quadTree6, quadTree7, quadTree8])}
             />,
       );
     // tslint:disable-next-line:no-console
@@ -39,8 +39,8 @@ describe('<ClassTree />', () => {
   it('shows multiple trees', () => {
     const wrapper = mount(
       <ClassTree
-              classIris={[objectTest1]}
-              store={createStore([quadTree6, quadTree9, quadTree10])}
+             classIris={[objectTest1]}
+             store={createStore([quadTree6, quadTree9, quadTree10])}
           />,
       );
     expect(wrapper.find({ href: quadTree10.object.value }).getElements().length)
@@ -54,8 +54,8 @@ describe('<ClassTree />', () => {
   it('shows multiple trees with one nested', () => {
     const wrapper = mount(
       <ClassTree
-              classIris={[objectTest1]}
-              store={createStore([quadTree6, quadTree9, quadTree8])}
+             classIris={[objectTest1]}
+             store={createStore([quadTree6, quadTree9, quadTree8])}
             />,
       );
     expect(wrapper.find({ href: quadTree8.object.value }).getElements().length)
@@ -69,8 +69,8 @@ describe('<ClassTree />', () => {
   it('handles multiple class IRI trees', () => {
     const wrapper = mount(
       <ClassTree
-              classIris={[objectTest1, objectTest2]}
-              store={createStore([quadTree7, quadTree10])}
+             classIris={[objectTest1, objectTest2]}
+             store={createStore([quadTree7, quadTree10])}
             />,
       );
     expect(wrapper.find({ href: quadTree7.object.value }).getElements().length)
@@ -82,8 +82,8 @@ describe('<ClassTree />', () => {
   it('shows error on looped tree', () => {
     const wrapper = mount(
       <ClassTree
-              classIris={[objectTest1]}
-              store={createStore([quadTreeLoop1, quadTreeLoop2, quadTreeLoop3, quadTreeLoop4])}
+             classIris={[objectTest1]}
+             store={createStore([quadTreeLoop1, quadTreeLoop2, quadTreeLoop3, quadTreeLoop4])}
             />,
       );
     expect(wrapper.html()).toMatch('Something went wrong');

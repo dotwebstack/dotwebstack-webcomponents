@@ -62,8 +62,9 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
           <section>
             <h2>{i18next.t('properties')}</h2>
               <PropertyTree
-              store={store}
-              propertyIris={propertyIris}/>
+                store={store}
+                propertyIris={propertyIris}
+              />
           </section>
         </div>
       </div>
