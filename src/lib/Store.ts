@@ -1,5 +1,8 @@
 import { Quad, Term } from 'rdf-js';
 import { reduce } from 'ramda';
+import { isNamedNode, isUnique } from '../utils';
+import { namedNode } from '@rdfjs/data-model';
+import { RDFS } from '../namespaces';
 
 type IndexMap = {
   [termValue: string]: {
@@ -84,5 +87,27 @@ export default class Store {
       [] as Term[],
       predicates,
     );
+  }
+
+  findSuperIris = (iri: Term, type: string): Term[] =>
+    this
+      .findObjects(iri, namedNode(RDFS + type))
+      .filter(isNamedNode)
+
+  findSubIris = (iri: Term, type: string): Term[] =>
+    this
+      .findSubjects(namedNode(RDFS + type), iri)
+      .filter(isNamedNode)
+
+  findRoots = (terms: Term[], rootTerms: Term[], type: string): Term[] => {
+    terms.forEach((term) => {
+      const parents = this.findSuperIris(term, type);
+      if (parents.length === 0 && isUnique(term, rootTerms)) {
+        rootTerms.push(term);
+      } else {
+        this.findRoots(parents, rootTerms, type);
+      }
+    });
+    return rootTerms;
   }
 }

@@ -6,11 +6,12 @@ import i18next from '../../i18n';
 describe('<GraphContext />', () => {
 
   it('shows loading indicator', () => {
-    const wrapper = mount(<GraphContext src={''}>
-    {store => (
-          <React.Component store={store} />
+    const wrapper = mount(
+      <GraphContext src={''}>
+        {store => (
+          <React.Component store={store}/>
         )}
-    </GraphContext>);
+      </GraphContext>);
     wrapper.setState({ loading: true });
     expect(wrapper.html()).toMatch(i18next.t('loadData'));
   });

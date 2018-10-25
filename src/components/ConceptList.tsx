@@ -1,9 +1,8 @@
 import React from 'react';
 import { namedNode } from '@rdfjs/data-model';
-import { Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { RDF, RDFS, SKOS } from '../namespaces';
-import { localName } from '../utils';
+import { getUrl, localName } from '../utils';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import i18next from '../i18n';
 
@@ -13,13 +12,6 @@ type Props = {
 
 const ConceptList: React.StatelessComponent<Props> = ({ store }) => {
   const conceptIris = store.findSubjects(namedNode(RDF + 'type'), namedNode(SKOS + 'Concept'));
-
-  const determineHref = (toFindTerm: Term) : string => {
-    if (conceptIris.some(term => term.equals(toFindTerm))) {
-      return `#${localName(toFindTerm)}`;
-    }
-    return toFindTerm.value;
-  };
 
   return (
     <section>
@@ -50,7 +42,7 @@ const ConceptList: React.StatelessComponent<Props> = ({ store }) => {
                                 const label = store.findObjects(broaderConceptIri, namedNode(RDFS + 'label'))[0];
                                 return (
                                   <li key={broaderConceptIri.value}>
-                                    <a href={determineHref(broaderConceptIri)}>
+                                    <a href={getUrl(broaderConceptIri, conceptIris)}>
                                       {label ? label.value : localName(broaderConceptIri)}
                                     </a>
                                   </li>
@@ -69,7 +61,7 @@ const ConceptList: React.StatelessComponent<Props> = ({ store }) => {
                                 const label = store.findObjects(relatedConceptIri, namedNode(RDFS + 'label'))[0];
                                 return (
                                   <li key={relatedConceptIri.value}>
-                                    <a href={determineHref(relatedConceptIri)}>
+                                    <a href={getUrl(relatedConceptIri, conceptIris)}>
                                       {label ? label.value : localName(relatedConceptIri)}
                                     </a>
                                   </li>
