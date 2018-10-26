@@ -1,6 +1,7 @@
 import React from 'react';
 import LoadingIndicator from './LoadingIndicator';
 import { TupleResult, SparqlResponse } from '../lib/TupleResult';
+import { fetchSparqlResult } from '../utils';
 
 type Props = {
   src: string ,
@@ -19,14 +20,18 @@ class TupleContext extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    fetch(this.props.src, { headers: { Accept: 'application/sparql-results+json' } })
-    .then(response => response.json())
-    .then((data) => {
-      this.setState({
-        tupleResult: new TupleResult(data as SparqlResponse),
-        loading: false,
+    fetchSparqlResult(this.props.src)
+      .then((data) => {
+        this.setState({
+          tupleResult: new TupleResult(data as SparqlResponse),
+          loading: false,
+        });
+      }).catch((e) => {
+        log.error(e);
+        this.setState({
+          loading: false,
+        });
       });
-    });
   }
 
   render() {
@@ -39,5 +44,12 @@ class TupleContext extends React.Component<Props, State> {
     return this.props.children(this.state.tupleResult);
   }
 }
+
+export const tupleContext = async (src: string): Promise<TupleResult> => {
+  return fetchSparqlResult(src)
+    .then((data) => {
+      return new TupleResult(data as SparqlResponse);
+    });
+};
 
 export default TupleContext;

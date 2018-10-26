@@ -22,7 +22,7 @@ export class TupleResult {
   constructor(dataResponse?: SparqlResponse) {
     if (dataResponse) {
       this.bindingSet = this.setBindingSet(dataResponse);
-      this.bindingNames = this.setBindingNames(dataResponse);
+      this.bindingNames = dataResponse.head.vars;
     }
   }
 
@@ -36,10 +36,10 @@ export class TupleResult {
     });
   }
 
-  setBindingNames(dataResponse: SparqlResponse): String[] {
-    return dataResponse.head.vars;
+  getBindingNames() {
+    return this.bindingNames;
   }
-
-  getBindingNames() { this.bindingNames; }
-  getBindingSets() { this.bindingSet; }
+  getBindingSets() {
+    return this.bindingSet;
+  }
 }
