@@ -34,6 +34,17 @@ The data source.
 ### `src`: `String`
 The endpoint used by the backend to retrieve the data.
 
+## &lt;TupleContext>
+`TupleContext` is a wrapper for all SPARQL Query Result using components.
+```jsx
+  <TupleContext src={src}>
+    <SomeComponent />
+  </TupleContext>
+```
+### `src`: `String`
+The endpoint used by the backend to retrieve the Sparql response.
+
+
 ## &lt;PropertyList>
 `PropertyList` creates a list of properties.
 ```jsx
