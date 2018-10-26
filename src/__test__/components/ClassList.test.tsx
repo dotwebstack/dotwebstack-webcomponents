@@ -4,13 +4,26 @@ import React from 'react';
 import ClassList from '../../components/ClassList';
 import Store from '../../lib/Store';
 import {
-  objectTest1, objectTest2, quadWithLabelLiteral, quadWithPredicate2,
-  quadWithSuperClass, objectTest4, subjectTest5, quadWithSubClass, quadWithTargetClass,
-  quadWithProperty, quadWithPath, quadWithReversedTargetClass,
-  quadWithReversedProperty, quadWithPathToObject2, quadWithDefintionLiteral,
-  quadWithDCSubject, quadWithDefinition,
+  objectTest1,
+  objectTest2,
+  objectTest4,
+  quadWithDCSubject,
+  quadWithDefinition,
+  quadWithDefintionLiteral,
+  quadWithLabelLiteral,
+  quadWithPath,
+  quadWithPathToObject2,
+  quadWithPredicate2,
+  quadWithProperty,
+  quadWithReversedProperty,
+  quadWithReversedTargetClass,
+  quadWithSubClass,
+  quadWithSuperClass,
+  quadWithTargetClass,
+  subjectTest5,
 } from '../TestData';
 import { localName } from '../../utils';
+import TermWrapper from '../../components/TermWrapper';
 
 describe('<ClassList />', () => {
   it('shows class IRI when nothing else provided', () => {
@@ -91,6 +104,26 @@ describe('<ClassList />', () => {
       />);
     expect(wrapper.find({ href: quadWithPathToObject2.object.value }).getElements().length)
       .toBeGreaterThan(0);
+  });
+  it('constructs local link', () => {
+    const wrapper = shallow(
+      <TermWrapper
+        term={objectTest1}
+        local={true}
+      />);
+    expect(wrapper.html()).toMatch('#test1');
+    expect(wrapper.find({ href: '#test1' }).getElements().length).toBeGreaterThan(0);
+    expect(wrapper.text()).toEqual('test1');
+  });
+  it('constructs remote link', () => {
+    const wrapper = shallow(
+      <TermWrapper
+        term={objectTest1}
+        local={false}
+      />);
+    expect(wrapper.html()).toMatch('http://example.org/test1');
+    expect(wrapper.find({ href: 'http://example.org/test1' }).getElements().length).toBeGreaterThan(0);
+    expect(wrapper.text()).toEqual('test1');
   });
 });
 
