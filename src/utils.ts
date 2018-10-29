@@ -1,6 +1,7 @@
 import { Term } from 'rdf-js';
 import { last } from 'ramda';
 import { SparqlResponse } from './lib/TupleResult';
+import log from 'loglevel';
 
 export const localName = (term: Term) => last(term.value.split(/[\#\/]/)) || term.value;
 
@@ -14,5 +15,8 @@ export const getUrl = (term: Term, list: Term[]) => list.some(t => term.equals(t
 
 export function fetchSparqlResult(url: string): Promise<SparqlResponse> {
   return fetch(url, { headers: { Accept: 'application/sparql-results+json' } })
-      .then(response => response.json());
+      .then(response => response.json())
+      .catch((e) => {
+        log.error(e);
+      });
 }

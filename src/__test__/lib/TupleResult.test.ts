@@ -16,7 +16,7 @@ describe('TupleResult', () => {
     expect(tupleResult.getBindingNames()).toEqual(['book', 'title']);
   });
 
-  it('sets bindingSets properly', async () => {
+  it('creates bindingSets properly', async () => {
     let dataResponse: SparqlResponse = { head: { vars:[] }, results: { bindings: [] } };
     await fetchSparqlResult('http://example.org').then((data) => {
       dataResponse = data;

@@ -8,7 +8,7 @@ import PropertyList from './components/PropertyList';
 import ClassList from './components/ClassList';
 import ClassTree from './components/ClassTree';
 import PropertyTree from './components/PropertyTree';
-import TupleContext from './components/TupleContext';
+import TupleContext, { tupleContext } from './components/TupleContext';
 
 type ComponentMap = {
   [name: string]: any;
@@ -47,4 +47,5 @@ export {
   PropertyList,
   ClassList,
   TupleContext,
+  tupleContext,
 };

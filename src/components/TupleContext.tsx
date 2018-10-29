@@ -10,13 +10,13 @@ type Props = {
 };
 
 type State = {
-  tupleResult: TupleResult,
+  data: TupleResult,
   loading: boolean,
 };
 
 class TupleContext extends React.Component<Props, State> {
   state = {
-    tupleResult: new TupleResult(),
+    data: new TupleResult(),
     loading: true,
   };
 
@@ -24,7 +24,7 @@ class TupleContext extends React.Component<Props, State> {
     fetchSparqlResult(this.props.src)
       .then((data) => {
         this.setState({
-          tupleResult: new TupleResult(data as SparqlResponse),
+          data: new TupleResult(data as SparqlResponse),
           loading: false,
         });
       }).catch((e) => {
@@ -42,15 +42,13 @@ class TupleContext extends React.Component<Props, State> {
       );
     }
 
-    return this.props.children(this.state.tupleResult);
+    return this.props.children(this.state.data);
   }
 }
 
 export const tupleContext = async (src: string): Promise<TupleResult> => {
   return fetchSparqlResult(src)
-    .then((data) => {
-      return new TupleResult(data as SparqlResponse);
-    });
+  .then(data => new TupleResult(data as SparqlResponse));
 };
 
 export default TupleContext;
