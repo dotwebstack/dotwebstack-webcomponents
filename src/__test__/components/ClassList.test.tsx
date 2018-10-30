@@ -4,6 +4,7 @@ import React from 'react';
 import ClassList from '../../components/ClassList';
 import Store from '../../lib/Store';
 import {
+  literal1,
   objectTest1, objectTest2, objectTest4, quadWithDCSubject, quadWithDefinition,
   quadWithDefintionLiteral, quadWithLabelLiteral, quadWithPath, quadWithPathToObject2,
   quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
@@ -113,6 +114,16 @@ describe('<ClassList />', () => {
     expect(wrapper.html()).toMatch('http://example.org/test1');
     expect(wrapper.find({ href: 'http://example.org/test1' }).getElements().length).toBeGreaterThan(0);
     expect(wrapper.text()).toEqual('test1');
+  });
+
+  it('constructs TermValue with Literal', () => {
+    const wrapper = shallow(
+      <TermValue
+        term={literal1}
+        local={true}
+      />);
+    expect(wrapper.html()).toMatch('<span>test</span>');
+    expect(wrapper.text()).toEqual('test');
   });
 });
 

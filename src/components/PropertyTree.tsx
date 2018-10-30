@@ -22,10 +22,10 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
   return parents.map((child, i) => {
     const children = store.findSubjects(namedNode(RDFS + 'subPropertyOf'), child).sort(compareTerm);
     if (children.length > 0) {
-      const label2 = <a href={isLocal(child, propertyIris) ? `#${localName(child)}` : child.value}
-                        title={localName(child)}>
-        <span className="node">{localName(child)}</span>
-      </a>;
+      const label2 = (
+        <a href={isLocal(child, propertyIris) ? `#${localName(child)}` : child.value} title={localName(child)}>
+          <span className="node">{localName(child)}</span>
+        </a>);
       return (
         <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
           {buildTree(children, store, propertyIris, true)}

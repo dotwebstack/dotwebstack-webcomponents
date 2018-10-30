@@ -20,10 +20,10 @@ const buildTree = (parents: Term[], store: Store, classIris: Term[], collapsed: 
   return parents.map((child, i) => {
     const children = store.findSubIris(child, 'subClassOf').sort(compareTerm);
     if (children.length > 0) {
-      const label2 = <a href={isLocal(child, classIris) ? `#${localName(child)}` : child.value}
-                        title={localName(child)}>
-        <span className="node">{localName(child)}</span>
-      </a>;
+      const label2 = (
+        <a href={isLocal(child, classIris) ? `#${localName(child)}` : child.value} title={localName(child)}>
+          <span className="node">{localName(child)}</span>
+        </a>);
       return (
         <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
           {buildTree(children, store, classIris, true)}

@@ -4,7 +4,7 @@ import { Term } from 'rdf-js';
 
 type Props = {
   term: Term;
-  local: boolean;
+  local?: boolean;
 };
 
 const TermValue: React.StatelessComponent<Props> = ({ term, local }) => {
@@ -15,6 +15,6 @@ const TermValue: React.StatelessComponent<Props> = ({ term, local }) => {
       </a>
     );
   }
-  return (<span>term.value</span>);
+  return (<span>{term.value}</span>);
 };
 export default TermValue;
