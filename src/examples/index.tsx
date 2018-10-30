@@ -4,6 +4,7 @@ import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import VocabularyExample from './VocabularyExample';
 import i18next from '../i18n';
+import ResourceExample from './ResourceExample';
 
 const App = () => (
   <I18nextProvider i18n={i18next}>
@@ -24,6 +25,7 @@ const App = () => (
           <div className="container">
             <Switch>
               <Route exact path="/vocabulary" component={VocabularyExample} />
+              <Route exact path="/resource" component={ResourceExample} />
               <Redirect from="/" to="/vocabulary" />
             </Switch>
           </div>
