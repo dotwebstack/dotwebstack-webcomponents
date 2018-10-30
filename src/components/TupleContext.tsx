@@ -6,18 +6,20 @@ import log from 'loglevel';
 
 type Props = {
   src: string ,
-  children: (tupleResult: TupleResult) => JSX.Element,
+  children: (data: TupleResult) => JSX.Element,
 };
 
 type State = {
   data: TupleResult,
   loading: boolean,
+  error: boolean,
 };
 
 class TupleContext extends React.Component<Props, State> {
   state = {
     data: new TupleResult(),
     loading: true,
+    error: false,
   };
 
   async componentDidMount() {
@@ -31,6 +33,7 @@ class TupleContext extends React.Component<Props, State> {
         log.error(e);
         this.setState({
           loading: false,
+          error: true,
         });
       });
   }
@@ -40,6 +43,9 @@ class TupleContext extends React.Component<Props, State> {
       return (
         <LoadingIndicator />
       );
+    }
+    if (this.state.error) {
+      return ('An error has occured');
     }
 
     return this.props.children(this.state.data);

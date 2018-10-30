@@ -28,9 +28,9 @@ The data source.
 `GraphContext` is a wrapper for all graph-based components.
 ```jsx
   <GraphContext src={src}>
-    {{store => (
+    {store => (
       <React.Component store={store}/>
-    )}}
+    )}
   </GraphContext>
 ```
 ### `src`: `String`
@@ -40,8 +40,8 @@ The endpoint used by the backend to retrieve the data.
 `TupleContext` is a wrapper for all SPARQL Query Result using components.
 ```jsx
   <TupleContext src={src}>
-    {tupleResult => (
-      <React.Component data={tupleResult} />
+    {data => (
+      <React.Component data={data} />
     )}
   </TupleContext>
 ```

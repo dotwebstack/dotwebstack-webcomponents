@@ -2,7 +2,7 @@ import { Term, NamedNode, Literal, BlankNode, Variable } from 'rdf-js';
 import { namedNode, literal, blankNode, variable } from '@rdfjs/data-model';
 
 type BindingSet = {
-  [name: string]: NamedNode |  Literal | BlankNode | Variable | Term;
+  [name: string]: Term;
 };
 
 export type SparqlResponse = {
@@ -34,12 +34,13 @@ export class TupleResult {
       return bindingSet;
     });
   }
+
   getNode(node: any): NamedNode | Literal | BlankNode | Variable | Term {
     if (node.type === 'uri') {
       return namedNode(node.value);
     }
     if (node.type === 'literal') {
-      return literal(node.value);
+      return literal(node.value,  (node.datatype) ? node.datatype : node.language);
     }
     if (node.type === 'blankNode') {
       return blankNode(node.value);
@@ -47,7 +48,7 @@ export class TupleResult {
     if (node.type === 'variable') {
       return variable(node.value);
     }
-    return node;
+    throw TypeError('Given Term is not a valid Node.');
   }
 
   getBindingNames() {
