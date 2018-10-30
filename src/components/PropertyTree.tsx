@@ -41,7 +41,7 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
   });
 };
 
-const PropertyTree: React.StatelessComponent<Props> = ({propertyIris, store}) => {
+const PropertyTree: React.StatelessComponent<Props> = ({ propertyIris, store }) => {
   try {
     const parents: Term[] = store.findRoots(propertyIris, [], 'subPropertyOf');
     return buildTree(parents, store, propertyIris, false);

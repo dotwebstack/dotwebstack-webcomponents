@@ -7,7 +7,7 @@ import { compareTerm, isLocal, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import * as log from 'loglevel';
-import TermWrapper from './TermWrapper';
+import TermValue from './TermValue';
 
 type Props = {
   propertyIris: Term[],
@@ -75,7 +75,7 @@ const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined 
       undefined,
     );
 
-const PropertyList: React.StatelessComponent<Props> = ({propertyIris, classIris, store}) => (
+const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
       const definition = findDefinition(propertyIri, store);
@@ -101,8 +101,10 @@ const PropertyList: React.StatelessComponent<Props> = ({propertyIris, classIris,
                     <ol className="list-unstyled">
                       {superPropertyIris.map(superPropertyIri => (
                         <li key={superPropertyIri.value}>
-                          <TermWrapper term={superPropertyIri}
-                                       local={isLocal(superPropertyIri, propertyIris)}/>
+                          <TermValue
+                            term={superPropertyIri}
+                            local={isLocal(superPropertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -116,8 +118,10 @@ const PropertyList: React.StatelessComponent<Props> = ({propertyIris, classIris,
                     <ol className="list-unstyled">
                       {subPropertyIris.map(subPropertyIri => (
                         <li key={subPropertyIri.value}>
-                          <TermWrapper term={subPropertyIri}
-                                       local={isLocal(subPropertyIri, propertyIris)}/>
+                          <TermValue
+                            term={subPropertyIri}
+                            local={isLocal(subPropertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -131,8 +135,10 @@ const PropertyList: React.StatelessComponent<Props> = ({propertyIris, classIris,
                     <ol className="list-unstyled">
                       {usedInClassIris.map(propertyClassIri => (
                         <li key={propertyClassIri.value}>
-                          <TermWrapper term={propertyClassIri}
-                                       local={isLocal(propertyClassIri, classIris)}/>
+                          <TermValue
+                            term={propertyClassIri}
+                            local={isLocal(propertyClassIri, classIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -143,8 +149,10 @@ const PropertyList: React.StatelessComponent<Props> = ({propertyIris, classIris,
                 <tr>
                   <th scope="row">{i18next.t('relatedClasses')}:</th>
                   <td>
-                    <TermWrapper term={relatedClassIri}
-                                 local={isLocal(relatedClassIri, classIris)}/>
+                    <TermValue
+                      term={relatedClassIri}
+                      local={isLocal(relatedClassIri, classIris)}
+                    />
                   </td>
                 </tr>
               )}

@@ -16,18 +16,18 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store }) => {
   return (
     <table className="table table-striped">
       <tbody>
-        {statements.map(statement => (
-          <tr>
-            <th scope="row">
-              <a href={statement.predicate.value}>{localName(statement.predicate)}</a>
-            </th>
-            <td>
-              {statement.object.termType === 'NamedNode' ? (
-                <a href={statement.object.value}>{localName(statement.object)}</a>
-              ) : statement.object.value}
-            </td>
-          </tr>
-        ))}
+      {statements.map(statement => (
+        <tr>
+          <th scope="row">
+            <a href={statement.predicate.value}>{localName(statement.predicate)}</a>
+          </th>
+          <td>
+            {statement.object.termType === 'NamedNode' ? (
+              <a href={statement.object.value}>{localName(statement.object)}</a>
+            ) : statement.object.value}
+          </td>
+        </tr>
+      ))}
       </tbody>
     </table>
   );

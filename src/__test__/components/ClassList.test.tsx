@@ -4,26 +4,13 @@ import React from 'react';
 import ClassList from '../../components/ClassList';
 import Store from '../../lib/Store';
 import {
-  objectTest1,
-  objectTest2,
-  objectTest4,
-  quadWithDCSubject,
-  quadWithDefinition,
-  quadWithDefintionLiteral,
-  quadWithLabelLiteral,
-  quadWithPath,
-  quadWithPathToObject2,
-  quadWithPredicate2,
-  quadWithProperty,
-  quadWithReversedProperty,
-  quadWithReversedTargetClass,
-  quadWithSubClass,
-  quadWithSuperClass,
-  quadWithTargetClass,
-  subjectTest5,
+  objectTest1, objectTest2, objectTest4, quadWithDCSubject, quadWithDefinition,
+  quadWithDefintionLiteral, quadWithLabelLiteral, quadWithPath, quadWithPathToObject2,
+  quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
+  quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
 } from '../TestData';
 import { localName } from '../../utils';
-import TermWrapper from '../../components/TermWrapper';
+import TermValue from '../../components/TermValue';
 
 describe('<ClassList />', () => {
   it('shows class IRI when nothing else provided', () => {
@@ -105,9 +92,10 @@ describe('<ClassList />', () => {
     expect(wrapper.find({ href: quadWithPathToObject2.object.value }).getElements().length)
       .toBeGreaterThan(0);
   });
+
   it('constructs local link', () => {
     const wrapper = shallow(
-      <TermWrapper
+      <TermValue
         term={objectTest1}
         local={true}
       />);
@@ -115,9 +103,10 @@ describe('<ClassList />', () => {
     expect(wrapper.find({ href: '#test1' }).getElements().length).toBeGreaterThan(0);
     expect(wrapper.text()).toEqual('test1');
   });
+
   it('constructs remote link', () => {
     const wrapper = shallow(
-      <TermWrapper
+      <TermValue
         term={objectTest1}
         local={false}
       />);

@@ -6,7 +6,7 @@ import Store from '../lib/Store';
 import { compareTerm, isLocal, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
-import TermWrapper from './TermWrapper';
+import TermValue from './TermValue';
 
 type Props = {
   classIris: Term[],
@@ -71,7 +71,7 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
   );
 };
 
-const ClassList: React.StatelessComponent<Props> = ({classIris, propertyIris, store}) => (
+const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
       const definition = findDefinition(classIri, store);
@@ -98,8 +98,10 @@ const ClassList: React.StatelessComponent<Props> = ({classIris, propertyIris, st
                     <ol className="list-unstyled">
                       {superClassIris.map(superClassIri => (
                         <li key={superClassIri.value}>
-                          <TermWrapper term={superClassIri}
-                                       local={isLocal(superClassIri, classIris)}/>
+                          <TermValue
+                            term={superClassIri}
+                            local={isLocal(superClassIri, classIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -113,8 +115,10 @@ const ClassList: React.StatelessComponent<Props> = ({classIris, propertyIris, st
                     <ol className="list-unstyled">
                       {subClassIris.map(subClassIri => (
                         <li key={subClassIri.value}>
-                          <TermWrapper term={subClassIri}
-                                       local={isLocal(subClassIri, classIris)}/>
+                          <TermValue
+                            term={subClassIri}
+                            local={isLocal(subClassIri, classIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -128,8 +132,10 @@ const ClassList: React.StatelessComponent<Props> = ({classIris, propertyIris, st
                     <ol className="list-unstyled">
                       {propertyIris.map(propertyIri => (
                         <li key={propertyIri.value}>
-                          <TermWrapper term={propertyIri}
-                                       local={isLocal(propertyIri, propertyIris)}/>
+                          <TermValue
+                            term={propertyIri}
+                            local={isLocal(propertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -143,8 +149,10 @@ const ClassList: React.StatelessComponent<Props> = ({classIris, propertyIris, st
                     <ol className="list-unstyled">
                       {inheritedPropertyIris.map(inheritedPropertyIri => (
                         <li key={inheritedPropertyIri.value}>
-                          <TermWrapper term={inheritedPropertyIri}
-                                       local={isLocal(inheritedPropertyIri, propertyIris)}/>
+                          <TermValue
+                            term={inheritedPropertyIri}
+                            local={isLocal(inheritedPropertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
