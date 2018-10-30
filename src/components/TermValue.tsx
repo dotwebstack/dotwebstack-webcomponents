@@ -15,9 +15,6 @@ const TermValue: React.StatelessComponent<Props> = ({ term, local }) => {
       </a>
     );
   }
-if(){
-
-}
-
+  return (<span>term.value</span>);
 };
 export default TermValue;
