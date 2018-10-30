@@ -3,6 +3,7 @@ import Store from '../lib/Store';
 import React from 'react';
 import { compareTerm, getUrl, localName } from '../utils';
 import TreeView from 'react-treeview';
+import LabelComponent from './LabelComponent';
 
 require('react-treeview/react-treeview.css');
 
@@ -21,7 +22,9 @@ const buildTree = (parents: Term[], store: Store, classIris: Term[], collapsed: 
     const children = store.findSubIris(child, 'subClassOf').sort(compareTerm);
     if (children.length > 0) {
       const label2 = <a href={getUrl(child, classIris)} title={localName(child)}>
-        <span className="node">{localName(child)}</span>
+        <span className="node">
+          <LabelComponent store={store} resourceIri={child}/>
+        </span>
       </a>;
       return (
         <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
@@ -31,7 +34,9 @@ const buildTree = (parents: Term[], store: Store, classIris: Term[], collapsed: 
     }
     return (
       <a href={getUrl(child, classIris)} key={child + '|' + i} title={localName(child)}>
-        <span style={leafStyling}>{localName(child)}</span>
+        <span style={leafStyling}>
+          <LabelComponent store={store} resourceIri={child}/>
+        </span>
       </a>
     );
   });

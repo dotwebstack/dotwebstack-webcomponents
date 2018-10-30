@@ -2,6 +2,7 @@ import React from 'react';
 import { Quad, Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { localName, compareTerm } from '../utils';
+import LabelComponent from './LabelComponent';
 
 type Props = {
   resourceIri: Term,
@@ -23,7 +24,9 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store }) => {
             </th>
             <td>
               {statement.object.termType === 'NamedNode' ? (
-                <a href={statement.object.value}>{localName(statement.object)}</a>
+                <a href={statement.object.value}>
+                  <LabelComponent store={store} resourceIri={statement.object}/>
+                </a>
               ) : statement.object.value}
             </td>
           </tr>

@@ -6,6 +6,7 @@ import Store from '../lib/Store';
 import { compareTerm, isNamedNode, localName, getUrl } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
+import LabelComponent from './LabelComponent';
 
 type Props = {
   classIris: Term[],
@@ -83,77 +84,77 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
       return (
         <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
           <li>
-            <h3>{localName(classIri)}</h3>
+            <h3><LabelComponent store={store} resourceIri={classIri}/></h3>
             <a href={classIri.value}>{classIri.value}</a>
             {definition && (
               <p>{definition.value}</p>
             )}
             <table className="table">
               <tbody>
-                {superClassIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('subclass')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {superClassIris.map(superClassIri => (
-                          <li key={superClassIri.value}>
-                            <a href={getUrl(superClassIri, classIris)}>
-                              {localName(superClassIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {subClassIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('hasSubclasses')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {subClassIris.map(subClassIri => (
-                          <li key={subClassIri.value}>
-                            <a href={getUrl(subClassIri, classIris)}>
-                              {localName(subClassIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {classPropertyIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('properties')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {propertyIris.map(propertyIri => (
-                          <li key={propertyIri.value}>
-                            <a href={getUrl(propertyIri, propertyIris)}>
-                              {localName(propertyIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {inheritedPropertyIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('inherited')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {inheritedPropertyIris.map(inheritedPropertyIri => (
-                          <li key={inheritedPropertyIri.value}>
-                            <a href={getUrl(inheritedPropertyIri, propertyIris)}>
-                              {localName(inheritedPropertyIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
+              {superClassIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('subclass')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {superClassIris.map(superClassIri => (
+                        <li key={superClassIri.value}>
+                          <a href={getUrl(superClassIri, classIris)}>
+                            <LabelComponent store={store} resourceIri={superClassIri}/>
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {subClassIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('hasSubclasses')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {subClassIris.map(subClassIri => (
+                        <li key={subClassIri.value}>
+                          <a href={getUrl(subClassIri, classIris)}>
+                            <LabelComponent store={store} resourceIri={subClassIri}/>
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {classPropertyIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('properties')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {propertyIris.map(propertyIri => (
+                        <li key={propertyIri.value}>
+                          <a href={getUrl(propertyIri, propertyIris)}>
+                            <LabelComponent store={store} resourceIri={propertyIri}/>
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {inheritedPropertyIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('inherited')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {inheritedPropertyIris.map(inheritedPropertyIri => (
+                        <li key={inheritedPropertyIri.value}>
+                          <a href={getUrl(inheritedPropertyIri, propertyIris)}>
+                            <LabelComponent store={store} resourceIri={inheritedPropertyIri}/>
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
               </tbody>
             </table>
           </li>
