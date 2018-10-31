@@ -28,6 +28,7 @@ class TupleContext extends React.Component<Props, State> {
         this.setState({
           data: new TupleResult(data as SparqlResponse),
           loading: false,
+          error: false,
         });
       }).catch((e) => {
         log.error(e);

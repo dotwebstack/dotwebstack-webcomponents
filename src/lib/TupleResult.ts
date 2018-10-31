@@ -1,5 +1,5 @@
 import { Term, NamedNode, Literal, BlankNode, Variable } from 'rdf-js';
-import { namedNode, literal, blankNode, variable } from '@rdfjs/data-model';
+import { namedNode, literal, blankNode } from '@rdfjs/data-model';
 
 type BindingSet = {
   [name: string]: Term;
@@ -40,13 +40,10 @@ export class TupleResult {
       return namedNode(node.value);
     }
     if (node.type === 'literal') {
-      return literal(node.value,  (node.datatype) ? node.datatype : node.language);
+      return literal(node.value,  (node.datatype) ? node.datatype : node['xml:lang']);
     }
-    if (node.type === 'blankNode') {
+    if (node.type === 'bnode') {
       return blankNode(node.value);
-    }
-    if (node.type === 'variable') {
-      return variable(node.value);
     }
     throw TypeError('Given Term is not a valid Node.');
   }
