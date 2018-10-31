@@ -2,7 +2,7 @@ import { namedNode } from '@rdfjs/data-model';
 import GraphContext from '../components/GraphContext';
 import React from 'react';
 import Resource from '../components/Resource';
-import { NamedNode } from 'rdf-js';
+import { Term } from 'rdf-js';
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
 const resourceIri = namedNode('http://bag.basisregistraties.overheid.nl/def/bag#BAG-object');
@@ -22,8 +22,12 @@ const rows = [
   {
     predicate: namedNode('http://purl.org/dc/terms/subject'),
     label: 'Subject',
-    customRender: (predicate: NamedNode) => <h1>{predicate.value}</h1>,
-    customValue: namedNode('http://purl.org/dc/terms/subject'),
+    customRender: (terms: Term[]) => {
+      return (<div>
+        {terms.map(term => <h1>{term.value}</h1>)}
+      });
+      </div>);
+    },
   },
   {
     predicate: namedNode('http://purl.org/dc/terms/extralabel'),

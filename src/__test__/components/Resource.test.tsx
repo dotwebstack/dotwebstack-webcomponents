@@ -51,4 +51,16 @@ describe('<Resource />', () => {
     expect(wrapper.find({ href: quadWithPredicateObject2.object.value }).getElements().length)
       .toBeGreaterThan(0);
   });
+
+  it('shows the columns in given order', () => {});
+
+  it('shows the statements in a list', () => {});
+
+  it('shows a dash when no statements are found', () => {});
+
+  it('shows given label', () => {});
+
+  it('shows localname when no label is given', () => {});
+
+  it('can render a custom styling', () => {});
 });
