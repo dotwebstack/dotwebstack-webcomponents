@@ -22,6 +22,10 @@ const rows = [
     predicate: namedNode('http://purl.org/dc/terms/subject'),
     label: 'Subject',
   },
+  {
+    predicate: namedNode('http://purl.org/dc/terms/extralabel'),
+    label: 'Extra label',
+  },
 ];
 
 export default () => (

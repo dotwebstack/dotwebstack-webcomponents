@@ -29,6 +29,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
       <tbody>
       {rows.map((row) => {
         const predicateStatements = statements.filter(statement => row.predicate.value === statement.predicate.value);
+        const noPredicate = predicateStatements.length === 0;
         return (
           <tr>
             <th scope="row">
@@ -38,6 +39,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
             </th>
             <td>
               <ul>
+                {noPredicate ? '-' : ''}
                 {predicateStatements.map((statement) => {
                   return (
                     <li style={listStyle}>
