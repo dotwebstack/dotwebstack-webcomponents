@@ -3,11 +3,12 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, getUrl, localName } from '../utils';
+import { compareTerm, isLocal, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import * as log from 'loglevel';
 import LabelComponent from './LabelComponent';
+import TermValue from './TermValue';
 
 type Props = {
   propertyIris: Term[],
@@ -87,9 +88,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
       return (
         <ScrollableAnchor key={localName(propertyIri)} id={localName(propertyIri)}>
           <li>
-            <h3>
-              <LabelComponent store={store} resourceIri={propertyIri}/>
-            </h3>
+            <h3>{localName(propertyIri)}</h3>
             <a href={propertyIri.value}>{propertyIri.value}</a>
             {definition && (
               <p>{definition.value}</p>
@@ -103,9 +102,10 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                     <ol className="list-unstyled">
                       {superPropertyIris.map(superPropertyIri => (
                         <li key={superPropertyIri.value}>
-                          <a href={getUrl(superPropertyIri, propertyIris)}>
-                            <LabelComponent store={store} resourceIri={superPropertyIri}/>
-                          </a>
+                          <TermValue
+                            term={superPropertyIri}
+                            local={isLocal(superPropertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -119,9 +119,10 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                     <ol className="list-unstyled">
                       {subPropertyIris.map(subPropertyIri => (
                         <li key={subPropertyIri.value}>
-                          <a href={getUrl(subPropertyIri, propertyIris)}>
-                            <LabelComponent store={store} resourceIri={subPropertyIri}/>
-                          </a>
+                          <TermValue
+                            term={subPropertyIri}
+                            local={isLocal(subPropertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -133,11 +134,12 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                   <th scope="row">{i18next.t('propertyOf')}:</th>
                   <td>
                     <ol className="list-unstyled">
-                      {usedInClassIris.map(propertyClassIris => (
-                        <li key={propertyClassIris.value}>
-                          <a href={getUrl(propertyClassIris, classIris)}>
-                            <LabelComponent store={store} resourceIri={propertyClassIris}/>
-                          </a>
+                      {usedInClassIris.map(propertyClassIri => (
+                        <li key={propertyClassIri.value}>
+                          <TermValue
+                            term={propertyClassIri}
+                            local={isLocal(propertyClassIri, classIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -148,9 +150,10 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                 <tr>
                   <th scope="row">{i18next.t('relatedClasses')}:</th>
                   <td>
-                    <a href={getUrl(relatedClassIri, classIris)}>
-                      <LabelComponent store={store} resourceIri={relatedClassIri}/>
-                    </a>
+                    <TermValue
+                      term={relatedClassIri}
+                      local={isLocal(relatedClassIri, classIris)}
+                    />
                   </td>
                 </tr>
               )}

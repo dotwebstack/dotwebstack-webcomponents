@@ -3,7 +3,7 @@ import { Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { namedNode } from '@rdfjs/data-model';
 import { RDFS } from '../namespaces';
-import { compareTerm, getUrl, localName } from '../utils';
+import { compareTerm, isLocal, localName } from '../utils';
 import TreeView from 'react-treeview';
 import LabelComponent from './LabelComponent';
 

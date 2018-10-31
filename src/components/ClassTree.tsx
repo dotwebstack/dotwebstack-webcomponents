@@ -1,7 +1,7 @@
 import { Term } from 'rdf-js';
 import Store from '../lib/Store';
 import React from 'react';
-import { compareTerm, getUrl, localName } from '../utils';
+import { compareTerm, isLocal, localName } from '../utils';
 import TreeView from 'react-treeview';
 import LabelComponent from './LabelComponent';
 

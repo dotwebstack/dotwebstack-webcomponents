@@ -3,9 +3,10 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, isNamedNode, localName, getUrl } from '../utils';
+import { compareTerm, isLocal, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
+import TermValue from './TermValue';
 import LabelComponent from './LabelComponent';
 
 type Props = {
@@ -98,9 +99,10 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {superClassIris.map(superClassIri => (
                         <li key={superClassIri.value}>
-                          <a href={getUrl(superClassIri, classIris)}>
-                            <LabelComponent store={store} resourceIri={superClassIri}/>
-                          </a>
+                          <TermValue
+                            term={superClassIri}
+                            local={isLocal(superClassIri, classIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -114,9 +116,10 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {subClassIris.map(subClassIri => (
                         <li key={subClassIri.value}>
-                          <a href={getUrl(subClassIri, classIris)}>
-                            <LabelComponent store={store} resourceIri={subClassIri}/>
-                          </a>
+                          <TermValue
+                            term={subClassIri}
+                            local={isLocal(subClassIri, classIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -130,9 +133,10 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {propertyIris.map(propertyIri => (
                         <li key={propertyIri.value}>
-                          <a href={getUrl(propertyIri, propertyIris)}>
-                            <LabelComponent store={store} resourceIri={propertyIri}/>
-                          </a>
+                          <TermValue
+                            term={propertyIri}
+                            local={isLocal(propertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
@@ -146,9 +150,10 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {inheritedPropertyIris.map(inheritedPropertyIri => (
                         <li key={inheritedPropertyIri.value}>
-                          <a href={getUrl(inheritedPropertyIri, propertyIris)}>
-                            <LabelComponent store={store} resourceIri={inheritedPropertyIri}/>
-                          </a>
+                          <TermValue
+                            term={inheritedPropertyIri}
+                            local={isLocal(inheritedPropertyIri, propertyIris)}
+                          />
                         </li>
                       ))}
                     </ol>
