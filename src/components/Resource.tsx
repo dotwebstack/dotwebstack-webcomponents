@@ -12,7 +12,8 @@ type Props = {
 type Row = {
   predicate: NamedNode,
   label?: string,
-  render?: (terms: Term[]) => JSX.Element,
+  customRender?: (object: any) => JSX.Element,
+  customValue?: any,
 };
 
 const listStyle = {
@@ -29,25 +30,27 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
       <tbody>
       {rows.map((row) => {
         const predicateStatements = statements.filter(statement => row.predicate.value === statement.predicate.value);
-        const noPredicate = predicateStatements.length === 0;
         return (
-          <tr>
+          <tr key={row.predicate.value}>
             <th scope="row">
               <a href={row.predicate.value}>
                 {row.label ? row.label : localName(row.predicate)}
               </a>
             </th>
             <td>
+              {row.customRender && row.customValue && row.customRender(row.customValue)}
+              {!row.customRender &&
               <ul>
-                {noPredicate ? '-' : ''}
-                {predicateStatements.map((statement) => {
+                {predicateStatements.length === 0 && '-'}
+                {predicateStatements.map((statement, i) => {
                   return (
-                    <li style={listStyle}>
+                    <li key={statement.predicate.value + '|' + i} style={listStyle}>
                       <a href={statement.object.value}>{localName(statement.object)}</a>
                     </li>
                   );
                 })}
               </ul>
+              }
             </td>
           </tr>
         );
