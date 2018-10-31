@@ -15,6 +15,10 @@ type Row = {
   render?: (terms: Term[]) => JSX.Element,
 };
 
+const listStyle = {
+  listStyle: 'none',
+};
+
 const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows }) => {
   const statements = store
     .findStatements(resourceIri)
@@ -24,15 +28,23 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
     <table className="table table-striped">
       <tbody>
       {rows.map((row) => {
-        const foundStatements = statements.filter(statement => row.predicate.value === statement.predicate.value);
+        const predicateStatements = statements.filter(statement => row.predicate.value === statement.predicate.value);
         return (
           <tr>
-            <th scope="row">{row.label ? row.label : localName(row.predicate)}</th>
+            <th scope="row">
+              <a href={row.predicate.value}>
+                {row.label ? row.label : localName(row.predicate)}
+              </a>
+            </th>
             <td>
               <ul>
-              {foundStatements.map((statement) => {
-                return (<li><a href={statement.object.value}>{localName(statement.object)}</a></li>);
-              })}
+                {predicateStatements.map((statement) => {
+                  return (
+                    <li style={listStyle}>
+                      <a href={statement.object.value}>{localName(statement.object)}</a>
+                    </li>
+                  );
+                })}
               </ul>
             </td>
           </tr>
