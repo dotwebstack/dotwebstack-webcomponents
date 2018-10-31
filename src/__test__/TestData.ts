@@ -427,6 +427,20 @@ export const mockResponseWithDatatype = {
   },
 };
 
+export const mockResponseWithDatatypeAndLanguage = {
+  head: { vars: ['book' , 'title'],
+  } ,
+  results: {
+    bindings: [
+      {
+        book: { type: 'uri' , value: 'http://example.org/book/book7' } ,
+        title: { type: 'literal' , value: 'Harry Potter and the Deathly Hallows',
+          'xml:lang' : 'en', datatype: 'http://test.org'  },
+      } ,
+    ],
+  },
+};
+
 export const mockResponseWithBlanknode = {
   head: { vars: ['book' , 'title'],
   } ,

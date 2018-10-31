@@ -1,7 +1,8 @@
 import { TupleResult, SparqlResponse } from '../../lib/TupleResult';
 import fetchMock from 'fetch-mock';
 import { mockResponse, mockResultSet, mockResultSetBlanknode, mockResponseWithBlanknode, mockResultSetLanguage,
-  mockResultSetDatatype, mockResponseWithLanguage, mockResponseWithDatatype } from '../TestData';
+  mockResultSetDatatype, mockResponseWithLanguage, mockResponseWithDatatype, mockResponseWithDatatypeAndLanguage }
+   from '../TestData';
 import { fetchSparqlResult } from '../../utils';
 
 let dataResponse: SparqlResponse = { head: { vars:[] }, results: { bindings: [] } };
@@ -11,6 +12,7 @@ describe('TupleResult', () => {
   fetchMock.mock('http://example1.org', {});
   fetchMock.mock('http://exampleLanguage.org', mockResponseWithLanguage);
   fetchMock.mock('http://exampleDatatype.org', mockResponseWithDatatype);
+  fetchMock.mock('http://exampleLangData.org', mockResponseWithDatatypeAndLanguage);
   fetchMock.mock('http://exampleBlanknode.org', mockResponseWithBlanknode);
 
   it('sets bindingNames properly', async () => {
@@ -43,6 +45,14 @@ describe('TupleResult', () => {
     });
     const tupleResult = new TupleResult(dataResponse);
     expect(tupleResult.getBindingSets()).toEqual(mockResultSetDatatype);
+  });
+
+  it('creates literalnode with language and datatype properly', async () => {
+    await fetchSparqlResult('http://exampleLangData.org').then((data) => {
+      dataResponse = data;
+    });
+    const tupleResult = new TupleResult(dataResponse);
+    expect(tupleResult.getBindingSets()).toEqual(mockResultSetLanguage);
   });
 
   it('creates blank node properly', async () => {

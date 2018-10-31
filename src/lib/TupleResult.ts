@@ -40,7 +40,7 @@ export class TupleResult {
       return namedNode(node.value);
     }
     if (node.type === 'literal') {
-      return literal(node.value,  (node.datatype) ? node.datatype : node['xml:lang']);
+      return literal(node.value,  (node['xml:lang']) ? node['xml:lang'] : node.datatype);
     }
     if (node.type === 'bnode') {
       return blankNode(node.value);
