@@ -85,7 +85,12 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
       return (
         <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
           <li>
-            <h3><LabelComponent store={store} resourceIri={classIri}/></h3>
+            <h3>
+              <LabelComponent
+                store={store}
+                resourceIri={classIri}
+              />
+            </h3>
             <a href={classIri.value}>{classIri.value}</a>
             {definition && (
               <p>{definition.value}</p>

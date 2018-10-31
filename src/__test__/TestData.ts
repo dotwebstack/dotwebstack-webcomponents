@@ -6,9 +6,10 @@ export const subjectTest5 = namedNode('https://example.org/test5');
 
 export const predicatePropertyRdf = namedNode(RDF + 'Property');
 export const predicateType = namedNode(RDF + 'type');
-export const predicateLabel = namedNode(RDFS + 'label');
+export const predicateRdfsLabel = namedNode(RDFS + 'label');
 export const predicateDefinition = namedNode(SKOS + 'definition');
 export const predicateBroader = namedNode(SKOS + 'broader');
+export const predicateSkosLabel = namedNode(SKOS + 'prefLabel');
 export const predicateRelated = namedNode(SKOS + 'related');
 export const predicateSubject = namedNode(DCT + 'subject');
 export const predicateSubClassOf = namedNode(RDFS + 'subClassOf');
@@ -97,9 +98,15 @@ export const quadWithLiteral2 = quad(
   literal2,
   defaultGraph1,
 );
-export const quadWithLabelLiteral = quad(
+export const quadWithRdfsLabelLiteral = quad(
   subjectTest5,
-  predicateLabel,
+  predicateRdfsLabel,
+  literal1,
+  defaultGraph1,
+);
+export const quadWithSkosLabelLiteral = quad(
+  subjectTest5,
+  predicateSkosLabel,
   literal1,
   defaultGraph1,
 );

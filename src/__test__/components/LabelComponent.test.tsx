@@ -1,34 +1,36 @@
 import { shallow } from 'enzyme';
-import { objectTest3, quadWithDefinitionLiteral } from '../TestData';
+import {
+  objectTest3, quadWithRdfsLabelLiteral, quadWithSkosLabelLiteral,
+} from '../TestData';
 import React from 'react';
-import LabelComponent from '../../components/LabelComponent';
 import { Quad } from 'rdf-js';
 import Store from '../../lib/Store';
+import LabelComponent from '../../components/LabelComponent';
 
 describe('<LabelComponent /> shows SKOS:prefLabel, RDFS:label or local name - in that order of preference', () => {
   it('shows SKOS:prefLabel', () => {
     const wrapper = shallow(
       <LabelComponent
-        resourceIri={objectTest3}
-        store={createStore([quadWithDefinitionLiteral])}
+        resourceIri={quadWithSkosLabelLiteral.subject}
+        store={createStore([quadWithSkosLabelLiteral])}
       />);
-    expect(wrapper.html()).toMatch('test3');
+    expect(wrapper.html()).toMatch(quadWithSkosLabelLiteral.object.value);
   });
 
   it('shows RDFS:label', () => {
     const wrapper = shallow(
       <LabelComponent
-        resourceIri={objectTest3}
-        store={createStore([quadWithDefinitionLiteral])}
+        resourceIri={quadWithRdfsLabelLiteral.subject}
+        store={createStore([quadWithRdfsLabelLiteral])}
       />);
-    expect(wrapper.html()).toMatch('test3');
+    expect(wrapper.html()).toMatch(quadWithRdfsLabelLiteral.object.value);
   });
 
   it('shows local name from resourceIri', () => {
     const wrapper = shallow(
       <LabelComponent
         resourceIri={objectTest3}
-        store={createStore([quadWithDefinitionLiteral])}
+        store={createStore([quadWithRdfsLabelLiteral])}
       />);
     expect(wrapper.html()).toMatch('test3');
   });

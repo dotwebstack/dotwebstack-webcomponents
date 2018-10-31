@@ -21,11 +21,13 @@ const buildTree = (parents: Term[], store: Store, classIris: Term[], collapsed: 
   return parents.map((child, i) => {
     const children = store.findSubIris(child, 'subClassOf').sort(compareTerm);
     if (children.length > 0) {
-      const label2 = <a href={getUrl(child, classIris)} title={localName(child)}>
-        <span className="node">
-          <LabelComponent store={store} resourceIri={child}/>
-        </span>
-      </a>;
+      const label2 = (
+        <a href={isLocal(child, classIris) ? `#${localName(child)}` : child.value} title={localName(child)}>
+          <span className="node">
+            <LabelComponent store={store} resourceIri={child}/>
+          </span>
+        </a>
+      );
       return (
         <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
           {buildTree(children, store, classIris, true)}
@@ -33,7 +35,8 @@ const buildTree = (parents: Term[], store: Store, classIris: Term[], collapsed: 
       );
     }
     return (
-      <a href={getUrl(child, classIris)} key={child + '|' + i} title={localName(child)}>
+      <a href={isLocal(child, classIris) ? `#${localName(child)}` : child.value}
+         key={child + '|' + i} title={localName(child)}>
         <span style={leafStyling}>
           <LabelComponent store={store} resourceIri={child}/>
         </span>

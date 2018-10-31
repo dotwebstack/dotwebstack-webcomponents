@@ -2,8 +2,6 @@ import React from 'react';
 import { Quad, Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { localName, compareTerm } from '../utils';
-import LabelComponent from './LabelComponent';
-import { compareTerm, localName } from '../utils';
 import TermValue from './TermValue';
 
 type Props = {

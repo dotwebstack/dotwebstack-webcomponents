@@ -6,7 +6,7 @@ import Store from '../../lib/Store';
 import {
   literal1,
   objectTest1, objectTest2, objectTest4, quadWithDCSubject, quadWithDefinition,
-  quadWithDefintionLiteral, quadWithLabelLiteral, quadWithPath, quadWithPathToObject2,
+  quadWithDefinitionLiteral, quadWithRdfsLabelLiteral, quadWithPath, quadWithPathToObject2,
   quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
   quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
 } from '../TestData';
@@ -50,11 +50,11 @@ describe('<ClassList />', () => {
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
-        store={createStore([quadWithPredicate2, quadWithLabelLiteral, quadWithSuperClass])}
+        store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral, quadWithSuperClass])}
       />);
     expect(wrapper.find({ href: quadWithSuperClass.subject.value }).getElements().length)
       .toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadWithLabelLiteral.subject.value }).getElements().length)
+    expect(wrapper.find({ href: quadWithRdfsLabelLiteral.subject.value }).getElements().length)
       .toBeGreaterThan(0);
   });
 
@@ -63,7 +63,7 @@ describe('<ClassList />', () => {
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
-        store={createStore([quadWithPredicate2, quadWithLabelLiteral, quadWithSubClass])}
+        store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral, quadWithSubClass])}
       />);
     expect(wrapper.find({ href: objectTest4.value }).getElements().length)
       .toBeGreaterThan(0);

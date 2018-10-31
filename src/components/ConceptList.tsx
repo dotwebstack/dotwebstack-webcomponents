@@ -3,8 +3,6 @@ import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
 import { RDF, RDFS, SKOS } from '../namespaces';
 import { isLocal, localName } from '../utils';
-import { RDF, SKOS } from '../namespaces';
-import { getUrl, localName } from '../utils';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import i18next from '../i18n';
 import LabelComponent from './LabelComponent';
