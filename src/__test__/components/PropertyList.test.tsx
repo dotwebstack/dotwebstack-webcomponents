@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { Quad } from 'rdf-js';
 import React from 'react';
 import PropertyList from '../../components/PropertyList';
@@ -43,7 +43,7 @@ describe('<PropertyList />', () => {
     expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
   });
   it('shows super properties when linked', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <PropertyList
         classIris={[]}
         propertyIris={[objectTest2]}
@@ -54,7 +54,7 @@ describe('<PropertyList />', () => {
   });
 
   it('shows sub properties when found', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <PropertyList
         classIris={[]}
         propertyIris={[objectTest2]}
@@ -65,7 +65,7 @@ describe('<PropertyList />', () => {
   });
 
   it('shows used in different class', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <PropertyList
         classIris={[]}
         propertyIris={[objectTest1]}
@@ -87,7 +87,7 @@ describe('<PropertyList />', () => {
   });
 
   it('shows related class from path', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <PropertyList
         classIris={[]}
         propertyIris={[objectTest1]}

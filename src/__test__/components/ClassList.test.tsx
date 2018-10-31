@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { Quad } from 'rdf-js';
 import React from 'react';
 import ClassList from '../../components/ClassList';
@@ -46,7 +46,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows superclass when found', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
@@ -59,7 +59,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows subclass when found', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
@@ -72,7 +72,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows properties when properly linked', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
@@ -83,7 +83,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows inherited properties when found', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[]}
