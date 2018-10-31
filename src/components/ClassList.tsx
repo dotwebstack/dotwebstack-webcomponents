@@ -3,9 +3,10 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, isNamedNode, localName, getUrl } from '../utils';
+import { compareTerm, isLocal, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
+import TermValue from './TermValue';
 
 type Props = {
   classIris: Term[],
@@ -90,70 +91,74 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
             )}
             <table className="table">
               <tbody>
-                {superClassIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('subclass')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {superClassIris.map(superClassIri => (
-                          <li key={superClassIri.value}>
-                            <a href={getUrl(superClassIri, classIris)}>
-                              {localName(superClassIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {subClassIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('hasSubclasses')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {subClassIris.map(subClassIri => (
-                          <li key={subClassIri.value}>
-                            <a href={getUrl(subClassIri, classIris)}>
-                              {localName(subClassIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {classPropertyIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('properties')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {propertyIris.map(propertyIri => (
-                          <li key={propertyIri.value}>
-                            <a href={getUrl(propertyIri, propertyIris)}>
-                              {localName(propertyIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
-                {inheritedPropertyIris.length > 0 && (
-                  <tr>
-                    <th scope="row">{i18next.t('inherited')}:</th>
-                    <td>
-                      <ol className="list-unstyled">
-                        {inheritedPropertyIris.map(inheritedPropertyIri => (
-                          <li key={inheritedPropertyIri.value}>
-                            <a href={getUrl(inheritedPropertyIri, propertyIris)}>
-                              {localName(inheritedPropertyIri)}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </td>
-                  </tr>
-                )}
+              {superClassIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('subclass')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {superClassIris.map(superClassIri => (
+                        <li key={superClassIri.value}>
+                          <TermValue
+                            term={superClassIri}
+                            local={isLocal(superClassIri, classIris)}
+                          />
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {subClassIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('hasSubclasses')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {subClassIris.map(subClassIri => (
+                        <li key={subClassIri.value}>
+                          <TermValue
+                            term={subClassIri}
+                            local={isLocal(subClassIri, classIris)}
+                          />
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {classPropertyIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('properties')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {propertyIris.map(propertyIri => (
+                        <li key={propertyIri.value}>
+                          <TermValue
+                            term={propertyIri}
+                            local={isLocal(propertyIri, propertyIris)}
+                          />
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
+              {inheritedPropertyIris.length > 0 && (
+                <tr>
+                  <th scope="row">{i18next.t('inherited')}:</th>
+                  <td>
+                    <ol className="list-unstyled">
+                      {inheritedPropertyIris.map(inheritedPropertyIri => (
+                        <li key={inheritedPropertyIri.value}>
+                          <TermValue
+                            term={inheritedPropertyIri}
+                            local={isLocal(inheritedPropertyIri, propertyIris)}
+                          />
+                        </li>
+                      ))}
+                    </ol>
+                  </td>
+                </tr>
+              )}
               </tbody>
             </table>
           </li>

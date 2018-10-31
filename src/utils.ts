@@ -11,8 +11,6 @@ export const isNamedNode = (term: Term) => term.termType === 'NamedNode';
 
 export const isUnique = (object: any, list: any[]) => list.filter(c => c.value === object.value).length === 0;
 
-export const getUrl = (term: Term, list: Term[]) => list.some(t => term.equals(t)) ? `#${localName(term)}` : term.value;
-
 export function fetchSparqlResult(url: string): Promise<SparqlResponse> {
   return fetch(url, { headers: { Accept: 'application/sparql-results+json' } })
       .then(response => response.json())
@@ -20,3 +18,5 @@ export function fetchSparqlResult(url: string): Promise<SparqlResponse> {
         log.error(e);
       });
 }
+
+export const isLocal = (term: Term, list: Term[]) => list.some(t => term.equals(t));

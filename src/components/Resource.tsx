@@ -1,7 +1,8 @@
 import React from 'react';
 import { Quad, Term } from 'rdf-js';
 import Store from '../lib/Store';
-import { localName, compareTerm } from '../utils';
+import { compareTerm, localName } from '../utils';
+import TermValue from './TermValue';
 
 type Props = {
   resourceIri: Term,
@@ -16,18 +17,26 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store }) => {
   return (
     <table className="table table-striped">
       <tbody>
-        {statements.map(statement => (
-          <tr>
-            <th scope="row">
-              <a href={statement.predicate.value}>{localName(statement.predicate)}</a>
-            </th>
-            <td>
-              {statement.object.termType === 'NamedNode' ? (
-                <a href={statement.object.value}>{localName(statement.object)}</a>
-              ) : statement.object.value}
-            </td>
-          </tr>
-        ))}
+      {statements.map(statement => (
+        <tr key={localName(resourceIri)}>
+          <th scope="row">
+            <a href={statement.predicate.value}>
+              <TermValue
+                term={statement.predicate}
+              />
+            </a>
+          </th>
+          <td>
+            {statement.object.termType === 'NamedNode' ? (
+              <a href={statement.object.value}>
+                <TermValue
+                  term={statement.object}
+                />
+              </a>
+            ) : statement.object.value}
+          </td>
+        </tr>
+      ))}
       </tbody>
     </table>
   );

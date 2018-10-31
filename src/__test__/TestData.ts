@@ -24,6 +24,7 @@ export const objectTest1 = namedNode('http://example.org/test1');
 export const objectTest2 = namedNode('http://example.org/test2');
 export const objectTest3 = namedNode('http://example.org/test3');
 export const objectTest4 = namedNode('http://example.org/test4');
+
 export const objectClassRdfs = namedNode(RDFS + 'Class');
 export const objectClassOwl = namedNode(OWL + 'Class');
 export const objectObjectProperty = namedNode(OWL + 'ObjectProperty');
