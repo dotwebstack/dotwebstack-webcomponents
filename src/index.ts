@@ -8,6 +8,7 @@ import PropertyList from './components/PropertyList';
 import ClassList from './components/ClassList';
 import ClassTree from './components/ClassTree';
 import PropertyTree from './components/PropertyTree';
+import TupleContext, { tupleContext } from './components/TupleContext';
 
 type ComponentMap = {
   [name: string]: any;
@@ -22,6 +23,7 @@ const components: ComponentMap = {
   ClassList,
   ClassTree,
   PropertyTree,
+  TupleContext,
 };
 
 const getComponent: any = (name: string) => {
@@ -44,4 +46,6 @@ export {
   PropertyTree,
   PropertyList,
   ClassList,
+  TupleContext,
+  tupleContext,
 };
