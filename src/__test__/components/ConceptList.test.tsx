@@ -4,7 +4,7 @@ import Store from '../../lib/Store';
 import ConceptList from '../../components/ConceptList';
 import {
   quadWith1, quadWithPredicateObject2, quadWithPredicate2,
-  quadWithLabelLiteral, quadWithDefintionLiteral, quadWithBroaderConcept, quadWithRelatedConcept,
+  quadWithLabelLiteral, quadWithDefinitionLiteral, quadWithBroaderConcept, quadWithRelatedConcept,
 } from '../TestData';
 import React from 'react';
 
@@ -28,9 +28,9 @@ describe('<ConceptList />', () => {
   it('shows the linked definition', () => {
     const wrapper = shallow(
       <ConceptList
-        store={createStore([quadWithPredicate2, quadWithDefintionLiteral])}
+        store={createStore([quadWithPredicate2, quadWithDefinitionLiteral])}
       />);
-    expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefinitionLiteral.object.value);
   });
 
   it('shows a broader concept', () => {

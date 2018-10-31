@@ -107,7 +107,7 @@ export const quadWithDefinition = quad(
   predicateDefinition,
   objectTest4,
 );
-export const quadWithDefintionLiteral = quad(
+export const quadWithDefinitionLiteral = quad(
   subjectTest5,
   predicateDefinition,
   literal2,

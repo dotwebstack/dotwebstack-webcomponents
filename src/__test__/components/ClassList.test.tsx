@@ -7,7 +7,7 @@ import {
   objectTest1, objectTest2, quadWithLabelLiteral, quadWithPredicate2,
   quadWithSuperClass, objectTest4, subjectTest5, quadWithSubClass, quadWithTargetClass,
   quadWithProperty, quadWithPath, quadWithReversedTargetClass,
-  quadWithReversedProperty, quadWithPathToObject2, quadWithDefintionLiteral,
+  quadWithReversedProperty, quadWithPathToObject2, quadWithDefinitionLiteral,
   quadWithDCSubject, quadWithDefinition,
 } from '../TestData';
 import { localName } from '../../utils';
@@ -29,9 +29,9 @@ describe('<ClassList />', () => {
       <ClassList
         classIris={[subjectTest5]}
         propertyIris={[]}
-        store={createStore([quadWithDefintionLiteral])}
+        store={createStore([quadWithDefinitionLiteral])}
       />);
-    expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefinitionLiteral.object.value);
   });
 
   it('shows linked subject definition when no linked definition found', () => {

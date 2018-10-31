@@ -5,7 +5,7 @@ import PropertyList from '../../components/PropertyList';
 import Store from '../../lib/Store';
 import {
   objectTest1, objectTest2, quadWithDCSubject,
-  quadWithDefinition, quadWithDefintionLiteral, quadWithSubProperty,
+  quadWithDefinition, quadWithDefinitionLiteral, quadWithSubProperty,
   quadWithSuperClass, quadWithSuperProperty, quadWithTargetClass, subjectTest5,
   quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5,
   quadWithClass,
@@ -28,9 +28,9 @@ describe('<PropertyList />', () => {
       <PropertyList
         classIris={[]}
         propertyIris={[subjectTest5]}
-        store={createStore([quadWithDefintionLiteral])}
+        store={createStore([quadWithDefinitionLiteral])}
       />);
-    expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefinitionLiteral.object.value);
   });
 
   it('shows linked subject definition when no linked definition found', () => {

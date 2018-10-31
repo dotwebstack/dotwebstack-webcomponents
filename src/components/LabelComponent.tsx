@@ -13,13 +13,25 @@ type Props = {
 const LabelComponent: React.StatelessComponent<Props> = ({ resourceIri, store }) => {
   const prefLabel = store.findObjects(namedNode(resourceIri.value), namedNode(SKOS + 'prefLabel'));
   if (prefLabel.length !== 0) {
-    return <React.Fragment>{prefLabel[0].value}</React.Fragment>;
+    return (
+      <React.Fragment>
+        {prefLabel[0].value}
+      </React.Fragment>
+    );
   }
   const fallbackLabel = store.findObjects(namedNode(resourceIri.value), namedNode(RDFS + 'label'));
   if (fallbackLabel.length !== 0) {
-    return <React.Fragment>{fallbackLabel[0].value}</React.Fragment>;
+    return (
+      <React.Fragment>
+        {fallbackLabel[0].value}
+      </React.Fragment>
+    );
   }
-  return <React.Fragment>{localName(resourceIri)}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {localName(resourceIri)}
+    </React.Fragment>
+  );
 };
 
 export default LabelComponent;
