@@ -112,7 +112,11 @@ describe('<Resource />', () => {
       customRender: (terms: Term[]) => {
         return (
           <div>
-            {terms.map(term => <h1 key={term.value}>{term.value}</h1>)}
+            {terms.map(term =>
+              <h1 key={term.value}>
+                {term.value}
+              </h1>,
+            )}
           </div>
         );
       },

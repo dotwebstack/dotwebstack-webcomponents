@@ -46,7 +46,9 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
                 {terms.map((term, i) => {
                   return (
                     <li key={term.value + '|' + i} style={listStyle}>
-                      <a href={term.value}>{localName(term)}</a>
+                      <a href={term.value}>
+                        {localName(term)}
+                      </a>
                     </li>
                   );
                 })}
