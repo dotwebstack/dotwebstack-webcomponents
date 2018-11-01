@@ -2,46 +2,36 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import Resource from '../../components/Resource';
 import { subjectTypeRdf, quadWith1, quadWithPredicateObject2 } from '../TestData';
-import { Quad } from 'rdf-js';
+import { Quad, Term } from 'rdf-js';
 import Store from '../../lib/Store';
 import { namedNode } from '@rdfjs/data-model';
+import { RDF } from '../../namespaces';
+import { localName } from '../../utils';
 
 function createStore(quads: Quad[]) {
   return new Store(quads);
 }
 
-const rows = [
-  {
-    predicate: namedNode('http://www.w3.org/2000/01/rdf-schema#isDefinedBy'),
-    label: 'Is defined by',
-  },
-  {
-    predicate: namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
-    label: 'Label',
-  },
-  {
-    predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-    label: 'Type',
-  },
-  {
-    predicate: namedNode('http://purl.org/dc/terms/subject'),
-    label: 'Subject',
-  },
-  {
-    predicate: namedNode('http://purl.org/dc/terms/extralabel'),
-    label: 'Extra label',
-  },
-];
-
 describe('<Resource />', () => {
 
   it('shows predicates and objects linked to given resourceIRI', () => {
+    const rows = [
+      {
+        predicate: namedNode(quadWith1.predicate.value),
+        label: 'Property',
+      },
+      {
+        predicate: namedNode(quadWithPredicateObject2.predicate.value),
+        label: 'Type',
+      },
+    ];
     const wrapper = shallow(
       <Resource
         resourceIri={subjectTypeRdf}
         store={createStore([quadWith1, quadWithPredicateObject2])}
         rows={rows}
-      />);
+      />,
+    );
     expect(wrapper.find({ href: quadWith1.predicate.value }).getElements().length)
       .toBeGreaterThan(0);
     expect(wrapper.find({ href: quadWith1.object.value }).getElements().length)
@@ -52,15 +42,90 @@ describe('<Resource />', () => {
       .toBeGreaterThan(0);
   });
 
-  it('shows the columns in given order', () => {});
+  it('shows the columns in given order', () => {
+    const rows = [
+      {
+        predicate: namedNode(quadWithPredicateObject2.predicate.value),
+        label: 'Type',
+      },
+      {
+        predicate: namedNode(quadWith1.predicate.value),
+        label: 'Property',
+      },
+    ];
 
-  it('shows the statements in a list', () => {});
+    const wrapper = shallow(
+      <Resource
+        resourceIri={subjectTypeRdf}
+        store={createStore([quadWith1, quadWithPredicateObject2])}
+        rows={rows}
+      />,
+    );
 
-  it('shows a dash when no statements are found', () => {});
+    expect(wrapper.find('th').first().find('a').text()).toEqual('Type');
+    expect(wrapper.find('th').last().find('a').text()).toEqual('Property');
+  });
 
-  it('shows given label', () => {});
+  it('shows a dash when no statements are found', () => {
+    const rows = [
+      {
+        predicate: namedNode('http://example.org/nostatements'),
+        label: 'Type',
+      },
+    ];
 
-  it('shows localname when no label is given', () => {});
+    const wrapper = shallow(
+      <Resource
+        resourceIri={subjectTypeRdf}
+        store={createStore([quadWith1, quadWithPredicateObject2])}
+        rows={rows}
+      />,
+    );
+    expect(wrapper.find('li').text()).toEqual('-');
+  });
 
-  it('can render a custom styling', () => {});
+  it('shows localName when no label is given', () => {
+    const rows = [
+      {
+        predicate: namedNode(quadWithPredicateObject2.predicate.value),
+      },
+      {
+        predicate: namedNode(quadWith1.predicate.value),
+      },
+    ];
+
+    const wrapper = shallow(
+      <Resource
+        resourceIri={subjectTypeRdf}
+        store={createStore([quadWith1, quadWithPredicateObject2])}
+        rows={rows}
+      />,
+    );
+    expect(wrapper.find('th').first().find('a').text()).toEqual(localName(quadWithPredicateObject2.predicate));
+    expect(wrapper.find('th').first().find('a').text()).toEqual(localName(quadWith1.predicate));
+  });
+
+  it('can render a custom styling', () => {
+    const rows = [{
+      predicate: namedNode(RDF + 'Property'),
+      label: 'Is defined by',
+      customRender: (terms: Term[]) => {
+        return (
+          <div>
+            {terms.map(term => <h1 key={term.value}>{term.value}</h1>)}
+          </div>
+        );
+      },
+    }];
+
+    const wrapper = shallow(
+      <Resource
+        resourceIri={subjectTypeRdf}
+        store={createStore([quadWith1, quadWithPredicateObject2])}
+        rows={rows}
+      />,
+    );
+
+    expect(wrapper.find('h1').text()).toEqual(quadWith1.object.value);
+  });
 });

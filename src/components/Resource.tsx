@@ -30,7 +30,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
       {rows.map((row) => {
         const terms: Term[] = statements
           .filter(statement => row.predicate.value === statement.predicate.value)
-          .map(statement => statement.predicate);
+          .map(statement => statement.object);
         return (
           <tr key={row.predicate.value}>
             <th scope="row">
@@ -42,7 +42,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
               {row.customRender && row.customRender(terms)}
               {!row.customRender &&
               <ul>
-                {terms.length === 0 && '-'}
+                <li>{terms.length === 0 && '-'}</li>
                 {terms.map((term, i) => {
                   return (
                     <li key={term.value + '|' + i} style={listStyle}>

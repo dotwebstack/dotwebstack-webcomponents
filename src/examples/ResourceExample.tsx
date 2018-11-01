@@ -23,9 +23,11 @@ const rows = [
     predicate: namedNode('http://purl.org/dc/terms/subject'),
     label: 'Subject',
     customRender: (terms: Term[]) => {
-      return (<div>
-        {terms.map(term => <h1>{term.value}</h1>)}
-      </div>);
+      return (
+        <div>
+          {terms.map(term => <h1>{term.value}</h1>)}
+        </div>
+      );
     },
   },
   {
