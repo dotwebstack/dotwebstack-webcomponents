@@ -25,7 +25,6 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
   let options = undefined;
 
   if (pageSize) {
-    const lessOrEqualRowsThanPageSize = result.getBindingSets().length <= pageSize;
     options = {
       page: 1,
       sizePerPageList: [{
@@ -33,7 +32,9 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
       }, {
         text: '10', value: 10,
       }, {
-        text: 'All', value: result.getBindingSets().length,
+        text: '20', value: 20,
+      }, {
+        text: '50', value: 50,
       }],
 
       sizePerPage: pageSize.valueOf(),
@@ -43,14 +44,16 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
       nextPage: 'Volgende',
       firstPage: 'Eerste',
       lastPage: 'Laatste',
-      paginationShowsTotal: !lessOrEqualRowsThanPageSize,
-      hideSizePerPage: lessOrEqualRowsThanPageSize,
-      alwaysShowAllBtns: !lessOrEqualRowsThanPageSize,
-      withFirstAndLast: lessOrEqualRowsThanPageSize,
+      paginationPosition: 'top',
+      paginationShowsTotal: true,
+      hideSizePerPage: false,
+      alwaysShowAllBtns: true,
+      withFirstAndLast: true,
     };
   }
   return (
-    <BootstrapTable data={result.getBindingSets()} pagination={pageSize !== undefined} options={options} striped hover>
+    <BootstrapTable data={result.getBindingSets()} pagination={usePagination(pageSize, result)}
+                    options={options} striped hover>
       {columns.map((column, i) => {
         return (
           <TableHeaderColumn
@@ -65,5 +68,9 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
     </BootstrapTable>
   );
 };
+
+export function usePagination(pageSize: any, result: TupleResult) {
+  return pageSize !== undefined && result.getBindingSets().length >= pageSize;
+}
 
 export default TupleList;
