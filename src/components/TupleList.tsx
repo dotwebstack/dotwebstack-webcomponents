@@ -12,6 +12,7 @@ export type Column = {
 type Props = {
   result: TupleResult,
   columns: Column[],
+  pageSize?: number,
 };
 
 const cellFormatter = (cell, row): string => {
@@ -20,9 +21,36 @@ const cellFormatter = (cell, row): string => {
 
 const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
 
-const TupleList: React.StatelessComponent<Props> = ({ result, columns }) => {
+const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize }) => {
+  let options = undefined;
+
+  if (pageSize) {
+    const lessOrEqualRowsThanPageSize = result.getBindingSets().length <= pageSize;
+    options = {
+      page: 1,
+      sizePerPageList: [{
+        text: '5', value: 5,
+      }, {
+        text: '10', value: 10,
+      }, {
+        text: 'All', value: result.getBindingSets().length,
+      }],
+
+      sizePerPage: pageSize.valueOf(),
+      pageStartIndex: 1,
+      paginationSize: 3,
+      prePage: 'Vorige',
+      nextPage: 'Volgende',
+      firstPage: 'Eerste',
+      lastPage: 'Laatste',
+      paginationShowsTotal: !lessOrEqualRowsThanPageSize,
+      hideSizePerPage: lessOrEqualRowsThanPageSize,
+      alwaysShowAllBtns: !lessOrEqualRowsThanPageSize,
+      withFirstAndLast: lessOrEqualRowsThanPageSize,
+    };
+  }
   return (
-    <BootstrapTable data={result.getBindingSets()} striped hover>
+    <BootstrapTable data={result.getBindingSets()} pagination={pageSize !== undefined} options={options} striped hover>
       {columns.map((column, i) => {
         return (
           <TableHeaderColumn

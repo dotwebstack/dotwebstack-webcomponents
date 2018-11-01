@@ -16,7 +16,7 @@ export default () => (
     <section className="mt-4">
       <TupleContext src={endpoint}>
         {result => (
-          <TupleList result={result} columns={columns}/>
+          <TupleList result={result} columns={columns} pageSize={10}/>
         )}
       </TupleContext>
     </section>
