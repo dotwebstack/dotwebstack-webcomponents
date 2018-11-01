@@ -108,11 +108,11 @@ The IRI's of the Properties which are represented.
 ```
 ### `term`: `Term`
 The IRI of the Resource which is represented.
-### `local`: `boolean`
-Whether the term links to a local- or remote definition.
+### `local`: `boolean` (optional)
+Whether the term links to a local- or remote definition. When no `local` is provided, it defaults as false.
 
 ##&lt;LabelComponent>
-`LabelComponent` shows the correct label of the resourceIri. In order of preference when present: SKOS:prefLabel, RDFS:label or localName (extrated from full resourceIri name).
+`LabelComponent` shows the correct label of the resourceIri. In order of preference when present: SKOS:prefLabel, RDFS:label or localName (extracted from full resourceIri name).
 ```jsx
 <LabelComponent
   resourceIri={Term}
