@@ -17,12 +17,12 @@ describe('<ConceptList />', () => {
     expect(wrapper.find('a').text()).toMatch(quadWithPredicate2.subject.value);
   });
 
-  it('shows the label when defined', () => {
+  it('shows the link when defined', () => {
     const wrapper = shallow(
       <ConceptList
         store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral])}
       />);
-    expect(wrapper.find('h3').text()).toEqual(quadWithRdfsLabelLiteral.object.value);
+    expect(wrapper.find('a').text()).toEqual(quadWithRdfsLabelLiteral.subject.value);
   });
 
   it('shows the linked definition', () => {
