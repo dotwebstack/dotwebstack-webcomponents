@@ -1,25 +1,32 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { TupleResult } from '../lib/TupleResult';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
 type Props = {
-  data: TupleResult,
+  result: TupleResult,
 };
 
-const TupleList: React.StatelessComponent<Props> = ({ data }) => {
-  console.log(data);
-  const products: any[] = [
-    { id: '1', name: 'appel', price: '1' },
-    { id: '2', name: 'peer', price: '2' },
-    { id: '3', name: 'banaan', price: '3' },
-  ];
+const cellFormatter = (cell, row): string => {
+  return cell.value;
+};
+
+const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
+
+const TupleList: React.StatelessComponent<Props> = ({ result }) => {
   return (
-    <BootstrapTable data={products} striped hover>
-      <TableHeaderColumn isKey dataField="id">Product ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="name">Product Name</TableHeaderColumn>
-      <TableHeaderColumn dataField="price">Product Price</TableHeaderColumn>
+    <BootstrapTable data={result.getBindingSets()} striped hover>
+      {result.getBindingNames().map((bindingName, i) => {
+        return (
+          <TableHeaderColumn
+            key={ bindingName + '|' + i }
+            isKey={ i === 0 }
+            dataField={ bindingName }
+            tdStyle={ tdStyle }
+            dataFormat={ cellFormatter }>{bindingName}
+          </TableHeaderColumn>);
+      })}
     </BootstrapTable>
   );
 };
