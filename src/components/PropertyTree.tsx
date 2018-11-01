@@ -3,7 +3,7 @@ import { Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { namedNode } from '@rdfjs/data-model';
 import { RDFS } from '../namespaces';
-import { compareTerm, getUrl, localName } from '../utils';
+import { compareTerm, isLocal, localName } from '../utils';
 import TreeView from 'react-treeview';
 
 require('react-treeview/react-treeview.css');
@@ -22,9 +22,10 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
   return parents.map((child, i) => {
     const children = store.findSubjects(namedNode(RDFS + 'subPropertyOf'), child).sort(compareTerm);
     if (children.length > 0) {
-      const label2 = <a href={getUrl(child, propertyIris)} title={localName(child)}>
-        <span className="node">{localName(child)}</span>
-      </a>;
+      const label2 = (
+        <a href={isLocal(child, propertyIris) ? `#${localName(child)}` : child.value} title={localName(child)}>
+          <span className="node">{localName(child)}</span>
+        </a>);
       return (
         <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
           {buildTree(children, store, propertyIris, true)}
@@ -32,7 +33,8 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
       );
     }
     return (
-      <a href={getUrl(child, propertyIris)} key={child + '|' + i} title={localName(child)}>
+      <a href={isLocal(child, propertyIris) ? `#${localName(child)}` : child.value}
+         key={child + '|' + i} title={localName(child)}>
         <span style={leafStyling}>{localName(child)}</span>
       </a>
     );

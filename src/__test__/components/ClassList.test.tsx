@@ -1,16 +1,17 @@
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { Quad } from 'rdf-js';
 import React from 'react';
 import ClassList from '../../components/ClassList';
 import Store from '../../lib/Store';
 import {
-  objectTest1, objectTest2, quadWithLabelLiteral, quadWithPredicate2,
-  quadWithSuperClass, objectTest4, subjectTest5, quadWithSubClass, quadWithTargetClass,
-  quadWithProperty, quadWithPath, quadWithReversedTargetClass,
-  quadWithReversedProperty, quadWithPathToObject2, quadWithDefintionLiteral,
-  quadWithDCSubject, quadWithDefinition,
+  literal1,
+  objectTest1, objectTest2, objectTest4, quadWithDCSubject, quadWithDefinition,
+  quadWithDefintionLiteral, quadWithLabelLiteral, quadWithPath, quadWithPathToObject2,
+  quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
+  quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
 } from '../TestData';
 import { localName } from '../../utils';
+import TermValue from '../../components/TermValue';
 
 describe('<ClassList />', () => {
   it('shows class IRI when nothing else provided', () => {
@@ -45,7 +46,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows superclass when found', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
@@ -58,7 +59,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows subclass when found', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
@@ -71,7 +72,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows properties when properly linked', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
@@ -82,7 +83,7 @@ describe('<ClassList />', () => {
   });
 
   it('shows inherited properties when found', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
         propertyIris={[]}
@@ -91,6 +92,38 @@ describe('<ClassList />', () => {
       />);
     expect(wrapper.find({ href: quadWithPathToObject2.object.value }).getElements().length)
       .toBeGreaterThan(0);
+  });
+
+  it('constructs local link', () => {
+    const wrapper = shallow(
+      <TermValue
+        term={objectTest1}
+        local={true}
+      />);
+    expect(wrapper.html()).toMatch('#test1');
+    expect(wrapper.find({ href: '#test1' }).getElements().length).toBeGreaterThan(0);
+    expect(wrapper.text()).toEqual('test1');
+  });
+
+  it('constructs remote link', () => {
+    const wrapper = shallow(
+      <TermValue
+        term={objectTest1}
+        local={false}
+      />);
+    expect(wrapper.html()).toMatch('http://example.org/test1');
+    expect(wrapper.find({ href: 'http://example.org/test1' }).getElements().length).toBeGreaterThan(0);
+    expect(wrapper.text()).toEqual('test1');
+  });
+
+  it('constructs TermValue with Literal', () => {
+    const wrapper = shallow(
+      <TermValue
+        term={literal1}
+        local={true}
+      />);
+    expect(wrapper.html()).toMatch('<span>test</span>');
+    expect(wrapper.text()).toEqual('test');
   });
 });
 
