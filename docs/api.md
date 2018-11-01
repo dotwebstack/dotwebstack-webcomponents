@@ -50,19 +50,6 @@ The IRI's of the Properties which are represented.
 ### `store`: `Store`
 The data source.
 
-## &lt;Resource>
-`Resource` Creates the default Resource detail view, which provides a simple list of properties.
-```jsx
-  <Resource
-    resourceIri={resourceIri}  
-    store={store}
-  />
-```
-### `resourceIri`: `Term`
-The IRI of the Resource which is represented.
-### `store`: `Store`
-The data source.
-
 ## &lt;Vocabulary>
 A resource representation, which visualizes the vocabulary (classes & properties). Component must be wrapped within a `GraphContext`.
 ```jsx
