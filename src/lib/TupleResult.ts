@@ -19,6 +19,7 @@ export class TupleResult {
   private bindingNames: String[] = [];
 
   constructor(dataResponse?: SparqlResponse) {
+    console.log('d',dataResponse);
     if (dataResponse) {
       this.bindingSet = this.setBindingSet(dataResponse);
       this.bindingNames = dataResponse.head.vars;
@@ -26,6 +27,7 @@ export class TupleResult {
   }
 
   private setBindingSet(response: SparqlResponse): BindingSet[] {
+    console.log('r',response);
     return response.results.bindings.map((row) => {
       const bindingSet: BindingSet = {};
       Object.keys(row).forEach((key) => {
