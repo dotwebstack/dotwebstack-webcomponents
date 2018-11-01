@@ -1,16 +1,22 @@
 import React from 'react';
 import TupleContext from '../components/TupleContext';
-import TupleList from '../components/TupleList';
+import TupleList, { Column } from '../components/TupleList';
 
-const endpoint = 'http://example.org';
+const endpoint = 'https://data.pdok.nl/ld/dws/v1/doc/begrippen';
+
+const columns: Column[] = [
+  { name: 'label', label: 'Label' },
+  { name: 'begrip', label: 'Begrip' },
+  { name: 'definition', label: 'Definitie' },
+];
 
 export default () => (
   <div>
     <h1>Tuple</h1>
     <section className="mt-4">
       <TupleContext src={endpoint}>
-        {data => (
-          <TupleList data={data}/>
+        {result => (
+          <TupleList result={result} columns={columns} pageSize={10}/>
         )}
       </TupleContext>
     </section>
