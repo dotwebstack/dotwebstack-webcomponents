@@ -42,7 +42,11 @@ export default () => (
     <section className="mt-4">
       <GraphContext src={endpoint}>
         {store => (
-          <Resource store={store} resourceIri={resourceIri} rows={rows}/>
+          <Resource
+            store={store}
+            resourceIri={resourceIri}
+            rows={rows}
+          />
         )}
       </GraphContext>
     </section>

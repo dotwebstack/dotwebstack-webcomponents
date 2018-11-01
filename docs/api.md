@@ -102,3 +102,24 @@ The data source.
 
 ### `propertyIris`: `Term[]`
 The IRI's of the Properties which are represented.
+
+## &lt;Resource>
+
+`Resource` a detailed view of one ResourceIri. It provides a simple list of properties.
+
+```jsx 
+<Resource 
+  store={store} 
+  resourceIri={resourceIri} 
+  rows={rows}
+/>
+```
+
+### `store`: `Store`
+The data source.
+
+### `resourceIri`: `Term`
+The IRI of the `Resource` to be represented.
+
+### `rows`: `Row[]`
+Custom settings on how to represent the `Resource` view
