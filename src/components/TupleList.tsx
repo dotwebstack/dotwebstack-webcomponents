@@ -15,7 +15,7 @@ type Props = {
   pageSize?: number,
 };
 
-const cellFormatter = (cell, row): string => {
+const cellFormatter = (cell: any): string => {
   return cell.value;
 };
 
