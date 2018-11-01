@@ -102,7 +102,7 @@ describe('<Resource />', () => {
       />,
     );
     expect(wrapper.find('th').first().find('a').text()).toEqual(localName(quadWithPredicateObject2.predicate));
-    expect(wrapper.find('th').first().find('a').text()).toEqual(localName(quadWith1.predicate));
+    expect(wrapper.find('th').last().find('a').text()).toEqual(localName(quadWith1.predicate));
   });
 
   it('can render a custom styling', () => {
