@@ -1,27 +1,38 @@
 import React, { CSSProperties } from 'react';
 import { TupleResult } from '../lib/TupleResult';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { Term } from 'rdf-js';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
 export type Column = {
   name: string;
   label?: string;
+  customRender?: (term: Term) => JSX.Element;
 };
 
-type Props = {
+type TupleListCellProps = {
+  cell: Term,
+  column: Column,
+};
+
+const TupleListCell: React.StatelessComponent<TupleListCellProps> = ({ cell, column }) => {
+  return (<div>{column.customRender ? column.customRender(cell) : cell.value}</div>);
+};
+
+const cellFormatter = (cell: Term, row: any, column: Column): any => {
+  return (<TupleListCell cell={cell} column={column}/>);
+};
+
+const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
+
+type TupleListProps = {
   result: TupleResult,
   columns: Column[],
   pageSize?: number,
 };
 
-const cellFormatter = (cell: any): string => {
-  return cell.value;
-};
-
-const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
-
-const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize }) => {
+const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
   let options = undefined;
 
   if (pageSize) {
@@ -61,7 +72,8 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
             isKey={i === 0}
             dataField={column.name}
             tdStyle={tdStyle}
-            dataFormat={cellFormatter}>
+            dataFormat={cellFormatter}
+            formatExtraData={column}>
             {column.label ? column.label : column.name}
           </TableHeaderColumn>);
       })}
