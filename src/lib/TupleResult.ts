@@ -54,4 +54,8 @@ export class TupleResult {
   getBindingSets() {
     return this.bindingSet;
   }
+  setTupleResult(value: BindingSet[], value2: string[]) {
+    this.bindingSet = value;
+    this.bindingNames = value2;
+  }
 }

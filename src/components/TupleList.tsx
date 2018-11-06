@@ -23,6 +23,7 @@ const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' }
 
 const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize }) => {
   let options = undefined;
+  console.log(result);
 
   if (pageSize) {
     options = {
@@ -44,7 +45,7 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
       nextPage: 'Volgende',
       firstPage: 'Eerste',
       lastPage: 'Laatste',
-      paginationPosition: 'top',
+      // paginationPosition: 'top',
       paginationShowsTotal: true,
       hideSizePerPage: false,
       alwaysShowAllBtns: true,
