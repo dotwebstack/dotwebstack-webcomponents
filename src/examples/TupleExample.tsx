@@ -16,6 +16,7 @@ const columns: Column[] = [
   {
     name: 'begrip',
     label: 'Begrip',
+    sortable: true,
   },
   {
     name: 'definition',

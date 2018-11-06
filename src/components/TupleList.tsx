@@ -8,12 +8,13 @@ require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 export type Column = {
   name: string;
   label?: string;
+  sortable?: boolean;
   customRender?: (term: Term) => JSX.Element;
 };
 
 type TupleListCellProps = {
-  cell: Term,
-  column: Column,
+  cell: Term;
+  column: Column;
 };
 
 const TupleListCell: React.StatelessComponent<TupleListCellProps> = ({ cell, column }) => {
@@ -72,6 +73,7 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
             isKey={i === 0}
             dataField={column.name}
             tdStyle={tdStyle}
+            dataSort={column.sortable}
             dataFormat={cellFormatter}
             formatExtraData={column}>
             {column.label ? column.label : column.name}
