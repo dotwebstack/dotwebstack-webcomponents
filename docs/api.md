@@ -36,19 +36,6 @@ The data source.
 ### `src`: `String`
 The endpoint used by the backend to retrieve the data.
 
-## &lt;TupleContext>
-`TupleContext` is a wrapper for all SPARQL Query Result using components.
-```jsx
-  <TupleContext src={src}>
-    {data => (
-      <React.Component data={data} />
-    )}
-  </TupleContext>
-```
-### `src`: `String`
-The endpoint used by the backend to retrieve the SPARQL response.
-
-
 ## &lt;PropertyList>
 `PropertyList` creates a list of properties.
 ```jsx
@@ -105,7 +92,7 @@ The IRI's of the Classes which are represented.
 
 `PropertyTree` is a Tree view representation of the Properties and its children.
 
-```jsx harmony
+```jsx
 <PropertyTree
   store={store}
   propertyIris={propertyIris}
@@ -117,3 +104,36 @@ The data source.
 
 ### `propertyIris`: `Term[]`
 The IRI's of the Properties which are represented.
+
+## &lt;TupleContext>
+`TupleContext` is a wrapper for all SPARQL Query Result using components.
+```jsx
+  <TupleContext src={src}>
+    {data => (
+      <React.Component data={data} />
+    )}
+  />
+```
+### `src`: `String`
+The endpoint used by the backend to retrieve the SPARQL response.
+
+## &lt;TupleList>
+
+`TupleList` is a table view representation of the SPARQL Query Result.
+
+```jsx
+<TupleList
+  result={result}
+  columns={columns}
+  pageSize={10}
+/>
+```
+
+### `result`: `TupleResult`
+The data source.
+
+### `columns`: `Column[]`
+Custom settings on how to represent a column. 
+
+### `pageSize`: `number`
+The number of items which are shown in the table view.
