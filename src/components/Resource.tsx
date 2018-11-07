@@ -1,7 +1,8 @@
 import React from 'react';
 import { NamedNode, Quad, Term } from 'rdf-js';
 import Store from '../lib/Store';
-import { localName, compareTerm } from '../utils';
+import { localName, compareTerm, isLocal } from '../utils';
+import TermValue from './TermValue';
 
 type Props = {
   resourceIri: Term,
@@ -15,9 +16,7 @@ type Row = {
   customRender?: (terms: Term[]) => JSX.Element,
 };
 
-const listStyle = {
-  listStyle: 'none',
-};
+const padding = { padding: '0' };
 
 const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows }) => {
   const statements = store
@@ -40,15 +39,18 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
             </th>
             <td>
               {row.customRender && row.customRender(terms)}
-              {!row.customRender &&
-              <ul>
-                <li>{terms.length === 0 && '-'}</li>
-                {terms.map((term, i) => {
+              {!row.customRender && terms.length === 0 &&
+              <span>-</span>
+              }
+              {!row.customRender && terms.length !== 0 &&
+              <ul style={padding}>
+                {terms.map((term) => {
                   return (
-                    <li key={term.value + '|' + i} style={listStyle}>
-                      <a href={term.value}>
-                        {localName(term)}
-                      </a>
+                    <li key={term.value} className="list-unstyled">
+                      <TermValue
+                        term={term}
+                        local={isLocal(term, terms)}
+                      />
                     </li>
                   );
                 })}

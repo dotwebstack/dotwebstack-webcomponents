@@ -34,11 +34,7 @@ describe('<Resource />', () => {
     );
     expect(wrapper.find({ href: quadWith1.predicate.value }).getElements().length)
       .toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadWith1.object.value }).getElements().length)
-      .toBeGreaterThan(0);
     expect(wrapper.find({ href: quadWithPredicateObject2.predicate.value }).getElements().length)
-      .toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadWithPredicateObject2.object.value }).getElements().length)
       .toBeGreaterThan(0);
   });
 
@@ -81,7 +77,7 @@ describe('<Resource />', () => {
         rows={rows}
       />,
     );
-    expect(wrapper.find('li').text()).toEqual('-');
+    expect(wrapper.find('span').text()).toEqual('-');
   });
 
   it('shows localName when no label is given', () => {
