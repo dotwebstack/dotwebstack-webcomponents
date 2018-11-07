@@ -65,19 +65,6 @@ The IRI's of the Properties which are represented.
 ### `store`: `Store`
 The data source.
 
-## &lt;Resource>
-`Resource` Creates the default Resource detail view, which provides a simple list of properties.
-```jsx
-  <Resource
-    resourceIri={resourceIri}  
-    store={store}
-  />
-```
-### `resourceIri`: `Term`
-The IRI of the Resource which is represented.
-### `store`: `Store`
-The data source.
-
 ## &lt;Vocabulary>
 A resource representation, which visualizes the vocabulary (classes & properties). Component must be wrapped within a `GraphContext`.
 ```jsx
@@ -113,6 +100,42 @@ The data source.
 ### `propertyIris`: `Term[]`
 The IRI's of the Properties which are represented.
 
+## &lt;Resource>
+
+`Resource` a detailed view of one ResourceIri. It provides a simple list of properties.
+
+```jsx 
+<Resource 
+  store={store} 
+  resourceIri={resourceIri} 
+  rows={rows}
+/>
+```
+
+### `store`: `Store`
+The data source.
+
+### `resourceIri`: `Term`
+The IRI of the `Resource` to be represented.
+
+### `rows`: `Row[]`
+Custom settings on how to represent the `Resource` view
+
+```jsx 
+type Row {
+  predicate: NamedNode;
+  label?: string;
+  render?: (terms: Term[]) => JSX.Element;
+}
+```
+### `predicate`: `NamedNode`
+The predicate of the row being represented
+
+### `label`: `string`
+A readable representation of the predicate
+
+### `customRender?`: `(terms: Term[]) => JSX.Element`
+A way to add custom rendering to a row element
 ## &lt;TermValue>
 `TermValue` shows the Term; an extracted localname - from the resourceIri - when it's local or the actual value when it's not. 
 ```jsx
