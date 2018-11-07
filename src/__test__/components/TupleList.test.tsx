@@ -3,6 +3,7 @@ import * as React from 'react';
 import TupleList, { Column } from '../../components/TupleList';
 import { mockBindingNames, mockBindingSet } from '../TestData';
 import { TupleResult } from '../../lib/TupleResult';
+import { Term } from 'rdf-js';
 
 describe('<TupleList />', () => {
 
@@ -70,19 +71,25 @@ describe('<TupleList />', () => {
 
   it('can render a custom styling', () => {
     table = buildTableWith4Records();
-    expect(table.find('h2').text()).toEqual('');
+    expect(table.find('h1').text()).toEqual('test');
   });
 
   function buildTableWith4Records() {
+    const columnsWithStyle: Column[] = [
+      { name: 'label', label: 'Label',
+        customRender: (term: Term) => {
+          return (<h1>{term.value}</h1>);
+        },
+      },
+    ];
+
     mockTupleResult = new TupleResult();
     mockTupleResult.setTupleResult(mockBindingSet, mockBindingNames);
-
-    const opmaak = <h2>mockTupleResult</h2>;
 
     return table = mount(
       <TupleList
         result={ mockTupleResult }
-        columns={ columns }
+        columns={ columnsWithStyle }
         pageSize={ pageSize }
       />);
   }
