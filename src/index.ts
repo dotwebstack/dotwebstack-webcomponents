@@ -8,7 +8,8 @@ import PropertyList from './components/PropertyList';
 import ClassList from './components/ClassList';
 import ClassTree from './components/ClassTree';
 import PropertyTree from './components/PropertyTree';
-import LabelComponent from './components/Label';
+import TupleContext, { tupleContext } from './components/TupleContext';
+import Label from './components/Label';
 
 type ComponentMap = {
   [name: string]: any;
@@ -23,6 +24,7 @@ const components: ComponentMap = {
   ClassList,
   ClassTree,
   PropertyTree,
+  TupleContext,
 };
 
 const getComponent: any = (name: string) => {
@@ -34,7 +36,7 @@ const getComponent: any = (name: string) => {
 };
 
 export {
-  LabelComponent,
+  Label,
   getComponent,
   renderComponent,
   graphContext,
@@ -46,4 +48,6 @@ export {
   PropertyTree,
   PropertyList,
   ClassList,
+  TupleContext,
+  tupleContext,
 };
