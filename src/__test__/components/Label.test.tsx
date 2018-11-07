@@ -7,7 +7,7 @@ import { Quad } from 'rdf-js';
 import Store from '../../lib/Store';
 import Label from '../../components/Label';
 
-describe('<LabelComponent /> shows SKOS:prefLabel, RDFS:label or local name - in that order of preference', () => {
+describe('<Label /> shows SKOS:prefLabel, RDFS:label or local name - in that order of preference', () => {
   it('shows SKOS:prefLabel', () => {
     const wrapper = shallow(
       <Label
