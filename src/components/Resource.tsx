@@ -1,7 +1,7 @@
 import React from 'react';
 import { NamedNode, Quad, Term } from 'rdf-js';
 import Store from '../lib/Store';
-import { localName, compareTerm, isLocal } from '../utils';
+import { localName, compareTerm } from '../utils';
 import TermValue from './TermValue';
 
 type Props = {
@@ -47,7 +47,6 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
                     <li key={term.value}>
                       <TermValue
                         term={term}
-                        local={isLocal(term, terms)}
                       />
                     </li>
                   );

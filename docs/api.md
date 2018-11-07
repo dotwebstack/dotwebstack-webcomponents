@@ -125,3 +125,19 @@ The IRI of the `Resource` to be represented.
 
 ### `rows`: `Row[]`
 Custom settings on how to represent the `Resource` view
+
+```jsx 
+type Row {
+  predicate: NamedNode;
+  label?: string;
+  render?: (terms: Term[]) => JSX.Element;
+}
+```
+### `predicate`: `NamedNode`
+The predicate of the row being represented
+
+### `label`: `string`
+A readable representation of the predicate
+
+### `customRender?`: `(terms: Term[]) => JSX.Element`
+A way to add custom rendering to a row element
