@@ -1,42 +1,59 @@
 import React, { CSSProperties } from 'react';
 import { TupleResult } from '../lib/TupleResult';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-bootstrap-table';
+import { Term } from 'rdf-js';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
 export type Column = {
   name: string;
   label?: string;
+  sortable?: boolean;
+  customRender?: (term: Term) => JSX.Element;
 };
 
-type Props = {
+type TupleListCellProps = {
+  cell: Term;
+  column: Column;
+};
+
+const TupleListCell: React.StatelessComponent<TupleListCellProps> = ({ cell, column }) => {
+  return (<div>{column.customRender ? column.customRender(cell) : cell.value}</div>);
+};
+
+const cellFormatter = (cell: Term, {}, column: Column): any => {
+  return (<TupleListCell cell={cell} column={column}/>);
+};
+
+const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
+
+type TupleListProps = {
   result: TupleResult,
   columns: Column[],
   pageSize?: number,
 };
 
-const cellFormatter = (cell: any): string => {
-  return cell.value;
-};
-
-const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
-
-const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize }) => {
+const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
   let options = undefined;
-  console.log(result);
+  const paginationPos: PaginationPostion = 'top';
 
   if (pageSize) {
     options = {
       page: 1,
-      sizePerPageList: [{
-        text: '5', value: 5,
-      }, {
-        text: '10', value: 10,
-      }, {
-        text: '20', value: 20,
-      }, {
-        text: '50', value: 50,
-      }],
+      sizePerPageList: [
+        {
+          text: '5', value: 5,
+        },
+        {
+          text: '10', value: 10,
+        },
+        {
+          text: '20', value: 20,
+        },
+        {
+          text: '50', value: 50,
+        },
+      ],
 
       sizePerPage: pageSize.valueOf(),
       pageStartIndex: 1,
@@ -45,7 +62,7 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
       nextPage: 'Volgende',
       firstPage: 'Eerste',
       lastPage: 'Laatste',
-      // paginationPosition: 'top',
+      paginationPosition: paginationPos,
       paginationShowsTotal: true,
       hideSizePerPage: false,
       alwaysShowAllBtns: true,
@@ -62,7 +79,9 @@ const TupleList: React.StatelessComponent<Props> = ({ result, columns, pageSize 
             isKey={i === 0}
             dataField={column.name}
             tdStyle={tdStyle}
-            dataFormat={cellFormatter}>
+            dataSort={column.sortable}
+            dataFormat={cellFormatter}
+            formatExtraData={column}>
             {column.label ? column.label : column.name}
           </TableHeaderColumn>);
       })}
