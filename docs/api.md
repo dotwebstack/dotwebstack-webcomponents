@@ -137,3 +137,23 @@ Custom settings on how to represent a column.
 
 ### `pageSize`: `number`
 The number of items which are shown in the table view.
+
+```jsx
+type Column {
+  name: string; 
+  label?: string; 
+  sortable?: boolean; 
+  customRender?: (term: Term) => JSX.Element; 
+}
+```
+### `name`: `string`
+The binding name
+
+### `label`: `string`
+A readable representation of the column header
+
+### `sortable`: `string`
+Is a column sortable or not
+
+### `customRender`: `(term: Term) => JSX.Element`
+A way to add custom rendering to a column element
