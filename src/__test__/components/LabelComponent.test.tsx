@@ -5,12 +5,12 @@ import {
 import React from 'react';
 import { Quad } from 'rdf-js';
 import Store from '../../lib/Store';
-import LabelComponent from '../../components/LabelComponent';
+import Label from '../../components/Label';
 
 describe('<LabelComponent /> shows SKOS:prefLabel, RDFS:label or local name - in that order of preference', () => {
   it('shows SKOS:prefLabel', () => {
     const wrapper = shallow(
-      <LabelComponent
+      <Label
         resourceIri={quadWithSkosLabelLiteral.subject}
         store={createStore([quadWithSkosLabelLiteral])}
       />);
@@ -19,7 +19,7 @@ describe('<LabelComponent /> shows SKOS:prefLabel, RDFS:label or local name - in
 
   it('shows RDFS:label', () => {
     const wrapper = shallow(
-      <LabelComponent
+      <Label
         resourceIri={quadWithRdfsLabelLiteral.subject}
         store={createStore([quadWithRdfsLabelLiteral])}
       />);
@@ -28,7 +28,7 @@ describe('<LabelComponent /> shows SKOS:prefLabel, RDFS:label or local name - in
 
   it('shows local name from resourceIri', () => {
     const wrapper = shallow(
-      <LabelComponent
+      <Label
         resourceIri={objectTest3}
         store={createStore([quadWithRdfsLabelLiteral])}
       />);

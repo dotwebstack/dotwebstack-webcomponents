@@ -8,7 +8,7 @@ import PropertyList from './components/PropertyList';
 import ClassList from './components/ClassList';
 import ClassTree from './components/ClassTree';
 import PropertyTree from './components/PropertyTree';
-import LabelComponent from './components/LabelComponent';
+import LabelComponent from './components/Label';
 
 type ComponentMap = {
   [name: string]: any;

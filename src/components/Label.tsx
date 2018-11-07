@@ -10,7 +10,7 @@ type Props = {
   store: Store;
 };
 
-const LabelComponent: React.StatelessComponent<Props> = ({ resourceIri, store }) => {
+const Label: React.StatelessComponent<Props> = ({ resourceIri, store }) => {
   const prefLabel = store.findObjects(namedNode(resourceIri.value), namedNode(SKOS + 'prefLabel'));
   if (prefLabel.length !== 0) {
     return (
@@ -34,4 +34,4 @@ const LabelComponent: React.StatelessComponent<Props> = ({ resourceIri, store })
   );
 };
 
-export default LabelComponent;
+export default Label;

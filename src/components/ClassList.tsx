@@ -7,7 +7,7 @@ import { compareTerm, isLocal, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import TermValue from './TermValue';
-import LabelComponent from './LabelComponent';
+import Label from './Label';
 
 type Props = {
   classIris: Term[],
@@ -86,7 +86,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
         <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
           <li>
             <h3>
-              <LabelComponent
+              <Label
                 store={store}
                 resourceIri={classIri}
               />
