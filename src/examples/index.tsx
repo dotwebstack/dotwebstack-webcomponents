@@ -19,6 +19,9 @@ const App = () => (
                   <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
                 </li>
                 <li className="nav-item">
+                  <Link to="/tuple" className="nav-link">Tuple</Link>
+                </li>
+                <li className="nav-item">
                   <Link to="/resource" className="nav-link">Resource</Link>
                 </li>
               </ul>

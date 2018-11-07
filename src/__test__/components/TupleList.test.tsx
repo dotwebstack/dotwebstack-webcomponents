@@ -47,13 +47,9 @@ describe('<TupleList />', () => {
 
   it('shows the columns in given order', () => {
     table = buildTableWith4Records();
-    const headers = table.find('th');
-    let i = 0;
-    headers.forEach((row) => {
-      const columnHeader = columns[i].label ? columns[i].label : columns[i].name;
-      expect(row.text()).toEqual(columnHeader);
-      i += 1;
-    });
+
+    expect(table.find('th').first().text()).toEqual('Begrip');
+    expect(table.find('th').last().text()).toEqual('Label');
   });
 
   it('shows pagination', () => {
@@ -70,11 +66,23 @@ describe('<TupleList />', () => {
   });
 
   it('can render a custom styling', () => {
-    table = buildTableWith4Records();
+    table = buildTableWithStyle();
     expect(table.find('h1').first().text()).toEqual('Eerste label');
   });
 
   function buildTableWith4Records() {
+    mockTupleResult = new TupleResult();
+    mockTupleResult.setTupleResult(mockBindingSet, mockBindingNames);
+
+    return table = mount(
+      <TupleList
+        result={ mockTupleResult }
+        columns={ columns }
+        pageSize={ pageSize }
+      />);
+  }
+
+  function buildTableWithStyle() {
     const columnsWithStyle: Column[] = [
       { name: 'label', label: 'Label',
         customRender: (term: Term) => {
