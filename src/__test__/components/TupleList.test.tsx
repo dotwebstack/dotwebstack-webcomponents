@@ -71,7 +71,7 @@ describe('<TupleList />', () => {
 
   it('can render a custom styling', () => {
     table = buildTableWith4Records();
-    expect(table.find('h1').text()).toEqual('test');
+    expect(table.find('h1').first().text()).toEqual('Eerste label');
   });
 
   function buildTableWith4Records() {
