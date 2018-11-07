@@ -9,6 +9,7 @@ import ClassList from './components/ClassList';
 import ClassTree from './components/ClassTree';
 import PropertyTree from './components/PropertyTree';
 import TupleContext, { tupleContext } from './components/TupleContext';
+import Label from './components/Label';
 
 type ComponentMap = {
   [name: string]: any;
@@ -35,6 +36,7 @@ const getComponent: any = (name: string) => {
 };
 
 export {
+  Label,
   getComponent,
   renderComponent,
   graphContext,

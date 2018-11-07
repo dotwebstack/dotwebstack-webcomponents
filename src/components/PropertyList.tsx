@@ -8,6 +8,7 @@ import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import * as log from 'loglevel';
 import TermValue from './TermValue';
+import Label from './Label';
 
 type Props = {
   propertyIris: Term[],
@@ -87,7 +88,12 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
       return (
         <ScrollableAnchor key={localName(propertyIri)} id={localName(propertyIri)}>
           <li>
-            <h3>{localName(propertyIri)}</h3>
+            <h3>
+              <Label
+                store={store}
+                resourceIri={propertyIri}
+              />
+            </h3>
             <a href={propertyIri.value}>{propertyIri.value}</a>
             {definition && (
               <p>{definition.value}</p>
