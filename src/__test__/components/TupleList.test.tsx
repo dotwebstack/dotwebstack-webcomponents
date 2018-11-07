@@ -12,10 +12,10 @@ describe('<TupleList />', () => {
   const pageSize = 3;
   const headerSize = 1;
 
-  const columns: Column[] =  [
-      { name: 'begrip', label: 'Begrip' },
-      { name: 'definition', label: 'Definitie' },
-      { name: 'label', label: 'Label' },
+  const columns: Column[] = [
+    { name: 'begrip', label: 'Begrip' },
+    { name: 'definition', label: 'Definitie' },
+    { name: 'label', label: 'Label' },
   ];
 
   it('shows result data in a table', () => {
@@ -69,12 +69,15 @@ describe('<TupleList />', () => {
   });
 
   it('can render a custom styling', () => {
-
+    table = buildTableWith4Records();
+    expect(table.find('h2').text()).toEqual('');
   });
 
   function buildTableWith4Records() {
     mockTupleResult = new TupleResult();
     mockTupleResult.setTupleResult(mockBindingSet, mockBindingNames);
+
+    const opmaak = <h2>mockTupleResult</h2>;
 
     return table = mount(
       <TupleList
