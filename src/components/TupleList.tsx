@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 import { TupleResult } from '../lib/TupleResult';
 import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-bootstrap-table';
 import { Term } from 'rdf-js';
+import i18next from '../i18n';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
@@ -58,10 +59,10 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
       sizePerPage: pageSize.valueOf(),
       pageStartIndex: 1,
       paginationSize: 3,
-      prePage: 'Vorige',
-      nextPage: 'Volgende',
-      firstPage: 'Eerste',
-      lastPage: 'Laatste',
+      prePage: i18next.t('previous'),
+      nextPage: i18next.t('next'),
+      firstPage: i18next.t('first'),
+      lastPage: i18next.t('last'),
       paginationPosition: paginationPos,
       paginationShowsTotal: true,
       hideSizePerPage: false,
