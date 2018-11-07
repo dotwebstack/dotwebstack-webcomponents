@@ -16,8 +16,6 @@ type Row = {
   customRender?: (terms: Term[]) => JSX.Element,
 };
 
-const padding = { padding: '0' };
-
 const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows }) => {
   const statements = store
     .findStatements(resourceIri)
@@ -43,10 +41,10 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
               <span>-</span>
               }
               {!row.customRender && terms.length !== 0 &&
-              <ul style={padding}>
+              <ul className="list-unstyled">
                 {terms.map((term) => {
                   return (
-                    <li key={term.value} className="list-unstyled">
+                    <li key={term.value}>
                       <TermValue
                         term={term}
                         local={isLocal(term, terms)}
