@@ -30,7 +30,7 @@ type TupleListProps = {
 const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
   let options = undefined;
   const paginationPos: PaginationPostion = 'bottom';
-  let orderColumn: string;
+  let sortColumn: string;
 
   if (pageSize) {
     options = {
@@ -69,7 +69,7 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
     <BootstrapTable data={result.getBindingSets()} pagination={usePagination(pageSize, result)}
                     options={options} striped hover>
       {columns.map((column, i) => {
-        orderColumn = column.sortable ? column.name : orderColumn;
+        sortColumn = column.sortable ? column.name : sortColumn;
         return (
           <TableHeaderColumn
             key={column.name + '|' + i}
@@ -79,7 +79,7 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
             dataSort={column.sortable}
             dataFormat={cellFormatter}
             sortFunc={sortRows}
-            sortFuncExtraData={orderColumn}
+            sortFuncExtraData={sortColumn}
             formatExtraData={column}>
             {column.label ? column.label : column.name}
           </TableHeaderColumn>);

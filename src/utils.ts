@@ -21,18 +21,18 @@ export function fetchSparqlResult(url: string): Promise<SparqlResponse> {
 
 export const isLocal = (term: Term, list: Term[]) => list.some(t => term.equals(t));
 
-export const sortRows = (a: any, b: any, order: string, orderColumn: string) => {
+export const sortRows = (a: any, b: any, order: string, sortColumn: string) => {
   if (order === 'desc') {
-    if (a[orderColumn].value > b[orderColumn].value) {
+    if (a[sortColumn].value > b[sortColumn].value) {
       return -1;
-    } if (a[orderColumn].value < b[orderColumn].value) {
+    } if (a[sortColumn].value < b[sortColumn].value) {
       return 1;
     }
     return 0;
   }
-  if (a[orderColumn].value < b[orderColumn].value) {
+  if (a[sortColumn].value < b[sortColumn].value) {
     return -1;
-  }  if (a[orderColumn].value > b[orderColumn].value) {
+  }  if (a[sortColumn].value > b[sortColumn].value) {
     return 1;
   }
   return 0;
