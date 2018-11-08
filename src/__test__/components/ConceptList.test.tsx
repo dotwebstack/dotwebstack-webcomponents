@@ -4,7 +4,7 @@ import Store from '../../lib/Store';
 import ConceptList from '../../components/ConceptList';
 import {
   quadWith1, quadWithPredicateObject2, quadWithPredicate2,
-  quadWithLabelLiteral, quadWithDefintionLiteral, quadWithBroaderConcept, quadWithRelatedConcept,
+  quadWithRdfsLabelLiteral, quadWithDefinitionLiteral, quadWithBroaderConcept, quadWithRelatedConcept,
 } from '../TestData';
 import React from 'react';
 
@@ -17,20 +17,20 @@ describe('<ConceptList />', () => {
     expect(wrapper.find('a').text()).toMatch(quadWithPredicate2.subject.value);
   });
 
-  it('shows the label when defined', () => {
+  it('shows the link when defined', () => {
     const wrapper = shallow(
       <ConceptList
-        store={createStore([quadWithPredicate2, quadWithLabelLiteral])}
+        store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral])}
       />);
-    expect(wrapper.find('h3').text()).toEqual(quadWithLabelLiteral.object.value);
+    expect(wrapper.find('a').text()).toEqual(quadWithRdfsLabelLiteral.subject.value);
   });
 
   it('shows the linked definition', () => {
     const wrapper = shallow(
       <ConceptList
-        store={createStore([quadWithPredicate2, quadWithDefintionLiteral])}
+        store={createStore([quadWithPredicate2, quadWithDefinitionLiteral])}
       />);
-    expect(wrapper.find('p').text()).toEqual(quadWithDefintionLiteral.object.value);
+    expect(wrapper.find('p').text()).toEqual(quadWithDefinitionLiteral.object.value);
   });
 
   it('shows a broader concept', () => {

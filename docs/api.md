@@ -62,33 +62,28 @@ The data source.
 ### `ontologyIRI`: `NamedNode`
 The IRI of the ontology, used as a filter based on the `isDefinedBy` statements.
 
+## &lt;ClassTree>
 ```jsx
 <ClassTree
   store={store}
   classIris={classIris}
 />
 ```
-
 ### `store`: `Store`
 The data source.
-
 ### `classIris`: `Term[]`
 The IRI's of the Classes which are represented.
 
 ## &lt;PropertyTree>
-
 `PropertyTree` is a Tree view representation of the Properties and its children.
-
 ```jsx
 <PropertyTree
   store={store}
   propertyIris={propertyIris}
 />
 ```
-
 ### `store`: `Store`
 The data source.
-
 ### `propertyIris`: `Term[]`
 The IRI's of the Properties which are represented.
 
@@ -180,3 +175,29 @@ A readable representation of the predicate
 
 ### `customRender?`: `(terms: Term[]) => JSX.Element`
 A way to add custom rendering to a row element
+## &lt;TermValue>
+`TermValue` shows the Term; an extracted localname - from the resourceIri - when it's local or the actual value when it's not. 
+```jsx
+<TermValue 
+  term={term}
+  local={local}
+/>
+```
+### `term`: `Term`
+The IRI of the Resource which is represented.
+### `local`: `boolean` (optional)
+Whether the term links to a local- or remote definition. When no `local` is provided, it defaults as false.
+
+## &lt;Label>
+`Label` shows the correct label of the resourceIri. In order of preference when present: SKOS:prefLabel, RDFS:label or localName (extracted from full resourceIri name).
+```jsx
+<Label
+  resourceIri={Term}
+  store={Store}
+/>
+```
+### `resourceIri`: `Term`
+The IRI of the Resource which is represented.
+### `store`: `Store`
+The data source.
+    

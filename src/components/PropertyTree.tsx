@@ -5,6 +5,7 @@ import { namedNode } from '@rdfjs/data-model';
 import { RDFS } from '../namespaces';
 import { compareTerm, isLocal, localName } from '../utils';
 import TreeView from 'react-treeview';
+import Label from './Label';
 
 require('react-treeview/react-treeview.css');
 
@@ -24,7 +25,9 @@ const buildTree = (parents: Term[], store: Store, propertyIris: Term[], collapse
     if (children.length > 0) {
       const label2 = (
         <a href={isLocal(child, propertyIris) ? `#${localName(child)}` : child.value} title={localName(child)}>
-          <span className="node">{localName(child)}</span>
+          <span className="node">
+            <Label store={store} resourceIri={child}/>
+          </span>
         </a>);
       return (
         <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>

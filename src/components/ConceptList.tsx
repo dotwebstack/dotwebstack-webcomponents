@@ -5,6 +5,7 @@ import { RDF, RDFS, SKOS } from '../namespaces';
 import { isLocal, localName } from '../utils';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import i18next from '../i18n';
+import Label from './Label';
 
 type Props = {
   store: Store,
@@ -17,7 +18,6 @@ const ConceptList: React.StatelessComponent<Props> = ({ store }) => {
     <section>
       <ol className="list-unstyled">
         {conceptIris.map((conceptIri) => {
-          const label = store.findObjects(conceptIri, namedNode(RDFS + 'label'))[0];
           const definition = store.findObjects(conceptIri, namedNode(SKOS + 'definition'))[0];
           const broaderConceptIris = store.findObjects(conceptIri, namedNode(SKOS + 'broader'));
           const relatedConceptIris = store.findObjects(conceptIri, namedNode(SKOS + 'related'));
@@ -25,7 +25,7 @@ const ConceptList: React.StatelessComponent<Props> = ({ store }) => {
           return (
             <ScrollableAnchor key={localName(conceptIri)} id={localName(conceptIri)}>
               <li>
-                <h3>{label ? label.value : localName(conceptIri)}</h3>
+                <Label store={store} resourceIri={conceptIri}/>
                 <a href={conceptIri.value}>{conceptIri.value}</a>
                 {definition && (
                   <p>{definition.value}</p>

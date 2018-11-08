@@ -7,6 +7,7 @@ import { compareTerm, isLocal, isNamedNode, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import TermValue from './TermValue';
+import Label from './Label';
 
 type Props = {
   classIris: Term[],
@@ -84,7 +85,12 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
       return (
         <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
           <li>
-            <h3>{localName(classIri)}</h3>
+            <h3>
+              <Label
+                store={store}
+                resourceIri={classIri}
+              />
+            </h3>
             <a href={classIri.value}>{classIri.value}</a>
             {definition && (
               <p>{definition.value}</p>
