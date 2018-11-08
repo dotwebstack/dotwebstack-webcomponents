@@ -1,8 +1,9 @@
 import React, { CSSProperties } from 'react';
 import { TupleResult } from '../lib/TupleResult';
-import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-bootstrap-table';
+import { BootstrapTable, PaginationPostion, TableHeaderColumn, SortOrder } from 'react-bootstrap-table';
 import { Term } from 'rdf-js';
 import i18next from '../i18n';
+import TermValue from './TermValue';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
@@ -13,17 +14,8 @@ export type Column = {
   customRender?: (term: Term) => JSX.Element;
 };
 
-type TupleListCellProps = {
-  cell: Term;
-  column: Column;
-};
-
-const TupleListCell: React.StatelessComponent<TupleListCellProps> = ({ cell, column }) => {
-  return (<div>{column.customRender ? column.customRender(cell) : cell.value}</div>);
-};
-
 const cellFormatter = (cell: Term, {}, column: Column): any => {
-  return (<TupleListCell cell={cell} column={column}/>);
+  return column.customRender ? column.customRender(cell) : <TermValue term={cell}/>;
 };
 
 const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
@@ -36,7 +28,8 @@ type TupleListProps = {
 
 const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
   let options = undefined;
-  const paginationPos: PaginationPostion = 'top';
+  const paginationPos: PaginationPostion = 'bottom';
+  let orderColumn: string;
 
   if (pageSize) {
     options = {
@@ -70,10 +63,29 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
       withFirstAndLast: true,
     };
   }
+
+  const sortRows = (a: any, b: any, order: string) => {
+    if (order === 'desc') {
+      if (a[orderColumn].value > b[orderColumn].value) {
+        return -1;
+      } if (a[orderColumn].value < b[orderColumn].value) {
+        return 1;
+      }
+      return 0;
+    }
+    if (a[orderColumn].value < b[orderColumn].value) {
+      return -1;
+    }  if (a[orderColumn].value > b[orderColumn].value) {
+      return 1;
+    }
+    return 0;
+  };
+
   return (
     <BootstrapTable data={result.getBindingSets()} pagination={usePagination(pageSize, result)}
                     options={options} striped hover>
       {columns.map((column, i) => {
+        orderColumn = column.sortable ? column.name : orderColumn;
         return (
           <TableHeaderColumn
             key={column.name + '|' + i}
@@ -82,6 +94,7 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
             tdStyle={tdStyle}
             dataSort={column.sortable}
             dataFormat={cellFormatter}
+            sortFunc={sortRows}
             formatExtraData={column}>
             {column.label ? column.label : column.name}
           </TableHeaderColumn>);
