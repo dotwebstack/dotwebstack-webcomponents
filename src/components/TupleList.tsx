@@ -1,9 +1,10 @@
-import React, { CSSProperties } from 'react';
-import { TupleResult } from '../lib/TupleResult';
-import { BootstrapTable, PaginationPostion, TableHeaderColumn, SortOrder } from 'react-bootstrap-table';
 import { Term } from 'rdf-js';
+import React, { CSSProperties } from 'react';
+import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-bootstrap-table';
 import i18next from '../i18n';
+import { TupleResult } from '../lib/TupleResult';
 import TermValue from './TermValue';
+import { sortRows } from '../utils';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
@@ -64,23 +65,6 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
     };
   }
 
-  const sortRows = (a: any, b: any, order: string) => {
-    if (order === 'desc') {
-      if (a[orderColumn].value > b[orderColumn].value) {
-        return -1;
-      } if (a[orderColumn].value < b[orderColumn].value) {
-        return 1;
-      }
-      return 0;
-    }
-    if (a[orderColumn].value < b[orderColumn].value) {
-      return -1;
-    }  if (a[orderColumn].value > b[orderColumn].value) {
-      return 1;
-    }
-    return 0;
-  };
-
   return (
     <BootstrapTable data={result.getBindingSets()} pagination={usePagination(pageSize, result)}
                     options={options} striped hover>
@@ -95,6 +79,7 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
             dataSort={column.sortable}
             dataFormat={cellFormatter}
             sortFunc={sortRows}
+            sortFuncExtraData={orderColumn}
             formatExtraData={column}>
             {column.label ? column.label : column.name}
           </TableHeaderColumn>);
