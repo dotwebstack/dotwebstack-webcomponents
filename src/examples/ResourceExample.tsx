@@ -24,9 +24,11 @@ const rows = [
     label: 'Subject',
     customRender: (terms: Term[]) => {
       return (
-        <div>
-          {terms.map(term => <h1>{term.value}</h1>)}
-        </div>
+        <ul className="list-unstyled mb-0">
+          {terms.map(term => (
+            <li key={term.value}><strong>{term.value}</strong></li>
+          ))}
+        </ul>
       );
     },
   },

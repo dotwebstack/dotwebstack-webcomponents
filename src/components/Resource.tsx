@@ -28,6 +28,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
         const terms: Term[] = statements
           .filter(statement => row.predicate.value === statement.predicate.value)
           .map(statement => statement.object);
+
         return (
           <tr key={row.predicate.value}>
             <th scope="row">
@@ -41,7 +42,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
               <span>-</span>
               }
               {!row.customRender && terms.length !== 0 &&
-              <ul className="list-unstyled">
+              <ul className="list-unstyled mb-0">
                 {terms.map((term) => {
                   return (
                     <li key={term.value}>
