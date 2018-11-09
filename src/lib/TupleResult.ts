@@ -1,13 +1,13 @@
 import { Term, NamedNode, Literal, BlankNode, Variable } from 'rdf-js';
 import { namedNode, literal, blankNode } from '@rdfjs/data-model';
 
-type BindingSet = {
+export type BindingSet = {
   [name: string]: Term;
 };
 
 export type SparqlResponse = {
   head: {
-    vars: String[];
+    vars: string[];
   };
   results: {
     bindings: BindingSet[];
@@ -16,7 +16,7 @@ export type SparqlResponse = {
 
 export class TupleResult {
   private bindingSet: BindingSet[] = [];
-  private bindingNames: String[] = [];
+  private bindingNames: string[] = [];
 
   constructor(dataResponse?: SparqlResponse) {
     if (dataResponse) {
@@ -53,5 +53,9 @@ export class TupleResult {
   }
   getBindingSets() {
     return this.bindingSet;
+  }
+  setTupleResult(value: BindingSet[], value2: string[]) {
+    this.bindingSet = value;
+    this.bindingNames = value2;
   }
 }

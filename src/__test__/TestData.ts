@@ -1,5 +1,5 @@
-import { defaultGraph, literal, namedNode, quad, blankNode } from '@rdfjs/data-model';
-import { RDF, RDFS, SKOS, DCT, SHACL, OWL } from '../namespaces';
+import { blankNode, defaultGraph, literal, namedNode, quad } from '@rdfjs/data-model';
+import { DCT, OWL, RDF, RDFS, SHACL, SKOS } from '../namespaces';
 
 export const subjectTypeRdf = namedNode(RDF + 'test');
 export const subjectTest5 = namedNode('https://example.org/test5');
@@ -31,7 +31,7 @@ export const objectClassOwl = namedNode(OWL + 'Class');
 export const objectObjectProperty = namedNode(OWL + 'ObjectProperty');
 export const objectDatatypeProperty = namedNode(OWL + 'DatatypeProperty');
 
-export const literal1 = literal('test');
+export const literal1 = literal('test1');
 export const literal2 = literal('test2');
 
 export const defaultGraph1 = defaultGraph();
@@ -373,111 +373,173 @@ export const parsedJsonLd = [{
 }];
 
 export const mockResponse = {
-  head: { vars: ['book' , 'title'],
-  } ,
+  head: {
+    vars: ['book', 'title'],
+  },
   results: {
     bindings: [
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book6' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Half-Blood Prince' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book6' },
+        title: { type: 'literal', value: 'Harry Potter and the Half-Blood Prince' },
+      },
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book7' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Deathly Hallows' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book7' },
+        title: { type: 'literal', value: 'Harry Potter and the Deathly Hallows' },
+      },
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book5' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Order of the Phoenix' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book5' },
+        title: { type: 'literal', value: 'Harry Potter and the Order of the Phoenix' },
+      },
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book4' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Goblet of Fire' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book4' },
+        title: { type: 'literal', value: 'Harry Potter and the Goblet of Fire' },
+      },
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book2' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Chamber of Secrets' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book2' },
+        title: { type: 'literal', value: 'Harry Potter and the Chamber of Secrets' },
+      },
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book3' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Prisoner Of Azkaban' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book3' },
+        title: { type: 'literal', value: 'Harry Potter and the Prisoner Of Azkaban' },
+      },
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book1' } ,
-        title: { type: 'literal' , value: "Harry Potter and the Philosopher's Stone" },
+        book: { type: 'uri', value: 'http://example.org/book/book1' },
+        title: { type: 'literal', value: "Harry Potter and the Philosopher's Stone" },
       },
     ],
   },
 };
 
 export const mockResponseWithLanguage = {
-  head: { vars: ['book' , 'title'],
-  } ,
+  head: {
+    vars: ['book', 'title'],
+  },
   results: {
     bindings: [
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book7' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Deathly Hallows', 'xml:lang' : 'en' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book7' },
+        title: { type: 'literal', value: 'Harry Potter and the Deathly Hallows', 'xml:lang': 'en' },
+      },
     ],
   },
 };
 
 export const mockResponseWithDatatype = {
-  head: { vars: ['book' , 'title'],
-  } ,
+  head: {
+    vars: ['book', 'title'],
+  },
   results: {
     bindings: [
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book5' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Order of the Phoenix', datatype: 'http://test.org' },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book5' },
+        title: {
+          type: 'literal',
+          value: 'Harry Potter and the Order of the Phoenix',
+          datatype: 'http://test.org',
+        },
+      },
     ],
   },
 };
 
 export const mockResponseWithDatatypeAndLanguage = {
-  head: { vars: ['book' , 'title'],
-  } ,
+  head: {
+    vars: ['book', 'title'],
+  },
   results: {
     bindings: [
       {
-        book: { type: 'uri' , value: 'http://example.org/book/book7' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Deathly Hallows',
-          'xml:lang' : 'en', datatype: 'http://test.org'  },
-      } ,
+        book: { type: 'uri', value: 'http://example.org/book/book7' },
+        title: {
+          type: 'literal', value: 'Harry Potter and the Deathly Hallows',
+          'xml:lang': 'en', datatype: 'http://test.org',
+        },
+      },
     ],
   },
 };
 
 export const mockResponseWithBlanknode = {
-  head: { vars: ['book' , 'title'],
-  } ,
+  head: {
+    vars: ['book', 'title'],
+  },
   results: {
     bindings: [
       {
-        book: { type: 'bnode' , value: 'b1' } ,
-        title: { type: 'literal' , value: 'Harry Potter and the Half-Blood Prince' },
-      } ,
+        book: { type: 'bnode', value: 'b1' },
+        title: { type: 'literal', value: 'Harry Potter and the Half-Blood Prince' },
+      },
     ],
   },
 };
 
 export const mockResultSet = [
-    { book: namedNode('http://example.org/book/book6'), title: literal('Harry Potter and the Half-Blood Prince') },
-    { book: namedNode('http://example.org/book/book7'), title: literal('Harry Potter and the Deathly Hallows') },
-    { book: namedNode('http://example.org/book/book5'), title: literal('Harry Potter and the Order of the Phoenix') },
-    { book: namedNode('http://example.org/book/book4'), title: literal('Harry Potter and the Goblet of Fire') },
-    { book: namedNode('http://example.org/book/book2'), title: literal('Harry Potter and the Chamber of Secrets') },
-    { book: namedNode('http://example.org/book/book3'), title: literal('Harry Potter and the Prisoner Of Azkaban') },
-    { book: namedNode('http://example.org/book/book1'), title: literal("Harry Potter and the Philosopher's Stone") }];
+  {
+    book: namedNode('http://example.org/book/book6'),
+    title: literal('Harry Potter and the Half-Blood Prince'),
+  },
+  {
+    book: namedNode('http://example.org/book/book7'),
+    title: literal('Harry Potter and the Deathly Hallows'),
+  },
+  {
+    book: namedNode('http://example.org/book/book5'),
+    title: literal('Harry Potter and the Order of the Phoenix'),
+  },
+  {
+    book: namedNode('http://example.org/book/book4'),
+    title: literal('Harry Potter and the Goblet of Fire'),
+  },
+  {
+    book: namedNode('http://example.org/book/book2'),
+    title: literal('Harry Potter and the Chamber of Secrets'),
+  },
+  {
+    book: namedNode('http://example.org/book/book3'),
+    title: literal('Harry Potter and the Prisoner Of Azkaban'),
+  },
+  {
+    book: namedNode('http://example.org/book/book1'),
+    title: literal("Harry Potter and the Philosopher's Stone"),
+  }];
 
 export const mockResultSetLanguage = [
-  { book: namedNode('http://example.org/book/book7'), title: literal('Harry Potter and the Deathly Hallows', 'en') }];
+  {
+    book: namedNode('http://example.org/book/book7'),
+    title: literal('Harry Potter and the Deathly Hallows', 'en'),
+  }];
 
 export const mockResultSetDatatype = [
-  { book: namedNode('http://example.org/book/book5'),
-    title: literal('Harry Potter and the Order of the Phoenix', 'http://test.org') },
+  {
+    book: namedNode('http://example.org/book/book5'),
+    title: literal('Harry Potter and the Order of the Phoenix', 'http://test.org'),
+  },
 ];
 
 export const mockResultSetBlanknode = [
-      { book: blankNode('b1'), title: literal('Harry Potter and the Half-Blood Prince') }];
+  { book: blankNode('b1'), title: literal('Harry Potter and the Half-Blood Prince') }];
+
+export const mockBindingSet = [
+  {
+    begrip: namedNode('Eerste begrip'),
+    definition: literal('Eerste definitie'),
+    label: literal('Eerste label'),
+  },
+  {
+    begrip: namedNode('Tweede begrip'),
+    definition: literal('Tweede definitie'),
+    label: literal('Tweede label'),
+  },
+  {
+    begrip: namedNode('Derde begrip'),
+    definition: literal('Derde definitie'),
+    label: literal('Derde label'),
+  },
+  {
+    begrip: namedNode('Vierde begrip'),
+    definition: literal('Vierde definitie'),
+    label: literal('Vierde label'),
+  },
+];
+
+export const mockBindingNames = ['begrip', 'definition', 'label'];

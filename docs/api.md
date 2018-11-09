@@ -36,19 +36,6 @@ The data source.
 ### `src`: `String`
 The endpoint used by the backend to retrieve the data.
 
-## &lt;TupleContext>
-`TupleContext` is a wrapper for all SPARQL Query Result using components.
-```jsx
-  <TupleContext src={src}>
-    {data => (
-      <React.Component data={data} />
-    )}
-  </TupleContext>
-```
-### `src`: `String`
-The endpoint used by the backend to retrieve the SPARQL response.
-
-
 ## &lt;PropertyList>
 `PropertyList` creates a list of properties.
 ```jsx
@@ -100,6 +87,58 @@ The data source.
 ### `propertyIris`: `Term[]`
 The IRI's of the Properties which are represented.
 
+## &lt;TupleContext>
+`TupleContext` is a wrapper for all SPARQL Query Result using components.
+```jsx
+  <TupleContext src={src}>
+    {data => (
+      <React.Component data={data} />
+    )}
+  />
+```
+### `src`: `String`
+The endpoint used by the backend to retrieve the SPARQL response.
+
+## &lt;TupleList>
+
+`TupleList` is a table view representation of the SPARQL Query Result.
+
+```jsx
+<TupleList
+  result={result}
+  columns={columns}
+  pageSize={10}
+/>
+```
+
+### `result`: `TupleResult`
+The data source.
+
+### `columns`: `Column[]`
+Custom settings on how to represent a column. 
+
+### `pageSize`: `number`
+The number of items which are shown in the table view.
+
+```jsx
+type Column {
+  name: string; 
+  label?: string; 
+  sortable?: boolean; 
+  customRender?: (term: Term) => JSX.Element; 
+}
+```
+### `name`: `string`
+The binding name
+
+### `label`: `string`
+A readable representation of the column header
+
+### `sortable`: `string`
+Is a column sortable or not
+
+### `customRender`: `(term: Term) => JSX.Element`
+A way to add custom rendering to a column element
 ## &lt;Resource>
 
 `Resource` a detailed view of one ResourceIri. It provides a simple list of properties.

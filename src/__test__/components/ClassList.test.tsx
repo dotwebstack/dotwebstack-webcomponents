@@ -122,8 +122,8 @@ describe('<ClassList />', () => {
         term={literal1}
         local={true}
       />);
-    expect(wrapper.html()).toMatch('<span>test</span>');
-    expect(wrapper.text()).toEqual('test');
+    expect(wrapper.html()).toMatch('<span>' + literal1.value + '</span>');
+    expect(wrapper.text()).toEqual(literal1.value);
   });
 });
 
