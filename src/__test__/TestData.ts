@@ -31,7 +31,7 @@ export const objectClassOwl = namedNode(OWL + 'Class');
 export const objectObjectProperty = namedNode(OWL + 'ObjectProperty');
 export const objectDatatypeProperty = namedNode(OWL + 'DatatypeProperty');
 
-export const literal1 = literal('test');
+export const literal1 = literal('test1');
 export const literal2 = literal('test2');
 
 export const defaultGraph1 = defaultGraph();

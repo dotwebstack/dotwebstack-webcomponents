@@ -21,9 +21,16 @@ export function fetchSparqlResult(url: string): Promise<SparqlResponse> {
 
 export const isLocal = (term: Term, list: Term[]) => list.some(t => term.equals(t));
 
+const sortTerm = (termA: Term, termB: Term) => {
+  if (isNamedNode(termA) || isNamedNode(termB)) {
+    return compareTerm(termA, termB);
+  }
+  return termA.value.localeCompare(termB.value);
+};
+
 export const sortRows = (a: BindingSet, b: BindingSet, order: string, sortColumn: string) => {
   if (order === 'asc') {
-    return compareTerm(a[sortColumn], b[sortColumn]);
+    return sortTerm(a[sortColumn], b[sortColumn]);
   }
-  return compareTerm(a[sortColumn], b[sortColumn]) * -1;
+  return sortTerm(a[sortColumn], b[sortColumn]) * -1;
 };
