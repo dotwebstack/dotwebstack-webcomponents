@@ -15,7 +15,7 @@ describe('utils::sortRows', () => {
     expect(sortRows({ test: objectTest2 }, { test: objectTest1 }, 'desc', 'test')).toEqual(-1);
   });
   it('Sorts properly desc when equal', () => {
-    expect(sortRows({ test: objectTest1 }, { test: objectTest1 }, 'desc', 'test')).toEqual(0);
+    expect(sortRows({ test: objectTest1 }, { test: objectTest1 }, 'desc', 'test')).toEqual(-0);
   });
   it('Sorts properly asc when equal', () => {
     expect(sortRows({ test: objectTest1 }, { test: objectTest1 }, 'asc', 'test')).toEqual(0);

@@ -1,7 +1,7 @@
 import { Term, NamedNode, Literal, BlankNode, Variable } from 'rdf-js';
 import { namedNode, literal, blankNode } from '@rdfjs/data-model';
 
-type BindingSet = {
+export type BindingSet = {
   [name: string]: Term;
 };
 

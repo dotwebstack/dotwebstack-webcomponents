@@ -1,7 +1,7 @@
-import { Term } from 'rdf-js';
-import { last } from 'ramda';
-import { SparqlResponse } from './lib/TupleResult';
 import log from 'loglevel';
+import { last } from 'ramda';
+import { Term } from 'rdf-js';
+import { SparqlResponse, BindingSet } from './lib/TupleResult';
 
 export const localName = (term: Term) => last(term.value.split(/[\#\/]/)) || term.value;
 
@@ -21,19 +21,9 @@ export function fetchSparqlResult(url: string): Promise<SparqlResponse> {
 
 export const isLocal = (term: Term, list: Term[]) => list.some(t => term.equals(t));
 
-export const sortRows = (a: any, b: any, order: string, sortColumn: string) => {
-  if (order === 'desc') {
-    if (a[sortColumn].value > b[sortColumn].value) {
-      return -1;
-    } if (a[sortColumn].value < b[sortColumn].value) {
-      return 1;
-    }
-    return 0;
+export const sortRows = (a: BindingSet, b: BindingSet, order: string, sortColumn: string) => {
+  if (order === 'asc') {
+    return compareTerm(a[sortColumn], b[sortColumn]);
   }
-  if (a[sortColumn].value < b[sortColumn].value) {
-    return -1;
-  }  if (a[sortColumn].value > b[sortColumn].value) {
-    return 1;
-  }
-  return 0;
+  return compareTerm(a[sortColumn], b[sortColumn]) * -1;
 };
