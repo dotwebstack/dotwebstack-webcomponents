@@ -29,7 +29,7 @@ type TupleListProps = {
 
 const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
   let options = undefined;
-  const paginationPos: PaginationPostion = 'bottom';
+  const paginationPos: PaginationPostion = 'top';
   let sortColumn: string;
 
   if (pageSize) {
