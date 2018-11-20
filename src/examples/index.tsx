@@ -4,7 +4,7 @@ import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import VocabularyExample from './VocabularyExample';
 import i18next from '../i18n';
-import TupleExample from './TupleExample';
+import TupleListExample from './TupleListExample';
 import ResourceExample from './ResourceExample';
 
 const App = () => (
@@ -19,7 +19,7 @@ const App = () => (
                   <Link to="/vocabulary" className="nav-link">Vocabulary</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/tuple" className="nav-link">Tuple</Link>
+                  <Link to="/tuple-list" className="nav-link">TupleList</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/resource" className="nav-link">Resource</Link>
@@ -32,7 +32,7 @@ const App = () => (
           <div className="container">
             <Switch>
               <Route exact path="/vocabulary" component={VocabularyExample} />
-              <Route exact path="/tuple" component={TupleExample} />
+              <Route exact path="/tuple-list" component={TupleListExample} />
               <Route exact path="/resource" component={ResourceExample} />
               <Redirect from="/" to="/vocabulary" />
             </Switch>

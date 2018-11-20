@@ -10,7 +10,7 @@ const columns: Column[] = [
     name: 'label',
     label: 'Label',
     customRender: (term: Term) => {
-      return (<h3>{term.value}</h3>);
+      return (<strong>{term.value}</strong>);
     },
   },
   {
@@ -26,7 +26,7 @@ const columns: Column[] = [
 
 export default () => (
   <div>
-    <h1>Tuple</h1>
+    <h1>TupleList</h1>
     <section className="mt-4">
       <TupleContext src={endpoint}>
         {result => (
