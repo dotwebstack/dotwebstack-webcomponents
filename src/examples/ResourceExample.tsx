@@ -1,5 +1,5 @@
 import { namedNode } from '@rdfjs/data-model';
-import GraphContext from '../components/GraphContext';
+import { Label, GraphContext } from '..';
 import React from 'react';
 import Resource from '../components/Resource';
 import { Term } from 'rdf-js';
@@ -39,18 +39,19 @@ const rows = [
 ];
 
 export default () => (
-  <div>
-    <h1>Resource</h1>
-    <section className="mt-4">
-      <GraphContext src={endpoint}>
-        {store => (
+  <GraphContext src={endpoint}>
+    {store => (
+      <div>
+        <h1><Label store={store} resourceIri={resourceIri} /></h1>
+        <p>{resourceIri.value}</p>
+        <section className="mt-4">
           <Resource
             store={store}
             resourceIri={resourceIri}
             rows={rows}
           />
-        )}
-      </GraphContext>
-    </section>
-  </div>
+        </section>
+      </div>
+    )}
+  </GraphContext>
 );
