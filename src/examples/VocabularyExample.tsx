@@ -1,9 +1,8 @@
 import React from 'react';
-import { namedNode } from '@rdfjs/data-model';
 import { GraphContext, Vocabulary } from '..';
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
+const ontologyIRI = 'http://bag.basisregistraties.overheid.nl/def/bag';
 
 export default () => (
   <div>
