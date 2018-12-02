@@ -1,5 +1,5 @@
 import React from 'react';
-import { NamedNode, Term } from 'rdf-js';
+import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 // @ts-ignore Ignore because Ramda type definitions are not up-to-date
 import { innerJoin } from 'ramda';
@@ -15,11 +15,12 @@ import PropertyTree from './PropertyTree';
 
 type Props = {
   store: Store,
-  ontology: NamedNode,
+  ontology: string,
 };
 
 const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
-  const ontologyIris = store.findSubjects(namedNode(RDFS + 'isDefinedBy'), ontology);
+  const ontologyNode = namedNode(ontology);
+  const ontologyIris = store.findSubjects(namedNode(RDFS + 'isDefinedBy'), ontologyNode);
 
   const allClassIris = store
     .findSubjects(namedNode(RDF + 'type'), [

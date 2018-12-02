@@ -1,7 +1,6 @@
 import * as React from 'react';
 import renderComponent from '../renderComponent';
 import { render } from 'react-dom';
-import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
 import Vocabulary from '../components/Vocabulary';
 import { graphContext } from '../components/GraphContext';
@@ -20,7 +19,7 @@ afterEach(jest.resetAllMocks);
 
 describe('renderComponent', () => {
   it('renders component when found', () => {
-    const ontology = namedNode('http://foo');
+    const ontology = 'http://foo';
     const store = new Store([]);
     const props = { ontology, store };
 
@@ -38,7 +37,7 @@ describe('renderComponent', () => {
   it('renders with graphContext', async () => {
     const endpoint = 'http://example.org';
     const div = document.createElement('div');
-    const ontology = namedNode('http://schema.org/url');
+    const ontology = 'http://schema.org/url';
     let testStore = new Store([]);
     await graphContext(endpoint)
     .then((store) => {

@@ -18,7 +18,7 @@ describe('<Vocabulary />', () => {
     const wrapper = mount(
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeClassOwl])}
-        ontology={subjectTest5}
+        ontology={subjectTest5.value}
       />);
     expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -27,7 +27,7 @@ describe('<Vocabulary />', () => {
     const wrapper = mount(
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeClassRdfs])}
-        ontology={subjectTest5}
+        ontology={subjectTest5.value}
       />);
     expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -36,7 +36,7 @@ describe('<Vocabulary />', () => {
     const wrapper = mount(
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeToPropertyRdf])}
-        ontology={subjectTest5}
+        ontology={subjectTest5.value}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -45,7 +45,7 @@ describe('<Vocabulary />', () => {
     const wrapper = mount(
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeToDatatypeProperty])}
-        ontology={subjectTest5}
+        ontology={subjectTest5.value}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -54,11 +54,12 @@ describe('<Vocabulary />', () => {
     const wrapper = mount(
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeToObjectProperty])}
-        ontology={subjectTest5}
+        ontology={subjectTest5.value}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 });
+
 
 function createStore(quads: Quad[]) {
   return new Store(quads);
