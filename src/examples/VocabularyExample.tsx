@@ -11,7 +11,7 @@ export default () => (
     <section className="mt-4">
       <GraphContext src={endpoint}>
         {store => (
-          <Vocabulary store={store} ontology={ontologyIRI} />
+          <Vocabulary store={store} ontologyIRI={ontologyIRI} />
         )}
       </GraphContext>
     </section>

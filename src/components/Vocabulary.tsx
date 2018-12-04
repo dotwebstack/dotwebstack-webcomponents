@@ -15,11 +15,11 @@ import PropertyTree from './PropertyTree';
 
 type Props = {
   store: Store,
-  ontology: NamedNode,
+  ontologyIRI: NamedNode,
 };
 
-const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
-  const ontologyIris = store.findSubjects(namedNode(RDFS + 'isDefinedBy'), ontology);
+const Vocabulary: React.StatelessComponent<Props> = ({ ontologyIRI, store }) => {
+  const ontologyIris = store.findSubjects(namedNode(RDFS + 'isDefinedBy'), ontologyIRI);
 
   const allClassIris = store
     .findSubjects(namedNode(RDF + 'type'), [
