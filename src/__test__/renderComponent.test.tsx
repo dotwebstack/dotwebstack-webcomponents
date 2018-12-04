@@ -20,14 +20,14 @@ afterEach(jest.resetAllMocks);
 
 describe('renderComponent', () => {
   it('renders component when found', () => {
-    const ontology = namedNode('http://foo');
+    const ontologyIRI = namedNode('http://foo');
     const store = new Store([]);
-    const props = { ontology, store };
+    const props = { ontologyIRI, store };
 
     const div = document.createElement('div');
     renderComponent(div, 'Vocabulary', props);
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={store} />, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary ontologyIRI={ontologyIRI} store={store} />, div);
   });
 
   it('throws error when component not found', () => {
@@ -38,7 +38,7 @@ describe('renderComponent', () => {
   it('renders with graphContext', async () => {
     const endpoint = 'http://example.org';
     const div = document.createElement('div');
-    const ontology = namedNode('http://schema.org/url');
+    const ontologyIRI = namedNode('http://schema.org/url');
     let testStore = new Store([]);
     await graphContext(endpoint)
     .then((store) => {
@@ -48,11 +48,11 @@ describe('renderComponent', () => {
         'Vocabulary',
         {
           store,
-          ontology,
+          ontologyIRI,
         },
       );
     });
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={testStore} />, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary ontologyIRI={ontologyIRI} store={testStore} />, div);
   });
 });
