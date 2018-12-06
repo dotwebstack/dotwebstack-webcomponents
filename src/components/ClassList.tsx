@@ -3,8 +3,8 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, isLocal, isNamedNode, localName } from '../utils';
-import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
+import { compareTerm, isLocal, isNamedNode, localName, findDefinition, findComment } from '../utils';
+import { RDFS, SHACL } from '../namespaces';
 import i18next from '../i18n';
 import TermValue from './TermValue';
 import Label from './Label';
@@ -13,22 +13,6 @@ type Props = {
   classIris: Term[],
   propertyIris: Term[],
   store: Store,
-};
-
-const findDefinition = (classIri: Term, store: Store): Term | undefined => {
-  const definition = store.findObjects(classIri, namedNode(SKOS + 'definition'))[0];
-
-  if (definition !== undefined) {
-    return definition;
-  }
-
-  const conceptIri = store.findObjects(classIri, namedNode(DCT + 'subject'))[0];
-
-  if (conceptIri === undefined) {
-    return undefined;
-  }
-
-  return store.findObjects(conceptIri, namedNode(SKOS + 'definition'))[0];
 };
 
 const findSuperClassIris = (classIri: Term, store: Store): Term[] =>
@@ -75,6 +59,7 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
 const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
+      const comment = findComment(classIri, store);
       const definition = findDefinition(classIri, store);
       const superClassIris = findSuperClassIris(classIri, store).sort(compareTerm);
       const subClassIris = store.findSubIris(classIri, 'subClassOf').sort(compareTerm);
@@ -83,7 +68,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
       const inheritedPropertyIris = findInheritedPropertyIris(ancestorClassIris, store).sort(compareTerm);
 
       return (
-        <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
+        <ScrollableAnchor key={classIri.value} id={localName(classIri)}>
           <li>
             <h3>
               <Label
@@ -92,6 +77,9 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
               />
             </h3>
             <a href={classIri.value}>{classIri.value}</a>
+            {comment && (
+              <p>{comment.value}</p>
+            )}
             {definition && (
               <p>{definition.value}</p>
             )}
