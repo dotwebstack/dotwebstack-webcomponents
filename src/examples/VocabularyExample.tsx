@@ -1,9 +1,8 @@
 import React from 'react';
-import { namedNode } from '@rdfjs/data-model';
 import { GraphContext, Vocabulary } from '..';
 
-const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
+// const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
+const endpoint = 'https://catalogus.kadaster.nl/model';
 
 export default () => (
   <div>
@@ -11,7 +10,7 @@ export default () => (
     <section className="mt-4">
       <GraphContext src={endpoint}>
         {store => (
-          <Vocabulary store={store} ontologyIRI={ontologyIRI} />
+          <Vocabulary store={store} />
         )}
       </GraphContext>
     </section>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { NamedNode, Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 // @ts-ignore Ignore because Ramda type definitions are not up-to-date
 import { innerJoin } from 'ramda';
@@ -15,36 +14,23 @@ import PropertyTree from './PropertyTree';
 
 type Props = {
   store: Store,
-  ontologyIRI: NamedNode,
 };
 
-const Vocabulary: React.StatelessComponent<Props> = ({ ontologyIRI, store }) => {
-  const ontologyIris = store.findSubjects(namedNode(RDFS + 'isDefinedBy'), ontologyIRI);
-
-  const allClassIris = store
+const Vocabulary: React.StatelessComponent<Props> = ({ store }) => {
+  const classIris = store
     .findSubjects(namedNode(RDF + 'type'), [
       namedNode(RDFS + 'Class'),
       namedNode(OWL + 'Class'),
-    ]);
+    ])
+    .sort(compareTerm);
 
-  const classIris = innerJoin(
-    (a: Term, b: Term) => a.equals(b),
-    allClassIris,
-    ontologyIris,
-  ).sort(compareTerm);
-
-  const allPropertyIris = store
+  const propertyIris = store
     .findSubjects(namedNode(RDF + 'type'), [
       namedNode(RDF + 'Property'),
       namedNode(OWL + 'DatatypeProperty'),
       namedNode(OWL + 'ObjectProperty'),
-    ]);
-
-  const propertyIris = innerJoin(
-    (a: Term, b: Term) => a.equals(b),
-    allPropertyIris,
-    ontologyIris,
-  ).sort(compareTerm);
+    ])
+    .sort(compareTerm);
 
   return (
     <div>
@@ -52,19 +38,19 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontologyIRI, store }) => 
         <div className="col-md-6">
           <section>
             <h2>{i18next.t('classes')}</h2>
-              <ClassTree
-                store={store}
-                classIris={classIris}
-              />
+            <ClassTree
+              store={store}
+              classIris={classIris}
+            />
           </section>
         </div>
         <div className="col-md-6">
           <section>
             <h2>{i18next.t('properties')}</h2>
-              <PropertyTree
-                store={store}
-                propertyIris={propertyIris}
-              />
+            <PropertyTree
+              store={store}
+              propertyIris={propertyIris}
+            />
           </section>
         </div>
       </div>
