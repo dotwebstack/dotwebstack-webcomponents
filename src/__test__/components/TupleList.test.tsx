@@ -79,6 +79,7 @@ describe('<TupleList />', () => {
         result={ mockTupleResult }
         columns={ columns }
         pageSize={ pageSize }
+        linkbuilder={ '' }
       />);
   }
 
@@ -99,6 +100,7 @@ describe('<TupleList />', () => {
         result={ mockTupleResult }
         columns={ columnsWithStyle }
         pageSize={ pageSize }
+        linkbuilder={ '' }
       />);
   }
 
@@ -109,6 +111,7 @@ describe('<TupleList />', () => {
         result={ emptyTupleResult }
         columns={ columns }
         pageSize={ pageSize }
+        linkbuilder={ '' }
       />);
   }
 });

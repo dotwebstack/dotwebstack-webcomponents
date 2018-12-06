@@ -19,6 +19,7 @@ describe('<Vocabulary />', () => {
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeClassOwl])}
         ontology={subjectTest5}
+        linkbuilder={''}
       />);
     expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -28,6 +29,7 @@ describe('<Vocabulary />', () => {
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeClassRdfs])}
         ontology={subjectTest5}
+        linkbuilder={''}
       />);
     expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -37,6 +39,7 @@ describe('<Vocabulary />', () => {
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeToPropertyRdf])}
         ontology={subjectTest5}
+        linkbuilder={''}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -46,6 +49,7 @@ describe('<Vocabulary />', () => {
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeToDatatypeProperty])}
         ontology={subjectTest5}
+        linkbuilder={''}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -55,6 +59,7 @@ describe('<Vocabulary />', () => {
       <Vocabulary
         store={createStore([quadWithIsDefinedBy, quadWithTypeToObjectProperty])}
         ontology={subjectTest5}
+        linkbuilder={''}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });

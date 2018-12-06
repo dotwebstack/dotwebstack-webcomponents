@@ -86,7 +86,7 @@ describe('<ClassList />', () => {
         store={createStore([quadWithTargetClass, quadWithProperty, quadWithPath])}
         linkbuilder={''}
       />);
-    expect(wrapper.find({ href: '#' + localName(quadWithPath.object) }).getElements().length)
+    expect(wrapper.find({ href: quadWithPath.object.value }).getElements().length)
       .toBeGreaterThan(0);
   });
 
@@ -99,7 +99,9 @@ describe('<ClassList />', () => {
           quadWithReversedProperty, quadWithPathToObject2])}
         linkbuilder={''}
       />);
-    expect(wrapper.find({ href: quadWithPathToObject2.object.value }).getElements().length)
+    // tslint:disable-next-line:no-console
+    console.log(localName(quadWithPathToObject2.object));
+    expect(wrapper.find({ href: '#'+localName(quadWithPathToObject2.object) }).getElements().length)
       .toBeGreaterThan(0);
   });
 
@@ -120,7 +122,7 @@ describe('<ClassList />', () => {
       <Value
         term={objectTest1}
         linkBuilder={linkBuilder(objectTest1.value, linkbuilder)}
-        local={false}
+        local={true}
       />);
     // tslint:disable-next-line:no-console
     console.log(wrapper.html());
@@ -136,7 +138,7 @@ describe('<ClassList />', () => {
         term={literal1}
         linkBuilder={linkBuilder(literal1.value, linkbuilder)}
       />);
-    expect(wrapper.html()).toMatch('<span>' + literal1.value + '</span>');
+    expect(wrapper.html()).toMatch('<a href=\"kadaster.nltest1\">test1</a>');
     expect(wrapper.text()).toEqual(literal1.value);
   });
 });

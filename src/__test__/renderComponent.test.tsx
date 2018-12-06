@@ -22,12 +22,13 @@ describe('renderComponent', () => {
   it('renders component when found', () => {
     const ontology = namedNode('http://foo');
     const store = new Store([]);
-    const props = { ontology, store };
+    const linkbuilder = '';
+    const props = { ontology, store, linkbuilder };
 
     const div = document.createElement('div');
     renderComponent(div, 'Vocabulary', props);
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={store} />, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={store} linkbuilder={''}/>, div);
   });
 
   it('throws error when component not found', () => {
@@ -39,6 +40,7 @@ describe('renderComponent', () => {
     const endpoint = 'http://example.org';
     const div = document.createElement('div');
     const ontology = namedNode('http://schema.org/url');
+    const linkbuilder = '';
     let testStore = new Store([]);
     await graphContext(endpoint)
     .then((store) => {
@@ -49,10 +51,11 @@ describe('renderComponent', () => {
         {
           store,
           ontology,
+          linkbuilder,
         },
       );
     });
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={testStore} />, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={testStore} linkbuilder={''}/>, div);
   });
 });
