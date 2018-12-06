@@ -10,8 +10,10 @@ import {
   quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
   quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
 } from '../TestData';
-import { localName } from '../../utils';
-import TermValue from '../../components/TermValue';
+import { linkBuilder, localName } from '../../utils';
+import Value from '../../components/Value';
+
+const linkbuilder = 'kadaster.nl';
 
 describe('<ClassList />', () => {
   it('shows class IRI when nothing else provided', () => {
@@ -20,6 +22,7 @@ describe('<ClassList />', () => {
         classIris={[objectTest1]}
         propertyIris={[]}
         store={createStore([])}
+        linkbuilder={''}
       />);
     expect(wrapper.find({ href: objectTest1.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -31,6 +34,7 @@ describe('<ClassList />', () => {
         classIris={[subjectTest5]}
         propertyIris={[]}
         store={createStore([quadWithDefinitionLiteral])}
+        linkbuilder={''}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefinitionLiteral.object.value);
   });
@@ -41,6 +45,7 @@ describe('<ClassList />', () => {
         classIris={[subjectTest5]}
         propertyIris={[]}
         store={createStore([quadWithDCSubject, quadWithDefinition])}
+        linkbuilder={''}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
   });
@@ -51,6 +56,7 @@ describe('<ClassList />', () => {
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral, quadWithSuperClass])}
+        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithSuperClass.subject.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -64,6 +70,7 @@ describe('<ClassList />', () => {
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral, quadWithSubClass])}
+        linkbuilder={''}
       />);
     expect(wrapper.find({ href: objectTest4.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -77,6 +84,7 @@ describe('<ClassList />', () => {
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithTargetClass, quadWithProperty, quadWithPath])}
+        linkbuilder={''}
       />);
     expect(wrapper.find({ href: '#' + localName(quadWithPath.object) }).getElements().length)
       .toBeGreaterThan(0);
@@ -89,6 +97,7 @@ describe('<ClassList />', () => {
         propertyIris={[]}
         store={createStore([quadWithSuperClass, quadWithReversedTargetClass,
           quadWithReversedProperty, quadWithPathToObject2])}
+        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithPathToObject2.object.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -96,8 +105,9 @@ describe('<ClassList />', () => {
 
   it('constructs local link', () => {
     const wrapper = shallow(
-      <TermValue
+      <Value
         term={objectTest1}
+        linkBuilder={''}
         local={true}
       />);
     expect(wrapper.html()).toMatch('#test1');
@@ -107,20 +117,24 @@ describe('<ClassList />', () => {
 
   it('constructs remote link', () => {
     const wrapper = shallow(
-      <TermValue
+      <Value
         term={objectTest1}
+        linkBuilder={linkBuilder(objectTest1.value, linkbuilder)}
         local={false}
       />);
+    // tslint:disable-next-line:no-console
+    console.log(wrapper.html());
     expect(wrapper.html()).toMatch('http://example.org/test1');
-    expect(wrapper.find({ href: 'http://example.org/test1' }).getElements().length).toBeGreaterThan(0);
+    expect(wrapper.find({ href: linkbuilder + 'http://example.org/test1' })
+      .getElements().length).toBeGreaterThan(0);
     expect(wrapper.text()).toEqual('test1');
   });
 
-  it('constructs TermValue with Literal', () => {
+  it('constructs Value with Literal', () => {
     const wrapper = shallow(
-      <TermValue
+      <Value
         term={literal1}
-        local={true}
+        linkBuilder={linkBuilder(literal1.value, linkbuilder)}
       />);
     expect(wrapper.html()).toMatch('<span>' + literal1.value + '</span>');
     expect(wrapper.text()).toEqual(literal1.value);

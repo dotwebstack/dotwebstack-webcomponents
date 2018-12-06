@@ -6,6 +6,7 @@ import { Term } from 'rdf-js';
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
 const resourceIri = namedNode('http://bag.basisregistraties.overheid.nl/def/bag#BAG-object');
+const linkbuilder = 'PREFIX_';
 const rows = [
   {
     predicate: namedNode('http://www.w3.org/2000/01/rdf-schema#isDefinedBy'),
@@ -49,6 +50,7 @@ export default () => (
             store={store}
             resourceIri={resourceIri}
             rows={rows}
+            linkbuilder={linkbuilder}
           />
         </section>
       </div>

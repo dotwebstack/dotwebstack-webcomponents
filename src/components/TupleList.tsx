@@ -3,8 +3,8 @@ import React, { CSSProperties } from 'react';
 import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-bootstrap-table';
 import i18next from '../i18n';
 import { TupleResult } from '../lib/TupleResult';
-import TermValue from './TermValue';
-import { sortRows } from '../utils';
+import Value from './Value';
+import { linkBuilder, sortRows } from '../utils';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
@@ -15,22 +15,28 @@ export type Column = {
   customRender?: (term: Term) => JSX.Element;
 };
 
-const cellFormatter = (cell: Term, {}, column: Column): any => {
-  return column.customRender ? column.customRender(cell) : <TermValue term={cell}/>;
-};
-
 const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
 
 type TupleListProps = {
   result: TupleResult,
   columns: Column[],
   pageSize?: number,
+  linkbuilder: string;
 };
 
-const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
+const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize, linkbuilder }) => {
   let options = undefined;
   const paginationPos: PaginationPostion = 'top';
   let sortColumn: string;
+
+  const cellFormatter = (cell: Term, {}, column: Column): any => {
+    return column.customRender ? column.customRender(cell) :
+      <Value
+        term={cell}
+        linkBuilder={linkBuilder(cell.value, linkbuilder)}
+        local={false}
+      />;
+  };
 
   if (pageSize) {
     options = {

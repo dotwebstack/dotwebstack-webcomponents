@@ -3,17 +3,18 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, isLocal, localName } from '../utils';
+import { compareTerm, linkBuilder, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
 import * as log from 'loglevel';
-import TermValue from './TermValue';
+import Value from './Value';
 import Label from './Label';
 
 type Props = {
   propertyIris: Term[],
   classIris: Term[],
   store: Store,
+  linkbuilder: string,
 };
 
 const findDefinition = (propertyIri: Term, store: Store): Term | undefined => {
@@ -76,7 +77,7 @@ const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined 
       undefined,
     );
 
-const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => (
+const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, linkbuilder }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
       const definition = findDefinition(propertyIri, store);
@@ -107,9 +108,10 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                     <ol className="list-unstyled">
                       {superPropertyIris.map(superPropertyIri => (
                         <li key={superPropertyIri.value}>
-                          <TermValue
+                          <Value
                             term={superPropertyIri}
-                            local={isLocal(superPropertyIri, propertyIris)}
+                            linkBuilder={linkBuilder(superPropertyIri.value, linkbuilder)}
+                            local={true}
                           />
                         </li>
                       ))}
@@ -124,9 +126,10 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                     <ol className="list-unstyled">
                       {subPropertyIris.map(subPropertyIri => (
                         <li key={subPropertyIri.value}>
-                          <TermValue
+                          <Value
                             term={subPropertyIri}
-                            local={isLocal(subPropertyIri, propertyIris)}
+                            linkBuilder={linkBuilder(subPropertyIri.value, linkbuilder)}
+                            local={true}
                           />
                         </li>
                       ))}
@@ -141,9 +144,10 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                     <ol className="list-unstyled">
                       {usedInClassIris.map(propertyClassIri => (
                         <li key={propertyClassIri.value}>
-                          <TermValue
+                          <Value
                             term={propertyClassIri}
-                            local={isLocal(propertyClassIri, classIris)}
+                            linkBuilder={linkBuilder(propertyClassIri.value, linkbuilder)}
+                            local={true}
                           />
                         </li>
                       ))}
@@ -155,9 +159,10 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
                 <tr>
                   <th scope="row">{i18next.t('relatedClasses')}:</th>
                   <td>
-                    <TermValue
+                    <Value
                       term={relatedClassIri}
-                      local={isLocal(relatedClassIri, classIris)}
+                      linkBuilder={linkBuilder(relatedClassIri.value, linkbuilder)}
+                      local={true}
                     />
                   </td>
                 </tr>

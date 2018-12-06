@@ -3,16 +3,17 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, isLocal, isNamedNode, localName } from '../utils';
+import { compareTerm, isNamedNode, linkBuilder, localName } from '../utils';
 import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
 import i18next from '../i18n';
-import TermValue from './TermValue';
+import Value from './Value';
 import Label from './Label';
 
 type Props = {
   classIris: Term[],
   propertyIris: Term[],
   store: Store,
+  linkbuilder: string,
 };
 
 const findDefinition = (classIri: Term, store: Store): Term | undefined => {
@@ -72,7 +73,7 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
   );
 };
 
-const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
+const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store, linkbuilder }) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
       const definition = findDefinition(classIri, store);
@@ -86,11 +87,11 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
         <ScrollableAnchor key={localName(classIri)} id={localName(classIri)}>
           <li>
             <h3>
-              <Label
-                store={store}
-                resourceIri={classIri}
-              />
-            </h3>
+            <Label
+              store={store}
+              resourceIri={classIri}
+            />
+          </h3>
             <a href={classIri.value}>{classIri.value}</a>
             {definition && (
               <p>{definition.value}</p>
@@ -104,9 +105,10 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {superClassIris.map(superClassIri => (
                         <li key={superClassIri.value}>
-                          <TermValue
+                          <Value
                             term={superClassIri}
-                            local={isLocal(superClassIri, classIris)}
+                            linkBuilder={linkBuilder(superClassIri.value, linkbuilder)}
+                            local={true}
                           />
                         </li>
                       ))}
@@ -121,9 +123,10 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {subClassIris.map(subClassIri => (
                         <li key={subClassIri.value}>
-                          <TermValue
+                          <Value
                             term={subClassIri}
-                            local={isLocal(subClassIri, classIris)}
+                            linkBuilder={linkBuilder(subClassIri.value, linkbuilder)}
+                            local={true}
                           />
                         </li>
                       ))}
@@ -138,9 +141,10 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {propertyIris.map(propertyIri => (
                         <li key={propertyIri.value}>
-                          <TermValue
+                          <Value
                             term={propertyIri}
-                            local={isLocal(propertyIri, propertyIris)}
+                            linkBuilder={linkBuilder(propertyIri.value, linkbuilder)}
+                            local={true}
                           />
                         </li>
                       ))}
@@ -155,9 +159,9 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <ol className="list-unstyled">
                       {inheritedPropertyIris.map(inheritedPropertyIri => (
                         <li key={inheritedPropertyIri.value}>
-                          <TermValue
+                          <Value
                             term={inheritedPropertyIri}
-                            local={isLocal(inheritedPropertyIri, propertyIris)}
+                            local={true}
                           />
                         </li>
                       ))}

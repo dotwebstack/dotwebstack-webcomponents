@@ -21,6 +21,8 @@ export function fetchSparqlResult(url: string): Promise<SparqlResponse> {
 
 export const isLocal = (term: Term, list: Term[]) => list.some(t => term.equals(t));
 
+export const linkBuilder = (term: string, linkbuilder: string) =>  linkbuilder + encodeURI(term);
+
 const sortTerm = (termA: Term, termB: Term) => {
   if (isNamedNode(termA) || isNamedNode(termB)) {
     return compareTerm(termA, termB);

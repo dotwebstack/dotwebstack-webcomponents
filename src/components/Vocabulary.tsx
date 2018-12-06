@@ -16,9 +16,10 @@ import PropertyTree from './PropertyTree';
 type Props = {
   store: Store,
   ontology: NamedNode,
+  linkbuilder: string,
 };
 
-const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
+const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store, linkbuilder }) => {
   const ontologyIris = store.findSubjects(namedNode(RDFS + 'isDefinedBy'), ontology);
 
   const allClassIris = store
@@ -85,6 +86,7 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
               classIris={classIris}
               propertyIris={propertyIris}
               store={store}
+              linkbuilder={linkbuilder}
             />
           </section>
           <section>
@@ -92,6 +94,7 @@ const Vocabulary: React.StatelessComponent<Props> = ({ ontology, store }) => {
               propertyIris={propertyIris}
               classIris={classIris}
               store={store}
+              linkbuilder={linkbuilder}
             />
           </section>
         </div>

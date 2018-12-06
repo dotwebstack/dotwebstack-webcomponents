@@ -4,6 +4,7 @@ import TupleList, { Column } from '../components/TupleList';
 import { Term } from 'rdf-js';
 
 const endpoint = 'https://data.pdok.nl/ld/dws/v1/doc/begrippen';
+const linkbuilder = 'PREFIX_';
 
 const columns: Column[] = [
   {
@@ -33,7 +34,9 @@ export default () => (
           <TupleList
             result={result}
             columns={columns}
-            pageSize={10}/>
+            pageSize={10}
+            linkbuilder={linkbuilder}
+          />
         )}
       </TupleContext>
     </section>
