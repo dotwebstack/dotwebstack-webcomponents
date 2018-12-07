@@ -21,7 +21,6 @@ type TupleListProps = {
   result: TupleResult,
   columns: Column[],
   pageSize?: number,
-  linkbuilder: string;
 };
 
 const cellFormatter = (cell: Term, {}, column: Column): any => {
