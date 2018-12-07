@@ -1,8 +1,10 @@
 import React from 'react';
 import Search from '../components/Search';
-import { Column } from '../components/TupleList';
+import TupleList, { Column } from '../components/TupleList';
+import Vocabulary from '../components/Vocabulary';
 
-const endpoint = 'https://catalogus.kadaster.nl/concepten';
+const tupleEndpoint = 'https://catalogus.kadaster.nl/concepten';
+const graphEndpoint = '';
 
 const columns: Column[] = [
   {
@@ -20,11 +22,26 @@ const columns: Column[] = [
   },
 ];
 
+const tupleChild = (result: any) => (
+  <TupleList
+            result={result}
+            columns={columns}
+            pageSize={10}/>
+);
+
+const graphChild = (store: any) => (<Vocabulary store={store} />
+);
+
 export default () => (
   <div>
     <h1>Searching</h1>
     <section className="mt-4">
-      <Search endpoint={endpoint} columns={columns} tuple={true}/>
+    Tuple search
+      <Search endpoint={tupleEndpoint} columns={columns} children={tupleChild}/>
+    </section>
+    <section className="mt-4">
+    Graph Search
+      <Search endpoint={graphEndpoint} children={graphChild}/>
     </section>
   </div>
 );

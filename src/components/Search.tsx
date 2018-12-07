@@ -1,12 +1,12 @@
 import React from 'react';
 import TupleContext from './TupleContext';
-import TupleList, { Column } from './TupleList';
-import { GraphContext, Vocabulary } from '..';
+import { Column } from './TupleList';
+import { GraphContext } from '..';
 
 type Props = {
   endpoint: string,
-  tuple: boolean,
-  columns: Column[],
+  children: (data: any) => JSX.Element,
+  columns?: Column[],
 };
 
 type State = {
@@ -16,15 +16,17 @@ type State = {
 
 class Search extends React.Component<Props, State> {
 
+  tuple: boolean = false;
+
   constructor(props: Props) {
     super(props);
+    if (this.props.columns) {
+      this.tuple = true;
+    }
     this.state = {
       searching: false,
       searchTerm: '',
     };
-    this.onClick = this.onClick;
-    this.handleSubmit = this.handleSubmit;
-    this.onChange = this.onChange;
   }
 
   onClick = () => {
@@ -47,21 +49,18 @@ class Search extends React.Component<Props, State> {
         <input type="submit" value="Submit" onClick={this.onClick} />
         </form>
         {this.state.searching ?
-          (this.props.tuple ?
-             <TupleContext src={this.props.endpoint + '?term=' + this.state.searchTerm} >
-             {result => (
-               <TupleList
-                 result={result}
-                 columns={this.props.columns}
-                 pageSize={10}/>
-             )}
-           </TupleContext> :
-           <GraphContext src={this.props.endpoint + '?term=' + this.state.searchTerm}>
-           {store => (
-             <Vocabulary store={store} />
-           )}
-         </GraphContext>) :
-    ''}
+          (this.tuple ?
+            <TupleContext src={this.props.endpoint + '?term=' + this.state.searchTerm} >
+            {result => (
+              this.props.children(result)
+            )}
+          </TupleContext> :
+          <GraphContext src={this.props.endpoint + '?term=' + this.state.searchTerm}>
+          {store => (
+            this.props.children(store)
+          )}
+        </GraphContext>) :
+          ''}
     </div>
     );
   }
