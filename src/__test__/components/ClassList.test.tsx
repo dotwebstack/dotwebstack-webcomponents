@@ -4,16 +4,12 @@ import React from 'react';
 import ClassList from '../../components/ClassList';
 import Store from '../../lib/Store';
 import {
-  literal1,
   objectTest1, objectTest2, objectTest4, quadWithDCSubject, quadWithDefinition,
   quadWithDefinitionLiteral, quadWithRdfsLabelLiteral, quadWithPath, quadWithPathToObject2,
   quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
   quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
 } from '../TestData';
-import { linkBuilder, localName } from '../../utils';
-import Value from '../../components/Value';
-
-const linkbuilder = 'kadaster.nl';
+import { localName } from '../../utils';
 
 describe('<ClassList />', () => {
   it('shows class IRI when nothing else provided', () => {
@@ -101,45 +97,8 @@ describe('<ClassList />', () => {
       />);
     // tslint:disable-next-line:no-console
     console.log(localName(quadWithPathToObject2.object));
-    expect(wrapper.find({ href: '#'+localName(quadWithPathToObject2.object) }).getElements().length)
+    expect(wrapper.find({ href: '#' + localName(quadWithPathToObject2.object) }).getElements().length)
       .toBeGreaterThan(0);
-  });
-
-  it('constructs local link', () => {
-    const wrapper = shallow(
-      <Value
-        term={objectTest1}
-        linkBuilder={''}
-        local={true}
-      />);
-    expect(wrapper.html()).toMatch('#test1');
-    expect(wrapper.find({ href: '#test1' }).getElements().length).toBeGreaterThan(0);
-    expect(wrapper.text()).toEqual('test1');
-  });
-
-  it('constructs remote link', () => {
-    const wrapper = shallow(
-      <Value
-        term={objectTest1}
-        linkBuilder={linkBuilder(objectTest1.value, linkbuilder)}
-        local={true}
-      />);
-    // tslint:disable-next-line:no-console
-    console.log(wrapper.html());
-    expect(wrapper.html()).toMatch('http://example.org/test1');
-    expect(wrapper.find({ href: linkbuilder + 'http://example.org/test1' })
-      .getElements().length).toBeGreaterThan(0);
-    expect(wrapper.text()).toEqual('test1');
-  });
-
-  it('constructs Value with Literal', () => {
-    const wrapper = shallow(
-      <Value
-        term={literal1}
-        linkBuilder={linkBuilder(literal1.value, linkbuilder)}
-      />);
-    expect(wrapper.html()).toMatch('<a href=\"kadaster.nltest1\">test1</a>');
-    expect(wrapper.text()).toEqual(literal1.value);
   });
 });
 
