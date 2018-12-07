@@ -71,11 +71,11 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
         <ScrollableAnchor key={classIri.value} id={localName(classIri)}>
           <li>
             <h3>
-            <Label
-              store={store}
-              resourceIri={classIri}
-            />
-          </h3>
+              <Label
+                store={store}
+                resourceIri={classIri}
+              />
+            </h3>
             <a href={classIri.value}>{classIri.value}</a>
             {comment && (
               <p>{comment.value}</p>
