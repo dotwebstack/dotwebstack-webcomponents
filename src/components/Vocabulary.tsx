@@ -17,7 +17,7 @@ type Props = {
   linkbuilder: string,
 };
 
-const Vocabulary: React.StatelessComponent<Props> = ({ store }) => {
+const Vocabulary: React.StatelessComponent<Props> = ({ store, linkbuilder }) => {
   const classIris = store
     .findSubjects(namedNode(RDF + 'type'), [
       namedNode(RDFS + 'Class'),

@@ -14,7 +14,7 @@ describe('<Vocabulary />', () => {
 
   it('extracts IRIs defined by provided ontology with OWL class', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeClassOwl])}, 
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeClassOwl])}
          linkbuilder={''} />);
     expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
@@ -29,7 +29,7 @@ describe('<Vocabulary />', () => {
 
   it('extracts IRIs defined by provided ontology with RDF property', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToPropertyRdf])} 
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToPropertyRdf])}
           linkbuilder={''}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
@@ -45,7 +45,7 @@ describe('<Vocabulary />', () => {
 
   it('extracts IRIs defined by provided ontology with OWL ObjectProperty', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToObjectProperty])} 
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToObjectProperty])}
         linkbuilder={''}
       />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
