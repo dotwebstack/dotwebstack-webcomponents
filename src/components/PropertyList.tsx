@@ -3,7 +3,7 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, linkBuilder, localName, findDefinition, findComment } from '../utils';
+import { compareTerm, localName, findDefinition, findComment } from '../utils';
 import { RDFS, SHACL } from '../namespaces';
 import i18next from '../i18n';
 import Value from './Value';
@@ -13,7 +13,6 @@ type Props = {
   propertyIris: Term[],
   classIris: Term[],
   store: Store,
-  linkbuilder: string,
 };
 
 const findPropertyShapes = (propertyIri: Term, store: Store): Term[] =>
@@ -60,7 +59,7 @@ const findRelatedClassIri = (propertyShapeIris: Term[], store: Store): Term | un
     undefined,
   );
 
-const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, linkbuilder }) => (
+const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
       const comment = findComment(propertyIri, store);
@@ -98,7 +97,6 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, li
                         <li key={superPropertyIri.value}>
                           <Value
                             term={superPropertyIri}
-                            linkBuilder={linkBuilder(superPropertyIri.value, linkbuilder)}
                             local={true}
                           />
                         </li>
@@ -116,7 +114,6 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, li
                         <li key={subPropertyIri.value}>
                           <Value
                             term={subPropertyIri}
-                            linkBuilder={linkBuilder(subPropertyIri.value, linkbuilder)}
                             local={true}
                           />
                         </li>
@@ -134,7 +131,6 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, li
                         <li key={propertyClassIri.value}>
                           <Value
                             term={propertyClassIri}
-                            linkBuilder={linkBuilder(propertyClassIri.value, linkbuilder)}
                             local={true}
                           />
                         </li>
@@ -149,7 +145,6 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, li
                   <td>
                     <Value
                       term={relatedClassIri}
-                      linkBuilder={linkBuilder(relatedClassIri.value, linkbuilder)}
                       local={true}
                     />
                   </td>

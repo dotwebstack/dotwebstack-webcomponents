@@ -1,14 +1,14 @@
 import React from 'react';
 import { NamedNode, Quad, Term } from 'rdf-js';
 import Store from '../lib/Store';
-import { localName, compareTerm, linkBuilder } from '../utils';
+import { localName, compareTerm } from '../utils';
 import Value from './Value';
 
 type Props = {
   resourceIri: Term,
   store: Store,
   rows: Row[],
-  linkbuilder: string,
+  linkBuilder?: (url: string) => string,
 };
 
 type Row = {
@@ -17,7 +17,9 @@ type Row = {
   customRender?: (terms: Term[]) => JSX.Element,
 };
 
-const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, linkbuilder }) => {
+const Resource: React.StatelessComponent<Props> = (props) => {
+  const { resourceIri, store, rows } = props;
+
   const statements = store
     .findStatements(resourceIri)
     .sort((a: Quad, b: Quad) => compareTerm(a.predicate, b.predicate));
@@ -49,7 +51,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, l
                     <li key={term.value}>
                       <Value
                         term={term}
-                        linkBuilder={linkBuilder(term.value, linkbuilder)}
+                        linkBuilder={props.linkBuilder}
                         local={false}
                       />
                     </li>

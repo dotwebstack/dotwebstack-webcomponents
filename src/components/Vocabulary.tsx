@@ -14,10 +14,9 @@ import PropertyTree from './PropertyTree';
 
 type Props = {
   store: Store,
-  linkbuilder: string,
 };
 
-const Vocabulary: React.StatelessComponent<Props> = ({ store, linkbuilder }) => {
+const Vocabulary: React.StatelessComponent<Props> = ({ store }) => {
   const classIris = store
     .findSubjects(namedNode(RDF + 'type'), [
       namedNode(RDFS + 'Class'),
@@ -72,7 +71,6 @@ const Vocabulary: React.StatelessComponent<Props> = ({ store, linkbuilder }) => 
               classIris={classIris}
               propertyIris={propertyIris}
               store={store}
-              linkbuilder={linkbuilder}
             />
           </section>
           <section>
@@ -80,7 +78,6 @@ const Vocabulary: React.StatelessComponent<Props> = ({ store, linkbuilder }) => 
               propertyIris={propertyIris}
               classIris={classIris}
               store={store}
-              linkbuilder={linkbuilder}
             />
           </section>
         </div>

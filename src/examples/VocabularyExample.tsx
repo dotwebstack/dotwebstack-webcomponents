@@ -3,7 +3,6 @@ import { GraphContext, Vocabulary } from '..';
 
 // const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
 const endpoint = 'https://catalogus.kadaster.nl/model';
-const link = 'PREFIX_';
 
 export default () => (
   <div>
@@ -11,7 +10,7 @@ export default () => (
     <section className="mt-4">
       <GraphContext src={endpoint}>
         {store => (
-          <Vocabulary store={store} linkbuilder={link} />
+          <Vocabulary store={store} />
         )}
       </GraphContext>
     </section>

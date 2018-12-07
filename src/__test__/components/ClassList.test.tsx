@@ -9,7 +9,6 @@ import {
   quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
   quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
 } from '../TestData';
-import { localName } from '../../utils';
 
 describe('<ClassList />', () => {
   it('shows class IRI when nothing else provided', () => {
@@ -18,7 +17,6 @@ describe('<ClassList />', () => {
         classIris={[objectTest1]}
         propertyIris={[]}
         store={createStore([])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: objectTest1.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -30,7 +28,6 @@ describe('<ClassList />', () => {
         classIris={[subjectTest5]}
         propertyIris={[]}
         store={createStore([quadWithDefinitionLiteral])}
-        linkbuilder={''}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefinitionLiteral.object.value);
   });
@@ -41,7 +38,6 @@ describe('<ClassList />', () => {
         classIris={[subjectTest5]}
         propertyIris={[]}
         store={createStore([quadWithDCSubject, quadWithDefinition])}
-        linkbuilder={''}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
   });
@@ -52,7 +48,6 @@ describe('<ClassList />', () => {
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral, quadWithSuperClass])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithSuperClass.subject.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -66,7 +61,6 @@ describe('<ClassList />', () => {
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithPredicate2, quadWithRdfsLabelLiteral, quadWithSubClass])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: objectTest4.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -80,7 +74,6 @@ describe('<ClassList />', () => {
         classIris={[objectTest4]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithTargetClass, quadWithProperty, quadWithPath])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithPath.object.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -93,11 +86,8 @@ describe('<ClassList />', () => {
         propertyIris={[]}
         store={createStore([quadWithSuperClass, quadWithReversedTargetClass,
           quadWithReversedProperty, quadWithPathToObject2])}
-        linkbuilder={''}
       />);
-    // tslint:disable-next-line:no-console
-    console.log(localName(quadWithPathToObject2.object));
-    expect(wrapper.find({ href: '#' + localName(quadWithPathToObject2.object) }).getElements().length)
+    expect(wrapper.find({ href: quadWithPathToObject2.object.value }).getElements().length)
       .toBeGreaterThan(0);
   });
 });

@@ -17,15 +17,13 @@ fetchMock.mock('http://example.org', fooJsonLd);
 
 afterEach(jest.resetAllMocks);
 
-const linkbuilder = '';
-
 describe('renderComponent', () => {
   it('renders component when found', () => {
     const store = new Store([]);
     const div = document.createElement('div');
-    renderComponent(div, 'Vocabulary', { store, linkbuilder });
+    renderComponent(div, 'Vocabulary', { store });
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary store={store} linkbuilder={linkbuilder} />, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary store={store} />, div);
   });
 
   it('throws error when component not found', () => {
@@ -40,9 +38,9 @@ describe('renderComponent', () => {
     await graphContext(endpoint)
       .then((store) => {
         testStore = store;
-        renderComponent(div, 'Vocabulary', { store, linkbuilder });
+        renderComponent(div, 'Vocabulary', { store });
       });
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary store={testStore} linkbuilder={linkbuilder} />, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary store={testStore} />, div);
   });
 });

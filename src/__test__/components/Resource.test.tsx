@@ -30,7 +30,6 @@ describe('<Resource />', () => {
         resourceIri={subjectTypeRdf}
         store={createStore([quadWith1, quadWithPredicateObject2])}
         rows={rows}
-        linkbuilder={''}
       />,
     );
     expect(wrapper.find({ href: quadWith1.predicate.value }).getElements().length)
@@ -56,7 +55,6 @@ describe('<Resource />', () => {
         resourceIri={subjectTypeRdf}
         store={createStore([quadWith1, quadWithPredicateObject2])}
         rows={rows}
-        linkbuilder={''}
       />,
     );
 
@@ -77,7 +75,6 @@ describe('<Resource />', () => {
         resourceIri={subjectTypeRdf}
         store={createStore([quadWith1, quadWithPredicateObject2])}
         rows={rows}
-        linkbuilder={''}
       />,
     );
     expect(wrapper.find('span').text()).toEqual('-');
@@ -98,7 +95,6 @@ describe('<Resource />', () => {
         resourceIri={subjectTypeRdf}
         store={createStore([quadWith1, quadWithPredicateObject2])}
         rows={rows}
-        linkbuilder={''}
       />,
     );
     expect(wrapper.find('th').first().find('a').text()).toEqual(localName(quadWithPredicateObject2.predicate));
@@ -127,7 +123,6 @@ describe('<Resource />', () => {
         resourceIri={subjectTypeRdf}
         store={createStore([quadWith1, quadWithPredicateObject2])}
         rows={rows}
-        linkbuilder={''}
       />,
     );
 

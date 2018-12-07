@@ -4,7 +4,7 @@ import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-boot
 import i18next from '../i18n';
 import { TupleResult } from '../lib/TupleResult';
 import Value from './Value';
-import { linkBuilder, sortRows } from '../utils';
+import { sortRows } from '../utils';
 
 require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
 
@@ -24,19 +24,17 @@ type TupleListProps = {
   linkbuilder: string;
 };
 
-const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize, linkbuilder }) => {
-  let options = undefined;
-  const paginationPos: PaginationPostion = 'top';
-  let sortColumn: string;
+const cellFormatter = (cell: Term, {}, column: Column): any => {
+  return column.customRender ? column.customRender(cell) :
+    <Value
+      term={cell}
+      local={false}
+    />;
+};
 
-  const cellFormatter = (cell: Term, {}, column: Column): any => {
-    return column.customRender ? column.customRender(cell) :
-      <Value
-        term={cell}
-        linkBuilder={linkBuilder(cell.value, linkbuilder)}
-        local={false}
-      />;
-  };
+const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
+  let options;
+  const paginationPos: PaginationPostion = 'top';
 
   if (pageSize) {
     options = {
@@ -72,24 +70,25 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
   }
 
   return (
-    <BootstrapTable data={result.getBindingSets()} pagination={usePagination(pageSize, result)}
-                    options={options} striped hover>
-      {columns.map((column, i) => {
-        sortColumn = column.sortable ? column.name : sortColumn;
-        return (
-          <TableHeaderColumn
-            key={column.name + '|' + i}
-            isKey={i === 0}
-            dataField={column.name}
-            tdStyle={tdStyle}
-            dataSort={column.sortable}
-            dataFormat={cellFormatter}
-            sortFunc={sortRows}
-            sortFuncExtraData={sortColumn}
-            formatExtraData={column}>
-            {column.label ? column.label : column.name}
-          </TableHeaderColumn>);
-      })}
+    <BootstrapTable
+      data={result.getBindingSets()}
+      pagination={usePagination(pageSize, result)}
+      options={options} striped hover
+    >
+      {columns.map((column, i) => (
+        <TableHeaderColumn
+          key={column.name}
+          isKey={i === 0}
+          dataField={column.name}
+          tdStyle={tdStyle}
+          dataSort={column.sortable}
+          dataFormat={cellFormatter}
+          sortFunc={sortRows}
+          sortFuncExtraData={column.sortable ? column.name : undefined}
+          formatExtraData={column}>
+          {column.label ? column.label : column.name}
+        </TableHeaderColumn>
+      ))}
     </BootstrapTable>
   );
 };

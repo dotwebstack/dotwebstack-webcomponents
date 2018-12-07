@@ -14,40 +14,31 @@ describe('<Vocabulary />', () => {
 
   it('extracts IRIs defined by provided ontology with OWL class', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeClassOwl])}
-         linkbuilder={''} />);
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeClassOwl])} />);
     expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with RDFS class', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeClassRdfs])}
-        linkbuilder={''}
-      />);
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeClassRdfs])} />);
     expect(wrapper.find('ClassList').prop('classIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with RDF property', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToPropertyRdf])}
-          linkbuilder={''}
-      />);
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToPropertyRdf])} />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with OWL DatatypeProperty', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToDatatypeProperty])}
-        linkbuilder={''}
-      />);
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToDatatypeProperty])} />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 
   it('extracts IRIs defined by provided ontology with OWL ObjectProperty', () => {
     const wrapper = mount(
-      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToObjectProperty])}
-        linkbuilder={''}
-      />);
+      <Vocabulary store={createStore([quadWithIsDefinedBy, quadWithTypeToObjectProperty])} />);
     expect(wrapper.find('ClassList').prop('propertyIris')).toEqual([quadWithIsDefinedBy.subject]);
   });
 });

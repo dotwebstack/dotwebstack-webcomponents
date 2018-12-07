@@ -18,7 +18,6 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[objectTest1]}
         store={createStore([])}
-        linkbuilder={objectTest1.value}
       />);
     expect(wrapper.find({ href: objectTest1.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -30,7 +29,6 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[subjectTest5]}
         store={createStore([quadWithDefinitionLiteral])}
-        linkbuilder={subjectTest5.value}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefinitionLiteral.object.value);
   });
@@ -41,7 +39,6 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[subjectTest5]}
         store={createStore([quadWithDCSubject, quadWithDefinition])}
-        linkbuilder={subjectTest5.value}
       />);
     expect(wrapper.find('p').text()).toEqual(quadWithDefinition.object.value);
   });
@@ -51,7 +48,6 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithTargetClass, quadWithSuperProperty])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithSuperProperty.object.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -63,7 +59,6 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[objectTest2]}
         store={createStore([quadWithSuperClass, quadWithSubProperty])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithSubProperty.subject.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -75,7 +70,6 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[objectTest1]}
         store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value }).getElements().length)
       .toBeGreaterThan(0);
@@ -87,7 +81,6 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[objectTest1]}
         store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2])}
-        linkbuilder={objectTest1.value}
       />);
     expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value }).getElements().length)
       .toEqual(0);
@@ -99,21 +92,8 @@ describe('<PropertyList />', () => {
         classIris={[]}
         propertyIris={[objectTest1]}
         store={createStore([quadWithPathToObject2, quadWithClass])}
-        linkbuilder={''}
       />);
     expect(wrapper.find({ href: quadWithClass.object.value }).getElements().length)
-      .toBeGreaterThan(0);
-  });
-
-  it('create proper link when using linkbuilder', () => {
-    const wrapper = mount(
-      <PropertyList
-        classIris={[]}
-        propertyIris={[objectTest1]}
-        store={createStore([quadWithPathToObject2, quadWithClass])}
-        linkbuilder={objectTest1.value}
-      />);
-    expect(wrapper.find({ href: objectTest1.value + quadWithClass.object.value }).getElements().length)
       .toBeGreaterThan(0);
   });
 });

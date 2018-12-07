@@ -3,8 +3,7 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, isNamedNode, localName, findDefinition, findComment, 
-        linkBuilder } from '../utils';
+import { compareTerm, isNamedNode, localName, findDefinition, findComment } from '../utils';
 import { RDFS, SHACL } from '../namespaces';
 import i18next from '../i18n';
 import Value from './Value';
@@ -14,7 +13,6 @@ type Props = {
   classIris: Term[],
   propertyIris: Term[],
   store: Store,
-  linkbuilder: string,
 };
 
 const findSuperClassIris = (classIri: Term, store: Store): Term[] =>
@@ -58,7 +56,7 @@ const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Ter
   );
 };
 
-const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store, linkbuilder }) => (
+const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, store }) => (
   <ol className="list-unstyled">
     {classIris.map((classIri) => {
       const comment = findComment(classIri, store);
@@ -96,7 +94,6 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                         <li key={superClassIri.value}>
                           <Value
                             term={superClassIri}
-                            linkBuilder={linkBuilder(superClassIri.value, linkbuilder)}
                             local={true}
                           />
                         </li>
@@ -114,7 +111,6 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                         <li key={subClassIri.value}>
                           <Value
                             term={subClassIri}
-                            linkBuilder={linkBuilder(subClassIri.value, linkbuilder)}
                             local={true}
                           />
                         </li>
@@ -132,7 +128,6 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                         <li key={propertyIri.value}>
                           <Value
                             term={propertyIri}
-                            linkBuilder={linkBuilder(propertyIri.value, linkbuilder)}
                             local={true}
                           />
                         </li>

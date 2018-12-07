@@ -5,16 +5,18 @@ import { Term } from 'rdf-js';
 type Props = {
   term: Term,
   local?: boolean,
-  linkBuilder?: string,
+  linkBuilder?: (url: string) => string,
 };
 
 const Value: React.StatelessComponent<Props> = ({ term, local, linkBuilder }) => {
-  const termValue = local ? localName(term) : term.value;
-  const link = linkBuilder ? linkBuilder : (local ? '#' + termValue : termValue);
+  const value = local ? localName(term) : term.value;
+  const href = linkBuilder ? linkBuilder(term.value) : term.value;
+
   return (
-    <a href={link}>
-      {termValue}
+    <a href={href}>
+      {value}
     </a>
   );
 };
+
 export default Value;
