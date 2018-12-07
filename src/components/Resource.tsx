@@ -52,7 +52,6 @@ const Resource: React.StatelessComponent<Props> = (props) => {
                       <Value
                         term={term}
                         linkBuilder={props.linkBuilder}
-                        local={false}
                       />
                     </li>
                   );

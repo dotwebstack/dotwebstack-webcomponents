@@ -24,11 +24,11 @@ type TupleListProps = {
 };
 
 const cellFormatter = (cell: Term, {}, column: Column): any => {
-  return column.customRender ? column.customRender(cell) :
+  return column.customRender ? column.customRender(cell) : (
     <Value
       term={cell}
-      local={false}
-    />;
+    />
+  );
 };
 
 const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
