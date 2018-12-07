@@ -22,20 +22,20 @@ class Search extends React.Component<Props, State> {
       searching: false,
       searchTerm: '',
     };
-    this.onClick = this.onClick.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick;
+    this.handleSubmit = this.handleSubmit;
+    this.onChange = this.onChange;
   }
 
-  onClick() {
+  onClick = () => {
     this.setState({ searching:true });
   }
 
-  handleSubmit(event: React.FormEvent) {
+  handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
   }
 
-  onChange(e: any) {
+  onChange = (e: any) => {
     this.setState({ searchTerm: e.target.value });
   }
 
