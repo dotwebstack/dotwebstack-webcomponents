@@ -3,10 +3,9 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, linkBuilder, localName } from '../utils';
-import { DCT, RDFS, SHACL, SKOS } from '../namespaces';
+import { compareTerm, isLocal, linkBuilder, localName, findDefinition, findComment } from '../utils';
+import { RDFS, SHACL } from '../namespaces';
 import i18next from '../i18n';
-import * as log from 'loglevel';
 import Value from './Value';
 import Label from './Label';
 
@@ -17,21 +16,8 @@ type Props = {
   linkbuilder: string,
 };
 
-const findDefinition = (propertyIri: Term, store: Store): Term | undefined => {
-  const definition = store.findObjects(propertyIri, namedNode(SKOS + 'definition'))[0];
-
-  if (definition !== undefined) {
-    return definition;
-  }
-
-  const conceptIri = store.findObjects(propertyIri, namedNode(DCT + 'subject'))[0];
-
-  if (conceptIri === undefined) {
-    return undefined;
-  }
-
-  return store.findObjects(conceptIri, namedNode(SKOS + 'definition'))[0];
-};
+const findPropertyShapes = (propertyIri: Term, store: Store): Term[] =>
+  store.findSubjects(namedNode(SHACL + 'path'), propertyIri);
 
 const findSuperPropertyIris = (propertyIri: Term, store: Store): Term[] =>
   store.findObjects(propertyIri, namedNode(RDFS + 'subPropertyOf'));
@@ -39,52 +25,51 @@ const findSuperPropertyIris = (propertyIri: Term, store: Store): Term[] =>
 const findSubPropertyIris = (propertyIri: Term, store: Store): Term[] =>
   store.findSubjects(namedNode(RDFS + 'subPropertyOf'), propertyIri);
 
-const findUsedInClassIris = (propertyIri: Term, store: Store): Term[] =>
-  store.findSubjects(namedNode(SHACL + 'path'), propertyIri)
-    .reduce(
-      (acc: Term[], propertyShapeIri: Term) => {
-        const classShapeIri = store.findSubjects(namedNode(SHACL + 'property'), propertyShapeIri)[0];
+const findUsedInClassIris = (propertyShapeIris: Term[], store: Store): Term[] =>
+  propertyShapeIris.reduce(
+    (acc: Term[], propertyShapeIri: Term) => {
+      const classShapeIri = store.findSubjects(namedNode(SHACL + 'property'), propertyShapeIri)[0];
 
-        if (classShapeIri === undefined) {
-          return acc;
-        }
+      if (classShapeIri === undefined) {
+        return acc;
+      }
 
-        const classIri = store.findObjects(classShapeIri, namedNode(SHACL + 'targetClass'))[0];
+      const classIri = store.findObjects(classShapeIri, namedNode(SHACL + 'targetClass'))[0];
 
-        if (classIri === undefined) {
-          log.warn(`No class found for class shape ${classShapeIri.value}`);
-          return [...acc];
-        }
+      if (classIri === undefined) {
+        return [...acc];
+      }
 
-        return [
-          ...acc,
-          classIri,
-        ];
-      },
-      [],
-    );
+      return [
+        ...acc,
+        classIri,
+      ];
+    },
+    [],
+  );
 
-const findRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined =>
-  store.findSubjects(namedNode(SHACL + 'path'), propertyIri)
-    .reduce(
-      (acc: Term | undefined, propertyShapeIri) => {
-        if (acc !== undefined) {
-          return acc;
-        }
+const findRelatedClassIri = (propertyShapeIris: Term[], store: Store): Term | undefined =>
+  propertyShapeIris.reduce(
+    (acc: Term | undefined, propertyShapeIri) => {
+      if (acc !== undefined) {
+        return acc;
+      }
 
-        return store.findObjects(propertyShapeIri, namedNode(SHACL + 'class'))[0];
-      },
-      undefined,
-    );
+      return store.findObjects(propertyShapeIri, namedNode(SHACL + 'class'))[0];
+    },
+    undefined,
+  );
 
 const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, linkbuilder }) => (
   <ol className="list-unstyled">
     {propertyIris.map((propertyIri) => {
+      const comment = findComment(propertyIri, store);
       const definition = findDefinition(propertyIri, store);
       const superPropertyIris = findSuperPropertyIris(propertyIri, store).sort(compareTerm);
       const subPropertyIris = findSubPropertyIris(propertyIri, store).sort(compareTerm);
-      const usedInClassIris = findUsedInClassIris(propertyIri, store).sort(compareTerm);
-      const relatedClassIri = findRelatedClassIri(propertyIri, store);
+      const propertyShapeIris = findPropertyShapes(propertyIri, store);
+      const usedInClassIris = findUsedInClassIris(propertyShapeIris, store).sort(compareTerm);
+      const relatedClassIri = findRelatedClassIri(propertyShapeIris, store);
 
       return (
         <ScrollableAnchor key={localName(propertyIri)} id={localName(propertyIri)}>
@@ -96,6 +81,9 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store, li
               />
             </h3>
             <a href={propertyIri.value}>{propertyIri.value}</a>
+            {comment && (
+              <p>{comment.value}</p>
+            )}
             {definition && (
               <p>{definition.value}</p>
             )}

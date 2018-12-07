@@ -44,7 +44,7 @@ const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag'
 const App = () => (
   <GraphContext src={endpoint}>
     {(store) => (
-      <Vocabulary store={store} ontology={ontologyIRI} />
+      <Vocabulary store={store} ontologyIRI={ontologyIRI} />
     )}
   </GraphContext>
 );
@@ -58,7 +58,7 @@ Here is an example of using webcomponents in a non-React application:
 
 ```js
 import { namedNode } from '@rdfjs/data-model';
-import { renderComponent } from '@dotwebstack/webcomponents';
+import { graphContext, renderComponent } from '@dotwebstack/webcomponents';
 
 // Alternative method when not using ES6 modules:
 // const namedNode = require('@rdfjs/data-model').namedNode;
@@ -74,7 +74,7 @@ graphContext(endpoint)
       'Vocabulary',
       {
         store: store,
-        iri: ontologyIRI,
+        ontologyIRI: ontologyIRI,
       },
     );
   });

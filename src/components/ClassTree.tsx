@@ -20,23 +20,26 @@ const leafStyling = {
 const buildTree = (parents: Term[], store: Store, classIris: Term[], collapsed: boolean): any => {
   return parents.map((child, i) => {
     const children = store.findSubIris(child, 'subClassOf').sort(compareTerm);
+
     if (children.length > 0) {
-      const label2 = (
-        <a href={isLocal(child, classIris) ? `#${localName(child)}` : child.value} title={localName(child)}>
+      const label = (
+        <a href={isLocal(child, classIris) ? `#${localName(child)}` : child.value} title={child.value}>
           <span className="node">
             <Label store={store} resourceIri={child}/>
           </span>
         </a>
       );
+
       return (
-        <TreeView nodeLabel={label2} key={child + '|' + i} defaultCollapsed={collapsed}>
+        <TreeView nodeLabel={label} key={child + '|' + i} defaultCollapsed={collapsed}>
           {buildTree(children, store, classIris, true)}
         </TreeView>
       );
     }
+
     return (
       <a href={isLocal(child, classIris) ? `#${localName(child)}` : child.value}
-         key={child + '|' + i} title={localName(child)}>
+         key={child + '|' + i} title={child.value}>
         <span style={leafStyling}>
           <Label store={store} resourceIri={child}/>
         </span>

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import renderComponent from '../renderComponent';
 import { render } from 'react-dom';
-import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
 import Vocabulary from '../components/Vocabulary';
 import { graphContext } from '../components/GraphContext';
@@ -20,15 +19,14 @@ afterEach(jest.resetAllMocks);
 
 describe('renderComponent', () => {
   it('renders component when found', () => {
-    const ontology = namedNode('http://foo');
     const store = new Store([]);
     const linkbuilder = '';
     const props = { ontology, store, linkbuilder };
 
     const div = document.createElement('div');
-    renderComponent(div, 'Vocabulary', props);
+    renderComponent(div, 'Vocabulary', { store });
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={store} linkbuilder={''}/>, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary store={store} linkbuilder={''} />, div);
   });
 
   it('throws error when component not found', () => {
@@ -39,23 +37,14 @@ describe('renderComponent', () => {
   it('renders with graphContext', async () => {
     const endpoint = 'http://example.org';
     const div = document.createElement('div');
-    const ontology = namedNode('http://schema.org/url');
-    const linkbuilder = '';
     let testStore = new Store([]);
+    const linkbuilder = '';
     await graphContext(endpoint)
-    .then((store) => {
-      testStore = store;
-      renderComponent(
-        div,
-        'Vocabulary',
-        {
-          store,
-          ontology,
-          linkbuilder,
-        },
-      );
-    });
+      .then((store) => {
+        testStore = store;
+        renderComponent(div, 'Vocabulary', { store, linkbuilder });
+      });
     expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(<Vocabulary ontology={ontology} store={testStore} linkbuilder={''}/>, div);
+    expect(render).toHaveBeenCalledWith(<Vocabulary store={testStore} linkbuilder=linkbuilder />, div);
   });
 });
