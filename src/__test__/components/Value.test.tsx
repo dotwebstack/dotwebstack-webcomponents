@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Value from '../../components/Value';
-import { objectTest1 } from '../TestData';
+import { objectTest1, literal1 } from '../TestData';
 import { localName } from '../../utils';
 
 describe('<Value />', () => {
@@ -32,5 +32,13 @@ describe('<Value />', () => {
       />);
     expect(wrapper.html()).toEqual(
       `<a href="${objectTest1.value.concat('/foo')}">${objectTest1.value}</a>`);
+  });
+
+  it('constructs value from literal', () => {
+    const wrapper = shallow(
+      <Value
+        term={literal1}
+      />);
+    expect(wrapper.html()).toEqual(literal1.value);
   });
 });

@@ -25,9 +25,7 @@ type TupleListProps = {
 
 const cellFormatter = (cell: Term, {}, column: Column): any => {
   return column.customRender ? column.customRender(cell) : (
-    <Value
-      term={cell}
-    />
+    <Value term={cell} />
   );
 };
 
