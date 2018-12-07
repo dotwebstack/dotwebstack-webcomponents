@@ -24,7 +24,7 @@ export default () => (
   <div>
     <h1>Searching</h1>
     <section className="mt-4">
-      <Search endpoint={endpoint} columns={columns}/>
+      <Search endpoint={endpoint} columns={columns} tuple={true}/>
     </section>
   </div>
 );

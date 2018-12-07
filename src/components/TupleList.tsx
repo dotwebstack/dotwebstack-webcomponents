@@ -16,6 +16,8 @@ export type Column = {
 };
 
 const cellFormatter = (cell: Term, {}, column: Column): any => {
+      // tslint:disable-next-line:no-console
+  console.log(cell);
   return column.customRender ? column.customRender(cell) : <TermValue term={cell}/>;
 };
 
@@ -64,6 +66,9 @@ const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, 
       withFirstAndLast: true,
     };
   }
+
+      // tslint:disable-next-line:no-console
+  console.log(result.getBindingSets());
 
   return (
     <BootstrapTable data={result.getBindingSets()} pagination={usePagination(pageSize, result)}

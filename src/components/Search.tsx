@@ -1,9 +1,11 @@
 import React from 'react';
 import TupleContext from './TupleContext';
 import TupleList, { Column } from './TupleList';
+import { GraphContext, Vocabulary } from '..';
 
 type Props = {
   endpoint: string,
+  tuple: boolean,
   columns: Column[],
 };
 
@@ -21,26 +23,12 @@ class Search extends React.Component<Props, State> {
       searchTerm: '',
     };
     this.onClick = this.onClick.bind(this);
-    this.renderTupleList = this.renderTupleList.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   onClick() {
     this.setState({ searching:true });
-  }
-
-  renderTupleList() {
-    if (this.state.searching) {
-      return (<TupleContext src={this.props.endpoint + '?term=' + this.state.searchTerm} >
-      {result => (
-        <TupleList
-          result={result}
-          columns={this.props.columns}
-          pageSize={10}/>
-      )}
-    </TupleContext>);
-    }
   }
 
   handleSubmit(event: React.FormEvent) {
@@ -59,14 +47,20 @@ class Search extends React.Component<Props, State> {
         <input type="submit" value="Submit" onClick={this.onClick} />
         </form>
         {this.state.searching ?
-        <TupleContext src={this.props.endpoint + '?term=' + this.state.searchTerm} >
-        {result => (
-          <TupleList
-            result={result}
-            columns={this.props.columns}
-            pageSize={10}/>
-        )}
-      </TupleContext> :
+          (this.props.tuple ?
+             <TupleContext src={this.props.endpoint + '?term=' + this.state.searchTerm} >
+             {result => (
+               <TupleList
+                 result={result}
+                 columns={this.props.columns}
+                 pageSize={10}/>
+             )}
+           </TupleContext> :
+           <GraphContext src={this.props.endpoint + '?term=' + this.state.searchTerm}>
+           {store => (
+             <Vocabulary store={store} />
+           )}
+         </GraphContext>) :
     ''}
     </div>
     );
