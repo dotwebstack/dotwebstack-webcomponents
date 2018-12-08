@@ -23,13 +23,7 @@ const rows = [
     predicate: namedNode('http://purl.org/dc/terms/subject'),
     label: 'Subject',
     customRender: (terms: Term[]) => {
-      return (
-        <ul className="list-unstyled mb-0">
-          {terms.map(term => (
-            <li key={term.value}><strong>{term.value}</strong></li>
-          ))}
-        </ul>
-      );
+      return <span>{terms.length}</span>;
     },
   },
   {

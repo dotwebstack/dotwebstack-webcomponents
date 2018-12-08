@@ -42,20 +42,15 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, l
               {!row.customRender && terms.length === 0 &&
               <span>-</span>
               }
-              {!row.customRender && terms.length !== 0 &&
-              <ul className="list-unstyled mb-0">
-                {terms.map((term) => {
-                  return (
-                    <li key={term.value}>
-                      <Value
-                        term={term}
-                        linkBuilder={linkBuilder}
-                      />
-                    </li>
-                  );
-                })}
-              </ul>
-              }
+              {!row.customRender && terms.length !== 0 && terms.map(term => (
+                <React.Fragment>
+                  <Value
+                    term={term}
+                    linkBuilder={linkBuilder}
+                  />
+                  <br />
+                </React.Fragment>
+              ))}
             </td>
           </tr>
         );
