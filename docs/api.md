@@ -39,10 +39,10 @@ The endpoint used by the backend to retrieve the data.
 ## &lt;PropertyList>
 `PropertyList` creates a list of properties.
 ```jsx
-  <PropertyList 
-    classIris={classIris} 
-    propertyIris={propertyIris} 
-    store={store}>  
+  <PropertyList
+    classIris={classIris}
+    propertyIris={propertyIris}
+    store={store}>
   </PropertyList>
 ```
 ### `classIris`: `Term[]`
@@ -115,17 +115,17 @@ The endpoint used by the backend to retrieve the SPARQL response.
 The data source.
 
 ### `columns`: `Column[]`
-Custom settings on how to represent a column. 
+Custom settings on how to represent a column.
 
 ### `pageSize`: `number`
 The number of items which are shown in the table view.
 
 ```jsx
 type Column {
-  name: string; 
-  label?: string; 
-  sortable?: boolean; 
-  customRender?: (term: Term) => JSX.Element; 
+  name: string;
+  label?: string;
+  sortable?: boolean;
+  customRender?: (term: Term) => JSX.Element;
 }
 ```
 ### `name`: `string`
@@ -143,10 +143,10 @@ A way to add custom rendering to a column element
 
 `Resource` a detailed view of one ResourceIri. It provides a simple list of properties.
 
-```jsx 
-<Resource 
-  store={store} 
-  resourceIri={resourceIri} 
+```jsx
+<Resource
+  store={store}
+  resourceIri={resourceIri}
   rows={rows}
 />
 ```
@@ -160,7 +160,7 @@ The IRI of the `Resource` to be represented.
 ### `rows`: `Row[]`
 Custom settings on how to represent the `Resource` view
 
-```jsx 
+```jsx
 type Row {
   predicate: NamedNode;
   label?: string;
@@ -175,18 +175,21 @@ A readable representation of the predicate
 
 ### `customRender?`: `(terms: Term[]) => JSX.Element`
 A way to add custom rendering to a row element
-## &lt;TermValue>
-`TermValue` shows the Term; an extracted localname - from the resourceIri - when it's local or the actual value when it's not. 
+## &lt;Value>
+`Value` renders the value of the Term. `NamedNode` terms will be rendered as a link.
 ```jsx
-<TermValue 
+<Value
   term={term}
   local={local}
+  linkBuilder={term => term.value}
 />
 ```
 ### `term`: `Term`
 The IRI of the Resource which is represented.
 ### `local`: `boolean` (optional)
-Whether the term links to a local- or remote definition. When no `local` is provided, it defaults as false.
+Whether the link text contains the local name or the full IRI. When no `local` is provided, it defaults to false.
+### `linkBuilder`: `(term: Term) => string` (optional)
+A callback function to be able to customize the `href` attribute of the link (only relevant for `NamedNode` terms).
 
 ## &lt;Label>
 `Label` shows the correct label of the resourceIri. In order of preference when present: SKOS:prefLabel, RDFS:label or localName (extracted from full resourceIri name).
@@ -200,4 +203,3 @@ Whether the term links to a local- or remote definition. When no `local` is prov
 The IRI of the Resource which is represented.
 ### `store`: `Store`
 The data source.
-    
