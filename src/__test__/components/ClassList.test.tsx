@@ -9,6 +9,7 @@ import {
   quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
   quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
 } from '../TestData';
+import { localName } from '../../utils';
 
 describe('<ClassList />', () => {
   it('shows class IRI when nothing else provided', () => {
@@ -75,7 +76,7 @@ describe('<ClassList />', () => {
         propertyIris={[objectTest2]}
         store={createStore([quadWithTargetClass, quadWithProperty, quadWithPath])}
       />);
-    expect(wrapper.find({ href: quadWithPath.object.value }).getElements().length)
+    expect(wrapper.find({ href: `#${localName(quadWithPath.object)}` }).getElements().length)
       .toBeGreaterThan(0);
   });
 
