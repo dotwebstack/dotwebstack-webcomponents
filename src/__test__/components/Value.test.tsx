@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import Value from '../../components/Value';
 import { objectTest1, literal1 } from '../TestData';
 import { localName } from '../../utils';
+import { Term } from 'rdf-js';
 
 describe('<Value />', () => {
   it('constructs value with default settings', () => {
@@ -28,7 +29,7 @@ describe('<Value />', () => {
     const wrapper = shallow(
       <Value
         term={objectTest1}
-        linkBuilder={(url: string) => url.concat('/foo')}
+        linkBuilder={(term: Term) => term.value.concat('/foo')}
       />);
     expect(wrapper.html()).toEqual(
       `<a href="${objectTest1.value.concat('/foo')}">${objectTest1.value}</a>`);

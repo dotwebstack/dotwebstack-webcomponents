@@ -5,7 +5,7 @@ import { Term } from 'rdf-js';
 type Props = {
   term: Term,
   local?: boolean,
-  linkBuilder?: (url: string) => string,
+  linkBuilder?: (term: Term) => string,
 };
 
 const Value: React.StatelessComponent<Props> = ({ term, local, linkBuilder }) => {
@@ -16,7 +16,7 @@ const Value: React.StatelessComponent<Props> = ({ term, local, linkBuilder }) =>
   }
 
   const value = local ? localName(term) : term.value;
-  const href = linkBuilder ? linkBuilder(term.value) : term.value;
+  const href = linkBuilder ? linkBuilder(term) : term.value;
 
   return (
     <a href={href}>

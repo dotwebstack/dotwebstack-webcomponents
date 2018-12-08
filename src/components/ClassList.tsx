@@ -15,6 +15,8 @@ type Props = {
   store: Store,
 };
 
+const linkBuilder = (term: Term) => `#${localName(term)}`;
+
 const findSuperClassIris = (classIri: Term, store: Store): Term[] =>
   store
     .findObjects(classIri, namedNode(RDFS + 'subClassOf'))
@@ -95,6 +97,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                           <Value
                             term={superClassIri}
                             local={true}
+                            linkBuilder={linkBuilder}
                           />
                         </li>
                       ))}
@@ -112,6 +115,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                           <Value
                             term={subClassIri}
                             local={true}
+                            linkBuilder={linkBuilder}
                           />
                         </li>
                       ))}
@@ -129,6 +133,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                           <Value
                             term={propertyIri}
                             local={true}
+                            linkBuilder={linkBuilder}
                           />
                         </li>
                       ))}
@@ -146,6 +151,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                           <Value
                             term={inheritedPropertyIri}
                             local={true}
+                            linkBuilder={linkBuilder}
                           />
                         </li>
                       ))}

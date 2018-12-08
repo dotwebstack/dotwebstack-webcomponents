@@ -15,6 +15,8 @@ type Props = {
   store: Store,
 };
 
+const linkBuilder = (term: Term) => `#${localName(term)}`;
+
 const findPropertyShapes = (propertyIri: Term, store: Store): Term[] =>
   store.findSubjects(namedNode(SHACL + 'path'), propertyIri);
 
@@ -98,6 +100,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                           <Value
                             term={superPropertyIri}
                             local={true}
+                            linkBuilder={linkBuilder}
                           />
                         </li>
                       ))}
@@ -115,6 +118,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                           <Value
                             term={subPropertyIri}
                             local={true}
+                            linkBuilder={linkBuilder}
                           />
                         </li>
                       ))}
@@ -132,6 +136,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                           <Value
                             term={propertyClassIri}
                             local={true}
+                            linkBuilder={linkBuilder}
                           />
                         </li>
                       ))}
@@ -146,6 +151,7 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, store }) 
                     <Value
                       term={relatedClassIri}
                       local={true}
+                      linkBuilder={linkBuilder}
                     />
                   </td>
                 </tr>

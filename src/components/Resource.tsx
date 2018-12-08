@@ -8,7 +8,7 @@ type Props = {
   resourceIri: Term,
   store: Store,
   rows: Row[],
-  linkBuilder?: (url: string) => string,
+  linkBuilder?: (term: Term) => string,
 };
 
 type Row = {
@@ -17,9 +17,7 @@ type Row = {
   customRender?: (terms: Term[]) => JSX.Element,
 };
 
-const Resource: React.StatelessComponent<Props> = (props) => {
-  const { resourceIri, store, rows } = props;
-
+const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, linkBuilder }) => {
   const statements = store
     .findStatements(resourceIri)
     .sort((a: Quad, b: Quad) => compareTerm(a.predicate, b.predicate));
@@ -51,7 +49,7 @@ const Resource: React.StatelessComponent<Props> = (props) => {
                     <li key={term.value}>
                       <Value
                         term={term}
-                        linkBuilder={props.linkBuilder}
+                        linkBuilder={linkBuilder}
                       />
                     </li>
                   );
