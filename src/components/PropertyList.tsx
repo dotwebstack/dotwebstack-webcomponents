@@ -3,7 +3,7 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
-import { compareTerm, localName, findDefinition, findComment, isLocal } from '../utils';
+import { compareTerm, isLocal, localName, findDefinition, findComment } from '../utils';
 import { RDFS, SHACL } from '../namespaces';
 import i18next from '../i18n';
 import Value from './Value';

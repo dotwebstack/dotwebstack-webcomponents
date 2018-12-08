@@ -76,7 +76,7 @@ describe('<ClassList />', () => {
         propertyIris={[objectTest2]}
         store={createStore([quadWithTargetClass, quadWithProperty, quadWithPath])}
       />);
-    expect(wrapper.find({ href: `#${localName(quadWithPath.object)}` }).getElements().length)
+    expect(wrapper.find({ href: '#' + localName(quadWithPath.object) }).getElements().length)
       .toBeGreaterThan(0);
   });
 
