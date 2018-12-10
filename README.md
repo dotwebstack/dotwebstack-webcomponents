@@ -35,16 +35,14 @@ Here is an example of using webcomponents within a React application:
 
 ```jsx
 import React from 'react';
-import { namedNode } from '@rdfjs/data-model';
 import { GraphContext, Vocabulary } from '@dotwebstack/webcomponents';
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
 
 const App = () => (
   <GraphContext src={endpoint}>
     {(store) => (
-      <Vocabulary store={store} ontologyIRI={ontologyIRI} />
+      <Vocabulary store={store} />
     )}
   </GraphContext>
 );
@@ -57,7 +55,6 @@ ReactDOM.render(<App />, document.getElementById('root'));
 Here is an example of using webcomponents in a non-React application:
 
 ```js
-import { namedNode } from '@rdfjs/data-model';
 import { graphContext, renderComponent } from '@dotwebstack/webcomponents';
 
 // Alternative method when not using ES6 modules:
@@ -65,7 +62,6 @@ import { graphContext, renderComponent } from '@dotwebstack/webcomponents';
 // const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
 
 const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const ontologyIRI = namedNode('http://bag.basisregistraties.overheid.nl/def/bag');
 
 graphContext(endpoint)
   .then((store) => {
@@ -74,7 +70,6 @@ graphContext(endpoint)
       'Vocabulary',
       {
         store: store,
-        ontologyIRI: ontologyIRI,
       },
     );
   });
