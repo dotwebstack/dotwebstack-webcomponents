@@ -1,7 +1,5 @@
 import React from 'react';
-import TupleContext from './TupleContext';
 import { Column } from './TupleList';
-import { GraphContext } from '..';
 
 type Props = {
   endpoint: string,
@@ -14,15 +12,10 @@ type State = {
   searching: boolean,
 };
 
-class Search extends React.Component<Props, State> {
-
-  tuple: boolean = false;
+abstract class Search extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    if (this.props.columns) {
-      this.tuple = true;
-    }
     this.state = {
       searching: false,
       searchTerm: '',
@@ -44,23 +37,6 @@ class Search extends React.Component<Props, State> {
   render() {
     return (
       <div id="Search">
-        <form onSubmit={this.handleSubmit} >
-        <input type="text" name="Search" value={this.state.searchTerm} onChange={this.onChange}/>
-        <input type="submit" value="Submit" onClick={this.onClick} />
-        </form>
-        {this.state.searching ?
-          (this.tuple ?
-            <TupleContext src={this.props.endpoint + '?term=' + this.state.searchTerm} >
-            {result => (
-              this.props.children(result)
-            )}
-          </TupleContext> :
-          <GraphContext src={this.props.endpoint + '?term=' + this.state.searchTerm}>
-          {store => (
-            this.props.children(store)
-          )}
-        </GraphContext>) :
-          ''}
     </div>
     );
   }

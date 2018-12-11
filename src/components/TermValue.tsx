@@ -8,6 +8,9 @@ type Props = {
 };
 
 const TermValue: React.StatelessComponent<Props> = ({ term, local }) => {
+  if (!term) {
+    return <span></span>;
+  }
   if (term.termType === 'NamedNode') {
     return (
       <a href={local ? `#${localName(term)}` : term.value}>

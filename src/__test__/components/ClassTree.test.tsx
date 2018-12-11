@@ -28,8 +28,6 @@ describe('<ClassTree />', () => {
         store={createStore([quadTree6, quadTree7, quadTree8])}
       />,
     );
-    // tslint:disable-next-line:no-console
-    console.log(wrapper.html());
     expect(wrapper.find({ href: quadTree7.object.value }).getElements().length)
       .toBeGreaterThan(0);
     expect(wrapper.find({ href: quadTree8.object.value }).getElements().length)
