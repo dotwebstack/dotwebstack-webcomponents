@@ -51,9 +51,6 @@ class GraphContext extends React.Component<Props, State> {
         <LoadingIndicator />
       );
     }
-            // tslint:disable-next-line:no-console
-    console.log(this.state.store);
-
     return this.props.children(this.state.store);
   }
 }

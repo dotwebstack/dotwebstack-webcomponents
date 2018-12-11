@@ -1,13 +1,11 @@
 import React from 'react';
 import TupleContext from './TupleContext';
-import { Column } from './TupleList';
 import Search from './Search';
 import { tupleContext } from '..';
 
 type Props = {
   endpoint: string,
   children: (data: any) => JSX.Element,
-  columns: Column[],
 };
 
 class TupleSearch extends Search {
@@ -37,10 +35,6 @@ class TupleSearch extends Search {
   }
 }
 
-const handleSubmit = (event: React.FormEvent) => {
-  event.preventDefault();
-};
-
 export const tupleSearch = (endpoint: string, children: (data: any) => JSX.Element) => {
 
   let searchURL = endpoint;
@@ -51,13 +45,13 @@ export const tupleSearch = (endpoint: string, children: (data: any) => JSX.Eleme
 
   return (
   <div id="Search">
-  <form onSubmit={handleSubmit} >
-  <input type="text" name="Search" onChange={onChange}/>
-  <input type="submit" value="Submit"/>
-  </form>
-  {tupleContext(searchURL).then((resultData: any) => {
-    children(resultData);
-  })}
+    <form>
+      <input type="text" name="Search" onChange={onChange}/>
+      <input type="submit" value="Submit"/>
+    {tupleContext(searchURL).then((resultData: any) => {
+      children(resultData);
+    })}
+    </form>
   </div>);
 };
 

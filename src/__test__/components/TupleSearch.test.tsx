@@ -36,7 +36,6 @@ describe('<TupleSearch />', () => {
       children={tupleResult => (
           <React.Component tupleResult={tupleResult} />
       )} columns={columns} />);
-    // wrapper.find({  });
     wrapper.setState({ searchTerm:'test' });
     expect(wrapper.find({ name: 'Search' }).html()).toMatch('value="test"');
   });

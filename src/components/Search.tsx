@@ -1,5 +1,7 @@
 import React from 'react';
 import { Column } from './TupleList';
+import Store from '../lib/Store';
+import { TupleResult } from '../lib/TupleResult';
 
 type Props = {
   endpoint: string,
@@ -41,5 +43,26 @@ abstract class Search extends React.Component<Props, State> {
     );
   }
 }
+
+export const search = (endpoint: string, context: (endpoint: string) => Promise<Store | TupleResult>,
+                       children: (data: any) => JSX.Element) => {
+
+  let searchURL = endpoint;
+
+  const onChange = (e: any) => {
+    searchURL = endpoint + e.target.value;
+  };
+
+  return (
+  <div id="Search">
+    <form>
+    <input type="text" name="Search" onChange={onChange}/>
+    <input type="submit" value="Submit"/>
+    {context(searchURL).then((resultData: any) => {
+      children(resultData);
+    })}
+    </form>
+  </div>);
+};
 
 export default Search;

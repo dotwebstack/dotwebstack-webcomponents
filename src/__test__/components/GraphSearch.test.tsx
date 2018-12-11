@@ -29,7 +29,6 @@ describe('<GraphSearch />', () => {
       children={tupleResult => (
           <React.Component tupleResult={tupleResult} />
       )} />);
-    // wrapper.find({  });
     wrapper.setState({ searchTerm:'test' });
     expect(wrapper.find({ name: 'Search' }).html()).toMatch('value="test"');
   });

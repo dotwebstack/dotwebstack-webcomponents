@@ -65,7 +65,8 @@ const tupleChild = (result: any) => (
             pageSize={10}/>
 );
 
-const graphChild = (store: any) => (<Resource resourceIri={resourceIri} store={store} rows={rows} />
+const graphChild = (store: any) => (
+  <Resource resourceIri={resourceIri} store={store} rows={rows} />
 );
 
 export default () => (

@@ -34,10 +34,6 @@ class GraphSearch extends Search{
   }
 }
 
-const handleSubmit = (event: React.FormEvent) => {
-  event.preventDefault();
-};
-
 export const graphSearch = (endpoint: string, children: (data: any) => JSX.Element) => {
 
   let searchURL = endpoint;
@@ -47,14 +43,14 @@ export const graphSearch = (endpoint: string, children: (data: any) => JSX.Eleme
   };
 
   return (
-  <div id="Search">
-  <form onSubmit={handleSubmit} >
-  <input type="text" name="Search" onChange={onChange}/>
-  <input type="submit" value="Submit"/>
-  </form>
-  {graphContext(searchURL).then((resultData: any) => {
-    children(resultData);
-  })}
+    <div id="Search">
+      <form>
+        <input type="text" name="Search" onChange={onChange}/>
+        <input type="submit" value="Submit"/>
+        {graphContext(searchURL).then((resultData: any) => {
+          children(resultData);
+        })}
+      </form>
   </div>);
 };
 
