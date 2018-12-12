@@ -55,7 +55,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 Here is an example of using webcomponents in a non-React application:
 
 ```js
-import { graphContext, renderComponent } from '@dotwebstack/webcomponents';
+import { graphContext, renderComponent, Vocabulary } from '@dotwebstack/webcomponents';
 
 // Alternative method when not using ES6 modules:
 // const namedNode = require('@rdfjs/data-model').namedNode;
@@ -67,7 +67,7 @@ graphContext(endpoint)
   .then((store) => {
     renderComponent(
       document.getElementById('root'),
-      'Vocabulary',
+      Vocabulary,
       {
         store: store,
       },
