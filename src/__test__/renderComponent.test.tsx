@@ -21,14 +21,9 @@ describe('renderComponent', () => {
   it('renders component when found', () => {
     const store = new Store([]);
     const div = document.createElement('div');
-    renderComponent(div, 'Vocabulary', { store });
+    renderComponent(div, Vocabulary, { store });
     expect(render).toHaveBeenCalledTimes(1);
     expect(render).toHaveBeenCalledWith(<Vocabulary store={store} />, div);
-  });
-
-  it('throws error when component not found', () => {
-    const div = document.createElement('div');
-    expect(() => renderComponent(div, 'Foo')).toThrowError();
   });
 
   it('renders with graphContext', async () => {
@@ -38,7 +33,7 @@ describe('renderComponent', () => {
     await graphContext(endpoint)
       .then((store) => {
         testStore = store;
-        renderComponent(div, 'Vocabulary', { store });
+        renderComponent(div, Vocabulary, { store });
       });
     expect(render).toHaveBeenCalledTimes(1);
     expect(render).toHaveBeenCalledWith(<Vocabulary store={testStore} />, div);

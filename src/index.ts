@@ -13,37 +13,11 @@ import TupleContext, { tupleContext } from './components/TupleContext';
 import Label from './components/Label';
 import TupleSearch from './components/TupleSearch';
 import GraphSearch from './components/GraphSearch';
-
-type ComponentMap = {
-  [name: string]: any;
-};
-
-const components: ComponentMap = {
-  ConceptList,
-  GraphContext,
-  GraphSearch,
-  Resource,
-  Vocabulary,
-  PropertyList,
-  ClassList,
-  ClassTree,
-  PropertyTree,
-  TupleContext,
-  TupleList,
-  TupleSearch,
-};
-
-const getComponent: any = (name: string) => {
-  if (!components.hasOwnProperty(name)) {
-    throw new Error(`Component '${name}' not found.`);
-  }
-
-  return components[name];
-};
+import Value from './components/Value';
 
 export {
   Label,
-  getComponent,
+  Value,
   renderComponent,
   graphContext,
   ConceptList,
