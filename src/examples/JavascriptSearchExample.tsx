@@ -20,16 +20,16 @@ const columns: Column[] = [
   },
 ];
 
-
 const tupleChild = (result: any) => (
- <TupleList result={result} columns={columns} pageSize={10} ></TupleList> );
+ <TupleList result={result} columns={columns} pageSize={10} ></TupleList>);
 
 const tupleSearchExample = () => {
-  renderComponent(document.getElementById('Search'), 'TupleSearch', {endpoint : tupleEndpoint, children : tupleChild })
-}
+  renderComponent(document.getElementById('Search'), 'TupleSearch',
+                  { endpoint : tupleEndpoint, children : tupleChild });
+};
 
 export default () => (
-  <div id='Search'>
+  <div id="Search">
     <h1>Searching</h1>
     {tupleSearchExample()}
   </div>

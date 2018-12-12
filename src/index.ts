@@ -58,5 +58,5 @@ export {
   TupleContext,
   TupleList,
   tupleContext,
-  TupleSearch
+  TupleSearch,
 };

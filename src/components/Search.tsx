@@ -60,7 +60,7 @@ export const search = (endpoint: string, context: (endpoint: string) => Promise<
 
   context(searchURL).then((resultData: any) => {
     children(resultData);
-  })
+  });
 
   return (
   <div id="Search">

@@ -44,7 +44,7 @@ export const graphSearch = (endpoint: string, children: (data: any) => JSX.Eleme
 
   graphContext(searchURL).then((resultData: any) => {
     children(resultData);
-  })
+  });
 
   return (
     <div id="Search">

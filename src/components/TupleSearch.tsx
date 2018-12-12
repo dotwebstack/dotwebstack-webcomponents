@@ -43,7 +43,6 @@ export const tupleSearch = (endpoint: string, children: (data: any) => JSX.Eleme
     searchURL = endpoint + e.target.value;
   };
 
-
   tupleContext(searchURL).then((resultData: any) => {
     children(resultData);
   });
