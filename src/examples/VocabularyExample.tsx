@@ -1,8 +1,8 @@
 import React from 'react';
 import { GraphContext, Vocabulary } from '..';
 
-// const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const endpoint = 'https://catalogus.kadaster.nl/model';
+const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
+// const endpoint = 'https://catalogus.kadaster.nl/model';
 
 export default () => (
   <div>

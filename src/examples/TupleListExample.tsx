@@ -33,7 +33,8 @@ export default () => (
           <TupleList
             result={result}
             columns={columns}
-            pageSize={10}/>
+            pageSize={10}
+          />
         )}
       </TupleContext>
     </section>

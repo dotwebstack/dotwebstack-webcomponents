@@ -2,12 +2,13 @@ import React from 'react';
 import { NamedNode, Quad, Term } from 'rdf-js';
 import Store from '../lib/Store';
 import { localName, compareTerm } from '../utils';
-import TermValue from './TermValue';
+import Value from './Value';
 
 type Props = {
   resourceIri: Term,
   store: Store,
   rows: Row[],
+  linkBuilder?: (term: Term) => string,
 };
 
 type Row = {
@@ -16,7 +17,7 @@ type Row = {
   customRender?: (terms: Term[]) => JSX.Element,
 };
 
-const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows }) => {
+const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, linkBuilder }) => {
   const statements = store
     .findStatements(resourceIri)
     .sort((a: Quad, b: Quad) => compareTerm(a.predicate, b.predicate));
@@ -41,19 +42,15 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows })
               {!row.customRender && terms.length === 0 &&
               <span>-</span>
               }
-              {!row.customRender && terms.length !== 0 &&
-              <ul className="list-unstyled mb-0">
-                {terms.map((term) => {
-                  return (
-                    <li key={term.value}>
-                      <TermValue
-                        term={term}
-                      />
-                    </li>
-                  );
-                })}
-              </ul>
-              }
+              {!row.customRender && terms.length !== 0 && terms.map(term => (
+                <React.Fragment>
+                  <Value
+                    term={term}
+                    linkBuilder={linkBuilder}
+                  />
+                  <br />
+                </React.Fragment>
+              ))}
             </td>
           </tr>
         );
