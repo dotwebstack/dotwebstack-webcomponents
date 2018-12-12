@@ -1,6 +1,6 @@
 import React from 'react';
 import TupleList, { Column } from '../components/TupleList';
-import { renderComponent } from '..';
+import { renderComponent, TupleSearch } from '..';
 
 const tupleEndpoint = 'https://catalogus.kadaster.nl/concepten?term=';
 
@@ -24,7 +24,7 @@ const tupleChild = (result: any) => (
  <TupleList result={result} columns={columns} pageSize={10} ></TupleList>);
 
 const tupleSearchExample = () => {
-  renderComponent(document.getElementById('Search'), 'TupleSearch',
+  renderComponent(document.getElementById('Search'), TupleSearch,
                   { endpoint : tupleEndpoint, children : tupleChild });
 };
 
