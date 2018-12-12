@@ -32,6 +32,7 @@ class SearchInput extends React.Component<Props, State> {
           <input
             type="text"
             name="q"
+            autoComplete="off"
             className="form-control"
             placeholder={i18next.t('searchPlaceholder')}
             value={this.state.currentValue}

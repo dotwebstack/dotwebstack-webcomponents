@@ -46,7 +46,7 @@ const i18next = i18n
           first: 'First',
           last: 'Last',
           search: 'Search',
-          searchPlaceholder: 'Enter a search query',
+          searchPlaceholder: 'Enter a search term',
         },
       },
     },
