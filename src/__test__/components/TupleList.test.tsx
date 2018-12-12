@@ -1,8 +1,8 @@
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import TupleList, { Column } from '../../components/TupleList';
+import TupleResult from '../../lib/TupleResult';
 import { mockBindingNames, mockBindingSet } from '../TestData';
-import { TupleResult } from '../../lib/TupleResult';
 import { Term } from 'rdf-js';
 
 describe('<TupleList />', () => {

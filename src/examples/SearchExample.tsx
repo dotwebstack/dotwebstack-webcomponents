@@ -4,10 +4,9 @@ import TupleSearch from '../components/TupleSearch';
 import GraphSearch from '../components/GraphSearch';
 import { Resource } from '..';
 import { namedNode } from '@rdfjs/data-model';
-import { Term } from 'rdf-js';
 
-const tupleEndpoint = 'https://catalogus.kadaster.nl/concepten?term=';
-const graphEndpoint = 'https://catalogus.kadaster.nl/resource?subject=';
+const tupleEndpoint = 'https://catalogus.kadaster.nl/concepten';
+const graphEndpoint = 'https://catalogus.kadaster.nl/resource';
 const resourceIri = namedNode('http://wetgeving.omgevingswet.overheid.nl/id/concept/Autoweg');
 
 const columns: Column[] = [
@@ -42,15 +41,6 @@ const rows = [
   {
     predicate: namedNode('http://purl.org/dc/terms/subject'),
     label: 'Subject',
-    customRender: (terms: Term[]) => {
-      return (
-        <ul className="list-unstyled mb-0">
-          {terms.map(term => (
-            <li key={term.value}><strong>{term.value}</strong></li>
-          ))}
-        </ul>
-      );
-    },
   },
   {
     predicate: namedNode('http://purl.org/dc/terms/extralabel'),
@@ -58,27 +48,35 @@ const rows = [
   },
 ];
 
-const tupleChild = (result: any) => (
-  <TupleList
-            result={result}
-            columns={columns}
-            pageSize={10}/>
-);
-
-const graphChild = (store: any) => (
-  <Resource resourceIri={resourceIri} store={store} rows={rows} />
-);
-
 export default () => (
   <div>
-    <h1>Searching</h1>
+    <h1>Search</h1>
     <section className="mt-4">
-    Tuple search
-      <TupleSearch endpoint={tupleEndpoint} columns={columns} children={tupleChild}/>
+      <h2>Tuple search</h2>
+      <div className="card card-default">
+        <div className="card-body">
+          <TupleSearch endpoint={tupleEndpoint} queryParam="term">
+            {result => (
+              <TupleList
+                result={result}
+                columns={columns}
+              />
+            )}
+          </TupleSearch>
+        </div>
+      </div>
     </section>
     <section className="mt-4">
-    Graph Search
-      <GraphSearch endpoint={graphEndpoint} children={graphChild}/>
+      <h2>Graph search</h2>
+      <div className="card card-default">
+        <div className="card-body">
+          <GraphSearch endpoint={graphEndpoint} queryParam="subject">
+            {store => (
+              <Resource resourceIri={resourceIri} store={store} rows={rows} />
+            )}
+          </GraphSearch>
+        </div>
+      </div>
     </section>
   </div>
 );

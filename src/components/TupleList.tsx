@@ -2,7 +2,7 @@ import { Term } from 'rdf-js';
 import React, { CSSProperties } from 'react';
 import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-bootstrap-table';
 import i18next from '../i18n';
-import { TupleResult } from '../lib/TupleResult';
+import TupleResult from '../lib/TupleResult';
 import Value from './Value';
 import { sortRows } from '../utils';
 

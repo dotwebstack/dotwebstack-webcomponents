@@ -1,59 +1,46 @@
 import React from 'react';
+import querystring from 'querystring';
+import SearchInput from './SearchInput';
 import TupleContext from './TupleContext';
-import Search from './Search';
-import { tupleContext } from '..';
+import TupleResult from '../lib/TupleResult';
 
 type Props = {
-  endpoint: string,
-  children: (data: any) => JSX.Element,
+  endpoint: string;
+  queryParam?: string;
+  children: (data: TupleResult) => JSX.Element,
 };
 
-class TupleSearch extends Search {
+type State = {
+  query?: string;
+};
 
-  tuple: boolean = false;
+class TupleSearch extends React.Component<Props, State> {
+  state: State = {};
 
-  constructor(props: Props) {
-    super(props);
+  handleInputChange = (value: string) => {
+    this.setState({
+      query: value,
+    });
   }
+
+  buildUrl = () => this.props.endpoint + '?' + querystring.stringify({
+    [this.props.queryParam || 'q']: this.state.query,
+  })
 
   render() {
     return (
-      <div id="Search" className="panel">
-        <form onSubmit={this.handleSubmit} >
-        <input type="text" name="Search" value={this.state.searchTerm} onChange={this.onChange}/>
-        <input type="submit" value="Submit" onClick={this.onClick} />
-        </form>
-        {this.state.searching ?
-            <TupleContext src={this.state.searchURL} >
-            {result => (
-              this.props.children(result)
-            )}
-            </TupleContext> :
-          ''}
-    </div>
+      <div>
+        <SearchInput onInputChange={this.handleInputChange} />
+        {this.state.query !== undefined && (
+          <div style={{ marginTop: 15 }}>
+            <TupleContext src={this.buildUrl()} >
+              {this.props.children}
+            </TupleContext>
+          </div>
+        )}
+      </div>
     );
   }
 }
-
-export const tupleSearch = (endpoint: string, children: (data: any) => JSX.Element) => {
-
-  let searchURL = endpoint;
-
-  const onChange = (e: any) => {
-    searchURL = endpoint + e.target.value;
-  };
-
-  tupleContext(searchURL).then((resultData: any) => {
-    children(resultData);
-  });
-
-  return (
-  <div id="Search" className="panel">
-    <form>
-      <input type="text" name="Search" onChange={onChange}/>
-      <input type="submit" value="Submit"/>
-    </form>}
-  </div>);
-};
 
 export default TupleSearch;

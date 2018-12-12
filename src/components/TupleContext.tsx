@@ -1,6 +1,6 @@
 import React from 'react';
 import LoadingIndicator from './LoadingIndicator';
-import { TupleResult, SparqlResponse } from '../lib/TupleResult';
+import TupleResult, { SparqlResponse } from '../lib/TupleResult';
 import { fetchSparqlResult } from '../utils';
 import log from 'loglevel';
 

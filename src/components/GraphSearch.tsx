@@ -1,58 +1,46 @@
 import React from 'react';
-import { GraphContext, graphContext } from '..';
-import Search from './Search';
+import querystring from 'querystring';
+import SearchInput from './SearchInput';
+import { GraphContext } from '..';
+import Store from '../lib/Store';
 
 type Props = {
-  endpoint: string,
-  children: (data: any) => JSX.Element,
+  endpoint: string;
+  queryParam?: string;
+  children: (store: Store) => JSX.Element,
 };
 
-class GraphSearch extends Search{
+type State = {
+  query?: string;
+};
 
-  tuple: boolean = false;
+class GraphSearch extends React.Component<Props, State> {
+  state: State = {};
 
-  constructor(props: Props) {
-    super(props);
+  handleInputChange = (value: string) => {
+    this.setState({
+      query: value,
+    });
   }
+
+  buildUrl = () => this.props.endpoint + '?' + querystring.stringify({
+    [this.props.queryParam || 'q']: this.state.query,
+  })
 
   render() {
     return (
-      <div id="Search"  className="panel">
-        <form onSubmit={this.handleSubmit} >
-        <input type="text" name="Search" value={this.state.searchTerm} onChange={this.onChange}/>
-        <input type="submit" value="Submit" onClick={this.onClick} />
-        </form>
-        {this.state.searching ?
-          <GraphContext src={this.state.searchURL}>
-          {store => (
-            this.props.children(store)
-          )}
-        </GraphContext> :
-          ''}
-    </div>
+      <div>
+        <SearchInput onInputChange={this.handleInputChange} />
+        {this.state.query !== undefined && (
+          <div style={{ marginTop: 15 }}>
+            <GraphContext src={this.buildUrl()} >
+              {this.props.children}
+            </GraphContext>
+          </div>
+        )}
+      </div>
     );
   }
 }
-
-export const graphSearch = (endpoint: string, children: (data: any) => JSX.Element) => {
-
-  let searchURL = endpoint;
-
-  const onChange = (e: any) => {
-    searchURL = endpoint + e.target.value;
-  };
-
-  graphContext(searchURL).then((resultData: any) => {
-    children(resultData);
-  });
-
-  return (
-    <div id="Search" className="panel">
-      <form>
-        <input type="text" name="Search" onChange={onChange}/>
-        <input type="submit" value="Submit"/>
-      </form>
-  </div>);
-};
 
 export default GraphSearch;
