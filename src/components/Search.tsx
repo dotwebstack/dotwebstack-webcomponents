@@ -43,7 +43,7 @@ abstract class Search extends React.Component<Props, State> {
 
   render() {
     return (
-      <div id="Search">
+      <div id="Search"  className="panel">
     </div>
     );
   }
@@ -63,7 +63,7 @@ export const search = (endpoint: string, context: (endpoint: string) => Promise<
   });
 
   return (
-  <div id="Search">
+  <div id="Search"  className="panel">
     <form>
     <input type="text" name="Search" onChange={onChange}/>
     <input type="submit" value="Submit"/>

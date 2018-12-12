@@ -17,7 +17,7 @@ class GraphSearch extends Search{
 
   render() {
     return (
-      <div id="Search">
+      <div id="Search"  className="panel">
         <form onSubmit={this.handleSubmit} >
         <input type="text" name="Search" value={this.state.searchTerm} onChange={this.onChange}/>
         <input type="submit" value="Submit" onClick={this.onClick} />
@@ -47,7 +47,7 @@ export const graphSearch = (endpoint: string, children: (data: any) => JSX.Eleme
   });
 
   return (
-    <div id="Search">
+    <div id="Search" className="panel">
       <form>
         <input type="text" name="Search" onChange={onChange}/>
         <input type="submit" value="Submit"/>
