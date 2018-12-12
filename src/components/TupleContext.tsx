@@ -43,11 +43,11 @@ class TupleContext extends React.Component<Props, State> {
      });
   }
 
-  // componentWillReceiveProps(nextProps: Props) {
-  //   if (nextProps.src !== this.props.src) {
-  //     this.fetchData(nextProps.src);
-  //   }
-  // }
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.src !== this.props.src) {
+      this.fetchData(nextProps.src);
+    }
+  }
 
   render() {
     if (this.state.loading) {

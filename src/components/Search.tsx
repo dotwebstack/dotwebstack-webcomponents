@@ -11,6 +11,7 @@ type Props = {
 
 type State = {
   searchTerm: string,
+  searchURL: string,
   searching: boolean,
 };
 
@@ -21,11 +22,14 @@ abstract class Search extends React.Component<Props, State> {
     this.state = {
       searching: false,
       searchTerm: '',
+      searchURL: this.props.endpoint,
     };
   }
 
+  searchTerm = '';
+
   onClick = () => {
-    this.setState({ searching:true });
+    this.setState({ searching:true, searchURL: this.props.endpoint + this.state.searchTerm });
   }
 
   handleSubmit = (event: React.FormEvent) => {
@@ -33,6 +37,7 @@ abstract class Search extends React.Component<Props, State> {
   }
 
   onChange = (e: any) => {
+    this.searchTerm = e.target.value;
     this.setState({ searchTerm: e.target.value });
   }
 
@@ -53,14 +58,15 @@ export const search = (endpoint: string, context: (endpoint: string) => Promise<
     searchURL = endpoint + e.target.value;
   };
 
+  context(searchURL).then((resultData: any) => {
+    children(resultData);
+  })
+
   return (
   <div id="Search">
     <form>
     <input type="text" name="Search" onChange={onChange}/>
     <input type="submit" value="Submit"/>
-    {context(searchURL).then((resultData: any) => {
-      children(resultData);
-    })}
     </form>
   </div>);
 };

@@ -23,7 +23,7 @@ class GraphSearch extends Search{
         <input type="submit" value="Submit" onClick={this.onClick} />
         </form>
         {this.state.searching ?
-          <GraphContext src={this.props.endpoint + this.state.searchTerm}>
+          <GraphContext src={this.state.searchURL}>
           {store => (
             this.props.children(store)
           )}
@@ -42,14 +42,15 @@ export const graphSearch = (endpoint: string, children: (data: any) => JSX.Eleme
     searchURL = endpoint + e.target.value;
   };
 
+  graphContext(searchURL).then((resultData: any) => {
+    children(resultData);
+  })
+
   return (
     <div id="Search">
       <form>
         <input type="text" name="Search" onChange={onChange}/>
         <input type="submit" value="Submit"/>
-        {graphContext(searchURL).then((resultData: any) => {
-          children(resultData);
-        })}
       </form>
   </div>);
 };

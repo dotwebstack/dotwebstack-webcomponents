@@ -11,6 +11,8 @@ import PropertyTree from './components/PropertyTree';
 import TupleList from './components/TupleList';
 import TupleContext, { tupleContext } from './components/TupleContext';
 import Label from './components/Label';
+import TupleSearch from './components/TupleSearch';
+import GraphSearch from './components/GraphSearch';
 
 type ComponentMap = {
   [name: string]: any;
@@ -19,6 +21,7 @@ type ComponentMap = {
 const components: ComponentMap = {
   ConceptList,
   GraphContext,
+  GraphSearch,
   Resource,
   Vocabulary,
   PropertyList,
@@ -27,6 +30,7 @@ const components: ComponentMap = {
   PropertyTree,
   TupleContext,
   TupleList,
+  TupleSearch,
 };
 
 const getComponent: any = (name: string) => {
@@ -44,6 +48,7 @@ export {
   graphContext,
   ConceptList,
   GraphContext,
+  GraphSearch,
   Resource,
   Vocabulary,
   ClassTree,
@@ -53,4 +58,5 @@ export {
   TupleContext,
   TupleList,
   tupleContext,
+  TupleSearch
 };

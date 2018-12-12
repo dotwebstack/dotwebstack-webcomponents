@@ -7,6 +7,7 @@ import i18next from '../i18n';
 import TupleListExample from './TupleListExample';
 import ResourceExample from './ResourceExample';
 import SearchExample from './SearchExample';
+import JavascriptSearchExample from './JavascriptSearchExample';
 
 const App = () => (
   <I18nextProvider i18n={i18next}>
@@ -28,6 +29,9 @@ const App = () => (
                 <li className="nav-item">
                   <Link to="/search" className="nav-link">Search</Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/javascript-search" className="nav-link">JavascriptSearch</Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -39,6 +43,7 @@ const App = () => (
               <Route exact path="/tuple-list" component={TupleListExample} />
               <Route exact path="/resource" component={ResourceExample} />
               <Route exact path="/search" component={SearchExample} />
+              <Route exact path="/javascript-search" component={JavascriptSearchExample} />
               <Redirect from="/" to="/vocabulary" />
             </Switch>
           </div>

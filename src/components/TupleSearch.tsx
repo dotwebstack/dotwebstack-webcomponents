@@ -24,7 +24,7 @@ class TupleSearch extends Search {
         <input type="submit" value="Submit" onClick={this.onClick} />
         </form>
         {this.state.searching ?
-            <TupleContext src={this.props.endpoint + this.state.searchTerm} >
+            <TupleContext src={this.state.searchURL} >
             {result => (
               this.props.children(result)
             )}
@@ -43,15 +43,17 @@ export const tupleSearch = (endpoint: string, children: (data: any) => JSX.Eleme
     searchURL = endpoint + e.target.value;
   };
 
+
+  tupleContext(searchURL).then((resultData: any) => {
+    children(resultData);
+  });
+
   return (
   <div id="Search">
     <form>
       <input type="text" name="Search" onChange={onChange}/>
       <input type="submit" value="Submit"/>
-    {tupleContext(searchURL).then((resultData: any) => {
-      children(resultData);
-    })}
-    </form>
+    </form>}
   </div>);
 };
 
