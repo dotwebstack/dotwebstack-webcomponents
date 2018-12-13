@@ -14,7 +14,7 @@ export type SparqlResponse = {
   };
 };
 
-export class TupleResult {
+class TupleResult {
   private bindingSet: BindingSet[] = [];
   private bindingNames: string[] = [];
 
@@ -59,3 +59,5 @@ export class TupleResult {
     this.bindingNames = value2;
   }
 }
+
+export default TupleResult;

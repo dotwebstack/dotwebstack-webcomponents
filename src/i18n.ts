@@ -23,6 +23,8 @@ const i18next = i18n
           next: 'Volgende',
           first: 'Eerste',
           last: 'Laatste',
+          search: 'Zoeken',
+          searchPlaceholder: 'Voer een zoekterm in',
         },
       },
       en: {
@@ -43,6 +45,8 @@ const i18next = i18n
           next: 'Next',
           first: 'First',
           last: 'Last',
+          search: 'Search',
+          searchPlaceholder: 'Enter a search term',
         },
       },
     },

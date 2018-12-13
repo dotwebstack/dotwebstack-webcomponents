@@ -26,14 +26,23 @@ class GraphContext extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
+    await this.fetchData();
+  }
+
+  private async fetchData() {
     const quadLoader = new QuadLoader();
     const urls = ([] as string[]).concat(this.props.src);
-
     await retrieveStore(urls, quadLoader)
       .then(store => this.setState({
         store,
         loading: false,
       }));
+  }
+
+  async componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.src !== this.props.src) {
+      await this.fetchData();
+    }
   }
 
   render() {
@@ -42,7 +51,6 @@ class GraphContext extends React.Component<Props, State> {
         <LoadingIndicator />
       );
     }
-
     return this.props.children(this.state.store);
   }
 }

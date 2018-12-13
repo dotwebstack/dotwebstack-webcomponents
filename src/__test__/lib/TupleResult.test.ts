@@ -1,4 +1,4 @@
-import { TupleResult, SparqlResponse } from '../../lib/TupleResult';
+import TupleResult, { SparqlResponse } from '../../lib/TupleResult';
 import fetchMock from 'fetch-mock';
 import { mockResponse, mockResultSet, mockResultSetBlanknode, mockResponseWithBlanknode, mockResultSetLanguage,
   mockResultSetDatatype, mockResponseWithLanguage, mockResponseWithDatatype, mockResponseWithDatatypeAndLanguage }
