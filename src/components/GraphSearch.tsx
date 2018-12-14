@@ -7,6 +7,7 @@ import Store from '../lib/Store';
 type Props = {
   endpoint: string;
   queryParam?: string;
+  query?: string;
   children: (store: Store) => JSX.Element,
 };
 
@@ -15,7 +16,14 @@ type State = {
 };
 
 class GraphSearch extends React.Component<Props, State> {
-  state: State = {};
+
+  constructor(props: Props) {
+    super(props);
+    const query = this.props.query ? this.props.query : undefined;
+    this.state = {
+      query,
+    };
+  }
 
   handleInputChange = (value: string) => {
     this.setState({
