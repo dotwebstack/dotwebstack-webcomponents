@@ -47,6 +47,27 @@ The data source.
 ### `src`: `String`
 The endpoint used by the backend to retrieve the data.
 
+## &lt;GraphSearch>
+
+`GraphSearch` lets the user send a search query for CONSTRUCT queries.
+
+```jsx
+<GraphSearch src={src} queryParam={'term'} query={'concept'}>
+  {store => (
+    <React.Component store={store}/>
+  )}
+</GraphSearch>
+```
+
+### `src`: `String`
+The endpoint used by the backend to retrieve the data.
+
+### `queryParam`?: `String`
+Optional query parameter used to create the definite URL. 
+
+### `query`?: `String`
+Optional predefined search field value, for making the first search automatically render a result.
+
 ## &lt;PropertyList>
 
 `PropertyList` creates a list of properties.
@@ -113,6 +134,20 @@ The data source.
 ### `propertyIris`: `Term[]`
 The IRI's of the Properties which are represented.
 
+## &lt;SearchInput>
+
+`SearchInput` is a search field, which lets you capture the returned value. 
+
+```jsx
+<SearchInput
+  onInputChange={store}
+/>
+```
+
+### `onInputChange`: `(value: string) => void`
+Function which takes a string and propegates it to a place where the input is being handled.
+
+
 ## &lt;TupleContext>
 
 `TupleContext` is a wrapper for all SPARQL Query Result using components.
@@ -127,6 +162,27 @@ The IRI's of the Properties which are represented.
 
 ### `src`: `String`
 The endpoint used by the backend to retrieve the SPARQL response.
+
+## &lt;TupleSearch>
+
+`TupleSearch` lets the user send a search query for CONSTRUCT queries.
+
+```jsx
+<TupleSearch endpoint={src} queryParam={'term'} query={'concept'}>
+  {result => (
+    <React.Component result={result}/>
+  )}
+</TupleSearch>
+```
+
+### `endpoint`: `String`
+The endpoint used by the backend to retrieve the data.
+
+### `queryParam`?: `String`
+Optional query parameter used to create the definite URL. 
+
+### `query`?: `String`
+Optional predefined search field value, for making the first search automatically render a result.
 
 ## &lt;TupleList>
 
