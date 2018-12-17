@@ -45,10 +45,5 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
     ],
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      NODE_ENV: JSON.stringify(env),
-    }),
-  ],
+  }
 };
