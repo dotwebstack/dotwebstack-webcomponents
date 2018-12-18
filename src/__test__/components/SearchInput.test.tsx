@@ -20,4 +20,16 @@ describe('<SearchInput />', () => {
     wrapper.find('button').simulate('submit');
     expect(handleChange).toHaveBeenCalled();
   });
+
+  it('checks if value is submitted when ', () => {
+    const handleInputChange = jest.fn();
+    const wrapper = mount(
+      <SearchInput onInputChange={handleInputChange} />,
+    );
+    expect(handleInputChange).not.toHaveBeenCalled();
+    wrapper.find('input').simulate('change', { target: { value: 'testinput' } });
+    expect(handleInputChange).not.toHaveBeenCalled();
+    wrapper.find('form').simulate('submit');
+    expect(handleInputChange).toHaveBeenCalledWith('testinput');
+  });
 });
