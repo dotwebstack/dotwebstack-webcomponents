@@ -14,7 +14,7 @@ type Props = {
 const Value: React.StatelessComponent<ValueProps & Props> = ({ term, local, linkBuilder }) => {
   if (term.termType !== 'NamedNode') {
     return (
-      <React.Fragment>{term.value}</React.Fragment>
+      <span>{term.value}</span>
     );
   }
 

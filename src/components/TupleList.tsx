@@ -9,7 +9,7 @@ const DEFAULT_PAGE_SIZE = 10;
 export type Column = {
   name: string;
   label?: string;
-  customRender?: (term: Term) => JSX.Element;
+  customRender?: (term?: Term) => JSX.Element;
 };
 
 export type PaginationProps = boolean | {
@@ -98,6 +98,18 @@ class TupleList extends React.Component<Props, State> {
     );
   }
 
+  renderField = (term?: Term) => {
+    if (term === undefined) {
+      return (
+        <span>-</span>
+      );
+    }
+
+    return (
+      <Value term={term} {...this.props.valueProps} />
+    );
+  }
+
   render() {
     return (
       <div>
@@ -116,9 +128,9 @@ class TupleList extends React.Component<Props, State> {
                 <tr key={index}>
                   {this.props.columns.map(column => (
                     <td key={column.name}>
-                      {column.customRender ? column.customRender(bindingSet[column.name]) : (
-                        <Value term={bindingSet[column.name]} {...this.props.valueProps} />
-                      )}
+                      {column.customRender
+                        ? column.customRender(bindingSet[column.name])
+                        : this.renderField(bindingSet[column.name])}
                     </td>
                   ))}
                 </tr>

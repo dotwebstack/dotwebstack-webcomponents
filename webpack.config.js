@@ -8,9 +8,6 @@ const buildDir = path.resolve(__dirname, 'build');
 
 module.exports = {
   mode: env,
-  optimization: {
-    minimize: false,
-  },
   entry: {
     index: path.join(srcDir, 'index.ts'),
   },

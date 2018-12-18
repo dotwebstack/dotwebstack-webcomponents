@@ -44,15 +44,28 @@ describe('<TupleList />', () => {
       const row = wrapper.find('table > tbody > tr').at(i);
 
       columns.forEach((column, j) => {
-        // @ts-ignore
-        expect(row.find('td').at(j).contains(<Value term={mockBindingSet[column.name]} />)).toBe(true);
+        const field = row.find('td').at(j);
+
+        if (mockBindingSet[column.name] !== undefined) {
+          expect(field.contains(<Value term={mockBindingSet[column.name]} />)).toBe(true);
+        } else {
+          expect(field.contains(<span>-</span>));
+        }
       });
     });
   });
 
   it('changes the field rendering for a specific column when customRender is given', () => {
+    const defaultRender = (term?: Term) => term !== undefined
+      ? <Value term={term} />
+      : <span>-</span>;
+
+    const customRender = (term?: Term) => term !== undefined
+      ? <strong>{term.value}</strong>
+      : <strong>-</strong>;
+
     const columns = getColumns();
-    columns[0].customRender = (term: Term) => <strong>{term.value}</strong>;
+    columns[0].customRender = customRender;
     const wrapper = buildTableWithRecords(columns);
 
     mockBindingSets.forEach((mockBindingSet, i) => {
@@ -60,10 +73,8 @@ describe('<TupleList />', () => {
 
       columns.forEach((column, j) => {
         const expected = j === 0
-          // @ts-ignore
-          ? <strong>{mockBindingSet[column.name].value}</strong>
-          // @ts-ignore
-          : <Value term={mockBindingSet[column.name]} />;
+          ? customRender(mockBindingSet[column.name])
+          : defaultRender(mockBindingSet[column.name]);
 
         expect(row.find('td').at(j).contains(expected)).toBe(true);
       });
@@ -78,8 +89,13 @@ describe('<TupleList />', () => {
       const row = wrapper.find('table > tbody > tr').at(i);
 
       columns.forEach((column, j) => {
-        // @ts-ignore
-        expect(row.find('td').at(j).contains(<Value term={mockBindingSet[column.name]} local={true} />)).toBe(true);
+        const field = row.find('td').at(j);
+
+        if (mockBindingSet[column.name] !== undefined) {
+          expect(field.contains(<Value term={mockBindingSet[column.name]} local={true} />)).toBe(true);
+        } else {
+          expect(field.contains(<span>-</span>));
+        }
       });
     });
   });

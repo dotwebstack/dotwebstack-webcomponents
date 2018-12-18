@@ -1,5 +1,6 @@
 import { blankNode, defaultGraph, literal, namedNode, quad } from '@rdfjs/data-model';
 import { DCT, OWL, RDF, RDFS, SHACL, SKOS } from '../namespaces';
+import { BindingSet } from '../lib/TupleResult';
 
 export const subjectTypeRdf = namedNode(RDF + 'test');
 export const subjectTest5 = namedNode('https://example.org/test5');
@@ -532,7 +533,7 @@ export const mockResultSetDatatype = [
 export const mockResultSetBlanknode = [
   { book: blankNode('b1'), title: literal('Harry Potter and the Half-Blood Prince') }];
 
-export const mockBindingSets = [
+export const mockBindingSets: BindingSet[] = [
   {
     begrip: namedNode('Eerste begrip'),
     definition: literal('Eerste definitie'),
@@ -550,7 +551,6 @@ export const mockBindingSets = [
   },
   {
     begrip: namedNode('Vierde begrip'),
-    definition: literal('Vierde definitie'),
     label: literal('Vierde label'),
   },
 ];
