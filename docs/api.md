@@ -136,7 +136,10 @@ The endpoint used by the backend to retrieve the SPARQL response.
 <TupleList
   result={result}
   columns={columns}
-  pageSize={10}
+  pagination={true}
+  valueProps={{
+    linkBuilder: {term => term.value}
+  }}
 />
 ```
 
@@ -146,28 +149,38 @@ The data source.
 ### `columns`: `Column[]`
 Custom settings on how to represent a column.
 
-### `pageSize`: `number`
-The number of items which are shown in the table view.
+### `pagination`: `Pagination` (optional)
+Settings for enabling and configuration of the paginator (`true` applies default configuration).
+
+### `valueProps`: `ValueProps` (optional)
+Optional object with properties, which will be passed to every instance of the `Value` component.
 
 ```jsx
-type Column {
+type Column = {
   name: string;
   label?: string;
-  sortable?: boolean;
   customRender?: (term: Term) => JSX.Element;
-}
+};
 ```
+
 ### `name`: `string`
 The binding name
 
 ### `label`: `string`
 A readable representation of the column header
 
-### `sortable`: `string`
-Is a column sortable or not
-
 ### `customRender`: `(term: Term) => JSX.Element`
 A way to add custom rendering to a column element
+
+```jsx
+type Pagination = boolean | {
+  pageSize?: number;
+};
+```
+
+### `pageSize`: `number`
+The number of items which are shown in the table view.
+
 ## &lt;Resource>
 
 `Resource` a detailed view of one ResourceIri. It provides a simple list of properties.
@@ -177,7 +190,9 @@ A way to add custom rendering to a column element
   store={store}
   resourceIri={resourceIri}
   rows={rows}
-  linkBuilder={term => term.value}
+  valueProps={{
+    linkBuilder: {term => term.value},
+  }}
 />
 ```
 
@@ -190,8 +205,8 @@ The IRI of the `Resource` to be represented.
 ### `rows`: `Row[]`
 Custom settings on how to represent the `Resource` view
 
-### `linkBuilder`: `(term: Term) => string` (optional)
-A callback function to be able to customize the `href` attribute of object links (only relevant for `NamedNode` terms).
+### `valueProps`: `ValueProps` (optional)
+Optional object with properties, which will be passed to every instance of the `Value` component (except `term` property).
 
 ```jsx
 type Row {

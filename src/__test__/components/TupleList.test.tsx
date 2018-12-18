@@ -1,114 +1,118 @@
-import { mount, ReactWrapper } from 'enzyme';
-import * as React from 'react';
-import TupleList, { Column } from '../../components/TupleList';
+import React from 'react';
+import { mount } from 'enzyme';
+import TupleList, { Column, PaginationProps } from '../../components/TupleList';
 import TupleResult from '../../lib/TupleResult';
-import { mockBindingNames, mockBindingSet } from '../TestData';
+import { mockBindingNames, mockBindingSets } from '../TestData';
+import { Value } from '../..';
 import { Term } from 'rdf-js';
+import { ValueProps } from '../../components/Value';
 
 describe('<TupleList />', () => {
-
-  let table: ReactWrapper;
-  let emptyTable: ReactWrapper;
-  let mockTupleResult: TupleResult;
-  const pageSize = 3;
-  const headerSize = 1;
-
-  const columns: Column[] = [
+  const getColumns = (): Column[] => [
     { name: 'begrip', label: 'Begrip' },
     { name: 'definition', label: 'Definitie' },
     { name: 'label', label: 'Label' },
   ];
 
-  it('shows result data in a table', () => {
-    const table = buildTableWith4Records();
-    const data = table.children().props().data;
+  const buildTableWithRecords = (columns: Column[], pagination?: PaginationProps, valueProps?: ValueProps) => {
+    const mockTupleResult = new TupleResult();
+    mockTupleResult.setTupleResult(mockBindingSets, mockBindingNames);
 
-    expect(data[0].begrip.value).toEqual(mockBindingSet[0].begrip.value);
-    expect(data[0].definition.value).toEqual(mockBindingSet[0].definition.value);
-    expect(data[0].label.value).toEqual(mockBindingSet[0].label.value);
-
-    expect(data[1].begrip.value).toEqual(mockBindingSet[1].begrip.value);
-    expect(data[1].definition.value).toEqual(mockBindingSet[1].definition.value);
-    expect(data[1].label.value).toEqual(mockBindingSet[1].label.value);
-
-    expect(data[2].begrip.value).toEqual(mockBindingSet[2].begrip.value);
-    expect(data[2].definition.value).toEqual(mockBindingSet[2].definition.value);
-    expect(data[2].label.value).toEqual(mockBindingSet[2].label.value);
-
-    expect(data[3].begrip.value).toEqual(mockBindingSet[3].begrip.value);
-    expect(data[3].definition.value).toEqual(mockBindingSet[3].definition.value);
-    expect(data[3].label.value).toEqual(mockBindingSet[3].label.value);
-  });
-
-  it('shows an empty table when no results', () => {
-    emptyTable = buildEmptyTable();
-    expect(emptyTable.children().props().data.length).toBe(0);
-  });
-
-  it('shows the columns in given order', () => {
-    table = buildTableWith4Records();
-
-    expect(table.find('th').first().text()).toEqual('Begrip');
-    expect(table.find('th').last().text()).toEqual('Label');
-  });
-
-  it('shows pagination', () => {
-    table = buildTableWith4Records();
-    expect(table.children().props().pagination).toBeTruthy();
-
-    emptyTable = buildEmptyTable();
-    expect(emptyTable.children().props().pagination).toBeFalsy();
-  });
-
-  it('shows correct number of rows according to pageSize', () => {
-    table = buildTableWith4Records();
-    expect(table.find('tr').length).toEqual(headerSize + pageSize);
-  });
-
-  it('can render a custom styling', () => {
-    table = buildTableWithStyle();
-    expect(table.find('h1').first().text()).toEqual('Eerste label');
-  });
-
-  function buildTableWith4Records() {
-    mockTupleResult = new TupleResult();
-    mockTupleResult.setTupleResult(mockBindingSet, mockBindingNames);
-
-    return table = mount(
+    return mount(
       <TupleList
-        result={ mockTupleResult }
-        columns={ columns }
-        pageSize={ pageSize }
-      />);
-  }
+        result={mockTupleResult}
+        columns={columns}
+        pagination={pagination}
+        valueProps={valueProps}
+      />,
+    );
+  };
 
-  function buildTableWithStyle() {
-    const columnsWithStyle: Column[] = [
-      { name: 'label', label: 'Label',
-        customRender: (term: Term) => {
-          return (<h1>{term.value}</h1>);
-        },
-      },
-    ];
+  it('shows result data in a table without pager', () => {
+    const columns = getColumns();
+    const wrapper = buildTableWithRecords(columns);
 
-    mockTupleResult = new TupleResult();
-    mockTupleResult.setTupleResult(mockBindingSet, mockBindingNames);
+    expect(wrapper.exists('nav')).toBe(false);
 
-    return table = mount(
-      <TupleList
-        result={ mockTupleResult }
-        columns={ columnsWithStyle }
-        pageSize={ pageSize }
-      />);
-  }
+    expect(wrapper.find('table > thead > tr')).toHaveLength(1);
+    columns.forEach((column, index) => {
+      expect(wrapper.find('table > thead > tr > th').at(index).text()).toBe(column.label);
+    });
 
-  function buildEmptyTable() {
-    const emptyTupleResult = new TupleResult();
-    return emptyTable = mount(
-      <TupleList
-        result={ emptyTupleResult }
-        columns={ columns }
-        pageSize={ pageSize }
-      />);
-  }
+    expect(wrapper.find('table > tbody > tr')).toHaveLength(4);
+    mockBindingSets.forEach((mockBindingSet, i) => {
+      const row = wrapper.find('table > tbody > tr').at(i);
+
+      columns.forEach((column, j) => {
+        // @ts-ignore
+        expect(row.find('td').at(j).contains(<Value term={mockBindingSet[column.name]} />)).toBe(true);
+      });
+    });
+  });
+
+  it('changes the field rendering for a specific column when customRender is given', () => {
+    const columns = getColumns();
+    columns[0].customRender = (term: Term) => <strong>{term.value}</strong>;
+    const wrapper = buildTableWithRecords(columns);
+
+    mockBindingSets.forEach((mockBindingSet, i) => {
+      const row = wrapper.find('table > tbody > tr').at(i);
+
+      columns.forEach((column, j) => {
+        const expected = j === 0
+          // @ts-ignore
+          ? <strong>{mockBindingSet[column.name].value}</strong>
+          // @ts-ignore
+          : <Value term={mockBindingSet[column.name]} />;
+
+        expect(row.find('td').at(j).contains(expected)).toBe(true);
+      });
+    });
+  });
+
+  it('passed the valueProps to the Value component when given', () => {
+    const columns = getColumns();
+    const wrapper = buildTableWithRecords(columns, undefined, { local: true });
+
+    mockBindingSets.forEach((mockBindingSet, i) => {
+      const row = wrapper.find('table > tbody > tr').at(i);
+
+      columns.forEach((column, j) => {
+        // @ts-ignore
+        expect(row.find('td').at(j).contains(<Value term={mockBindingSet[column.name]} local={true} />)).toBe(true);
+      });
+    });
+  });
+
+  it('shows result data in a table with default page size', () => {
+    const wrapper = buildTableWithRecords(getColumns(), true);
+
+    expect(wrapper.find('table > tbody > tr')).toHaveLength(4);
+    expect(wrapper.find('nav button').first().props().disabled).toBe(true);
+    expect(wrapper.find('nav button').last().props().disabled).toBe(true);
+  });
+
+  it('shows result data in a table with custom page size', () => {
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 3 });
+
+    expect(wrapper.find('table > tbody > tr')).toHaveLength(3);
+    expect(wrapper.find('nav button').first().props().disabled).toBe(true);
+    expect(wrapper.find('nav button').last().props().disabled).toBe(false);
+  });
+
+  it('navigates through pages by clicking next/previous buttons', () => {
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 3 });
+
+    wrapper.find('nav button').last().simulate('click');
+
+    expect(wrapper.find('table > tbody > tr')).toHaveLength(1);
+    expect(wrapper.find('nav button').first().props().disabled).toBe(false);
+    expect(wrapper.find('nav button').last().props().disabled).toBe(true);
+
+    wrapper.find('nav button').first().simulate('click');
+
+    expect(wrapper.find('table > tbody > tr')).toHaveLength(3);
+    expect(wrapper.find('nav button').first().props().disabled).toBe(true);
+    expect(wrapper.find('nav button').last().props().disabled).toBe(false);
+  });
 });

@@ -16,7 +16,6 @@ const columns: Column[] = [
   {
     name: 'begrip',
     label: 'Begrip',
-    sortable: true,
   },
   {
     name: 'definition',
@@ -33,7 +32,7 @@ export default () => (
           <TupleList
             result={result}
             columns={columns}
-            pageSize={10}
+            pagination={true}
           />
         )}
       </TupleContext>

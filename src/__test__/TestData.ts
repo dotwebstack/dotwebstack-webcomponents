@@ -532,7 +532,7 @@ export const mockResultSetDatatype = [
 export const mockResultSetBlanknode = [
   { book: blankNode('b1'), title: literal('Harry Potter and the Half-Blood Prince') }];
 
-export const mockBindingSet = [
+export const mockBindingSets = [
   {
     begrip: namedNode('Eerste begrip'),
     definition: literal('Eerste definitie'),

@@ -2,19 +2,16 @@ import React from 'react';
 import { localName } from '../utils';
 import { Term } from 'rdf-js';
 
-type Props = {
-  term: Term,
+export type ValueProps = {
   local?: boolean,
   linkBuilder?: (term: Term) => string,
 };
 
-const Value: React.StatelessComponent<Props> = ({ term, local, linkBuilder }) => {
-  if (!term) {
-    return (
-      <a></a>
-    );
-  }
+type Props = {
+  term: Term,
+};
 
+const Value: React.StatelessComponent<ValueProps & Props> = ({ term, local, linkBuilder }) => {
   if (term.termType !== 'NamedNode') {
     return (
       <React.Fragment>{term.value}</React.Fragment>
