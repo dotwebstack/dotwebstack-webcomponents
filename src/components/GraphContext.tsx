@@ -2,6 +2,7 @@ import React from 'react';
 import QuadLoader from '../lib/QuadLoader';
 import Store from '../lib/Store';
 import LoadingIndicator from './LoadingIndicator';
+import log from 'loglevel';
 
 type Props = {
   src: string | string[],
@@ -36,7 +37,10 @@ class GraphContext extends React.Component<Props, State> {
       .then(store => this.setState({
         store,
         loading: false,
-      }));
+      })).catch((e) => {
+        log.error(e);
+        this.setState({ loading: false });
+      });
   }
 
   async componentWillReceiveProps(nextProps: Props) {

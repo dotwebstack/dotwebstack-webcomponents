@@ -19,9 +19,8 @@ class GraphSearch extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    const query = this.props.defaultValue ? this.props.defaultValue : undefined;
     this.state = {
-      query,
+      query: props.defaultValue,
     };
   }
 

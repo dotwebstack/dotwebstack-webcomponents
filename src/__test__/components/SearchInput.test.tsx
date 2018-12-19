@@ -8,8 +8,8 @@ describe('<SearchInput />', () => {
     const wrapper = mount(
       <SearchInput onInputChange={(value: string) => (value) } />,
       );
-    wrapper.setState({ currentValue: 'test' });
-    expect(wrapper.find({ value:'test' }).length).toBeGreaterThan(0);
+    wrapper.find('input').simulate('change', { target: { value: 'testinput' } });
+    expect(wrapper.find({ value:'testinput' }).length).toBeGreaterThan(0);
   });
 
   it('Executes onInputChange on submit', () => {
@@ -17,6 +17,7 @@ describe('<SearchInput />', () => {
     const wrapper = mount(
       <SearchInput onInputChange={handleChange} />,
       );
+    expect(handleChange).not.toHaveBeenCalled();
     wrapper.find('button').simulate('submit');
     expect(handleChange).toHaveBeenCalled();
   });
