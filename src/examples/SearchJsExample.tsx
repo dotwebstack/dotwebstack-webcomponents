@@ -10,7 +10,6 @@ const columns: Column[] = [
   {
     name: 'resource',
     label: 'Begrip',
-    sortable: true,
   },
   {
     name: 'uitleg',

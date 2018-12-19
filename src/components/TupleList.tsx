@@ -1,97 +1,146 @@
 import { Term } from 'rdf-js';
-import React, { CSSProperties } from 'react';
-import { BootstrapTable, PaginationPostion, TableHeaderColumn } from 'react-bootstrap-table';
+import React from 'react';
 import i18next from '../i18n';
 import TupleResult from '../lib/TupleResult';
-import Value from './Value';
-import { sortRows } from '../utils';
+import Value, { ValueProps } from './Value';
 
-require('react-bootstrap-table/dist/react-bootstrap-table.min.css');
+const DEFAULT_PAGE_SIZE = 10;
 
 export type Column = {
   name: string;
   label?: string;
-  sortable?: boolean;
-  customRender?: (term: Term) => JSX.Element;
+  customRender?: (term?: Term) => JSX.Element;
 };
 
-const tdStyle: CSSProperties = { whiteSpace: 'normal', wordBreak: 'break-word' };
-
-type TupleListProps = {
-  result: TupleResult,
-  columns: Column[],
+export type PaginationProps = boolean | {
   pageSize?: number,
 };
 
-const cellFormatter = (cell: Term, {}, column: Column): any => {
-  return column.customRender ? column.customRender(cell) : (
-    <Value term={cell} />
-  );
+type Props = {
+  result: TupleResult,
+  columns: Column[],
+  pagination?: PaginationProps,
+  valueProps?: ValueProps;
 };
 
-const TupleList: React.StatelessComponent<TupleListProps> = ({ result, columns, pageSize }) => {
-  let options;
-  const paginationPos: PaginationPostion = 'top';
+type State = {
+  currentPage?: number,
+  pageSize?: number,
+};
 
-  if (pageSize) {
-    options = {
-      page: 1,
-      sizePerPageList: [
-        {
-          text: '5', value: 5,
-        },
-        {
-          text: '10', value: 10,
-        },
-        {
-          text: '20', value: 20,
-        },
-        {
-          text: '50', value: 50,
-        },
-      ],
+class TupleList extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
-      sizePerPage: pageSize.valueOf(),
-      pageStartIndex: 1,
-      paginationSize: 3,
-      prePage: i18next.t('previous'),
-      nextPage: i18next.t('next'),
-      firstPage: i18next.t('first'),
-      lastPage: i18next.t('last'),
-      paginationPosition: paginationPos,
-      paginationShowsTotal: true,
-      hideSizePerPage: false,
-      alwaysShowAllBtns: true,
-      withFirstAndLast: true,
+    this.state = {
+      currentPage: props.pagination ? 1 : undefined,
+      pageSize: this.getPageSize(),
     };
   }
 
-  return (
-    <BootstrapTable
-      data={result.getBindingSets()}
-      pagination={usePagination(pageSize, result)}
-      options={options} striped hover
-    >
-      {columns.map((column, i) => (
-        <TableHeaderColumn
-          key={column.name}
-          isKey={i === 0}
-          dataField={column.name}
-          tdStyle={tdStyle}
-          dataSort={column.sortable}
-          dataFormat={cellFormatter}
-          sortFunc={sortRows}
-          sortFuncExtraData={column.sortable ? column.name : undefined}
-          formatExtraData={column}>
-          {column.label ? column.label : column.name}
-        </TableHeaderColumn>
-      ))}
-    </BootstrapTable>
-  );
-};
+  getPageSize = () => {
+    if (!this.props.pagination) {
+      return undefined;
+    }
 
-export function usePagination(pageSize: any, result: TupleResult) {
-  return pageSize !== undefined && result.getBindingSets().length >= pageSize;
+    return this.props.pagination === true
+      ? DEFAULT_PAGE_SIZE
+      : (this.props.pagination.pageSize || DEFAULT_PAGE_SIZE);
+  }
+
+  getBindingSets = () => {
+    const items = this.props.result.getBindingSets();
+
+    if (this.props.pagination) {
+      const offset = (this.state.currentPage! - 1) * this.state.pageSize!;
+      return items.slice(offset, offset + this.state.pageSize!);
+    }
+
+    return items;
+  }
+
+  renderPager () {
+    if (!this.props.pagination) {
+      return null;
+    }
+
+    const hasPrevious = this.state.currentPage! > 1;
+    const navigatePrevious = () => this.setState({
+      currentPage: this.state.currentPage! - 1,
+    });
+
+    const hasNext = this.props.result.getBindingSets().length > (this.state.currentPage! * this.state.pageSize!);
+    const navigateNext = () => this.setState({
+      currentPage: this.state.currentPage! + 1,
+    });
+
+    return (
+      <nav style={{ display: 'inline-block', width: '100%' }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={!hasPrevious}
+          onClick={navigatePrevious}
+          style={{ float: 'left' }}
+        >
+          &laquo; {i18next.t('previous')}
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={!hasNext}
+          onClick={navigateNext}
+          style={{ float: 'right' }}
+        >
+          {i18next.t('next')} &raquo;
+        </button>
+      </nav>
+    );
+  }
+
+  renderField = (term?: Term) => {
+    if (term === undefined) {
+      return (
+        <span>-</span>
+      );
+    }
+
+    return (
+      <Value term={term} {...this.props.valueProps} />
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderPager()}
+        <div style={{ overflowX: 'auto' }}>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                {this.props.columns.map(column => (
+                  <th key={column.name} scope="row">{column.label || column.name}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {this.getBindingSets().map((bindingSet, index) => (
+                <tr key={index}>
+                  {this.props.columns.map(column => (
+                    <td key={column.name}>
+                      {column.customRender
+                        ? column.customRender(bindingSet[column.name])
+                        : this.renderField(bindingSet[column.name])}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default TupleList;

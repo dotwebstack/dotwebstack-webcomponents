@@ -10,13 +10,13 @@ import PropertyList from './components/PropertyList';
 import ClassList from './components/ClassList';
 import ClassTree from './components/ClassTree';
 import PropertyTree from './components/PropertyTree';
-import TupleList from './components/TupleList';
+import TupleList, { PaginationProps } from './components/TupleList';
 import TupleContext, { tupleContext } from './components/TupleContext';
 import TupleResult from './lib/TupleResult';
 import Label from './components/Label';
 import TupleSearch from './components/TupleSearch';
 import GraphSearch from './components/GraphSearch';
-import Value from './components/Value';
+import Value, { ValueProps } from './components/Value';
 
 export const createComponent = (component: React.ComponentType<any>, props?: any) =>
   React.createElement(component, props);
@@ -27,6 +27,7 @@ export const renderComponent = (container: HTMLElement, component: React.Compone
 export {
   Label,
   Value,
+  ValueProps,
   graphContext,
   ConceptList,
   GraphContext,
@@ -41,6 +42,7 @@ export {
   TupleContext,
   TupleResult,
   TupleList,
+  PaginationProps,
   tupleContext,
   TupleSearch,
 };

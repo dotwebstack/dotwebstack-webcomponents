@@ -40,6 +40,6 @@ describe('<Value />', () => {
       <Value
         term={literal1}
       />);
-    expect(wrapper.html()).toEqual(literal1.value);
+    expect(wrapper.html()).toEqual(`<span>${literal1.value}</span>`);
   });
 });

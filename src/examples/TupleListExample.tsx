@@ -9,14 +9,14 @@ const columns: Column[] = [
   {
     name: 'label',
     label: 'Label',
-    customRender: (term: Term) => {
-      return (<strong>{term.value}</strong>);
-    },
+    customRender: (term?: Term) => (term !== undefined
+      ? <strong>{term.value}</strong>
+      : <strong>-</strong>
+    ),
   },
   {
     name: 'begrip',
     label: 'Begrip',
-    sortable: true,
   },
   {
     name: 'definition',
@@ -33,7 +33,7 @@ export default () => (
           <TupleList
             result={result}
             columns={columns}
-            pageSize={10}
+            pagination={true}
           />
         )}
       </TupleContext>

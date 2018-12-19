@@ -40,7 +40,7 @@ class GraphSearch extends React.Component<Props, State> {
         <SearchInput onInputChange={this.handleInputChange} />
         {this.state.query !== undefined && (
           <div style={{ marginTop: 15 }}>
-            <GraphContext src={this.buildUrl()} >
+            <GraphContext src={this.buildUrl()}>
               {this.props.children}
             </GraphContext>
           </div>
