@@ -138,7 +138,8 @@ The endpoint used by the backend to retrieve the SPARQL response.
   columns={columns}
   pagination={true}
   valueProps={{
-    linkBuilder: {term => term.value}
+    linkBuilder: term => term.value;
+    local: true
   }}
 />
 ```
@@ -191,7 +192,7 @@ The number of items which are shown in the table view.
   resourceIri={resourceIri}
   rows={rows}
   valueProps={{
-    linkBuilder: {term => term.value},
+    linkBuilder: term => term.value,
   }}
 />
 ```
