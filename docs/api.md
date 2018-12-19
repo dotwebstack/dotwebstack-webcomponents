@@ -138,8 +138,8 @@ The endpoint used by the backend to retrieve the SPARQL response.
   columns={columns}
   pagination={true}
   valueProps={{
-    linkBuilder: term => term.value;
-    local: true
+    linkBuilder: term => term.value,
+    local: true,
   }}
 />
 ```
