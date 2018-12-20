@@ -2,9 +2,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 import i18next from '../../i18n';
 import TupleSearch from '../../components/TupleSearch';
-import { TupleContext, TupleResult } from '../..';
-import fetchMock from 'fetch-mock';
-import { mockResponse } from '../TestData';
+import { TupleResult } from '../..';
 
 describe('<TupleSearch />', () => {
 
@@ -25,17 +23,7 @@ describe('<TupleSearch />', () => {
       </TupleSearch>));
   };
 
-  const hasContext = (wrapper: ReactWrapper, endpoint: string) => {
-    return wrapper.contains((
-      <TupleContext src={endpoint}>
-        {searchResult}
-      </TupleContext>
-    ));
-  };
-
-  fetchMock.mock(endpoint, mockResponse);
-  fetchMock.mock(endpoint + '?q=foo', mockResponse);
-  fetchMock.mock(endpoint + '?q=', mockResponse);
+  jest.mock('../../components/TupleContext', () => 'TupleContext');
 
   it('renders the given component with the context result as argument', () => {
     const wrapper: ReactWrapper = createWrapper();
@@ -43,7 +31,7 @@ describe('<TupleSearch />', () => {
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('form').simulate('submit');
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(true);
+    expect(wrapper.find('TupleContext').prop('src')).toEqual(`${endpoint}?q=foo`);
   });
 
   it('renders only search form when no submit event', () => {
@@ -51,7 +39,7 @@ describe('<TupleSearch />', () => {
 
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(false);
+    expect(wrapper.find('TupleContext').length).toBe(0);
   });
 
   it('renders context only when submit event fired', () => {
@@ -59,15 +47,15 @@ describe('<TupleSearch />', () => {
 
     wrapper.find('form').simulate('submit');
 
-    expect(hasContext(wrapper, `${endpoint}?q=`)).toBe(true);
+    expect(wrapper.find('TupleContext').prop('src')).toEqual(`${endpoint}?q=`);
 
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(false);
+    expect(wrapper.find('TupleContext').prop('src')).not.toEqual(`${endpoint}?q=foo`);
 
     wrapper.find('form').simulate('submit');
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(true);
+    expect(wrapper.find('TupleContext').prop('src')).toEqual(`${endpoint}?q=foo`);
   });
 
   it('shows loading indicator directly after submit event', () => {

@@ -2,9 +2,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 import i18next from '../../i18n';
 import GraphSearch from '../../components/GraphSearch';
-import { GraphContext, Store } from '../..';
-import fetchMock from 'fetch-mock';
-import { fooJsonLd } from '../TestData';
+import { Store } from '../..';
 
 describe('<GraphSearch />', () => {
 
@@ -25,17 +23,8 @@ describe('<GraphSearch />', () => {
       </GraphSearch>));
   };
 
-  const hasContext = (wrapper: ReactWrapper, endpoint: string) => {
-    return wrapper.contains((
-      <GraphContext src={endpoint}>
-        {searchResult}
-      </GraphContext>
-    ));
-  };
+  jest.mock('../../components/GraphContext', () => 'GraphContext');
 
-  fetchMock.mock(endpoint, fooJsonLd);
-  fetchMock.mock(endpoint + '?q=foo', fooJsonLd);
-  fetchMock.mock(endpoint + '?q=', fooJsonLd);
 
   it('renders the given component with the context result as argument', () => {
     const wrapper: ReactWrapper = createWrapper();
@@ -43,7 +32,7 @@ describe('<GraphSearch />', () => {
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('form').simulate('submit');
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(true);
+    expect(wrapper.find('GraphContext').prop('src')).toEqual(`${endpoint}?q=foo`);
   });
 
   it('renders only search form when no submit event', () => {
@@ -51,7 +40,7 @@ describe('<GraphSearch />', () => {
 
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(false);
+    expect(wrapper.find('GraphContext').length).toBe(0);
   });
 
   it('renders context only when submit event fired', () => {
@@ -59,15 +48,15 @@ describe('<GraphSearch />', () => {
 
     wrapper.find('form').simulate('submit');
 
-    expect(hasContext(wrapper, `${endpoint}?q=`)).toBe(true);
+    expect(wrapper.find('GraphContext').prop('src')).toEqual(`${endpoint}?q=`);
 
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(false);
+    expect(wrapper.find('GraphContext').prop('src')).not.toEqual(`${endpoint}?q=foo`);
 
     wrapper.find('form').simulate('submit');
 
-    expect(hasContext(wrapper, `${endpoint}?q=foo`)).toBe(true);
+    expect(wrapper.find('GraphContext').prop('src')).toEqual(`${endpoint}?q=foo`);
   });
 
   it('shows loading indicator directly after submit event', () => {
