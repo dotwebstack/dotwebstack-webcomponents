@@ -1,30 +1,29 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 import i18next from '../../i18n';
-import GraphSearch from '../../components/GraphSearch';
-import { Store } from '../..';
+import TupleSearch from '../../components/TupleSearch';
+import { TupleResult } from '../..';
 
-describe('<GraphSearch />', () => {
+describe('<TupleSearch />', () => {
 
-  const graphEndpoint = 'http://test.org';
+  const tupleEndpoint = 'http://test.org';
 
   type MockComponentProps = {
-    result: Store;
+    result: TupleResult;
   };
 
   const endpoint = 'https://example.org/search';
   const Result: React.StatelessComponent<MockComponentProps> = () => <p>Result</p>;
-  const searchResult = (result: Store) => <Result result={result} />;
+  const searchResult = (result: TupleResult) => <Result result={result} />;
 
   const createWrapper = () => {
     return mount((
-      <GraphSearch endpoint={endpoint}>
+      <TupleSearch endpoint={endpoint}>
         {searchResult}
-      </GraphSearch>));
+      </TupleSearch>));
   };
 
-  jest.mock('../../components/GraphContext', () => 'GraphContext');
-
+  jest.mock('../../components/TupleContext', () => 'TupleContext');
 
   it('renders the given component with the context result as argument', () => {
     const wrapper: ReactWrapper = createWrapper();
@@ -32,7 +31,7 @@ describe('<GraphSearch />', () => {
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('form').simulate('submit');
 
-    expect(wrapper.find('GraphContext').prop('src')).toEqual(`${endpoint}?q=foo`);
+    expect(wrapper.find('TupleContext').prop('src')).toEqual(`${endpoint}?q=foo`);
   });
 
   it('renders only search form when no submit event', () => {
@@ -40,7 +39,7 @@ describe('<GraphSearch />', () => {
 
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
 
-    expect(wrapper.find('GraphContext').length).toBe(0);
+    expect(wrapper.find('TupleContext').length).toBe(0);
   });
 
   it('renders context only when submit event fired', () => {
@@ -48,15 +47,15 @@ describe('<GraphSearch />', () => {
 
     wrapper.find('form').simulate('submit');
 
-    expect(wrapper.find('GraphContext').prop('src')).toEqual(`${endpoint}?q=`);
+    expect(wrapper.find('TupleContext').prop('src')).toEqual(`${endpoint}?q=`);
 
     wrapper.find('form input').simulate('change', { target: { value: 'foo' } });
 
-    expect(wrapper.find('GraphContext').prop('src')).not.toEqual(`${endpoint}?q=foo`);
+    expect(wrapper.find('TupleContext').prop('src')).not.toEqual(`${endpoint}?q=foo`);
 
     wrapper.find('form').simulate('submit');
 
-    expect(wrapper.find('GraphContext').prop('src')).toEqual(`${endpoint}?q=foo`);
+    expect(wrapper.find('TupleContext').prop('src')).toEqual(`${endpoint}?q=foo`);
   });
 
   it('shows loading indicator directly after submit event', () => {
@@ -70,31 +69,31 @@ describe('<GraphSearch />', () => {
 
   it('builds correct query url', () => {
     const props = {
-      endpoint: graphEndpoint,
+      endpoint: tupleEndpoint,
       queryParam: 'subject',
-      children: jest.fn((result: Store) => { return result; }),
+      children: jest.fn((result: TupleResult) => { return result; }),
       defaultValue: 'subject',
     };
-    const component = new GraphSearch(props);
+    const component = new TupleSearch(props);
     expect(component.buildUrl()).toEqual('http://test.org?subject=subject');
   });
 
   it('builds correct query url with no queryParam', () => {
     const props = {
-      endpoint: graphEndpoint,
-      children: (result: Store) => <div>{result}</div>,
+      endpoint: tupleEndpoint,
+      children: (result: TupleResult) => <div>{result}</div>,
     };
-    const component = new GraphSearch(props);
+    const component = new TupleSearch(props);
     expect(component.buildUrl()).toEqual('http://test.org?q=');
   });
 
   it('sets query param correctly', () => {
     const props = {
-      endpoint: graphEndpoint,
+      endpoint: tupleEndpoint,
       queryParam: 'subject',
-      children: (result: Store) => <div>{result}</div>,
+      children: (result: TupleResult) => <div>{result}</div>,
     };
-    const component = new GraphSearch(props);
+    const component = new TupleSearch(props);
     expect(component.buildUrl()).toEqual('http://test.org?subject=');
   });
 });

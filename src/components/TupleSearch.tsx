@@ -7,6 +7,7 @@ import TupleResult from '../lib/TupleResult';
 type Props = {
   endpoint: string;
   queryParam?: string;
+  defaultValue?: string;
   children: (data: TupleResult) => JSX.Element,
 };
 
@@ -15,8 +16,13 @@ type State = {
 };
 
 class TupleSearch extends React.Component<Props, State> {
-  state: State = {};
 
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      query: props.defaultValue,
+    };
+  }
   handleInputChange = (value: string) => {
     this.setState({
       query: value,

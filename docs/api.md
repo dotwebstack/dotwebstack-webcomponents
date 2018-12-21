@@ -34,7 +34,7 @@ The data source.
 
 ## &lt;GraphContext>
 
-`GraphContext` is a wrapper for all graph-based components.
+`GraphContext` is a wrapper for all graph-based components, using Json-LD.
 
 ```jsx
 <GraphContext src={src}>
@@ -46,6 +46,27 @@ The data source.
 
 ### `src`: `String`
 The endpoint used by the backend to retrieve the data.
+
+## &lt;GraphSearch>
+
+`GraphSearch` lets the user send a search query which generate Json-LD responses.
+
+```jsx
+<GraphSearch endpoint={endpoint} queryParam="term" query="concept">
+  {store => (
+    <React.Component store={store}/>
+  )}
+</GraphSearch>
+```
+
+### `endpoint`: `String`
+The endpoint used by the backend to retrieve the data. Default is "q".
+
+### `queryParam`?: `String`
+Optional query parameter used to create the definite URL. 
+
+### `query`?: `String`
+Optional predefined search field value, for making the first search automatically render a result.
 
 ## &lt;PropertyList>
 
@@ -127,6 +148,27 @@ The IRI's of the Properties which are represented.
 
 ### `src`: `String`
 The endpoint used by the backend to retrieve the SPARQL response.
+
+## &lt;TupleSearch>
+
+`TupleSearch` lets the user send a search query for CONSTRUCT queries.
+
+```jsx
+<TupleSearch endpoint={src} queryParam={'term'} query={'concept'}>
+  {result => (
+    <React.Component result={result}/>
+  )}
+</TupleSearch>
+```
+
+### `endpoint`: `String`
+The endpoint used by the backend to retrieve the data.
+
+### `queryParam`?: `String`
+Optional query parameter used to create the definite URL. 
+
+### `query`?: `String`
+Optional predefined search field value, for making the first search automatically render a result.
 
 ## &lt;TupleList>
 

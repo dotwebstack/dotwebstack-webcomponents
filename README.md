@@ -28,6 +28,7 @@ yarn add @dotwebstack/webcomponents @rdfjs/data-model
 ## Documentation
 
 * [API Reference](./docs/api.md)
+* [Linked data Reference](./docs/linkedData.md)
 
 ## Usage with React
 
