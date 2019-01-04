@@ -1,11 +1,10 @@
 import { Quad } from 'rdf-js';
+import JsonLdParser from '@rdfjs/parser-jsonld';
 import QuadCollector from './QuadCollector';
 import ResponseReader from './ResponseReader';
-import Parser from './JsonLdProcessor';
 
 export default class QuadLoader {
-
-  parser!: Parser;
+  parser = new JsonLdParser();
 
   loadFromUrl = async (url: string): Promise<Quad[]> => {
     const response = await fetch(url, {
@@ -15,7 +14,8 @@ export default class QuadLoader {
     });
 
     return new Promise<Quad[]>((resolve) => {
-      this.parser = new Parser(new ResponseReader(response))
+      this.parser
+        .import(new ResponseReader(response))
         .pipe(new QuadCollector(resolve));
     });
   }

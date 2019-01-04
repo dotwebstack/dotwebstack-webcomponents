@@ -13,10 +13,11 @@
     "test": "jest --verbose",
     "test-cov": "jest --coverage",
     "build": "NODE_ENV=production webpack",
-    "start": "NODE_ENV=development webpack-dev-server --config webpack.development.js",
+    "start": "NODE_ENV=production webpack-dev-server --config webpack.development.js",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "@rdfjs/data-model": "^1.1.1",
     "es6-promise": "^4.2.5",
     "i18next": "^12.1.0",
@@ -31,6 +32,8 @@
     "react-treeview": "^0.4.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
     "@rdfjs/parser-jsonld": "^1.1.1",
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
@@ -47,6 +50,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/react-treeview": "^0.4.2",
     "@types/sinon": "^7.0.0",
+    "babel-loader": "^8.0.5",
     "css-loader": "^2.0.1",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
