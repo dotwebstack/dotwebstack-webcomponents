@@ -43,7 +43,7 @@ module.exports = {
       { 
         test: /\.js$/, 
         include: /node_modules/, 
-        loader: "babel-loader" 
+        loader: "babel-loader"
       },
       {
         test: /\.css$/,
