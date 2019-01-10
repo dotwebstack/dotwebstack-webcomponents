@@ -4,15 +4,11 @@ module.exports = {
       "@babel/env",
       {
         targets: {
-          edge: "17",
-          firefox: "60",
-          chrome: "67",
-          safari: "11.1",
-          ie: "11",
+          esmodules: true,
         },
       },
     ],
   ],
-  plugins : ["@babel/plugin-transform-runtime"],
+  plugins : ["@babel/plugin-transform-runtime", "@babel/plugin-transform-typescript"],
   sourceType : "unambiguous"
 };
