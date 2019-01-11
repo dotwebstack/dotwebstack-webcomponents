@@ -41,7 +41,7 @@ module.exports = {
         },
       },
       { 
-        test: /\.js$/, 
+        test: /\.(js|jsx|ts|tsx)/, 
         include: /node_modules/, 
         loader: "babel-loader"
       },
