@@ -18,11 +18,9 @@
   },
   "dependencies": {
     "@rdfjs/data-model": "^1.1.1",
-    "es6-promise": "^4.2.5",
     "i18next": "^12.1.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "loglevel": "^1.6.1",
-    "package.json": "^2.0.1",
     "ramda": "^0.26.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -31,6 +29,9 @@
     "react-treeview": "^0.4.7"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
     "@rdfjs/parser-jsonld": "^1.1.1",
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
@@ -47,6 +48,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/react-treeview": "^0.4.2",
     "@types/sinon": "^7.0.0",
+    "babel-loader": "^8.0.5",
     "css-loader": "^2.0.1",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",

@@ -1,3 +1,5 @@
+import '@babel/polyfill';
+import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
@@ -36,7 +38,7 @@ const App = () => (
             </div>
           </div>
         </header>
-        <main className="mt-4">
+        <div className="mt-4">
           <div className="container">
             <Switch>
               <Route exact path="/vocabulary" component={VocabularyExample} />
@@ -47,7 +49,7 @@ const App = () => (
               <Redirect from="/" to="/vocabulary" />
             </Switch>
           </div>
-        </main>
+        </div>
       </div>
     </BrowserRouter>
   </I18nextProvider>

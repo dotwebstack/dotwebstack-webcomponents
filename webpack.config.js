@@ -40,6 +40,11 @@ module.exports = {
           },
         },
       },
+      { 
+        test: /\.(js|jsx|ts|tsx)/, 
+        include: /node_modules/, 
+        loader: "babel-loader"
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
@@ -47,3 +52,4 @@ module.exports = {
     ],
   }
 };
+ 
