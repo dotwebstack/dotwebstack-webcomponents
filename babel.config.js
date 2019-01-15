@@ -3,13 +3,7 @@ module.exports = {
     [
       "@babel/env",
       {
-        targets: {
-          edge: "17",
-          chrome: "67",
-          firefox: "60",
-          safari: "11.1",
-          ie: "11",
-        },
+        targets: "> 0.25%, not dead",
       },
     ],
   ],
