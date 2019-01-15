@@ -41,15 +41,15 @@ module.exports = {
         },
       },
       { 
-        test: /\.(js|jsx|ts|tsx)/, 
+        test: /\.js$/, 
         include: /node_modules/, 
-        loader: "babel-loader"
+        loader: 'babel-loader',
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
     ],
-  }
+  },
 };
- 
+
