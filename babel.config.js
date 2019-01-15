@@ -13,9 +13,4 @@ module.exports = {
       },
     ],
   ],
-  plugins : ["@babel/plugin-transform-runtime", "@babel/plugin-transform-typescript",
-  "transform-es2015-arrow-functions",
-  "transform-class-properties",
-  "syntax-class-properties"],
-  sourceType : "unambiguous"
 };
