@@ -4,11 +4,11 @@ module.exports = {
       "@babel/env",
       {
         targets: {
-          browsers: [
-            "Chrome >= 59",
-            "FireFox >= 44",
-            "last 4 Edge versions"
-          ],
+          edge: "17",
+          chrome: "67",
+          firefox: "60",
+          safari: "11.1",
+          ie: "11",
         },
       },
     ],
