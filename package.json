@@ -30,7 +30,6 @@
     "react-treeview": "^0.4.7"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.2.3",
     "@rdfjs/parser-jsonld": "^1.1.1",
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
