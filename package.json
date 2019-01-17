@@ -30,6 +30,9 @@
     "react-treeview": "^0.4.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-arrow-functions": "^7.2.0",
+    "@babel/plugin-transform-classes": "^7.2.2",
     "@rdfjs/parser-jsonld": "^1.1.1",
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
@@ -46,6 +49,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/react-treeview": "^0.4.2",
     "@types/sinon": "^7.0.3",
+    "babel-loader": "^8.0.5",
     "css-loader": "^2.1.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
