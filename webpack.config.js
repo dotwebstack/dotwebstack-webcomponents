@@ -20,6 +20,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      jsonld$: path.join(__dirname, 'node_modules/jsonld/dist/jsonld.min.js'),
+    },
   },
   module: {
     rules: [
