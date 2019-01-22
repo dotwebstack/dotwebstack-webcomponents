@@ -3,6 +3,7 @@ import React from 'react';
 import i18next from '../i18n';
 import TupleResult from '../lib/TupleResult';
 import Value, { ValueProps } from './Value';
+import { sortRows } from '../utils';
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -24,6 +25,7 @@ type Props = {
 };
 
 type State = {
+  sorted: boolean;
   currentPage?: number,
   pageSize?: number,
 };
@@ -33,6 +35,7 @@ class TupleList extends React.Component<Props, State> {
     super(props);
 
     this.state = {
+      sorted: true,
       currentPage: props.pagination ? 1 : undefined,
       pageSize: this.getPageSize(),
     };
@@ -50,6 +53,13 @@ class TupleList extends React.Component<Props, State> {
 
   getBindingSets = () => {
     const items = this.props.result.getBindingSets();
+    const sortColumn = this.props.columns[0].name.toString();
+
+    if (sortColumn !== undefined) {
+      items.sort((a, b) => {
+        return sortRows(a, b, this.state.sorted, sortColumn);
+      });
+    }
 
     if (this.props.pagination) {
       const offset = (this.state.currentPage! - 1) * this.state.pageSize!;
@@ -59,7 +69,8 @@ class TupleList extends React.Component<Props, State> {
     return items;
   }
 
-  renderPager () {
+  renderPager() {
+
     if (!this.props.pagination) {
       return null;
     }
@@ -75,24 +86,33 @@ class TupleList extends React.Component<Props, State> {
     });
 
     return (
-      <nav style={{ display: 'inline-block', width: '100%' }}>
+      <nav style={ { display: 'inline-block', width: '100%' } }>
         <button
           type="button"
-          className="btn btn-primary"
-          disabled={!hasPrevious}
-          onClick={navigatePrevious}
-          style={{ float: 'left' }}
+          className="btn sorted"
+          disabled={ false }
+          onClick={ () => this.setState({ sorted: !this.state.sorted }) }
+          style={ { float: 'left' } }
         >
-          &laquo; {i18next.t('previous')}
+          { i18next.t('sort') }
         </button>
         <button
           type="button"
           className="btn btn-primary"
-          disabled={!hasNext}
-          onClick={navigateNext}
-          style={{ float: 'right' }}
+          disabled={ !hasPrevious }
+          onClick={ navigatePrevious }
+          style={ { float: 'left' } }
         >
-          {i18next.t('next')} &raquo;
+          &laquo; { i18next.t('previous') }
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={ !hasNext }
+          onClick={ navigateNext }
+          style={ { float: 'right' } }
+        >
+          { i18next.t('next') } &raquo;
         </button>
       </nav>
     );
@@ -106,35 +126,35 @@ class TupleList extends React.Component<Props, State> {
     }
 
     return (
-      <Value term={term} {...this.props.valueProps} />
+      <Value term={ term } { ...this.props.valueProps } />
     );
   }
 
   render() {
     return (
       <div>
-        {this.renderPager()}
-        <div style={{ overflowX: 'auto' }}>
+        { this.renderPager() }
+        <div style={ { overflowX: 'auto' } }>
           <table className="table table-bordered">
             <thead>
-              <tr>
-                {this.props.columns.map(column => (
-                  <th key={column.name} scope="row">{column.label || column.name}</th>
-                ))}
-              </tr>
+            <tr>
+              { this.props.columns.map(column => (
+                <th key={ column.name } scope="row">{ column.label || column.name }</th>
+              )) }
+            </tr>
             </thead>
             <tbody>
-              {this.getBindingSets().map((bindingSet, index) => (
-                <tr key={index}>
-                  {this.props.columns.map(column => (
-                    <td key={column.name}>
-                      {column.customRender
-                        ? column.customRender(bindingSet[column.name])
-                        : this.renderField(bindingSet[column.name])}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+            { this.getBindingSets().map((bindingSet, index) => (
+              <tr key={ index }>
+                { this.props.columns.map(column => (
+                  <td key={ column.name }>
+                    { column.customRender
+                      ? column.customRender(bindingSet[column.name])
+                      : this.renderField(bindingSet[column.name]) }
+                  </td>
+                )) }
+              </tr>
+            )) }
             </tbody>
           </table>
         </div>
