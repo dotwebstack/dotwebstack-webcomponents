@@ -18,12 +18,12 @@ const columns: Column[] = [
   {
     name: 'begrip',
     label: 'Begrip',
-    sortable: true,
+    sortable: false,
   },
   {
     name: 'definition',
     label: 'Definitie',
-    sortable: false,
+    sortable: true,
   },
 ];
 

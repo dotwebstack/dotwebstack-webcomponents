@@ -35,7 +35,7 @@ describe('<TupleList />', () => {
 
     expect(wrapper.find('table > thead > tr')).toHaveLength(1);
     columns.forEach((column, index) => {
-      expect(wrapper.find('table > thead > tr > th').at(index).text()).toBe(column.label);
+      expect(wrapper.find('table > thead > tr > th').at(index).text()).toContain(column.label);
     });
 
     expect(wrapper.find('table > tbody > tr')).toHaveLength(4);
@@ -134,7 +134,7 @@ describe('<TupleList />', () => {
   it('sorts the rows in ascending order', () => {
     const wrapper = buildTableWithRecords(getColumns(), { pageSize: 3 });
 
-    wrapper.setProps({ sortedAscending: true });
+    wrapper.setState({ sortedAscending: true });
     const rows = wrapper.find('table > tbody > tr');
 
     const firstRowColumns = rows.first().find('td').map(column => column.text());
