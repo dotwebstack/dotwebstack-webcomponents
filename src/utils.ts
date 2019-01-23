@@ -25,10 +25,14 @@ export const fetchSparqlResult = (url: string): Promise<SparqlResponse> => {
 export const isLocal = (term: Term, list: Term[]) => list.some(t => term.equals(t));
 
 export const sortTerm = (termA: Term, termB: Term) => {
-  if (termA !== undefined && termB !== undefined) {
-    if (isNamedNode(termA) || isNamedNode(termB)) {
-      return compareTerm(termA, termB);
-    }
+  if (termA === undefined) {
+    return -1;
+  }
+  if (termB === undefined) {
+    return 1;
+  }
+  if (isNamedNode(termA) || isNamedNode(termB)) {
+    return compareTerm(termA, termB);
   }
   return termA.value.localeCompare(termB.value);
 };

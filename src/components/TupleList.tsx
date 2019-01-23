@@ -10,6 +10,7 @@ const DEFAULT_PAGE_SIZE = 10;
 export type Column = {
   name: string;
   label?: string;
+  sortable: boolean;
   customRender?: (term?: Term) => JSX.Element;
 };
 
@@ -25,9 +26,10 @@ type Props = {
 };
 
 type State = {
-  sorted: boolean;
+  sortedAscending: boolean;
   currentPage?: number,
   pageSize?: number,
+  columnToSort: number,
 };
 
 class TupleList extends React.Component<Props, State> {
@@ -35,9 +37,10 @@ class TupleList extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      sorted: true,
+      sortedAscending: true,
       currentPage: props.pagination ? 1 : undefined,
       pageSize: this.getPageSize(),
+      columnToSort: 0,
     };
   }
 
@@ -53,12 +56,13 @@ class TupleList extends React.Component<Props, State> {
 
   getBindingSets = () => {
     const items = this.props.result.getBindingSets();
-    const sortColumn = this.props.columns[0].name.toString();
 
-    if (sortColumn !== undefined) {
-      items.sort((a, b) => {
-        return sortRows(a, b, this.state.sorted, sortColumn);
-      });
+    if (this.props.columns[this.state.columnToSort].sortable) {
+      if (this.props.columns[this.state.columnToSort].name !== undefined) {
+        items.sort((a, b) => {
+          return sortRows(a, b, this.state.sortedAscending, this.props.columns[this.state.columnToSort].name);
+        });
+      }
     }
 
     if (this.props.pagination) {
@@ -70,7 +74,6 @@ class TupleList extends React.Component<Props, State> {
   }
 
   renderPager() {
-
     if (!this.props.pagination) {
       return null;
     }
@@ -89,15 +92,6 @@ class TupleList extends React.Component<Props, State> {
       <nav style={ { display: 'inline-block', width: '100%' } }>
         <button
           type="button"
-          className="btn sorted"
-          disabled={ false }
-          onClick={ () => this.setState({ sorted: !this.state.sorted }) }
-          style={ { float: 'left' } }
-        >
-          { i18next.t('sort') }
-        </button>
-        <button
-          type="button"
           className="btn btn-primary"
           disabled={ !hasPrevious }
           onClick={ navigatePrevious }
@@ -105,6 +99,40 @@ class TupleList extends React.Component<Props, State> {
         >
           &laquo; { i18next.t('previous') }
         </button>
+
+        <button
+          id={'sortColumn0'}
+          type="button"
+          className="btn sort column0"
+          disabled={ !this.props.columns[0].sortable }
+          onClick={ () => this.setState({ sortedAscending: !this.state.sortedAscending, columnToSort: 0 }) }
+          style={ { float: 'left' } }
+        >
+          { i18next.t(this.state.sortedAscending ? 'sortAsc' : 'sortDsc') }
+        </button>
+
+        <button
+          id={'sortColumn1'}
+          type="button"
+          className="btn sort column1"
+          disabled={ !this.props.columns[1].sortable }
+          onClick={ () => this.setState({ sortedAscending: !this.state.sortedAscending, columnToSort: 1 }) }
+          style={ { float: 'left' } }
+        >
+          { i18next.t(this.state.sortedAscending ? 'sortAsc' : 'sortDsc') }
+        </button>
+
+        <button
+          id={'sortColumn2'}
+          type="button"
+          className="btn sort column2"
+          disabled={ !this.props.columns[2].sortable }
+          onClick={ () => this.setState({ sortedAscending: !this.state.sortedAscending, columnToSort: 2 }) }
+          style={ { float: 'left' } }
+        >
+          { i18next.t(this.state.sortedAscending ? 'sortAsc' : 'sortDsc') }
+        </button>
+
         <button
           type="button"
           className="btn btn-primary"

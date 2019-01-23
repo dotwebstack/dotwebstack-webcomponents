@@ -25,7 +25,8 @@ const i18next = i18n
           last: 'Laatste',
           search: 'Zoeken',
           searchPlaceholder: 'Voer een zoekterm in',
-          sort: 'Sorteer',
+          sortAsc: 'Sorteer ^',
+          sortDsc: 'Sorteer V',
         },
       },
       en: {

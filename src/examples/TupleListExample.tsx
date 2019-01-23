@@ -9,6 +9,7 @@ const columns: Column[] = [
   {
     name: 'label',
     label: 'Label',
+    sortable: true,
     customRender: (term?: Term) => (term !== undefined
       ? <strong>{term.value}</strong>
       : <strong>-</strong>
@@ -17,10 +18,12 @@ const columns: Column[] = [
   {
     name: 'begrip',
     label: 'Begrip',
+    sortable: true,
   },
   {
     name: 'definition',
     label: 'Definitie',
+    sortable: false,
   },
 ];
 

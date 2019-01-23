@@ -13,14 +13,17 @@ const columns: Column[] = [
   {
     name: 'resource_label',
     label: 'Label',
+    sortable: true,
   },
   {
     name: 'resource',
     label: 'Begrip',
+    sortable: true,
   },
   {
     name: 'uitleg',
     label: 'Definitie',
+    sortable: true,
   },
 ];
 
