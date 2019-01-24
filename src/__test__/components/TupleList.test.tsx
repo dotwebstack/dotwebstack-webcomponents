@@ -132,7 +132,7 @@ describe('<TupleList />', () => {
   });
 
   it('sorts the rows in ascending order', () => {
-    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 3 });
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 });
 
     wrapper.setState({ sortedAscending: true });
     const rows = wrapper.find('table > tbody > tr');
@@ -143,13 +143,13 @@ describe('<TupleList />', () => {
     expect(firstRowColumns[2]).toEqual('Derde label');
 
     const lastRowColumns = rows.last().find('td').map(column => column.text());
-    expect(lastRowColumns[0]).toEqual('Tweede begrip');
-    expect(lastRowColumns[1]).toEqual('Tweede definitie');
-    expect(lastRowColumns[2]).toEqual('Tweede label');
+    expect(lastRowColumns[0]).toEqual('Vierde begrip');
+    expect(lastRowColumns[1]).toEqual('-');
+    expect(lastRowColumns[2]).toEqual('Vierde label');
   });
 
   it('sorts the rows in descending order', () => {
-    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 3 });
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 });
 
     wrapper.setState({ sortedAscending: false });
     const rows = wrapper.find('table > tbody > tr');
@@ -160,8 +160,8 @@ describe('<TupleList />', () => {
     expect(lastRowColumns[2]).toEqual('Vierde label');
 
     const firstRowColumns = rows.last().find('td').map(column => column.text());
-    expect(firstRowColumns[0]).toEqual('Eerste begrip');
-    expect(firstRowColumns[1]).toEqual('Eerste definitie');
-    expect(firstRowColumns[2]).toEqual('Eerste label');
+    expect(firstRowColumns[0]).toEqual('Derde begrip');
+    expect(firstRowColumns[1]).toEqual('Derde definitie');
+    expect(firstRowColumns[2]).toEqual('Derde label');
   });
 });

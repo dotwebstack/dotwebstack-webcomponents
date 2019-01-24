@@ -97,7 +97,6 @@ class TupleList extends React.Component<Props, State> {
         >
           &laquo; { i18next.t('previous') }
         </button>
-
         <button
           type="button"
           className="btn btn-primary"
@@ -134,14 +133,16 @@ class TupleList extends React.Component<Props, State> {
               { this.props.columns.map(column => (
                 <th key={ column.name } scope="row">
                   { column.label || column.name }
-                  {column.sortable ? <button
+                  {column.sortable ?
+                    <button
                       type="button"
-                      // className="btn sort column0"
                       disabled={ !column.sortable }
                       onClick={ () => this.setState({ sortedAscending: !this.state.sortedAscending,
                         columnToSort: this.props.columns.indexOf(column) }) }
                       style={ { float: 'right' } }
-                    >          { i18next.t(this.state.sortedAscending ? 'sortAsc' : 'sortDsc') }
+                    >
+                      { this.props.columns[this.state.columnToSort].name === column.name ?
+                        this.state.sortedAscending ? 'a>z' : 'z>a' : 'Sort'}
                     </button> : '' }
                 </th>
               )) }
