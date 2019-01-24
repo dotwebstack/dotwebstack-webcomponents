@@ -28,7 +28,10 @@
     "react-dom": "^16.6.3",
     "react-i18next": "^8.4.0",
     "react-scrollable-anchor": "^0.6.1",
-    "react-treeview": "^0.4.7"
+    "react-treeview": "^0.4.7",
+    "@fortawesome/fontawesome-svg-core": "latest",
+    "@fortawesome/free-solid-svg-icons": "latest",
+    "@fortawesome/react-fontawesome": "latest"
   },
   "devDependencies": {
     "@rdfjs/parser-jsonld": "^1.1.1",

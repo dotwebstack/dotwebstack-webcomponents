@@ -4,6 +4,12 @@ import i18next from '../i18n';
 import TupleResult from '../lib/TupleResult';
 import Value, { ValueProps } from './Value';
 import { sortRows } from '../utils';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSortAmountUp, faSortAmountDown } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faSortAmountUp)
+library.add(faSortAmountDown)
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -134,16 +140,16 @@ class TupleList extends React.Component<Props, State> {
                 <th key={ column.name } scope="row">
                   { column.label || column.name }
                   {column.sortable ?
-                    <button
-                      type="button"
-                      disabled={ !column.sortable }
+                    <div
                       onClick={ () => this.setState({ sortedAscending: !this.state.sortedAscending,
                         columnToSort: this.props.columns.indexOf(column) }) }
                       style={ { float: 'right' } }
                     >
                       { this.props.columns[this.state.columnToSort].name === column.name ?
-                        this.state.sortedAscending ? 'a>z' : 'z>a' : 'Sort'}
-                    </button> : '' }
+                        this.state.sortedAscending ? <FontAwesomeIcon icon="sort-amount-up"/> :
+                                                     <FontAwesomeIcon icon="sort-amount-down"/> : 'Sort'}
+                    </div>
+                    : '' }
                 </th>
               )) }
             </tr>
