@@ -6,10 +6,11 @@ import Value, { ValueProps } from './Value';
 import { sortRows } from '../utils';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortAmountUp, faSortAmountDown } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faSortAmountUp)
-library.add(faSortAmountDown)
+library.add(faSort);
+library.add(faSortUp);
+library.add(faSortDown);
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -139,15 +140,20 @@ class TupleList extends React.Component<Props, State> {
               { this.props.columns.map(column => (
                 <th key={ column.name } scope="row">
                   { column.label || column.name }
-                  {column.sortable ?
+                  { column.sortable ?
                     <div
-                      onClick={ () => this.setState({ sortedAscending: !this.state.sortedAscending,
-                        columnToSort: this.props.columns.indexOf(column) }) }
+                      onClick={ () =>
+                        this.setState({
+                          sortedAscending: !this.state.sortedAscending,
+                          columnToSort: this.props.columns.indexOf(column),
+                        }) }
                       style={ { float: 'right' } }
                     >
                       { this.props.columns[this.state.columnToSort].name === column.name ?
-                        this.state.sortedAscending ? <FontAwesomeIcon icon="sort-amount-up"/> :
-                                                     <FontAwesomeIcon icon="sort-amount-down"/> : 'Sort'}
+                        this.state.sortedAscending ?
+                          <FontAwesomeIcon icon="sort-up"/> :
+                          <FontAwesomeIcon icon="sort-down"/> :
+                          <FontAwesomeIcon icon="sort"/> }
                     </div>
                     : '' }
                 </th>
