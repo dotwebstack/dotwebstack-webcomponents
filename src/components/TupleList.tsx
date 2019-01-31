@@ -136,6 +136,13 @@ class TupleList extends React.Component<Props, State> {
     return '\u2bc1';
   }
 
+  selectColor(column: Column) {
+    if (column.name === this.state.sortByColumn[0]) {
+      return '#000000';
+    }
+    return '#b1aeb0';
+  }
+
   render() {
     return (
       <div>
@@ -149,9 +156,8 @@ class TupleList extends React.Component<Props, State> {
                   { column.label || column.name }
                   { column.sortable &&
                     <div
-                      color={'red'}
                       onClick={ this.sortOnProps(column) }
-                      style={{ float: 'right' }}
+                      style={{ color:this.selectColor(column), float: 'right', fontSize: 30 }}
                     >
                       {this.selectSortIcon(column)}
                     </div>
