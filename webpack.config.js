@@ -20,6 +20,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      jsonld$: path.join(__dirname, 'node_modules/jsonld/dist/jsonld.min.js'),
+    },
   },
   module: {
     rules: [
@@ -32,6 +35,11 @@ module.exports = {
         },
       },
       {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: /node_modules/,
+      },
+      {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         query: {
@@ -42,8 +50,9 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
     ],
-  }
+  },
 };
+

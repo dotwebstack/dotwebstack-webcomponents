@@ -36,7 +36,7 @@ const App = () => (
             </div>
           </div>
         </header>
-        <main className="mt-4">
+        <div className="mt-4">
           <div className="container">
             <Switch>
               <Route exact path="/vocabulary" component={VocabularyExample} />
@@ -47,7 +47,7 @@ const App = () => (
               <Redirect from="/" to="/vocabulary" />
             </Switch>
           </div>
-        </main>
+        </div>
       </div>
     </BrowserRouter>
   </I18nextProvider>
