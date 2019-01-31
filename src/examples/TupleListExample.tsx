@@ -37,6 +37,7 @@ export default () => (
             result={result}
             columns={columns}
             pagination={true}
+            sortByColumn={['definition', true]}
           />
         )}
       </TupleContext>

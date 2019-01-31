@@ -62,6 +62,7 @@ export default () => (
               <TupleList
                 result={result}
                 columns={columns}
+                sortByColumn={['test', false]}
               />
             )}
           </TupleSearch>

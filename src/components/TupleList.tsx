@@ -4,20 +4,13 @@ import i18next from '../i18n';
 import TupleResult from '../lib/TupleResult';
 import Value, { ValueProps } from './Value';
 import { sortRows } from '../utils';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faSort);
-library.add(faSortUp);
-library.add(faSortDown);
 
 const DEFAULT_PAGE_SIZE = 10;
 
 export type Column = {
   name: string;
   label?: string;
-  sortable: boolean;
+  sortable?: boolean;
   customRender?: (term?: Term) => JSX.Element;
 };
 
@@ -29,14 +22,14 @@ type Props = {
   result: TupleResult,
   columns: Column[],
   pagination?: PaginationProps,
-  valueProps?: ValueProps;
+  valueProps?: ValueProps,
+  sortByColumn: [string, boolean];
 };
 
 type State = {
-  sortedAscending: boolean;
   currentPage?: number,
   pageSize?: number,
-  columnToSort: number,
+  sortByColumn: [string, boolean],
 };
 
 class TupleList extends React.Component<Props, State> {
@@ -44,10 +37,9 @@ class TupleList extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      sortedAscending: true,
       currentPage: props.pagination ? 1 : undefined,
       pageSize: this.getPageSize(),
-      columnToSort: 0,
+      sortByColumn: this.props.sortByColumn,
     };
   }
 
@@ -61,14 +53,19 @@ class TupleList extends React.Component<Props, State> {
       : (this.props.pagination.pageSize || DEFAULT_PAGE_SIZE);
   }
 
+  sortOnProps = (column: Column) => {
+    return () =>
+      this.setState({
+        sortByColumn: [column.name, !this.state.sortByColumn[1]],
+      });
+  }
+
   getBindingSets = () => {
     const items = this.props.result.getBindingSets();
 
-    if (this.props.columns[this.state.columnToSort].sortable) {
-      items.sort((a, b) => {
-        return sortRows(a, b, this.state.sortedAscending, this.props.columns[this.state.columnToSort].name);
-      });
-    }
+    items.sort((a, b) => {
+      return sortRows(a, b, this.state.sortByColumn[1], this.state.sortByColumn[0]);
+    });
 
     if (this.props.pagination) {
       const offset = (this.state.currentPage! - 1) * this.state.pageSize!;
@@ -78,7 +75,7 @@ class TupleList extends React.Component<Props, State> {
     return items;
   }
 
-  renderPager() {
+  renderPager = () => {
     if (!this.props.pagination) {
       return null;
     }
@@ -94,13 +91,13 @@ class TupleList extends React.Component<Props, State> {
     });
 
     return (
-      <nav style={ { display: 'inline-block', width: '100%' } }>
+      <nav style={{ display: 'inline-block', width: '100%' }}>
         <button
           type="button"
           className="btn btn-primary"
           disabled={ !hasPrevious }
           onClick={ navigatePrevious }
-          style={ { float: 'left' } }
+          style={{ float: 'left' }}
         >
           &laquo; { i18next.t('previous') }
         </button>
@@ -109,7 +106,7 @@ class TupleList extends React.Component<Props, State> {
           className="btn btn-primary"
           disabled={ !hasNext }
           onClick={ navigateNext }
-          style={ { float: 'right' } }
+          style={{ float: 'right' }}
         >
           { i18next.t('next') } &raquo;
         </button>
@@ -129,33 +126,36 @@ class TupleList extends React.Component<Props, State> {
     );
   }
 
+  selectSortIcon(column: Column) {
+    if (this.state.sortByColumn[0] === column.name) {
+      if (this.state.sortByColumn[1]) {
+        return '\u2bc5';
+      }
+      return '\u2bc6';
+    }
+    return '\u2bc1';
+  }
+
   render() {
     return (
       <div>
         { this.renderPager() }
-        <div style={ { overflowX: 'auto' } }>
+        <div style={{ overflowX: 'auto' }}>
           <table className="table table-bordered">
             <thead>
             <tr>
               { this.props.columns.map(column => (
                 <th key={ column.name } scope="row">
                   { column.label || column.name }
-                  { column.sortable ?
+                  { column.sortable &&
                     <div
-                      onClick={ () =>
-                        this.setState({
-                          sortedAscending: !this.state.sortedAscending,
-                          columnToSort: this.props.columns.indexOf(column),
-                        }) }
-                      style={ { float: 'right' } }
+                      color={'red'}
+                      onClick={ this.sortOnProps(column) }
+                      style={{ float: 'right' }}
                     >
-                      { this.props.columns[this.state.columnToSort].name === column.name ?
-                        this.state.sortedAscending ?
-                          <FontAwesomeIcon icon="sort-up"/> :
-                          <FontAwesomeIcon icon="sort-down"/> :
-                          <FontAwesomeIcon icon="sort"/> }
+                      {this.selectSortIcon(column)}
                     </div>
-                    : '' }
+                    }
                 </th>
               )) }
             </tr>

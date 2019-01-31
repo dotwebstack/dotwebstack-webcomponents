@@ -23,6 +23,7 @@ describe('<TupleList />', () => {
         columns={columns}
         pagination={pagination}
         valueProps={valueProps}
+        sortByColumn={['begrip', true]}
       />,
     );
   };
@@ -134,7 +135,7 @@ describe('<TupleList />', () => {
   it('sorts the rows in ascending order', () => {
     const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 });
 
-    wrapper.setState({ sortedAscending: true });
+    wrapper.setState({ sortByColumn: ['begrip', true] });
     const rows = wrapper.find('table > tbody > tr');
 
     const firstRowColumns = rows.first().find('td').map(column => column.text());
@@ -151,7 +152,7 @@ describe('<TupleList />', () => {
   it('sorts the rows in descending order', () => {
     const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 });
 
-    wrapper.setState({ sortedAscending: false });
+    wrapper.setState({ sortByColumn: ['begrip', false] });
     const rows = wrapper.find('table > tbody > tr');
 
     const lastRowColumns = rows.first().find('td').map(column => column.text());
