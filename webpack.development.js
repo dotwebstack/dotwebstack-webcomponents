@@ -10,7 +10,6 @@ module.exports = merge(config, {
     index: path.join(srcDir, 'examples', 'index.tsx'),
   },
   devServer: {
-    hot: true,
     open: true,
     port: 3000,
     historyApiFallback: true,
