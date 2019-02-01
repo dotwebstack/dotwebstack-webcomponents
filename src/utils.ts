@@ -24,7 +24,7 @@ export const fetchSparqlResult = (url: string): Promise<SparqlResponse> => {
 
 export const isLocal = (term: Term, list: Term[]) => list.some(t => term.equals(t));
 
-export const sortTerm = (termA: Term | undefined, termB: Term | undefined) => {
+export const sortTerm = (termA?: Term, termB?: Term ) => {
   if (termA === undefined) {
     return -1;
   }

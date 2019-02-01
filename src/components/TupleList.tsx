@@ -95,20 +95,20 @@ class TupleList extends React.Component<Props, State> {
         <button
           type="button"
           className="btn btn-primary"
-          disabled={ !hasPrevious }
-          onClick={ navigatePrevious }
+          disabled={!hasPrevious}
+          onClick={navigatePrevious}
           style={{ float: 'left' }}
         >
-          &laquo; { i18next.t('previous') }
+          &laquo; {i18next.t('previous')}
         </button>
         <button
           type="button"
           className="btn btn-primary"
-          disabled={ !hasNext }
-          onClick={ navigateNext }
+          disabled={!hasNext}
+          onClick={navigateNext}
           style={{ float: 'right' }}
         >
-          { i18next.t('next') } &raquo;
+          {i18next.t('next')} &raquo;
         </button>
       </nav>
     );
@@ -122,7 +122,7 @@ class TupleList extends React.Component<Props, State> {
     }
 
     return (
-      <Value term={ term } { ...this.props.valueProps } />
+      <Value term={term} {...this.props.valueProps} />
     );
   }
 
@@ -146,38 +146,38 @@ class TupleList extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        { this.renderPager() }
+        {this.renderPager()}
         <div style={{ overflowX: 'auto' }}>
           <table className="table table-bordered">
             <thead>
             <tr>
-              { this.props.columns.map(column => (
-                <th key={ column.name } scope="row">
-                  { column.label || column.name }
-                  { column.sortable &&
+              {this.props.columns.map(column => (
+                <th key={column.name} scope="row">
+                  {column.label || column.name}
+                  {column.sortable &&
                     <div
-                      onClick={ this.sortOnProps(column) }
+                      onClick={this.sortOnProps(column)}
                       style={{ color:this.selectColor(column), float: 'right', fontSize: 30 }}
                     >
                       {this.selectSortIcon(column)}
                     </div>
-                    }
+                  }
                 </th>
-              )) }
+              ))}
             </tr>
             </thead>
             <tbody>
-            { this.getBindingSets().map((bindingSet, index) => (
-              <tr key={ index }>
-                { this.props.columns.map(column => (
-                  <td key={ column.name }>
-                    { column.customRender
+            {this.getBindingSets().map((bindingSet, index) => (
+              <tr key={index}>
+                {this.props.columns.map(column => (
+                  <td key={column.name}>
+                    {column.customRender
                       ? column.customRender(bindingSet[column.name])
-                      : this.renderField(bindingSet[column.name]) }
+                      : this.renderField(bindingSet[column.name])}
                   </td>
-                )) }
+                ))}
               </tr>
-            )) }
+            ))}
             </tbody>
           </table>
         </div>
