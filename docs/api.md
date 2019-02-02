@@ -199,8 +199,8 @@ Settings for enabling and configuration of the paginator (`true` applies default
 Optional object with properties, which will be passed to every instance of the `Value` component.
 
 ### `sortByColumn`: `[string, boolean]` (optional)
-The column on thich the list will be sorted initially. The value is an array with exactly 2 elements (tuple).
-First element is the column name, second element is a boolean whether the column is sorted in ascending order.
+The column on which the list will be sorted initially. The value is an array with exactly 2 elements (tuple).
+First element is the column name, second element is a boolean whether the column is sorted in ascending order or not.
 
 ```jsx
 type Column = {
