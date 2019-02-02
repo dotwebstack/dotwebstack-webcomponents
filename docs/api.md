@@ -63,7 +63,7 @@ The endpoint used by the backend to retrieve the data.
 The endpoint used by the backend to retrieve the data. Default is "q".
 
 ### `queryParam`?: `String`
-Optional query parameter used to create the definite URL. 
+Optional query parameter used to create the definite URL.
 
 ### `query`?: `String`
 Optional predefined search field value, for making the first search automatically render a result.
@@ -165,7 +165,7 @@ The endpoint used by the backend to retrieve the SPARQL response.
 The endpoint used by the backend to retrieve the data.
 
 ### `queryParam`?: `String`
-Optional query parameter used to create the definite URL. 
+Optional query parameter used to create the definite URL.
 
 ### `query`?: `String`
 Optional predefined search field value, for making the first search automatically render a result.
@@ -198,10 +198,15 @@ Settings for enabling and configuration of the paginator (`true` applies default
 ### `valueProps`: `ValueProps` (optional)
 Optional object with properties, which will be passed to every instance of the `Value` component.
 
+### `sortByColumn`: `[string, boolean]` (optional)
+The column on thich the list will be sorted initially. The value is an array with exactly 2 elements (tuple).
+First element is the column name, second element is a boolean whether the column is sorted in ascending order.
+
 ```jsx
 type Column = {
   name: string;
   label?: string;
+  sortable?: boolean;
   customRender?: (term: Term) => JSX.Element;
 };
 ```
@@ -209,10 +214,13 @@ type Column = {
 ### `name`: `string`
 The binding name
 
-### `label`: `string`
-A readable representation of the column header
+### `label`: `string` (optional)
+A readable representation of the column header. It defaults to the column name.
 
-### `customRender`: `(term: Term) => JSX.Element`
+### `sortable`: `boolean` (optional)
+A boolean indicating whether this column can be sorted. It defaults to `false`.
+
+### `customRender`: `(term: Term) => JSX.Element` (optional)
 A way to add custom rendering to a column element
 
 ```jsx
