@@ -3,15 +3,14 @@ import { mount } from 'enzyme';
 import TupleList, { Column, PaginationProps } from '../../components/TupleList';
 import TupleResult from '../../lib/TupleResult';
 import { mockBindingNames, mockBindingSets } from '../TestData';
-import { Value } from '../..';
+import { Value, ValueProps } from '../..';
 import { Term } from 'rdf-js';
-import { ValueProps } from '../../components/Value';
 
 describe('<TupleList />', () => {
   const getColumns = (): Column[] => [
-    { name: 'begrip', label: 'Begrip' },
-    { name: 'definition', label: 'Definitie' },
-    { name: 'label', label: 'Label' },
+    { name: 'begrip', label: 'Begrip', sortable: true },
+    { name: 'definition', label: 'Definitie', sortable: true },
+    { name: 'label', label: 'Label', sortable: true },
   ];
 
   const buildTableWithRecords = (columns: Column[], pagination?: PaginationProps, valueProps?: ValueProps) => {
@@ -24,6 +23,7 @@ describe('<TupleList />', () => {
         columns={columns}
         pagination={pagination}
         valueProps={valueProps}
+        sortByColumn={['begrip', true]}
       />,
     );
   };
@@ -36,7 +36,7 @@ describe('<TupleList />', () => {
 
     expect(wrapper.find('table > thead > tr')).toHaveLength(1);
     columns.forEach((column, index) => {
-      expect(wrapper.find('table > thead > tr > th').at(index).text()).toBe(column.label);
+      expect(wrapper.find('table > thead > tr > th').at(index).text()).toContain(column.label);
     });
 
     expect(wrapper.find('table > tbody > tr')).toHaveLength(4);
@@ -130,5 +130,39 @@ describe('<TupleList />', () => {
     expect(wrapper.find('table > tbody > tr')).toHaveLength(3);
     expect(wrapper.find('nav button').first().props().disabled).toBe(true);
     expect(wrapper.find('nav button').last().props().disabled).toBe(false);
+  });
+
+  it('sorts the rows in ascending order', () => {
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 });
+
+    wrapper.setState({ sortByColumn: ['begrip', true] });
+    const rows = wrapper.find('table > tbody > tr');
+
+    const firstRowColumns = rows.first().find('td').map(column => column.text());
+    expect(firstRowColumns[0]).toEqual('Derde begrip');
+    expect(firstRowColumns[1]).toEqual('Derde definitie');
+    expect(firstRowColumns[2]).toEqual('Derde label');
+
+    const lastRowColumns = rows.last().find('td').map(column => column.text());
+    expect(lastRowColumns[0]).toEqual('Vierde begrip');
+    expect(lastRowColumns[1]).toEqual('-');
+    expect(lastRowColumns[2]).toEqual('Vierde label');
+  });
+
+  it('sorts the rows in descending order', () => {
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 });
+
+    wrapper.setState({ sortByColumn: ['begrip', false] });
+    const rows = wrapper.find('table > tbody > tr');
+
+    const lastRowColumns = rows.first().find('td').map(column => column.text());
+    expect(lastRowColumns[0]).toEqual('Vierde begrip');
+    expect(lastRowColumns[1]).toEqual('-');
+    expect(lastRowColumns[2]).toEqual('Vierde label');
+
+    const firstRowColumns = rows.last().find('td').map(column => column.text());
+    expect(firstRowColumns[0]).toEqual('Derde begrip');
+    expect(firstRowColumns[1]).toEqual('Derde definitie');
+    expect(firstRowColumns[2]).toEqual('Derde label');
   });
 });
