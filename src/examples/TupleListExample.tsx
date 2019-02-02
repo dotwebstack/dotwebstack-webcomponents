@@ -18,7 +18,6 @@ const columns: Column[] = [
   {
     name: 'begrip',
     label: 'Begrip',
-    sortable: false,
   },
   {
     name: 'definition',
@@ -37,7 +36,7 @@ export default () => (
             result={result}
             columns={columns}
             pagination={true}
-            sortByColumn={['definition', true]}
+            sortByColumn={['label', true]}
           />
         )}
       </TupleContext>

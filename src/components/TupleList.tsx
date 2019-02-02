@@ -1,5 +1,5 @@
 import { Term } from 'rdf-js';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import i18next from '../i18n';
 import TupleResult from '../lib/TupleResult';
 import Value, { ValueProps } from './Value';
@@ -19,17 +19,17 @@ export type PaginationProps = boolean | {
 };
 
 type Props = {
-  result: TupleResult,
-  columns: Column[],
-  pagination?: PaginationProps,
-  valueProps?: ValueProps,
-  sortByColumn: [string, boolean];
+  result: TupleResult;
+  columns: Column[];
+  pagination?: PaginationProps;
+  valueProps?: ValueProps;
+  sortByColumn?: [string, boolean];
 };
 
 type State = {
-  currentPage?: number,
-  pageSize?: number,
-  sortByColumn: [string, boolean],
+  currentPage?: number;
+  pageSize?: number;
+  sortByColumn?: [string, boolean];
 };
 
 class TupleList extends React.Component<Props, State> {
@@ -39,7 +39,7 @@ class TupleList extends React.Component<Props, State> {
     this.state = {
       currentPage: props.pagination ? 1 : undefined,
       pageSize: this.getPageSize(),
-      sortByColumn: this.props.sortByColumn,
+      sortByColumn: props.sortByColumn,
     };
   }
 
@@ -53,19 +53,13 @@ class TupleList extends React.Component<Props, State> {
       : (this.props.pagination.pageSize || DEFAULT_PAGE_SIZE);
   }
 
-  sortOnProps = (column: Column) => {
-    return () =>
-      this.setState({
-        sortByColumn: [column.name, !this.state.sortByColumn[1]],
-      });
-  }
-
   getBindingSets = () => {
     const items = this.props.result.getBindingSets();
 
-    items.sort((a, b) => {
-      return sortRows(a, b, this.state.sortByColumn[1], this.state.sortByColumn[0]);
-    });
+    if (this.state.sortByColumn !== undefined) {
+      const [sortColumn, sortAscending] = this.state.sortByColumn;
+      items.sort((a, b) => sortRows(a, b, sortAscending, sortColumn));
+    }
 
     if (this.props.pagination) {
       const offset = (this.state.currentPage! - 1) * this.state.pageSize!;
@@ -126,21 +120,31 @@ class TupleList extends React.Component<Props, State> {
     );
   }
 
-  selectSortIcon(column: Column) {
-    if (this.state.sortByColumn[0] === column.name) {
-      if (this.state.sortByColumn[1]) {
-        return '\u2bc5';
-      }
-      return '\u2bc6';
-    }
-    return '\u2bc1';
-  }
+  renderSortArrow = (column: Column) => {
+    const isSorted = this.state.sortByColumn !== undefined
+      && column.name === this.state.sortByColumn[0];
 
-  selectColor(column: Column) {
-    if (column.name === this.state.sortByColumn[0]) {
-      return '#000000';
-    }
-    return '#b1aeb0';
+    const isSortedAsc = isSorted
+      && this.state.sortByColumn !== undefined
+      && this.state.sortByColumn[1];
+
+    const changeSort = () => this.setState({
+      sortByColumn: [column.name, !isSortedAsc],
+    });
+
+    const style: CSSProperties = {
+      float: 'right',
+      cursor: 'pointer',
+      color: isSorted ? '#000' : '#ddd',
+    };
+
+    return (
+      <div onClick={changeSort} style={style}>
+        {isSorted && isSortedAsc && <span>&#9650;</span>}
+        {isSorted && !isSortedAsc && <span>&#9660;</span>}
+        {!isSorted && <span>&#9650;&#9660;</span>}
+      </div>
+    );
   }
 
   render() {
@@ -154,14 +158,7 @@ class TupleList extends React.Component<Props, State> {
               {this.props.columns.map(column => (
                 <th key={column.name} scope="row">
                   {column.label || column.name}
-                  {column.sortable &&
-                    <div
-                      onClick={this.sortOnProps(column)}
-                      style={{ color:this.selectColor(column), float: 'right', fontSize: 30 }}
-                    >
-                      {this.selectSortIcon(column)}
-                    </div>
-                  }
+                  {column.sortable && this.renderSortArrow(column)}
                 </th>
               ))}
             </tr>
