@@ -154,27 +154,27 @@ class TupleList extends React.Component<Props, State> {
         <div style={{ overflowX: 'auto' }}>
           <table className="table table-bordered">
             <thead>
-            <tr>
-              {this.props.columns.map(column => (
-                <th key={column.name} scope="row">
-                  {column.label || column.name}
-                  {column.sortable && this.renderSortArrow(column)}
-                </th>
-              ))}
-            </tr>
-            </thead>
-            <tbody>
-            {this.getBindingSets().map((bindingSet, index) => (
-              <tr key={index}>
+              <tr>
                 {this.props.columns.map(column => (
-                  <td key={column.name}>
-                    {column.customRender
-                      ? column.customRender(bindingSet[column.name])
-                      : this.renderField(bindingSet[column.name])}
-                  </td>
+                  <th key={column.name} scope="row">
+                    {column.label || column.name}
+                    {column.sortable && this.renderSortArrow(column)}
+                  </th>
                 ))}
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {this.getBindingSets().map((bindingSet, index) => (
+                <tr key={index}>
+                  {this.props.columns.map(column => (
+                    <td key={column.name}>
+                      {column.customRender
+                        ? column.customRender(bindingSet[column.name])
+                        : this.renderField(bindingSet[column.name])}
+                    </td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
