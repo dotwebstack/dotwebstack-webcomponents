@@ -30,22 +30,31 @@ const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
   );
 };
 
+const distinct = (value: Term, index: number, self: Term[]): boolean => {
+  return self.indexOf(value) === index;
+};
+
 const findPropertyIris = (classIri: Term, store: Store): Term[] => {
   const shapeIri = store.findSubjects(namedNode(SHACL + 'targetClass'), classIri)[0];
+  const properties = store.findSubjects(namedNode(RDFS + 'domain'), classIri);
 
-  if (!shapeIri) {
+  if (!shapeIri && properties.length == 0) {
     return [];
   }
 
-  return store
-    .findObjects(shapeIri, namedNode(SHACL + 'property'))
-    .reduce(
-      (acc: Term[], propertyShapeIri: Term) => [
-        ...acc,
-        ...store.findObjects(propertyShapeIri, namedNode(SHACL + 'path')),
-      ],
-      [],
-    );
+  var shProperties : Term[] = [];
+  if(shapeIri) {
+    shProperties = store
+      .findObjects(shapeIri, namedNode(SHACL + 'property'))
+      .reduce(
+        (acc: Term[], propertyShapeIri: Term) => [
+          ...acc,
+          ...store.findObjects(propertyShapeIri, namedNode(SHACL + 'path')),
+        ],
+        [],
+      );
+  }
+  return shProperties.concat(properties).filter(distinct);
 };
 
 const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Term[] => {
