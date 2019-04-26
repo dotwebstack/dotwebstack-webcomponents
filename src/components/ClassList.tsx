@@ -133,7 +133,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <th scope="row">{i18next.t('properties')}:</th>
                     <td>
                       <ol className="list-unstyled">
-                        {propertyIris.map(propertyIri => (
+                        {classPropertyIris.map(propertyIri => (
                           <li key={propertyIri.value}>
                             <Value
                               term={propertyIri}
