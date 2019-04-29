@@ -2,6 +2,7 @@ import React from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
+import { uniqWith } from 'lodash';
 import Store from '../lib/Store';
 import { compareTerm, isLocal, isNamedNode, localName, findDefinition, findComment } from '../utils';
 import { RDFS, SHACL } from '../namespaces';
@@ -30,10 +31,6 @@ const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
   );
 };
 
-const distinct = (value: Term, index: number, self: Term[]): boolean => {
-  return self.indexOf(value) === index;
-};
-
 const findPropertyIris = (classIri: Term, store: Store): Term[] => {
   const shapeIri = store.findSubjects(namedNode(SHACL + 'targetClass'), classIri)[0];
   const properties = store.findSubjects(namedNode(RDFS + 'domain'), classIri);
@@ -54,7 +51,8 @@ const findPropertyIris = (classIri: Term, store: Store): Term[] => {
         [],
       );
   }
-  return shProperties.concat(properties).filter(distinct);
+  const combined = shProperties.concat(properties);
+  return uniqWith(combined, (term, other) => term.equals(other));
 };
 
 const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Term[] => {

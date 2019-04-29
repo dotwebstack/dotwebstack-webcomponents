@@ -9,6 +9,9 @@ import {
   quadWithSuperClass, quadWithSuperProperty, quadWithTargetClass, subjectTest5,
   quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5,
   quadWithClass,
+  quadWithDomain2,
+  quadWithRange,
+  quadWithRange2,
 } from '../TestData';
 
 describe('<PropertyList />', () => {
@@ -64,7 +67,7 @@ describe('<PropertyList />', () => {
       .toBeGreaterThan(0);
   });
 
-  it('shows used in different class', () => {
+  it('shows property being used on class (SHACL)', () => {
     const wrapper = mount(
       <PropertyList
         classIris={[]}
@@ -72,7 +75,29 @@ describe('<PropertyList />', () => {
         store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5])}
       />);
     expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value }).getElements().length)
-      .toBeGreaterThan(0);
+      .toEqual(1);
+  });
+
+  it('shows property being a property of class', () => {
+    const wrapper = mount(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithDomain2])}
+      />);
+    expect(wrapper.find({ href: quadWithDomain2.object.value }).getElements().length)
+      .toEqual(1);
+  });
+
+  it('shows property being a property of one class, when both SHACL and rdfs:domain are stated', () => {
+    const wrapper = mount(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5, quadWithDomain2])}
+      />);
+    expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value }).getElements().length)
+      .toEqual(1);
   });
 
   it('hides class when linked no SHACL TargetClass found', () => {
@@ -86,7 +111,7 @@ describe('<PropertyList />', () => {
       .toEqual(0);
   });
 
-  it('shows related class from path', () => {
+  it('shows related class from property shape (SHACL)', () => {
     const wrapper = mount(
       <PropertyList
         classIris={[]}
@@ -94,7 +119,40 @@ describe('<PropertyList />', () => {
         store={createStore([quadWithPathToObject2, quadWithClass])}
       />);
     expect(wrapper.find({ href: quadWithClass.object.value }).getElements().length)
-      .toBeGreaterThan(0);
+      .toEqual(1);
+  });
+
+  it('shows related class from rdfs:range', () => {
+    const wrapper = mount(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithRange])}
+      />);
+    expect(wrapper.find({ href: quadWithRange.object.value }).getElements().length)
+      .toEqual(1);
+  });
+
+  it('shows related class from property shape (SHACL) and rdfs:domain if same', () => {
+    const wrapper = mount(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithPathToObject2, quadWithClass, quadWithRange])}
+      />);
+    expect(wrapper.find({ href: objectTest2.value }).getElements().length)
+      .toEqual(1);
+  });
+
+  it('shows related class from property shape (SHACL), not rdfs:domain if different', () => {
+    const wrapper = mount(
+      <PropertyList
+        classIris={[]}
+        propertyIris={[objectTest1]}
+        store={createStore([quadWithPathToObject2, quadWithClass, quadWithRange2])}
+      />);
+    expect(wrapper.find({ href: objectTest2.value }).getElements().length)
+      .toEqual(1);
   });
 });
 

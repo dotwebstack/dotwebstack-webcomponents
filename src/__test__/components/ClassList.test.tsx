@@ -7,7 +7,7 @@ import {
   objectTest1, objectTest2, objectTest4, quadWithDCSubject, quadWithDefinition,
   quadWithDefinitionLiteral, quadWithRdfsLabelLiteral, quadWithPath, quadWithPathToObject2,
   quadWithPredicate2, quadWithProperty, quadWithReversedProperty, quadWithReversedTargetClass,
-  quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5,
+  quadWithSubClass, quadWithSuperClass, quadWithTargetClass, subjectTest5, quadWithDomain,
 } from '../TestData';
 import { localName } from '../../utils';
 
@@ -69,7 +69,7 @@ describe('<ClassList />', () => {
       .toBeGreaterThan(0);
   });
 
-  it('shows properties when properly linked', () => {
+  it('shows properties when properly linked with SHACL', () => {
     const wrapper = mount(
       <ClassList
         classIris={[objectTest4]}
@@ -78,6 +78,30 @@ describe('<ClassList />', () => {
       />);
     expect(wrapper.find({ href: '#' + localName(quadWithPath.object) }).getElements().length)
       .toBeGreaterThan(0);
+  });
+
+  it('shows properties when properly linked with RDFS', () => {
+    const wrapper = mount(
+      <ClassList
+        classIris={[objectTest1]}
+        propertyIris={[subjectTest5]}
+        store={createStore([quadWithDomain])}
+      />);
+    expect(wrapper.find({ href: '#' + localName(quadWithDomain.subject) }).getElements().length)
+      .toEqual(1);
+  });
+
+  it('shows properties when properly linked with SHACL and RDFS', () => {
+    const wrapper = mount(
+      <ClassList
+        classIris={[objectTest4, objectTest1]}
+        propertyIris={[objectTest2, subjectTest5]}
+        store={createStore([quadWithTargetClass, quadWithProperty, quadWithPath, quadWithDomain])}
+      />);
+    expect(wrapper.find({ href: '#' + localName(quadWithPath.object) }).getElements().length)
+      .toEqual(1);
+    expect(wrapper.find({ href: '#' + localName(quadWithDomain.subject) }).getElements().length)
+      .toEqual(1);
   });
 
   it('shows inherited properties when found', () => {
