@@ -2,9 +2,9 @@ import React from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
-import { uniqWith } from 'lodash';
+import { uniqWith } from 'ramda';
 import Store from '../lib/Store';
-import { compareTerm, isLocal, isNamedNode, localName, findDefinition, findComment } from '../utils';
+import { compareTerm, isLocal, isNamedNode, localName, findDefinition, findComment, equalsTerm } from '../utils';
 import { RDFS, SHACL } from '../namespaces';
 import i18next from '../i18n';
 import Value from './Value';
@@ -33,15 +33,9 @@ const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
 
 const findPropertyIris = (classIri: Term, store: Store): Term[] => {
   const shapeIri = store.findSubjects(namedNode(SHACL + 'targetClass'), classIri)[0];
-  const properties = store.findSubjects(namedNode(RDFS + 'domain'), classIri);
-
-  if (!shapeIri && properties.length == 0) {
-    return [];
-  }
-
-  var shProperties : Term[] = [];
-  if(shapeIri) {
-    shProperties = store
+  const propertyIris = store.findSubjects(namedNode(RDFS + 'domain'), classIri)
+    .concat(shapeIri === undefined ? [] :
+      store
       .findObjects(shapeIri, namedNode(SHACL + 'property'))
       .reduce(
         (acc: Term[], propertyShapeIri: Term) => [
@@ -49,10 +43,10 @@ const findPropertyIris = (classIri: Term, store: Store): Term[] => {
           ...store.findObjects(propertyShapeIri, namedNode(SHACL + 'path')),
         ],
         [],
-      );
-  }
-  const combined = shProperties.concat(properties);
-  return uniqWith(combined, (term, other) => term.equals(other));
+      ),
+    );
+
+  return uniqWith(equalsTerm)(propertyIris);
 };
 
 const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Term[] => {

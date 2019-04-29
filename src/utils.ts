@@ -10,6 +10,8 @@ export const localName = (term: Term) => last(term.value.split(/[\#\/]/)) || ter
 
 export const compareTerm = (a: Term, b: Term) => localName(a).localeCompare(localName(b));
 
+export const equalsTerm = (term: Term, other: Term) => term.equals(other);
+
 export const isNamedNode = (term: Term) => term.termType === 'NamedNode';
 
 export const isUnique = (object: any, list: any[]) => list.filter(c => c.value === object.value).length === 0;

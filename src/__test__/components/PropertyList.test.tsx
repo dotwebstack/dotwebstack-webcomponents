@@ -94,7 +94,8 @@ describe('<PropertyList />', () => {
       <PropertyList
         classIris={[]}
         propertyIris={[objectTest1]}
-        store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5, quadWithDomain2])}
+        store={createStore([quadWithPathToObject2, quadWithPropertyToSubject2, quadWithTargetClassFromObject5,
+          quadWithDomain2])}
       />);
     expect(wrapper.find({ href: quadWithTargetClassFromObject5.object.value }).getElements().length)
       .toEqual(1);

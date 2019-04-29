@@ -2,9 +2,9 @@ import React from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
-import { uniqWith } from 'lodash';
+import { uniqWith } from 'ramda';
 import Store from '../lib/Store';
-import { compareTerm, isLocal, localName, findDefinition, findComment } from '../utils';
+import { compareTerm, isLocal, localName, findDefinition, findComment, equalsTerm } from '../utils';
 import { RDFS, SHACL, XSD } from '../namespaces';
 import i18next from '../i18n';
 import Value from './Value';
@@ -51,10 +51,8 @@ const findShaclBasedUsedInClassIris = (propertyShapeIris: Term[], store: Store):
 const findRdfsDomainUsedInClassIris = (propertyIri: Term, store: Store): Term[] =>
   store.findObjects(propertyIri, namedNode(RDFS + 'domain'));
 
-const findUsedInClassIris = (shaclUsedInClassIris: Term[], rdfsDomainClassIris: Term[]): Term[] => {
-  const combined = shaclUsedInClassIris.concat(rdfsDomainClassIris);
-  return uniqWith(combined, (term, other) => term.equals(other));
-};
+const findUsedInClassIris = (shaclUsedInClassIris: Term[], rdfsDomainClassIris: Term[]): Term[] =>
+  uniqWith(equalsTerm)(shaclUsedInClassIris.concat(rdfsDomainClassIris));
 
 const findShaclBasedRelatedClassIri = (propertyShapeIris: Term[], store: Store): Term | undefined =>
   propertyShapeIris.reduce(
@@ -69,22 +67,25 @@ const findShaclBasedRelatedClassIri = (propertyShapeIris: Term[], store: Store):
   );
 
 const findRdfsRangeRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined =>
-  store.findObjects(propertyIri, namedNode(RDFS + 'range')).reduce(
-    (acc: Term | undefined, related) => {
-      if (acc !== undefined) {
-        return acc;
-      }
+  store
+    .findObjects(propertyIri, namedNode(RDFS + 'range'))
+    .reduce(
+      (acc: Term | undefined, related) => {
+        if (acc !== undefined) {
+          return acc;
+        }
 
-      // Filter out XSD datatypes
-      // TODO: this is quite crude, and doesn't filter out other datatypes.
-      if(related.value.indexOf(XSD) !== 0) {
-        return related;
-      }
-    },
-    undefined,
-  );
+        // Filter out XSD datatypes
+        // TODO: this is quite crude, and doesn't filter out other datatypes.
+        if (related.value.indexOf(XSD) !== 0) {
+          return related;
+        }
+      },
+      undefined,
+    );
 
-const findRelatedClassIri = (shaclRelatedClassIris: Term | undefined, rdfsRangeClassIri: Term | undefined): Term | undefined =>
+const findRelatedClassIri = (shaclRelatedClassIris: Term | undefined, rdfsRangeClassIri: Term | undefined):
+  Term | undefined =>
   shaclRelatedClassIris ? shaclRelatedClassIris : rdfsRangeClassIri;
 
 const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => {
