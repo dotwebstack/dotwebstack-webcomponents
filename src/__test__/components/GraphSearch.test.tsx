@@ -25,7 +25,6 @@ describe('<GraphSearch />', () => {
 
   jest.mock('../../components/GraphContext', () => 'GraphContext');
 
-
   it('renders the given component with the context result as argument', () => {
     const wrapper: ReactWrapper = createWrapper();
 
@@ -72,7 +71,7 @@ describe('<GraphSearch />', () => {
     const props = {
       endpoint: graphEndpoint,
       queryParam: 'subject',
-      children: jest.fn((result: Store) => { return result; }),
+      children: jest.fn(),
       defaultValue: 'subject',
     };
     const component = new GraphSearch(props);

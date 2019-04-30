@@ -71,7 +71,7 @@ describe('<TupleSearch />', () => {
     const props = {
       endpoint: tupleEndpoint,
       queryParam: 'subject',
-      children: jest.fn((result: TupleResult) => { return result; }),
+      children: jest.fn(),
       defaultValue: 'subject',
     };
     const component = new TupleSearch(props);
