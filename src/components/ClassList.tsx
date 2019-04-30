@@ -2,8 +2,9 @@ import React from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
+import { uniqWith } from 'ramda';
 import Store from '../lib/Store';
-import { compareTerm, isLocal, isNamedNode, localName, findDefinition, findComment } from '../utils';
+import { compareTerm, isLocal, isNamedNode, localName, findDefinition, findComment, equalsTerm } from '../utils';
 import { RDFS, SHACL } from '../namespaces';
 import i18next from '../i18n';
 import Value from './Value';
@@ -32,20 +33,20 @@ const findAncestorClassIris = (classIri: Term, store: Store): Term[] => {
 
 const findPropertyIris = (classIri: Term, store: Store): Term[] => {
   const shapeIri = store.findSubjects(namedNode(SHACL + 'targetClass'), classIri)[0];
-
-  if (!shapeIri) {
-    return [];
-  }
-
-  return store
-    .findObjects(shapeIri, namedNode(SHACL + 'property'))
-    .reduce(
-      (acc: Term[], propertyShapeIri: Term) => [
-        ...acc,
-        ...store.findObjects(propertyShapeIri, namedNode(SHACL + 'path')),
-      ],
-      [],
+  const propertyIris = store.findSubjects(namedNode(RDFS + 'domain'), classIri)
+    .concat(shapeIri === undefined ? [] :
+      store
+      .findObjects(shapeIri, namedNode(SHACL + 'property'))
+      .reduce(
+        (acc: Term[], propertyShapeIri: Term) => [
+          ...acc,
+          ...store.findObjects(propertyShapeIri, namedNode(SHACL + 'path')),
+        ],
+        [],
+      ),
     );
+
+  return uniqWith(equalsTerm)(propertyIris);
 };
 
 const findInheritedPropertyIris = (ancestorClassIris: Term[], store: Store): Term[] => {
@@ -133,7 +134,7 @@ const ClassList: React.StatelessComponent<Props> = ({ classIris, propertyIris, s
                     <th scope="row">{i18next.t('properties')}:</th>
                     <td>
                       <ol className="list-unstyled">
-                        {propertyIris.map(propertyIri => (
+                        {classPropertyIris.map(propertyIri => (
                           <li key={propertyIri.value}>
                             <Value
                               term={propertyIri}

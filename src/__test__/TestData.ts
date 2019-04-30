@@ -21,6 +21,8 @@ export const predicatePath = namedNode(SHACL + 'path');
 export const predicateSubPropertyOf = namedNode(RDFS + 'subPropertyOf');
 export const predicateClassShacl = namedNode(SHACL + 'class');
 export const predicateIsDefinedBy = namedNode(RDFS + 'isDefinedBy');
+export const predicateDomain = namedNode(RDFS + 'domain');
+export const predicateRange = namedNode(RDFS + 'range');
 
 export const objectConceptSkos = namedNode(SKOS + 'Concept');
 export const objectTest1 = namedNode('http://example.org/test1');
@@ -193,6 +195,30 @@ export const quadWithPath = quad(
   objectTest4,
   predicatePath,
   objectTest2,
+  defaultGraph1,
+);
+export const quadWithDomain = quad(
+  subjectTest5,
+  predicateDomain,
+  objectTest1,
+  defaultGraph1,
+);
+export const quadWithDomain2 = quad(
+  objectTest1,
+  predicateDomain,
+  objectTest2,
+  defaultGraph1,
+);
+export const quadWithRange = quad(
+  objectTest1,
+  predicateRange,
+  objectTest2,
+  defaultGraph1,
+);
+export const quadWithRange2 = quad(
+  objectTest1,
+  predicateRange,
+  objectTest3,
   defaultGraph1,
 );
 export const quadWithPathToObject2 = quad(

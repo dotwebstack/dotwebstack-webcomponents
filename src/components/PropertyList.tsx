@@ -2,9 +2,10 @@ import React from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import { Term } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
+import { uniqWith } from 'ramda';
 import Store from '../lib/Store';
-import { compareTerm, isLocal, localName, findDefinition, findComment } from '../utils';
-import { RDFS, SHACL } from '../namespaces';
+import { compareTerm, isLocal, localName, findDefinition, findComment, equalsTerm } from '../utils';
+import { RDFS, SHACL, XSD } from '../namespaces';
 import i18next from '../i18n';
 import Value from './Value';
 import Label from './Label';
@@ -24,7 +25,7 @@ const findSuperPropertyIris = (propertyIri: Term, store: Store): Term[] =>
 const findSubPropertyIris = (propertyIri: Term, store: Store): Term[] =>
   store.findSubjects(namedNode(RDFS + 'subPropertyOf'), propertyIri);
 
-const findUsedInClassIris = (propertyShapeIris: Term[], store: Store): Term[] =>
+const findShaclBasedUsedInClassIris = (propertyShapeIris: Term[], store: Store): Term[] =>
   propertyShapeIris.reduce(
     (acc: Term[], propertyShapeIri: Term) => {
       const classShapeIri = store.findSubjects(namedNode(SHACL + 'property'), propertyShapeIri)[0];
@@ -47,7 +48,13 @@ const findUsedInClassIris = (propertyShapeIris: Term[], store: Store): Term[] =>
     [],
   );
 
-const findRelatedClassIri = (propertyShapeIris: Term[], store: Store): Term | undefined =>
+const findRdfsDomainUsedInClassIris = (propertyIri: Term, store: Store): Term[] =>
+  store.findObjects(propertyIri, namedNode(RDFS + 'domain'));
+
+const findUsedInClassIris = (shaclUsedInClassIris: Term[], rdfsDomainClassIris: Term[]): Term[] =>
+  uniqWith(equalsTerm)(shaclUsedInClassIris.concat(rdfsDomainClassIris));
+
+const findShaclBasedRelatedClassIri = (propertyShapeIris: Term[], store: Store): Term | undefined =>
   propertyShapeIris.reduce(
     (acc: Term | undefined, propertyShapeIri) => {
       if (acc !== undefined) {
@@ -58,6 +65,28 @@ const findRelatedClassIri = (propertyShapeIris: Term[], store: Store): Term | un
     },
     undefined,
   );
+
+const findRdfsRangeRelatedClassIri = (propertyIri: Term, store: Store): Term | undefined =>
+  store
+    .findObjects(propertyIri, namedNode(RDFS + 'range'))
+    .reduce(
+      (acc: Term | undefined, related) => {
+        if (acc !== undefined) {
+          return acc;
+        }
+
+        // Filter out XSD datatypes
+        // TODO: this is quite crude, and doesn't filter out other datatypes.
+        if (related.value.indexOf(XSD) !== 0) {
+          return related;
+        }
+      },
+      undefined,
+    );
+
+const findRelatedClassIri = (shaclRelatedClassIris: Term | undefined, rdfsRangeClassIri: Term | undefined):
+  Term | undefined =>
+  shaclRelatedClassIris ? shaclRelatedClassIris : rdfsRangeClassIri;
 
 const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris, store }) => {
   const classLinkBuilder = (term: Term) =>
@@ -74,8 +103,12 @@ const PropertyList: React.StatelessComponent<Props> = ({ propertyIris, classIris
         const superPropertyIris = findSuperPropertyIris(propertyIri, store).sort(compareTerm);
         const subPropertyIris = findSubPropertyIris(propertyIri, store).sort(compareTerm);
         const propertyShapeIris = findPropertyShapes(propertyIri, store);
-        const usedInClassIris = findUsedInClassIris(propertyShapeIris, store).sort(compareTerm);
-        const relatedClassIri = findRelatedClassIri(propertyShapeIris, store);
+        const shaclUsedInClassIris = findShaclBasedUsedInClassIris(propertyShapeIris, store);
+        const rdfsDomainClassIris = findRdfsDomainUsedInClassIris(propertyIri, store);
+        const usedInClassIris = findUsedInClassIris(shaclUsedInClassIris, rdfsDomainClassIris).sort(compareTerm);
+        const shaclRelatedClassIri = findShaclBasedRelatedClassIri(propertyShapeIris, store);
+        const rdfsRangeClassIri = findRdfsRangeRelatedClassIri(propertyIri, store);
+        const relatedClassIri = findRelatedClassIri(shaclRelatedClassIri, rdfsRangeClassIri);
 
         return (
           <ScrollableAnchor key={localName(propertyIri)} id={localName(propertyIri)}>
