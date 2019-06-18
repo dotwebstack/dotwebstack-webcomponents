@@ -8,7 +8,9 @@ import TupleListExample from './TupleListExample';
 import ResourceExample from './ResourceExample';
 import SearchExample from './SearchExample';
 import SearchJsExample from './SearchJsExample';
-import JsConfigExample from './JsConfigExample';
+import VocabularyJsExample from './VocabularyJsExample';
+import TupleListJsExample from './TupleListJsExample';
+import ResourceJsExample from './ResourceJsExample';
 
 const App = () => (
   <I18nextProvider i18n={i18next}>
@@ -31,10 +33,16 @@ const App = () => (
                   <Link to="/search" className="nav-link">Search</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/search-js" className="nav-link">Search (without React)</Link>
+                  <Link to="/vocabulary-js" className="nav-link">Vocabulary (without React)</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/js-config" className="nav-link">Config (without React)</Link>
+                  <Link to="/tuple-list-js" className="nav-link">TupleList (without React)</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/resource-js" className="nav-link">Resource (without React)</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/search-js" className="nav-link">Search (without React)</Link>
                 </li>
               </ul>
             </div>
@@ -47,8 +55,10 @@ const App = () => (
               <Route exact path="/tuple-list" component={TupleListExample} />
               <Route exact path="/resource" component={ResourceExample} />
               <Route exact path="/search" component={SearchExample} />
+              <Route exact path="/vocabulary-js" component={VocabularyJsExample} />
+              <Route exact path="/tuple-list-js" component={TupleListJsExample} />
+              <Route exact path="/resource-js" component={ResourceJsExample} />
               <Route exact path="/search-js" component={SearchJsExample} />
-              <Route exact path="/js-config" component={JsConfigExample} />
               <Redirect from="/" to="/vocabulary" />
             </Switch>
           </div>

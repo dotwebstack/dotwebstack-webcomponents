@@ -1,11 +1,9 @@
 import React from 'react';
 import { createComponent, renderComponent } from '..';
-import GraphContext from '../components/GraphContext';
-import Vocabulary from '../components/Vocabulary';
 
 type Props = {};
 
-class JsConfig extends React.Component<Props> {
+class VocabularyJsExample extends React.Component<Props> {
   wrapperRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: Props) {
@@ -22,10 +20,10 @@ class JsConfig extends React.Component<Props> {
 
     renderComponent(
       wrapperDom,
-      GraphContext,
+      'GraphContext',
       {
         src: 'https://bag.basisregistraties.overheid.nl/def/bag',
-        children: (store: any) => createComponent(Vocabulary, { store }),
+        children: (store: any) => createComponent('Vocabulary', { store }),
       },
     );
 
@@ -34,11 +32,11 @@ class JsConfig extends React.Component<Props> {
   render() {
     return (
       <div>
-        <h1>Config (without React)</h1>
+        <h1>Vocabulary (without React)</h1>
         <div id="wrapper" ref={this.wrapperRef}></div>
       </div>
     );
   }
 }
 
-export default JsConfig;
+export default VocabularyJsExample;
