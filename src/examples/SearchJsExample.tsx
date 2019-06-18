@@ -1,24 +1,5 @@
 import React from 'react';
-import { createComponent, renderComponent, TupleList, TupleResult, TupleSearch } from '..';
-import { Column } from '../components/TupleList';
-
-const columns: Column[] = [
-  {
-    name: 'resource_label',
-    label: 'Label',
-    sortable: true,
-  },
-  {
-    name: 'resource',
-    label: 'Begrip',
-    sortable: true,
-  },
-  {
-    name: 'uitleg',
-    label: 'Definitie',
-    sortable: true,
-  },
-];
+import { createComponent, renderComponent } from '..';
 
 type Props = {};
 
@@ -37,12 +18,30 @@ class SearchJsExample extends React.Component<Props> {
       return;
     }
 
-    renderComponent(wrapperDom, TupleSearch, {
-      endpoint: 'https://catalogus.kadaster.nl/concepten',
+    renderComponent(wrapperDom, 'TupleSearch', {
+      endpoint: 'https://stelselcatalogus.omgevingswet.overheid.nl/concepten',
       queryParam: 'term',
-      children: (result: TupleResult) => createComponent(TupleList, {
-        columns,
+      children: (result: any) => createComponent('TupleList', {
         result,
+        pagination: true,
+        sortByColumn: ['label', true],
+        columns: [
+          {
+            name: 'resource_label',
+            label: 'Label',
+            sortable: true,
+          },
+          {
+            name: 'resource',
+            label: 'Begrip',
+            sortable: true,
+          },
+          {
+            name: 'uitleg',
+            label: 'Definitie',
+            sortable: true,
+          },
+        ],
       }),
     });
   }
