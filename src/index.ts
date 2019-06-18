@@ -22,7 +22,7 @@ export const createComponent = (component: React.ComponentType<any> | string, pr
   React.createElement(resolveComponent(component), props);
 
 export const renderComponent = (container: HTMLElement, component: React.ComponentType<any> | string, props?: any) =>
-  ReactDOM.render(createComponent(resolveComponent(component), props), container);
+  ReactDOM.render(createComponent(component, props), container);
 
 const resolveComponent = (component: React.ComponentType<any> | string) : React.ComponentType<any> | string => {
   if (typeof component === 'string') {
