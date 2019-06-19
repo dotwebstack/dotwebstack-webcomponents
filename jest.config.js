@@ -14,7 +14,9 @@ module.exports = {
     'css',
   ],
   testRegex: '\\.test\\.tsx?$',
-  setupTestFrameworkScriptFile: '<rootDir>/src/test/setupTests.ts',
+  setupFilesAfterEnv: [
+    '<rootDir>/src/test/setupTests.ts',
+  ],
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
     '!**/*.d.ts',

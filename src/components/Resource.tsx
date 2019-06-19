@@ -43,7 +43,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, v
               <span>-</span>
               }
               {!row.customRender && terms.length !== 0 && terms.map(term => (
-                <React.Fragment>
+                <React.Fragment key={term.value}>
                   <Value term={term} {...valueProps} />
                   <br />
                 </React.Fragment>
