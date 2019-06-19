@@ -53,28 +53,28 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 ## Usage without React
 
-Here is an example of using webcomponents in a non-React application:
+All components are also available by string reference to the `renderComponent` and `createComponent` methods.
+This makes it possible to use web components in a non-React application:
 
 ```js
-import { graphContext, renderComponent, Vocabulary } from '@dotwebstack/webcomponents';
+import { createComponent, renderComponent } from '@dotwebstack/webcomponents';
 
 // Alternative method when not using ES6 modules:
 // const namedNode = require('@rdfjs/data-model').namedNode;
 // const renderComponent = require('@dotwebstack/webcomponents').renderComponent;
+// const createComponent = require('@dotwebstack/webcomponents').renderComponent;
 
-const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-
-graphContext(endpoint)
-  .then((store) => {
-    renderComponent(
-      document.getElementById('root'),
-      Vocabulary,
-      {
-        store: store,
-      },
-    );
-  });
+renderComponent(
+  document.getElementById('root'),
+  'GraphContext',
+  {
+    src: 'https://bag.basisregistraties.overheid.nl/def/bag',
+    children: (store: any) => createComponent('Vocabulary', { store }),
+  },
+);
 ```
+
+See the example folder for more configurations.
 
 ## Development
 

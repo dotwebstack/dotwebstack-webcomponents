@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { renderComponent, createComponent } from '..';
 import Store from '../lib/Store';
 import Vocabulary from '../components/Vocabulary';
-import { graphContext } from '../components/GraphContext';
+import GraphContext, { graphContext } from '../components/GraphContext';
 import fetchMock = require('fetch-mock');
 
 const fooJsonLd = {
@@ -22,6 +22,21 @@ describe('getComponent', () => {
     const store = new Store([]);
     const component = createComponent(Vocabulary, { store });
     expect(component).toEqual(<Vocabulary store={store} />);
+  });
+});
+
+describe('get component by string', () => {
+  it('creates a component', () => {
+    const store = new Store([]);
+    const component = createComponent('Vocabulary', { store });
+    expect(component).toEqual(<Vocabulary store={store} />);
+  });
+});
+
+describe('get html element by string if string not in component registry', () => {
+  it('creates a component', () => {
+    const component = createComponent('div', null);
+    expect(component).toEqual(<div />);
   });
 });
 
@@ -45,5 +60,22 @@ describe('renderComponent', () => {
       });
     expect(ReactDOM.render).toHaveBeenCalledTimes(1);
     expect(ReactDOM.render).toHaveBeenCalledWith(<Vocabulary store={testStore} />, div);
+  });
+});
+
+describe('renders component by string reference', () => {
+  const endpoint = 'http://example.org';
+  const children = () => <React.Component />;
+  it('renders a component', () => {
+    const div = document.createElement('div');
+    renderComponent(
+      div,
+      'GraphContext',
+      {
+        children,
+        src: endpoint,
+      },
+    );
+    expect(ReactDOM.render).toHaveBeenCalledWith(<GraphContext src={endpoint} children={children}/>, div);
   });
 });
