@@ -13,7 +13,6 @@ function createStore(quads: Quad[]) {
 }
 
 describe('<Resource />', () => {
-
   it('shows predicates and objects linked to given resourceIRI', () => {
     const rows = [
       {
@@ -32,10 +31,12 @@ describe('<Resource />', () => {
         rows={rows}
       />,
     );
-    expect(wrapper.find({ href: quadWith1.predicate.value }).getElements().length)
-      .toBeGreaterThan(0);
-    expect(wrapper.find({ href: quadWithPredicateObject2.predicate.value }).getElements().length)
-      .toBeGreaterThan(0);
+    expect(wrapper.find({ href: quadWith1.predicate.value }).getElements().length).toBeGreaterThan(
+      0,
+    );
+    expect(
+      wrapper.find({ href: quadWithPredicateObject2.predicate.value }).getElements().length,
+    ).toBeGreaterThan(0);
   });
 
   it('shows the columns in given order', () => {
@@ -58,8 +59,20 @@ describe('<Resource />', () => {
       />,
     );
 
-    expect(wrapper.find('th').first().find('a').text()).toEqual('Type');
-    expect(wrapper.find('th').last().find('a').text()).toEqual('Property');
+    expect(
+      wrapper
+        .find('th')
+        .first()
+        .find('a')
+        .text(),
+    ).toEqual('Type');
+    expect(
+      wrapper
+        .find('th')
+        .last()
+        .find('a')
+        .text(),
+    ).toEqual('Property');
   });
 
   it('shows a dash when no statements are found', () => {
@@ -97,26 +110,38 @@ describe('<Resource />', () => {
         rows={rows}
       />,
     );
-    expect(wrapper.find('th').first().find('a').text()).toEqual(localName(quadWithPredicateObject2.predicate));
-    expect(wrapper.find('th').last().find('a').text()).toEqual(localName(quadWith1.predicate));
+    expect(
+      wrapper
+        .find('th')
+        .first()
+        .find('a')
+        .text(),
+    ).toEqual(localName(quadWithPredicateObject2.predicate));
+    expect(
+      wrapper
+        .find('th')
+        .last()
+        .find('a')
+        .text(),
+    ).toEqual(localName(quadWith1.predicate));
   });
 
   it('can render a custom styling', () => {
-    const rows = [{
-      predicate: namedNode(RDF + 'Property'),
-      label: 'Is defined by',
-      customRender: (terms: Term[]) => {
-        return (
-          <div>
-            {terms.map(term =>
-              <h1 key={term.value}>
-                {term.value}
-              </h1>,
-            )}
-          </div>
-        );
+    const rows = [
+      {
+        predicate: namedNode(RDF + 'Property'),
+        label: 'Is defined by',
+        customRender: (terms: Term[]) => {
+          return (
+            <div>
+              {terms.map(term => (
+                <h1 key={term.value}>{term.value}</h1>
+              ))}
+            </div>
+          );
+        },
       },
-    }];
+    ];
 
     const wrapper = shallow(
       <Resource
@@ -127,5 +152,42 @@ describe('<Resource />', () => {
     );
 
     expect(wrapper.find('h1').text()).toEqual(quadWith1.object.value);
+  });
+
+  it('shows URI as clickable link when showURI is true', () => {
+    const rows = [
+      {
+        predicate: namedNode('http://example.org/nostatements'),
+        label: 'Type',
+      },
+    ];
+
+    const wrapper = shallow(
+      <Resource
+        resourceIri={subjectTypeRdf}
+        store={createStore([quadWith1, quadWithPredicateObject2])}
+        rows={rows}
+        showUri={true}
+      />,
+    );
+    expect(wrapper.find({ href: subjectTypeRdf.value }).text()).toEqual(subjectTypeRdf.value);
+  });
+
+  it('does not show URI as clickable link when showURI is not set', () => {
+    const rows = [
+      {
+        predicate: namedNode('http://example.org/nostatements'),
+        label: 'Type',
+      },
+    ];
+
+    const wrapper = shallow(
+      <Resource
+        resourceIri={subjectTypeRdf}
+        store={createStore([quadWith1, quadWithPredicateObject2])}
+        rows={rows}
+      />,
+    );
+    expect(wrapper.find({ href: subjectTypeRdf.value }).length).toEqual(0);
   });
 });

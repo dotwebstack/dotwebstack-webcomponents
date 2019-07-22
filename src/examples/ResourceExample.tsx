@@ -36,14 +36,11 @@ export default () => (
   <GraphContext src={endpoint}>
     {store => (
       <div>
-        <h1><Label store={store} resourceIri={resourceIri} /></h1>
-        <p>{resourceIri.value}</p>
+        <h1>
+          <Label store={store} resourceIri={resourceIri} />
+        </h1>
         <section className="mt-4">
-          <Resource
-            store={store}
-            resourceIri={resourceIri}
-            rows={rows}
-          />
+          <Resource store={store} resourceIri={resourceIri} rows={rows} showUri={true} />
         </section>
       </div>
     )}
