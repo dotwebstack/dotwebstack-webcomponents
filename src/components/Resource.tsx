@@ -31,9 +31,16 @@ const Resource: React.StatelessComponent<Props> = ({
 
   return (
     <div>
-      {showUri ? <a href={resourceIri.value}>{resourceIri.value}</a> : null}
       <table className="table table-striped">
         <tbody>
+          {showUri ? (
+            <tr key={resourceIri.value}>
+              <th scope="row">URI</th>
+              <td>
+                <a href={resourceIri.value}>{resourceIri.value}</a>
+              </td>
+            </tr>
+          ) : null}
           {rows.map(row => {
             const terms: Term[] = statements
               .filter(statement => row.predicate.value === statement.predicate.value)
