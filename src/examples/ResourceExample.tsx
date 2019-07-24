@@ -3,13 +3,25 @@ import { Label, GraphContext } from '..';
 import React from 'react';
 import Resource from '../components/Resource';
 import { Term } from 'rdf-js';
+// import { Term } from 'rdf-js';
 
-const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const resourceIri = namedNode('http://bag.basisregistraties.overheid.nl/def/bag#BAG-object');
+const endpoint = 'https://regelgeving.omgevingswet.overheid.nl/id/concept/AanHuisVerbondenBeroep';
+const resourceIri = namedNode(
+  'http://regelgeving.omgevingswet.overheid.nl/id/concept/AanHuisVerbondenBeroep',
+);
 const rows = [
   {
-    predicate: namedNode('http://www.w3.org/2000/01/rdf-schema#isDefinedBy'),
-    label: 'Is defined by',
+    predicate: namedNode('https://nl.wikipedia.org/wiki/Uniform_resource_identifier'),
+    label: 'URI',
+    customRender: (_terms: Term[], ref: React.RefObject<HTMLTableCellElement>) => {
+      if (ref.current && ref.current.innerText !== resourceIri.value) {
+        ref.current.insertAdjacentHTML(
+          'afterbegin',
+          `<a href=${resourceIri.value}>${resourceIri.value}</a>`,
+        );
+      }
+      return <a href={resourceIri.value}>{resourceIri.value}</a>;
+    },
   },
   {
     predicate: namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
@@ -20,15 +32,20 @@ const rows = [
     label: 'Type',
   },
   {
-    predicate: namedNode('http://purl.org/dc/terms/subject'),
-    label: 'Subject',
-    customRender: (terms: Term[]) => {
-      return <span>{terms.length}</span>;
-    },
+    predicate: namedNode('http://www.w3.org/2004/02/skos/core#prefLabel'),
+    label: 'Term',
   },
   {
-    predicate: namedNode('http://purl.org/dc/terms/extralabel'),
-    label: 'Extra label',
+    predicate: namedNode('http://www.w3.org/2004/02/skos/core#inScheme'),
+    label: 'Domein',
+  },
+  {
+    predicate: namedNode('http://www.w3.org/2004/02/skos/core#member'),
+    label: 'Lid',
+  },
+  {
+    predicate: namedNode('http://xmlns.com/foaf/0.1/isPrimaryTopicOf'),
+    label: 'Metadata',
   },
 ];
 

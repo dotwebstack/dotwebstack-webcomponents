@@ -15,36 +15,49 @@ type Props = {
 type Row = {
   predicate: NamedNode;
   label?: string;
-  customRender?: (terms: Term[]) => JSX.Element;
+  customRender?: (
+    terms: Term[],
+    ref: React.MutableRefObject<HTMLTableCellElement | null>,
+  ) => JSX.Element | HTMLElement;
 };
 
-const Resource: React.StatelessComponent<Props> = ({
-  resourceIri,
-  store,
-  rows,
-  valueProps,
-  showUri = false,
-}) => {
+interface RefMap {
+  [key: string]: React.MutableRefObject<HTMLTableCellElement | null>;
+}
+
+const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, valueProps }) => {
   const statements = store
     .findStatements(resourceIri)
     .sort((a: Quad, b: Quad) => compareTerm(a.predicate, b.predicate));
+  const refMap: RefMap = {};
+  rows.forEach(row => {
+    if (row.customRender) {
+      refMap[row.predicate.value] = React.useRef(null);
+    }
+  });
+
+  const customRender = (
+    row: Row,
+    terms: Term[],
+    ref: React.MutableRefObject<HTMLTableCellElement | null>,
+  ) => {
+    setTimeout(() => {
+      if (row.customRender) {
+        row.customRender(terms, ref);
+      }
+    },         10);
+  };
 
   return (
     <div>
       <table className="table table-striped">
         <tbody>
-          {showUri ? (
-            <tr key={resourceIri.value}>
-              <th scope="row">URI</th>
-              <td>
-                <a href={resourceIri.value}>{resourceIri.value}</a>
-              </td>
-            </tr>
-          ) : null}
           {rows.map(row => {
             const terms: Term[] = statements
               .filter(statement => row.predicate.value === statement.predicate.value)
               .map(statement => statement.object);
+
+            const refRow = refMap[row.predicate.value];
 
             return (
               <tr key={row.predicate.value}>
@@ -53,8 +66,8 @@ const Resource: React.StatelessComponent<Props> = ({
                     {row.label ? row.label : localName(row.predicate)}
                   </a>
                 </th>
-                <td>
-                  {row.customRender && row.customRender(terms)}
+                <td ref={refRow}>
+                  {row.customRender && customRender(row, terms, refRow)}
                   {!row.customRender && terms.length === 0 && <span>-</span>}
                   {!row.customRender &&
                     terms.length !== 0 &&
