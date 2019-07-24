@@ -35,11 +35,6 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: /node_modules/,
-      },
-      {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         query: {
