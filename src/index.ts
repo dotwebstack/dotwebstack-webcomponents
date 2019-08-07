@@ -1,5 +1,5 @@
 import './polyfills';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import ConceptList from './components/ConceptList';
 import GraphContext, { graphContext } from './components/GraphContext';
@@ -18,13 +18,21 @@ import TupleSearch from './components/TupleSearch';
 import GraphSearch from './components/GraphSearch';
 import Value, { ValueProps } from './components/Value';
 
-export const createComponent = (component: React.ComponentType<any> | string, props?: any) =>
-  React.createElement(resolveComponent(component), props);
+export const createComponent = (
+  component: React.ComponentType<any> | string,
+  props?: any,
+  children?: ReactNode[],
+) => React.createElement(resolveComponent(component), props, children);
 
-export const renderComponent = (container: HTMLElement, component: React.ComponentType<any> | string, props?: any) =>
-  ReactDOM.render(createComponent(component, props), container);
+export const renderComponent = (
+  container: HTMLElement,
+  component: React.ComponentType<any> | string,
+  props?: any,
+) => ReactDOM.render(createComponent(component, props), container);
 
-const resolveComponent = (component: React.ComponentType<any> | string) : React.ComponentType<any> | string => {
+const resolveComponent = (
+  component: React.ComponentType<any> | string,
+): React.ComponentType<any> | string => {
   if (typeof component === 'string') {
     const entry = componentRegistry.get(component);
     if (entry) {
