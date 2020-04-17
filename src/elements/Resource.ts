@@ -3,7 +3,6 @@ import { NamedNode } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Graph, { IGraph } from './Graph';
 import lit, { html } from '../lib/lit';
-import { localName } from '../lib/utils';
 
 export interface IResource extends HTMLElement {
   iri: NamedNode;
@@ -22,7 +21,7 @@ const Resource: Hybrids<IResource> = {
         <tbody>
           ${quads.map(quad => html`
             <tr>
-              <th scope="row">${localName(quad.predicate)}</th>
+              <th scope="row"><dws-label iri="${quad.predicate.value}"></dws-label></th>
               <td>${quad.object.value}</td>
             </tr>
           `)}
