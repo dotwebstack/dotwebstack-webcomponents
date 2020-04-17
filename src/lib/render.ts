@@ -14,4 +14,5 @@ export default <E extends HTMLElement>(fn: any): Descriptor<E> => render(
   { shadowRoot: false },
 );
 
-export { html, svg } from 'lit-html';
+export { html } from 'lit-html';
+export { templateContent } from 'lit-html/directives/template-content';

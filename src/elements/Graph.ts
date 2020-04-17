@@ -1,7 +1,6 @@
 import { Hybrids, property } from 'hybrids';
-import { templateContent } from 'lit-html/directives/template-content';
 import { FastDataset } from '../lib/model';
-import render, { html } from '../lib/render';
+import render, { html, templateContent } from '../lib/render';
 import load from '../lib/load';
 
 export interface IGraph extends HTMLElement {
