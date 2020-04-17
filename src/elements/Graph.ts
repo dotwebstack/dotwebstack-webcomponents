@@ -1,7 +1,7 @@
 import { Hybrids, property } from 'hybrids';
 import { templateContent } from 'lit-html/directives/template-content';
 import { FastDataset } from '../lib/model';
-import lit, { html } from '../lib/lit';
+import render, { html } from '../lib/render';
 import load from '../lib/load';
 
 export interface IGraph extends HTMLElement {
@@ -22,7 +22,7 @@ const Graph: Hybrids<IGraph> = {
   },
   template: property(''),
   store: property(undefined),
-  render: lit((host: IGraph) => {
+  render: render((host: IGraph) => {
     if (host.store === undefined) {
       return html`
         <p>Loading...</p>

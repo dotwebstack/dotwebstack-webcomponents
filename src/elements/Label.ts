@@ -2,7 +2,7 @@ import { Hybrids, property, parent } from 'hybrids';
 import { NamedNode } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Graph, { IGraph } from './Graph';
-import lit, { html } from '../lib/lit';
+import render, { html } from '../lib/render';
 import { rdfs, skos } from '../lib/namespaces';
 import { FastDataset } from '../lib/model';
 import { localName } from '../lib/utils';
@@ -31,7 +31,7 @@ const getLabel = (store: FastDataset, iri: NamedNode): string => {
 const Label: Hybrids<ILabel> = {
   iri: property(namedNode),
   graph: parent(Graph),
-  render: lit((host: ILabel) => {
+  render: render((host: ILabel) => {
     const label = getLabel(host.graph.store, host.iri);
     return html`${label}`;
   }),
