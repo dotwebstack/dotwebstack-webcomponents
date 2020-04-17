@@ -5,6 +5,6 @@
     "prefer-template": false,
     "no-console": true,
     "max-line-length": [true, 120],
-    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"]
+    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore"]
   }
 }

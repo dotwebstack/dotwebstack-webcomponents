@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const pkg = require('./package.json');
 const env = process.env.NODE_ENV || 'development';
@@ -19,29 +20,26 @@ module.exports = {
     umdNamedDefine: true,
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-    alias: {
-      jsonld$: path.join(__dirname, 'node_modules/jsonld/dist/jsonld.min.js'),
-    },
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
       {
         enforce: 'pre',
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         loader: 'tslint-loader',
         options: {
           typeCheck: true,
         },
       },
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         loader: 'ts-loader',
-        query: {
-          compilerOptions: {
-            declaration: env === 'production',
-          },
-        },
+        // query: {
+        //   compilerOptions: {
+        //     declaration: env === 'production',
+        //   },
+        // },
       },
       {
         test: /\.css$/,
@@ -49,5 +47,15 @@ module.exports = {
       },
     ],
   },
+  devServer: {
+    open: true,
+    port: 3000,
+    historyApiFallback: true,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(srcDir, 'examples', 'index.html'),
+    }),
+  ],
 };
 

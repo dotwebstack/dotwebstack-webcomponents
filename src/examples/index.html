@@ -1,81 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DotWebStack Web Components</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <style type="text/css">
-    .nav-link {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    section > ol > li {
-      margin-bottom: 30px;
-    }
-
-    section > ol > li > p {
-      margin-top: 0.5rem;
-      font-style: italic;
-    }
-
-    section > ol > li > table {
-      margin-top: 1rem;
-    }
-
-    section > ul.nav {
-      margin-top: 20px;
-      margin-bottom: 30px;
-    }
-
-    td > ol > li {
-      display: inline;
-    }
-
-    td > ol > li:not(:last-child):after {
-      content: ', ';
-    }
-
-    th {
-      width: 240px;
-    }
-
-    .tree-section {
-      margin-bottom: 30px;
-    }
-
-    .tree-view_arrow:after {
-      width: 15px;
-      text-align: center;
-      display: block;
-    }
-
-    #pageDropDown {
-      margin-left: 10px;
-    }
-
-    .order .caret {
-      display: inline-block;
-      width: 0;
-      height: 0;
-      margin-left: 2px;
-      vertical-align: middle;
-      border-top: 4px dashed;
-      border-top: 4px solid \9;
-      border-right: 4px solid transparent;
-      border-left: 4px solid transparent;
-    }
-
-    .dropup .caret, .navbar-fixed-bottom .dropdown .caret {
-      border-top: 0;
-      border-bottom: 4px dashed;
-      border-bottom: 4px solid \9;
-      content: "";
-    }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-</body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DotWebStack Web Components</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script type="application/ld+json" id="data">
+      {
+        "@context": {
+          "owl": "http://www.w3.org/2002/07/owl#Ontology",
+          "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+        },
+        "@id": "http://bag.basisregistraties.overheid.nl/def/bag",
+        "@type": "owl:ontology",
+        "rdfs:label": "Basisregistraties adressen en gebouwen vocabulaire"
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <template id="resource">
+        <h1><dws-label iri="http://bag.basisregistraties.overheid.nl/def/bag"></dws-label></h1>
+        <dws-resource iri="http://bag.basisregistraties.overheid.nl/def/bag"></dws-resource>
+      </template>
+      <dws-graph src="#data" template="#resource"></dws-graph>
+    </div>
+  </body>
 </html>
