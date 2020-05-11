@@ -21,8 +21,16 @@ const Resource: Hybrids<IResource> = {
         <tbody>
           ${quads.map(quad => html`
             <tr>
-              <th scope="row"><dws-label iri="${quad.predicate.value}"></dws-label></th>
-              <td>${quad.object.value}</td>
+              <th scope="row">
+                <dws-label iri="${quad.predicate.value}"></dws-label>
+              </th>
+              <td>
+                ${quad.object.termType === 'NamedNode' ? html`
+                  <a href="${quad.object.value}" title="${quad.object.value}">
+                    <dws-label iri="${quad.object.value}"></dws-label>
+                  </a>
+                ` : quad.object.value}
+              </td>
             </tr>
           `)}
         </tbody>

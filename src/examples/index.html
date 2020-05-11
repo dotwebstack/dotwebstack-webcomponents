@@ -19,7 +19,10 @@
   <body>
     <div class="container">
       <template id="resource">
-        <h1><dws-label iri="http://bag.basisregistraties.overheid.nl/def/bag"></dws-label></h1>
+        <header class="mb-5">
+          <h1 class="mt-5"><dws-label iri="http://bag.basisregistraties.overheid.nl/def/bag"></dws-label></h1>
+          <p>URI: <a href="http://bag.basisregistraties.overheid.nl/def/bag">http://bag.basisregistraties.overheid.nl/def/bag</a></p>
+        </header>
         <dws-resource iri="http://bag.basisregistraties.overheid.nl/def/bag"></dws-resource>
       </template>
       <dws-graph src="#data" template="#resource"></dws-graph>
