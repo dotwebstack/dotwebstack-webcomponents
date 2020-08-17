@@ -1,12 +1,16 @@
 import React from 'react';
 import querystring from 'querystring';
-import SearchInput from './SearchInput';
 import TupleContext from './TupleContext';
 import TupleResult from '../lib/TupleResult';
+import SearchInputWithSuggestions from './SearchInputWithSuggestions';
+import SearchInput from './SearchInput';
 
 type Props = {
   endpoint: string;
   queryParam?: string;
+  suggestEndpoint?: string,
+  suggestQueryParam?: string,
+  suggestionDelay?:number,
   defaultValue?: string;
   children: (data: TupleResult) => JSX.Element,
 };
@@ -34,9 +38,20 @@ class TupleSearch extends React.Component<Props, State> {
   })
 
   render() {
+    const { suggestEndpoint, suggestQueryParam, suggestionDelay } = this.props;
+
+    let searchInput;
+    if (suggestEndpoint) {
+      searchInput = <SearchInputWithSuggestions onInputChange={this.handleInputChange}
+                                                endpoint={suggestEndpoint}
+                                                queryParam={suggestQueryParam} searchDelay={suggestionDelay}/>;
+    } else {
+      searchInput = <SearchInput onInputChange={this.handleInputChange} />;
+    }
+
     return (
       <div>
-        <SearchInput onInputChange={this.handleInputChange} />
+        {searchInput}
         {this.state.query !== undefined && (
           <div style={{ marginTop: 15 }}>
             <TupleContext src={this.buildUrl()} >
