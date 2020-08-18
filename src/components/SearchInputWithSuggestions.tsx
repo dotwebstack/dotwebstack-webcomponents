@@ -48,16 +48,22 @@ class SearchInputWithSuggestions extends Component<Props, State> {
       signal: abortController.signal,
     })
                 .then(response => response.json())
-                .then(suggestions =>  this.setState({
+                .then(suggestions => this.setState({
                   suggestions: suggestions._embedded.suggesties,
                   activeSuggestion: 0,
                   showSuggestions: true,
                   loading: false,
-                }))
-                .catch(() => this.setState({
-                  showSuggestions: true,
-                  loading: false,
-                }))
+                }),
+                )
+                .catch((e: Error) => {
+                  /* Don't update state on abortion of request */
+                  if (e.name !== 'AbortError') {
+                    this.setState({
+                      showSuggestions: true,
+                      loading: false,
+                    });
+                  }
+                })
             ,         this.props.searchDelay || 500);
   }
 
