@@ -74,7 +74,7 @@ export default () => (
       <h2>Tuple search with suggest</h2>
       <div className="card card-default">
         <div className="card-body">
-          <TupleSearch endpoint={tupleEndpoint} queryParam={'term'} suggestEndpoint={suggestEndpoint}>
+          <TupleSearch endpoint={tupleEndpoint} queryParam={'term'} suggest={{ endpoint: suggestEndpoint }}>
             {result => (
                 <TupleList
                     result={result}
