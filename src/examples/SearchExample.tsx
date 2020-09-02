@@ -7,6 +7,7 @@ import { namedNode } from '@rdfjs/data-model';
 
 const tupleEndpoint = 'https://catalogus.kadaster.nl/concepten';
 const graphEndpoint = 'https://catalogus.kadaster.nl/resource';
+const suggestEndpoint = 'https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v3/plannen/_suggesties';
 const resourceIri = namedNode('http://wetgeving.omgevingswet.overheid.nl/id/concept/Autoweg');
 
 const columns: Column[] = [
@@ -64,6 +65,22 @@ export default () => (
                 columns={columns}
                 sortByColumn={['test', false]}
               />
+            )}
+          </TupleSearch>
+        </div>
+      </div>
+    </section>
+    <section className="mt-4">
+      <h2>Tuple search with suggest</h2>
+      <div className="card card-default">
+        <div className="card-body">
+          <TupleSearch endpoint={tupleEndpoint} queryParam={'term'} suggest={{ endpoint: suggestEndpoint }}>
+            {result => (
+                <TupleList
+                    result={result}
+                    columns={columns}
+                    sortByColumn={['test', false]}
+                />
             )}
           </TupleSearch>
         </div>

@@ -1,12 +1,13 @@
 import React from 'react';
 import querystring from 'querystring';
-import SearchInput from './SearchInput';
 import TupleContext from './TupleContext';
 import TupleResult from '../lib/TupleResult';
+import SearchInput, { SuggestProps } from './SearchInput';
 
 type Props = {
   endpoint: string;
   queryParam?: string;
+  suggest?: SuggestProps;
   defaultValue?: string;
   children: (data: TupleResult) => JSX.Element,
 };
@@ -36,7 +37,7 @@ class TupleSearch extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <SearchInput onInputChange={this.handleInputChange} />
+        <SearchInput onInputChange={this.handleInputChange} suggest={this.props.suggest} />
         {this.state.query !== undefined && (
           <div style={{ marginTop: 15 }}>
             <TupleContext src={this.buildUrl()} >
