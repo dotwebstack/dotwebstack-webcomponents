@@ -69,7 +69,7 @@ describe('<SearchInput />', () => {
     },         20);
   });
 
-  fit('uses suggestions from TupleResult', () => {
+  it('uses suggestions from TupleResult', () => {
     const zoekTerm = 'test';
     const tupleResult = {
       getBindingSets: () => {
