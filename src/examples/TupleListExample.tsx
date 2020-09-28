@@ -32,7 +32,9 @@ export default () => (
     <section className="mt-4">
       <TupleContext src={endpoint}>
         {result => (
-          <TupleList
+              <TupleList
+            suggest={{ suggestions: [result, 'label'] }}
+            search={ { fields: ['label', 'begrip'], instant: false }}
             result={result}
             columns={columns}
             pagination={true}

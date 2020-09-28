@@ -1,10 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import TupleList, { Column, PaginationProps } from '../../components/TupleList';
+import TupleList, { Column, PaginationProps, SearchListProps } from '../../components/TupleList';
 import TupleResult from '../../lib/TupleResult';
 import { mockBindingNames, mockBindingSets } from '../TestData';
 import { Value, ValueProps } from '../..';
 import { Term } from 'rdf-js';
+import { SuggestProps } from '../../components/SearchInput';
 
 describe('<TupleList />', () => {
   const getColumns = (): Column[] => [
@@ -13,12 +14,16 @@ describe('<TupleList />', () => {
     { name: 'label', label: 'Label', sortable: true },
   ];
 
-  const buildTableWithRecords = (columns: Column[], pagination?: PaginationProps, valueProps?: ValueProps) => {
-    const mockTupleResult = new TupleResult();
-    mockTupleResult.setTupleResult(mockBindingSets, mockBindingNames);
+  const mockTupleResult = new TupleResult();
+  mockTupleResult.setTupleResult(mockBindingSets, mockBindingNames);
+
+  const buildTableWithRecords = (columns: Column[], pagination?: PaginationProps, valueProps?: ValueProps,
+                                 suggest?: SuggestProps, search?: SearchListProps) => {
 
     return mount(
       <TupleList
+        suggest={suggest}
+        search={search}
         result={mockTupleResult}
         columns={columns}
         pagination={pagination}
@@ -100,6 +105,18 @@ describe('<TupleList />', () => {
     });
   });
 
+  it('should not show search by default', () => {
+    const wrapper = buildTableWithRecords(getColumns());
+
+    expect(wrapper.find('input[type="search"]')).toHaveLength(0);
+  });
+
+  it('shows a search input in order to filter tuple list', () => {
+    const wrapper = buildTableWithRecords(getColumns(), undefined, undefined, undefined, { instant: true, fields: ['begrip'] });
+
+    expect(wrapper.find('input[type="search"]')).toHaveLength(1);
+  });
+
   it('shows result data in a table with default page size', () => {
     const wrapper = buildTableWithRecords(getColumns(), true);
 
@@ -164,5 +181,17 @@ describe('<TupleList />', () => {
     expect(firstRowColumns[0]).toEqual('Derde begrip');
     expect(firstRowColumns[1]).toEqual('Derde definitie');
     expect(firstRowColumns[2]).toEqual('Derde label');
+  });
+
+  it('filters results based on search input', () => {
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 }, undefined,
+                                          { suggestions: [mockTupleResult, 'begrip'] },
+                                          { fields: ['begrip'], instant: true });
+
+    wrapper.setState({ searchString: 'derde' });
+
+    const rows = wrapper.find('table > tbody > tr');
+
+    expect(rows).toHaveLength(1);
   });
 });

@@ -1,11 +1,13 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import fetchMock = require('fetch-mock');
 import SearchInput from '../../components/SearchInput';
+import fetchMock = require('fetch-mock');
 
 describe('<SearchInput />', () => {
 
-  afterEach(fetchMock.reset);
+  afterEach(() => {
+    fetchMock.reset();
+  });
 
   it('Sets value of input based on state', () => {
     const wrapper = mount(
@@ -65,6 +67,42 @@ describe('<SearchInput />', () => {
 
       done();
     },         20);
+  });
+
+  fit('uses suggestions from TupleResult', () => {
+    const zoekTerm = 'test';
+    const tupleResult = {
+      getBindingSets: () => {
+        return [
+          {
+            label: {
+              value: 'Test',
+            },
+          },
+          {
+            label: {
+              value: 'Other',
+            },
+          },
+        ];
+      },
+    };
+
+    const wrapper = mount(
+        // @ts-ignore
+        <SearchInput onInputChange={jest.fn} suggest={{ suggestions: [tupleResult, 'label'] }}/>,
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: zoekTerm } });
+
+    setImmediate(() => {
+      wrapper.update();
+
+      const listItems = wrapper.find('li');
+      expect(listItems.length).toBe(1);
+      expect(listItems.at(0)).toBeDefined();
+      expect(listItems.at(0).text()).toBe('Test');
+    });
   });
 
   it('displays no suggestions found when fetching suggestions results in an error', (done) => {

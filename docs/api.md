@@ -167,7 +167,27 @@ The endpoint used by the backend to retrieve the data.
 ### `queryParam`?: `String`
 Optional query parameter used to create the definite URL.
 
-### `query`?: `String`
+### `suggest`?: SuggestProps (optional)
+Optional parameter to define suggest options. The provided endpoint should return a JSON list in the following format
+```json
+{
+    _embedded: {
+      suggesties: [
+          "AlgemeenZorg_Thema",
+          "WoonfunctieVoorZorg",
+          "ZeerZorgwekkendeStof",
+          "Zorgclusterwoning",
+          "ZorgOpAfroep",
+          "ZorgOpAfspraak",
+          "Zorgplicht",
+      ]
+    }
+}
+```
+The query param used for the suggestions is by default 'zoekTerm' and can be configured by searchParam
+Suggestions are initiated after 500 ms, this gives the user some time to type. This delay can be configured by the delay property
+
+### `defaultValue`?: `String`
 Optional predefined search field value, for making the first search automatically render a result.
 
 ## &lt;TupleList>
@@ -201,6 +221,17 @@ Optional object with properties, which will be passed to every instance of the `
 ### `sortByColumn`: `[string, boolean]` (optional)
 The column on which the list will be sorted initially. The value is an array with exactly 2 elements (tuple).
 First element is the column name, second element is a boolean whether the column is sorted in ascending order or not.
+
+### `suggest`: SuggestProps (optional)
+This property is used in combination with the search property. When the search property is provided a user get's a search
+input in order to filter the TupleList result. Use the *suggestions* [TupleResult, string] property of the SuggestProps to provide suggestions
+based on the result and the provided column name (should be a field which is also used in search to provide consistency)
+When using suggestions it is best practice to use the same field (and only that field) in the search prop.
+
+### `search`: SearchListProps
+The list will be sorted while typing when instant search is true (use when no suggestions are enabled, 
+set to false when suggestions are provided)
+By default search will search on all names in the TupleResult, you can provide a list to on which fields the search is provided
 
 ```jsx
 type Column = {
