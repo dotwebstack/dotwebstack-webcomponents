@@ -78,8 +78,9 @@ class TupleList extends React.Component<Props, State> {
           }
         });
       });
+      return filtered;
     }
-    return filtered;
+    return items;
   }
 
   getBindingSets = () => {
