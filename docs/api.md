@@ -233,6 +233,14 @@ The list will be sorted while typing when instant search is true (use when no su
 set to false when suggestions are provided)
 By default search will search on all names in the TupleResult, you can provide a list to on which fields the search is provided
 
+When using bootstrap, use the following css to provide a cancel option in the input
+```css
+input[type=search]::-webkit-search-cancel-button {
+      -webkit-appearance: searchfield-cancel-button;
+    }
+```
+
+
 ```jsx
 type Column = {
   name: string;
