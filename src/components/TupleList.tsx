@@ -73,7 +73,8 @@ class TupleList extends React.Component<Props, State> {
     if (searchString) {
       items.forEach((b: BindingSet) => {
         names.forEach((name: string) => {
-          if (b[name].value.toLowerCase().includes(searchString!.toLowerCase()) && !filtered.includes(b)) {
+          if (b[name] && b[name].value && b[name].value.toLowerCase()
+              .includes(searchString!.toLowerCase()) && !filtered.includes(b)) {
             filtered.push(b);
           }
         });
@@ -161,7 +162,8 @@ class TupleList extends React.Component<Props, State> {
   renderSearchInput = () => {
     return this.props.search && (
         <div style={{ paddingBottom: '15px' }}>
-          <SearchInput onInputChange={searchString => this.setState({ searchString }) }
+          <SearchInput onInputChange={searchString =>
+              this.setState({ searchString, currentPage: searchString ? this.state.currentPage : 1 }) }
                        instantSearch={this.props.search.instant} suggest={this.props.suggest}/>
         </div>
     );

@@ -78,8 +78,9 @@ class SearchInput extends React.Component<Props, State> {
 
     if (suggestions) {
       this.setState({
-        suggestions: suggestions[0].getBindingSets().map((b:BindingSet) => b[suggestions[1]].value)
-            .filter((suggestion: string) => suggestion.toLowerCase().includes(currentValue.toLowerCase())),
+        suggestions: suggestions[0].getBindingSets()
+            .map((b:BindingSet) => b[suggestions[1]] && b[suggestions[1]].value && b[suggestions[1]].value)
+            .filter(suggestion => suggestion && suggestion.toLowerCase().includes(currentValue.toLowerCase())),
         activeSuggestion: 0,
         showSuggestions: true,
         loading:false,
@@ -117,7 +118,7 @@ class SearchInput extends React.Component<Props, State> {
     }
   }
 
-  onClick = (e: React.MouseEvent<any>) => {
+  onClick = (e: React.MouseEvent<HTMLLIElement>) => {
     this.setState({
       activeSuggestion: 0,
       suggestions: [],
@@ -205,7 +206,6 @@ class SearchInput extends React.Component<Props, State> {
             value={currentValue || ''}
             onChange={this.onChange}
             onKeyDown={this.onKeyDown}
-            onClick={this.onClick}
           />
           <span className="input-group-btn">
             <button type="submit" className="btn btn-primary pull-left">
