@@ -231,7 +231,7 @@ When using suggestions it is best practice to use the same field (and only that 
 ### `search`: SearchListProps
 The list will be sorted while typing when instant search is true (use when no suggestions are enabled, 
 set to false when suggestions are provided)
-By default search will search on all names in the TupleResult, you can provide a list to on which fields the search is provided
+Search will use all names in the TupleResult by default, or a custom list if provided.
 
 When using bootstrap, use the following css to provide a cancel option in the input
 ```css
