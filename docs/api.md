@@ -223,7 +223,7 @@ The column on which the list will be sorted initially. The value is an array wit
 First element is the column name, second element is a boolean whether the column is sorted in ascending order or not.
 
 ### `suggest`: SuggestProps (optional)
-This property is used in combination with the search property. When the search property is provided a user get's a search
+This property is used in combination with the search property. When the search property is provided a user gets a search
 input in order to filter the TupleList result. Use the *suggestions* [TupleResult, string] property of the SuggestProps to provide suggestions
 based on the result and the provided column name (should be a field which is also used in search to provide consistency)
 When using suggestions it is best practice to use the same field (and only that field) in the search prop.
