@@ -5,9 +5,9 @@ import GraphSearch from '../components/GraphSearch';
 import { Resource } from '..';
 import { namedNode } from '@rdfjs/data-model';
 
-const tupleEndpoint = 'https://catalogus.kadaster.nl/concepten';
+const tupleEndpoint = 'https://stelselcatalogus.omgevingswet.overheid.nl/concepten';
 const graphEndpoint = 'https://catalogus.kadaster.nl/resource';
-const suggestEndpoint = 'https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v3/plannen/_suggesties';
+const suggestEndpoint = 'https://stelselcatalogus.omgevingswet.overheid.nl/zoek';
 const resourceIri = namedNode('http://wetgeving.omgevingswet.overheid.nl/id/concept/Autoweg');
 
 const columns: Column[] = [

@@ -29,12 +29,20 @@
       margin-bottom: 30px;
     }
 
+    td {
+      word-break: break-word;
+    }
+
     td > ol > li {
       display: inline;
     }
 
     td > ol > li:not(:last-child):after {
       content: ', ';
+    }
+
+    input[type=search]::-webkit-search-cancel-button {
+      -webkit-appearance: searchfield-cancel-button;
     }
 
     th {

@@ -1,9 +1,10 @@
 import { Term } from 'rdf-js';
 import React, { CSSProperties } from 'react';
 import i18next from '../i18n';
-import TupleResult from '../lib/TupleResult';
+import TupleResult, { BindingSet } from '../lib/TupleResult';
 import Value, { ValueProps } from './Value';
 import { sortRows } from '../utils';
+import SearchInput, { SuggestProps } from './SearchInput';
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -18,10 +19,17 @@ export type PaginationProps = boolean | {
   pageSize?: number,
 };
 
+export interface SearchListProps {
+  instant: boolean;
+  fields?: string[];
+}
+
 type Props = {
   result: TupleResult;
+  suggest?: SuggestProps;
   columns: Column[];
   pagination?: PaginationProps;
+  search?: SearchListProps;
   valueProps?: ValueProps;
   sortByColumn?: [string, boolean];
 };
@@ -30,6 +38,7 @@ type State = {
   currentPage?: number;
   pageSize?: number;
   sortByColumn?: [string, boolean];
+  searchString?: string;
 };
 
 class TupleList extends React.Component<Props, State> {
@@ -53,17 +62,46 @@ class TupleList extends React.Component<Props, State> {
       : (this.props.pagination.pageSize || DEFAULT_PAGE_SIZE);
   }
 
-  getBindingSets = () => {
-    const items = this.props.result.getBindingSets();
+  getSearchResults = () => {
+    const { result, search } = this.props;
+    const { searchString } = this.state;
 
-    if (this.state.sortByColumn !== undefined) {
-      const [sortColumn, sortAscending] = this.state.sortByColumn;
+    const items = result.getBindingSets();
+    const filtered: BindingSet[] = [];
+    const names = search?.fields || result.getBindingNames();
+
+    if (searchString) {
+      items.forEach((b: BindingSet) => {
+        names.forEach((name: string) => {
+          if (b[name] && b[name].value && b[name].value.toLowerCase()
+              .includes(searchString!.toLowerCase()) && !filtered.includes(b)) {
+            filtered.push(b);
+          }
+        });
+      });
+      return filtered;
+    }
+    return items;
+  }
+
+  getBindingSets = () => {
+    const { result, pagination } = this.props;
+    const { sortByColumn, currentPage, pageSize, searchString } = this.state;
+
+    let items = result.getBindingSets();
+
+    if (sortByColumn !== undefined) {
+      const [sortColumn, sortAscending] = sortByColumn;
       items.sort((a, b) => sortRows(a, b, sortAscending, sortColumn));
     }
 
-    if (this.props.pagination) {
-      const offset = (this.state.currentPage! - 1) * this.state.pageSize!;
-      return items.slice(offset, offset + this.state.pageSize!);
+    if (searchString) {
+      items = this.getSearchResults();
+    }
+
+    if (pagination) {
+      const offset = (currentPage! - 1) * pageSize!;
+      return items.slice(offset, offset + pageSize!);
     }
 
     return items;
@@ -79,7 +117,8 @@ class TupleList extends React.Component<Props, State> {
       currentPage: this.state.currentPage! - 1,
     });
 
-    const hasNext = this.props.result.getBindingSets().length > (this.state.currentPage! * this.state.pageSize!);
+    const length = this.props.search ? this.getSearchResults().length : this.props.result.getBindingSets().length;
+    const hasNext = length > (this.state.currentPage! * this.state.pageSize!);
     const navigateNext = () => this.setState({
       currentPage: this.state.currentPage! + 1,
     });
@@ -120,6 +159,16 @@ class TupleList extends React.Component<Props, State> {
     );
   }
 
+  renderSearchInput = () => {
+    return this.props.search && (
+        <div style={{ paddingBottom: '15px' }}>
+          <SearchInput onInputChange={searchString =>
+              this.setState({ searchString, currentPage: searchString ? this.state.currentPage : 1 }) }
+                       instantSearch={this.props.search.instant} suggest={this.props.suggest}/>
+        </div>
+    );
+  }
+
   renderSortArrow = (column: Column) => {
     const isSorted = this.state.sortByColumn !== undefined
       && column.name === this.state.sortByColumn[0];
@@ -150,6 +199,7 @@ class TupleList extends React.Component<Props, State> {
   render() {
     return (
       <div>
+        {this.renderSearchInput()}
         {this.renderPager()}
         <div style={{ overflowX: 'auto' }}>
           <table className="table table-bordered">

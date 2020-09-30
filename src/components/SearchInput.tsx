@@ -1,15 +1,18 @@
 import React from 'react';
 import i18next from '../i18n';
+import TupleResult, { BindingSet } from '../lib/TupleResult';
 
 export type SuggestProps = {
-  endpoint: string
+  endpoint?: string
+  suggestions?: [TupleResult, string];
   queryParam?: string;
   delay?: number;
 };
 
 type Props = {
   onInputChange: (value: string) => void;
-  suggest?: SuggestProps
+  suggest?: SuggestProps;
+  instantSearch?: boolean;
 };
 
 type State = {
@@ -37,39 +40,53 @@ class SearchInput extends React.Component<Props, State> {
 
   getSuggestions = (currentValue: string): any => {
     const abortController = new AbortController();
-    const { endpoint, queryParam, delay } = this.props.suggest!;
+    const { endpoint, queryParam, delay, suggestions } = this.props.suggest!;
 
-    /* cancel previous request */
-    if (this.state.controller) {
-      this.state.controller.abort();
+    if (endpoint) {
+      /* cancel previous request */
+      if (this.state.controller) {
+        this.state.controller.abort();
+      }
+
+      this.setState({
+        loading: true, controller: abortController,
+      });
+
+      /* wait to initialize request */
+      return setTimeout(() => fetch(`${endpoint}?${queryParam || 'zoekTerm'}=${currentValue}`, {
+        signal: abortController.signal,
+      })
+              .then(response => response.json())
+              .then(suggestions => this.setState({
+                suggestions: suggestions._embedded.suggesties,
+                activeSuggestion: 0,
+                showSuggestions: true,
+                loading: false,
+              }),
+              )
+              .catch((e: Error) => {
+                /* Don't update state on abortion of request */
+                if (e.name !== 'AbortError') {
+                  this.setState({
+                    showSuggestions: true,
+                    loading: false,
+                  });
+                }
+              })
+          ,             delay || 500);
     }
 
-    this.setState({
-      loading: true, controller: abortController,
-    });
+    if (suggestions) {
+      this.setState({
+        suggestions: suggestions[0].getBindingSets()
+            .map((b:BindingSet) => b[suggestions[1]] && b[suggestions[1]].value && b[suggestions[1]].value)
+            .filter(suggestion => suggestion && suggestion.toLowerCase().includes(currentValue.toLowerCase())),
+        activeSuggestion: 0,
+        showSuggestions: true,
+        loading:false,
+      });
+    }
 
-    /* wait to initialize request */
-    return setTimeout(() => fetch(`${endpoint}?${queryParam || 'zoekTerm'}=${currentValue}`, {
-      signal: abortController.signal,
-    })
-            .then(response => response.json())
-            .then(suggestions => this.setState({
-              suggestions: suggestions._embedded.suggesties,
-              activeSuggestion: 0,
-              showSuggestions: true,
-              loading: false,
-            }),
-            )
-            .catch((e: Error) => {
-              /* Don't update state on abortion of request */
-              if (e.name !== 'AbortError') {
-                this.setState({
-                  showSuggestions: true,
-                  loading: false,
-                });
-              }
-            })
-        ,             delay || 500);
   }
 
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,19 +100,21 @@ class SearchInput extends React.Component<Props, State> {
 
         this.setState({
           currentValue,
-          suggestions: [],
           showSuggestions: true,
         });
       } else {
         this.setState({
           currentValue,
-          suggestions: [],
           activeSuggestion: 0,
           showSuggestions: false,
         });
       }
     } else {
       this.setState({ currentValue });
+    }
+
+    if (this.props.instantSearch) {
+      this.props.onInputChange(currentValue);
     }
   }
 
@@ -106,7 +125,7 @@ class SearchInput extends React.Component<Props, State> {
       showSuggestions: false,
       currentValue: e.currentTarget.textContent!,
     });
-    this.handleSubmit(e);
+    this.props.onInputChange(e.currentTarget.textContent!);
   }
 
   onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -179,7 +198,7 @@ class SearchInput extends React.Component<Props, State> {
       <form onSubmit={this.handleSubmit} >
         <div className="input-group">
           <input
-            type="text"
+            type="search"
             name="q"
             autoComplete="off"
             className="form-control"
