@@ -1,5 +1,4 @@
 import React from 'react';
-import { Term } from 'rdf-js';
 import querystring from 'querystring';
 import TupleContext from './TupleContext';
 import { BindingSet } from '../lib/TupleResult';
@@ -7,15 +6,20 @@ import { BindingSet } from '../lib/TupleResult';
 type Props = {
   endpoint: string;
   resourceParam: string;
-  resourceIri: Term;
+  resource: string;
+  resourceColumn: string;
+  displayColumn: string;
   transformBindingSets?: (bindingSets: BindingSet[]) => BindingSet[];
-  createLink: (bindingSet: BindingSet, selectedResource: Term) => JSX.Element;
+  createLinkHref: (resource: string) => string;
+  linkClassName?: string;
+  linkSelectedClassName?: string;
 };
 
-const ResourceSelector = ({ endpoint, resourceParam, resourceIri, transformBindingSets, createLink }: Props) => {
+const ResourceSelector = ({ endpoint, resourceParam, resource, resourceColumn, displayColumn, transformBindingSets,
+createLinkHref, linkClassName = 'btn btn-info', linkSelectedClassName = 'btn btn-success' }: Props) => {
 
   const dataUrl: string = endpoint + '?' + querystring.stringify({
-    [resourceParam]: resourceIri.value,
+    [resourceParam]: resource,
   });
 
   const transform = transformBindingSets || ((bindingSets: BindingSet[]) => bindingSets);
@@ -24,21 +28,21 @@ const ResourceSelector = ({ endpoint, resourceParam, resourceIri, transformBindi
       <div>
         <TupleContext src={dataUrl}>
             {result => (<>
-              {transform(result.getBindingSets()).map(bindingSet => createLink(bindingSet, resourceIri))}
+              {transform(result.getBindingSets()).map((bindingSet) => {
+                const currentResource = bindingSet[resourceColumn].value;
+                const selected = currentResource === resource;
+                return <a
+                  href={createLinkHref(currentResource)}
+                  style={{ marginRight: '0.4em' }}
+                  className={selected ? linkSelectedClassName : linkClassName}
+                  key={currentResource}>
+                    {bindingSet[displayColumn].value}
+                </a>;
+              })}
             </>)}
         </TupleContext>
       </div>
   );
 };
-
-type ResourceSelectorLinkProps = {
-  href: string;
-  text: string;
-  title?: string;
-  className: string;
-};
-
-export const ResourceSelectorLink: React.FunctionComponent<ResourceSelectorLinkProps> = ({ text, ...otherProps }) =>
-  <a style={{ marginRight: '0.4em' }} {...otherProps}>{text}</a>;
 
 export default ResourceSelector;
