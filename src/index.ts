@@ -5,6 +5,7 @@ import ConceptList from './components/ConceptList';
 import GraphContext, { graphContext } from './components/GraphContext';
 import Store from './lib/Store';
 import Resource from './components/Resource';
+import ResourceSelector, { ResourceSelectorLink } from './components/ResourceSelector';
 import Vocabulary from './components/Vocabulary';
 import PropertyList from './components/PropertyList';
 import ClassList from './components/ClassList';
@@ -42,6 +43,8 @@ componentRegistry.set('ConceptList', ConceptList);
 componentRegistry.set('GraphContext', GraphContext);
 componentRegistry.set('GraphSearch', GraphContext);
 componentRegistry.set('Resource', Resource);
+componentRegistry.set('ResourceSelector', ResourceSelector);
+componentRegistry.set('ResourceSelectorLink', ResourceSelectorLink);
 componentRegistry.set('Vocabulary', Vocabulary);
 componentRegistry.set('ClassTree', ClassTree);
 componentRegistry.set('PropertyTree', PropertyTree);
@@ -61,6 +64,8 @@ export {
   GraphSearch,
   Store,
   Resource,
+  ResourceSelector,
+  ResourceSelectorLink,
   Vocabulary,
   ClassTree,
   PropertyTree,
