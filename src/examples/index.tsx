@@ -6,6 +6,7 @@ import VocabularyExample from './VocabularyExample';
 import i18next from '../i18n';
 import TupleListExample from './TupleListExample';
 import ResourceExample from './ResourceExample';
+import ResourceSelectorExample from './ResourceSelectorExample';
 import SearchExample from './SearchExample';
 import SearchJsExample from './SearchJsExample';
 import VocabularyJsExample from './VocabularyJsExample';
@@ -28,6 +29,9 @@ const App = () => (
                 </li>
                 <li className="nav-item">
                   <Link to="/resource" className="nav-link">Resource</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/resource-selector" className="nav-link">ResourceSelector</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/search" className="nav-link">Search</Link>
@@ -54,6 +58,7 @@ const App = () => (
               <Route exact path="/vocabulary" component={VocabularyExample} />
               <Route exact path="/tuple-list" component={TupleListExample} />
               <Route exact path="/resource" component={ResourceExample} />
+              <Route exact path="/resource-selector" component={ResourceSelectorExample} />
               <Route exact path="/search" component={SearchExample} />
               <Route exact path="/vocabulary-js" component={VocabularyJsExample} />
               <Route exact path="/tuple-list-js" component={TupleListJsExample} />

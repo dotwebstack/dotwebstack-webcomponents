@@ -314,6 +314,69 @@ A readable representation of the predicate
 ### `customRender?`: `(terms: Term[]) => JSX.Element`
 A way to add custom rendering to a row element
 
+
+
+## &lt;ResourceSelector>
+
+`ResourceSelector` is a simple set of links allowing navigation to related resources.
+The related resources are retrieved from an endpoint.
+
+The URL used to retrieve related resources is composed using the values of the
+`endpoint`, `resourceParam` and `resource` props in the following manner:
+`${endpoint}?${resourceParam}=${resource}`.
+
+Retrieval is accomplished by a nested `TupleContext` component.
+See its documentation for a description of the expected JSON format.
+
+```jsx
+<ResourceSelector
+  endpoint={endpoint}
+  resourceParam={resourceParam}
+  resource={resource}
+  resourceColumn={resourceColumn}
+  displayColumn={displayColumn}
+  transformBindingSets={transform}
+  createLinkHref={createLinkHref}
+  linkClassName={linkClassName}
+  linkSelectedClassName{linkSelectedClassName}
+/>
+```
+
+### `endpoint`: `string`
+The URL of the endpoint to fetch related resources from.
+
+### `resourceParam`: `string`
+The query string parameter that is used to pass the resource IRI to the endpoint.
+
+### `resource`: `string`
+The IRI of the resource that is represented. It is passed to the endpoint to
+retrieve related resources.
+
+### `resourceColumn`: `string`
+The column in the result set that contains the IRI's of the retrieved resources.
+
+### `displayColumn`: `string`
+The column in the result set that contains the values used as labels (text) for
+the links.
+
+### `transformBindingSets`: `(bindingSets: BindingSet[]) => BindingSet[]` (optional)
+If specified, this function is called with the result set as an argument,
+allowing it to apply a transformation to the result set before rendering.
+This can be used to filter or sort retrieved entries, for example.
+
+### `createLinkHref`: `(resource: string) => string`
+Function used to create the href (URL) for a link corresponding to the specified
+resource. This function is called for each resource retrieved from the endpoint
+in order to render a corresponding link.
+
+### `linkClassName`: `string` (optional)
+Class name(s) to use for rendered links.
+If not specified, the default value `btn btn-info` is used.
+
+### `linkSelectedClassName`: `string` (optional)
+Class name(s) to use for the link that corresponds to `resource`.
+If not specified, the default value `btn btn-success` is used.
+
 ## &lt;Value>
 
 `Value` renders the value of the Term. `NamedNode` terms will be rendered as a link.
