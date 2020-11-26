@@ -5,6 +5,7 @@ import TupleResult, { BindingSet } from '../lib/TupleResult';
 import Value, { ValueProps } from './Value';
 import { sortRows } from '../utils';
 import SearchInput, { SuggestProps } from './SearchInput';
+import { LetterBarFilter } from './LetterBarFilter';
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -24,12 +25,17 @@ export interface SearchListProps {
   fields?: string[];
 }
 
+export interface LetterBarProps {
+  field: string;
+}
+
 type Props = {
   result: TupleResult;
   suggest?: SuggestProps;
   columns: Column[];
   pagination?: PaginationProps;
   search?: SearchListProps;
+  letterBar?: LetterBarProps;
   valueProps?: ValueProps;
   sortByColumn?: [string, boolean];
 };
@@ -39,6 +45,7 @@ type State = {
   pageSize?: number;
   sortByColumn?: [string, boolean];
   searchString?: string;
+  filterByStartOfSearchString: boolean;
 };
 
 class TupleList extends React.Component<Props, State> {
@@ -49,6 +56,7 @@ class TupleList extends React.Component<Props, State> {
       currentPage: props.pagination ? 1 : undefined,
       pageSize: this.getPageSize(),
       sortByColumn: props.sortByColumn,
+      filterByStartOfSearchString: false,
     };
   }
 
@@ -63,18 +71,35 @@ class TupleList extends React.Component<Props, State> {
   }
 
   getSearchResults = () => {
-    const { result, search } = this.props;
-    const { searchString } = this.state;
+    const { result, search, letterBar } = this.props;
+    const { searchString, filterByStartOfSearchString } = this.state;
 
     const items = result.getBindingSets();
     const filtered: BindingSet[] = [];
-    const names = search?.fields || result.getBindingNames();
+    const names = filterByStartOfSearchString && [letterBar!.field] || search?.fields || result.getBindingNames();
+
+    const filterBySearchString = (value: string) => {
+      return !filterByStartOfSearchString && value.includes(searchString!.toLowerCase());
+    };
+    const filterByFirstLetter = (value: string) => {
+      if (filterByStartOfSearchString) {
+        if (searchString === i18next.t('showAll')) {
+          return true;
+        }
+        if (searchString === '0-9') {
+          return !value.match(/^[A-Za-z]/);
+        }
+        return value.startsWith(searchString!.toLowerCase());
+      }
+      return false;
+    };
 
     if (searchString) {
       items.forEach((b: BindingSet) => {
         names.forEach((name: string) => {
-          if (b[name] && b[name].value && b[name].value.toLowerCase()
-              .includes(searchString!.toLowerCase()) && !filtered.includes(b)) {
+          if (b[name] && b[name].value &&
+              (filterByFirstLetter(b[name].value.toLowerCase()) || filterBySearchString(b[name].value.toLowerCase()))
+              && !filtered.includes(b)) {
             filtered.push(b);
           }
         });
@@ -82,6 +107,10 @@ class TupleList extends React.Component<Props, State> {
       return filtered;
     }
     return items;
+  }
+
+  handleLetterBarFilter(filter: string) {
+    this.setState({ filterByStartOfSearchString: true, searchString: filter });
   }
 
   getBindingSets = () => {
@@ -163,8 +192,18 @@ class TupleList extends React.Component<Props, State> {
     return this.props.search && (
         <div style={{ paddingBottom: '15px' }}>
           <SearchInput onInputChange={searchString =>
-              this.setState({ searchString, currentPage: searchString ? this.state.currentPage : 1 }) }
+              this.setState({ searchString, currentPage: searchString ? this.state.currentPage : 1,
+                filterByStartOfSearchString: false}) }
                        instantSearch={this.props.search.instant} suggest={this.props.suggest}/>
+        </div>
+    );
+  }
+
+  renderLetterBarFilter = () => {
+    return this.props.letterBar && (
+        <div style={{ paddingBottom: '15px' }}>
+          <LetterBarFilter active={this.state.filterByStartOfSearchString}
+                           onSelect={this.handleLetterBarFilter.bind(this)}/>
         </div>
     );
   }
@@ -200,6 +239,7 @@ class TupleList extends React.Component<Props, State> {
     return (
       <div>
         {this.renderSearchInput()}
+        {this.renderLetterBarFilter()}
         {this.renderPager()}
         <div style={{ overflowX: 'auto' }}>
           <table className="table table-bordered">
