@@ -4,8 +4,9 @@ import React from 'react';
 import Resource from '../components/Resource';
 import { Term } from 'rdf-js';
 
-const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const resourceIri = namedNode('http://bag.basisregistraties.overheid.nl/def/bag#BAG-object');
+//const endpoint = 'https://standaarden.omgevingswet.overheid.nl/doc/20200719220257/waardelijst/Mijnbouwgroep_1.0.3';
+const endpoint = 'https://run.mocky.io/v3/95c53f33-dc8b-42eb-9633-3eda26b7666c';
+const resourceIri = namedNode('http://standaarden.omgevingswet.overheid.nl/id/waardelijst/Mijnbouwgroep_1.0.3');
 const rows = [
   {
     predicate: namedNode('http://www.w3.org/2000/01/rdf-schema#isDefinedBy'),
@@ -17,7 +18,6 @@ const rows = [
   },
   {
     predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-    label: 'Type',
   },
   {
     predicate: namedNode('http://purl.org/dc/terms/subject'),
@@ -32,6 +32,20 @@ const rows = [
   },
 ];
 
+const getPredicateLabel = (predicate: string, inverse: boolean) => {
+  if (inverse) {
+    return null;// `inverse of: ${predicate}`;
+  }
+  if (predicate.includes('purl') || predicate.includes('syntax')) {
+    return null; // defer to default impl.
+  }
+  return predicate.toUpperCase(); // TODO no way to obtain the default mechanism
+};
+
+const prefixes = {
+  cat: 'http://example.org/cat/'
+};
+
 export default () => (
   <GraphContext src={endpoint}>
     {store => (
@@ -43,6 +57,11 @@ export default () => (
             store={store}
             resourceIri={resourceIri}
             rows={rows}
+            hideEmptyProperties
+            showAllProperties
+            getPredicateLabel={getPredicateLabel}
+            disableAutoLabel
+            prefixes={prefixes}
           />
         </section>
       </div>

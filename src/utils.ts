@@ -75,3 +75,6 @@ export const findDefinition = (resourceIri: Term, store: Store): Term | undefine
 
   return undefined;
 };
+
+export const uniqueTermsReducer = (unique: Term[], term: Term): Term[] =>
+  unique.filter(uniqueTerm => uniqueTerm.equals(term)).length ? unique : [...unique, term];

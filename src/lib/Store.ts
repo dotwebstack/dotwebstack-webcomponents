@@ -55,6 +55,10 @@ export default class Store {
     return this.quads.filter(quad => quad.subject.equals(subject));
   }
 
+  findStatementsWithObject = (object: Term): Quad[] => {
+    return this.quads.filter(quad => quad.object.equals(object));
+  }
+
   findSubjects = (predicate: Term, object: Term | Term[]): Term[] => {
     if (this.posMap[predicate.value] === undefined) {
       return [];
