@@ -74,6 +74,7 @@ export default () => (
             disableAutoLabel
             prefixes={prefixes}
             includeProperty={includeProperty}
+            disableLegacyFormatting
           />
         </section>
       </div>

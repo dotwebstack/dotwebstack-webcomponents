@@ -17,6 +17,7 @@ type Props = {
   formatPredicate?: (predicate: string, inverse: boolean) => string | null;
   includeProperty?: (predicate: string, inverse: boolean) => boolean;
   disableAutoLabel?: boolean;
+  disableLegacyFormatting?: boolean,
   prefixes?: any;
 };
 
@@ -56,7 +57,8 @@ const otherPropertiesComparator = (a: Property, b: Property) => {
 const rdfsLabel = namedNode(RDFS + 'label');
 
 const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, valueProps, showAllProperties,
-  formatPredicate, prefixes, includeProperty, disableAutoLabel = false, hideEmptyProperties = false }) => {
+  formatPredicate, prefixes, includeProperty, disableAutoLabel = false, disableLegacyFormatting = false,
+  hideEmptyProperties = false }) => {
 
   const getResourceLabels = (resourceIri: NamedNode) => store.findObjects(resourceIri, rdfsLabel)
     .filter(o => o.termType === 'Literal').map(o => o as Literal);
@@ -135,7 +137,6 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, v
     if (values.length === 0) {
       return <span>-</span>;
     }
-    // TODO disableLegacyFormatting should probably be defined on <Resource> and passed through
     return (
       <>{values.map(value => (
         <React.Fragment key={value.value}>
@@ -143,7 +144,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, v
             term={value}
             prefixes={prefixes}
             getNamedNodeLabels={getResourceLabels}
-            disableLegacyFormatting
+            disableLegacyFormatting={disableLegacyFormatting}
             {...valueProps} />
           <br />
         </React.Fragment>
