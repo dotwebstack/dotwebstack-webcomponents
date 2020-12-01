@@ -2,8 +2,7 @@ import React from 'react';
 import { localName, mergePrefixMaps, applyPrefixes } from '../utils';
 import { Term, Literal, NamedNode } from 'rdf-js';
 import { namedNode, literal } from '@rdfjs/data-model';
-import { defaultPrefixes, XSD, RDF, RDFS, OWL, SKOS, SHACL, VOID, PROV, FOAF, DCAT, SD, DCT, DC, GSP, OGC }
-  from '../namespaces';
+import { defaultPrefixes, XSD, RDF } from '../namespaces';
 
 export type ValueProps = {
   local?: boolean,
