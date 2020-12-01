@@ -240,8 +240,8 @@ input[type=search]::-webkit-search-cancel-button {
     }
 ```
 
-### `letterbar`: LetterBarProps (optional)
-When this property is provided a LetterBar will be embedded with the TupleList. This letter bar filters the resuts of the list
+### `alphabeticIndexBar`: AlphabetIndexBarProps (optional)
+When this property is provided a AlphabetIndexBar will be embedded with the TupleList. This AlphabetIndexBar filters the resuts of the list
 based on the first letter of the provided `field`
 
 

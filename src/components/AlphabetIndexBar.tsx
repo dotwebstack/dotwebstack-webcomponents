@@ -6,11 +6,11 @@ type Props = {
   onSelect: (filter: string) => void,
 };
 
-export const LetterBarFilter:React.FC<Props> = ({ active, onSelect }) => {
+export const AlphabetIndexBar:React.FC<Props> = ({ active, onSelect }) => {
   const showAll = i18next.t('showAll');
   const [selected, setSelected] = useState(showAll);
 
-  const items = ['0-9', ...[...Array(26).keys()].map(i => String.fromCharCode(i + 97)),
+  const items = ['0-9', ...'abcdefghijklmnopqrstuvwxyz'.split(''),
     showAll];
 
   const handleClick = (value: string) => {

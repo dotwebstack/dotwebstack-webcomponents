@@ -31,7 +31,7 @@ export default () => (
               <TupleList
             suggest={{ suggestions: [result, 'resource_label'] }}
             search={ { fields: ['resource_label', 'uitleg'], instant: false }}
-            letterBar={ { field: 'resource_label' } }
+            alphabeticIndexBar={ { field: 'resource_label' } }
             result={result}
             columns={columns}
             pagination={true}

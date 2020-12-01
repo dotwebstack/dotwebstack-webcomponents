@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import TupleList, { Column, LetterBarProps, PaginationProps, SearchListProps } from '../../components/TupleList';
+import TupleList, { Column, AlphabetIndexBarProps, PaginationProps, SearchListProps } from '../../components/TupleList';
 import TupleResult from '../../lib/TupleResult';
 import { mockBindingNames, mockBindingSets } from '../TestData';
 import { Value, ValueProps } from '../..';
@@ -18,13 +18,14 @@ describe('<TupleList />', () => {
   mockTupleResult.setTupleResult(mockBindingSets, mockBindingNames);
 
   const buildTableWithRecords = (columns: Column[], pagination?: PaginationProps, valueProps?: ValueProps,
-                                 suggest?: SuggestProps, search?: SearchListProps, letterBar?: LetterBarProps) => {
+                                 suggest?: SuggestProps, search?: SearchListProps,
+                                 alphabetIndexBar?: AlphabetIndexBarProps) => {
 
     return mount(
       <TupleList
         suggest={suggest}
         search={search}
-        letterBar={letterBar}
+        alphabeticIndexBar={alphabetIndexBar}
         result={mockTupleResult}
         columns={columns}
         pagination={pagination}
