@@ -76,5 +76,35 @@ export const findDefinition = (resourceIri: Term, store: Store): Term | undefine
   return undefined;
 };
 
-export const uniqueTermsReducer = (unique: Term[], term: Term): Term[] =>
-  unique.filter(uniqueTerm => uniqueTerm.equals(term)).length ? unique : [...unique, term];
+export const applyPrefixes = (iri: string, prefixes: any) => {
+  for (const prefix in prefixes) {
+    const namespace = prefixes[prefix];
+    if (iri.startsWith(namespace)) {
+      const iriTail = iri.substring(namespace.length);
+      return `${prefix}:${iriTail}`;
+    }
+  }
+  return iri;
+};
+
+const convertPrefixMapToEntryList = (prefixMap: any) => {
+  const result = [];
+  for (const prefix in prefixMap) {
+    const namespace = prefixMap[prefix];
+    result.push({ prefix, namespace });
+  }
+  return result;
+};
+
+export const mergePrefixMaps = (existingPrefixMap: any, prefixMapToMerge: any) => {
+  const existing = convertPrefixMapToEntryList(existingPrefixMap);
+  const toMerge = convertPrefixMapToEntryList(prefixMapToMerge);
+
+  const doesNotExistInToMerge = ({ prefix, namespace }: { [key: string]: string }) =>
+    !toMerge.some(entry => entry.prefix === prefix || entry.namespace === namespace);
+  const result: { [prefix: string]: { namespace: string }} = {};
+  existing.filter(doesNotExistInToMerge) // omit any matching prefix OR namespace from existing map
+    .concat(toMerge)
+    .forEach(({ prefix, namespace }) => result[prefix] = namespace);
+  return result;
+};
