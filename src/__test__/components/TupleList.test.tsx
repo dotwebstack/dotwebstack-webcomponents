@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import TupleList, { Column, PaginationProps, SearchListProps } from '../../components/TupleList';
+import TupleList, { Column, AlphabetIndexBarProps, PaginationProps, SearchListProps } from '../../components/TupleList';
 import TupleResult from '../../lib/TupleResult';
 import { mockBindingNames, mockBindingSets } from '../TestData';
 import { Value, ValueProps } from '../..';
@@ -18,12 +18,14 @@ describe('<TupleList />', () => {
   mockTupleResult.setTupleResult(mockBindingSets, mockBindingNames);
 
   const buildTableWithRecords = (columns: Column[], pagination?: PaginationProps, valueProps?: ValueProps,
-                                 suggest?: SuggestProps, search?: SearchListProps) => {
+                                 suggest?: SuggestProps, search?: SearchListProps,
+                                 alphabetIndexBar?: AlphabetIndexBarProps) => {
 
     return mount(
       <TupleList
         suggest={suggest}
         search={search}
+        alphabeticIndexBar={alphabetIndexBar}
         result={mockTupleResult}
         columns={columns}
         pagination={pagination}
@@ -193,5 +195,15 @@ describe('<TupleList />', () => {
     const rows = wrapper.find('table > tbody > tr');
 
     expect(rows).toHaveLength(1);
+  });
+
+  it('should filter results based on letterbar filter', () => {
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 }, undefined,
+                                          undefined, undefined, { field: 'begrip' });
+
+    wrapper.find('button[id="button-e"]').simulate('click');
+    const rows = wrapper.find('table > tbody > tr');
+    expect(rows).toHaveLength(1);
+    expect(rows.first().find('td:first-child').text()).toBe('Eerste begrip');
   });
 });

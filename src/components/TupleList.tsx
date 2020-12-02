@@ -5,6 +5,7 @@ import TupleResult, { BindingSet } from '../lib/TupleResult';
 import Value, { ValueProps } from './Value';
 import { sortRows } from '../utils';
 import SearchInput, { SuggestProps } from './SearchInput';
+import { AlphabetIndexBar } from './AlphabetIndexBar';
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -24,12 +25,17 @@ export interface SearchListProps {
   fields?: string[];
 }
 
+export interface AlphabetIndexBarProps {
+  field: string;
+}
+
 type Props = {
   result: TupleResult;
   suggest?: SuggestProps;
   columns: Column[];
   pagination?: PaginationProps;
   search?: SearchListProps;
+  alphabeticIndexBar?: AlphabetIndexBarProps;
   valueProps?: ValueProps;
   sortByColumn?: [string, boolean];
 };
@@ -39,6 +45,7 @@ type State = {
   pageSize?: number;
   sortByColumn?: [string, boolean];
   searchString?: string;
+  filterByFirstLetter: boolean;
 };
 
 class TupleList extends React.Component<Props, State> {
@@ -49,6 +56,7 @@ class TupleList extends React.Component<Props, State> {
       currentPage: props.pagination ? 1 : undefined,
       pageSize: this.getPageSize(),
       sortByColumn: props.sortByColumn,
+      filterByFirstLetter: false,
     };
   }
 
@@ -62,19 +70,42 @@ class TupleList extends React.Component<Props, State> {
       : (this.props.pagination.pageSize || DEFAULT_PAGE_SIZE);
   }
 
-  getSearchResults = () => {
-    const { result, search } = this.props;
-    const { searchString } = this.state;
+  filterResults = () => {
+    const { result, search, alphabeticIndexBar } = this.props;
+    const { searchString, filterByFirstLetter } = this.state;
 
     const items = result.getBindingSets();
     const filtered: BindingSet[] = [];
-    const names = search?.fields || result.getBindingNames();
+
+    /* Determine on which fields we are searching */
+    const names = filterByFirstLetter && [alphabeticIndexBar!.field]
+        || search?.fields || result.getBindingNames();
+
+    /* filter bindingsets based containing search string */
+    const filterBindingSetBySearchString = (value: string) => {
+      return !filterByFirstLetter && value.includes(searchString!.toLowerCase());
+    };
+
+    /* filter bindingsets based on first letter when filter search is initiated by AlphabeticIndexBar */
+    const filterBindingSetByFirstLetter = (value: string) => {
+      if (filterByFirstLetter) {
+        if (searchString === i18next.t('showAll')) {
+          return true;
+        }
+        if (searchString === '0-9') {
+          return !value.match(/^[A-Za-z]/);
+        }
+        return value.startsWith(searchString!.toLowerCase());
+      }
+      return false;
+    };
 
     if (searchString) {
       items.forEach((b: BindingSet) => {
         names.forEach((name: string) => {
-          if (b[name] && b[name].value && b[name].value.toLowerCase()
-              .includes(searchString!.toLowerCase()) && !filtered.includes(b)) {
+          if (!filtered.includes(b) && b[name] && b[name].value &&
+              (filterBindingSetByFirstLetter(b[name].value.toLowerCase())
+                  || filterBindingSetBySearchString(b[name].value.toLowerCase()))) {
             filtered.push(b);
           }
         });
@@ -82,6 +113,17 @@ class TupleList extends React.Component<Props, State> {
       return filtered;
     }
     return items;
+  }
+
+  /* handle callback from AlphabeticIndexBar, set filterByFirstLetter to true */
+  handleLetterBarFilter(filter: string) {
+    this.setState({ filterByFirstLetter: true, searchString: filter });
+  }
+
+  /* handle callback from SearchInput */
+  handleSearchFilter(filter: string) {
+    this.setState({ searchString: filter, currentPage: filter ? this.state.currentPage : 1,
+      filterByFirstLetter: false});
   }
 
   getBindingSets = () => {
@@ -96,7 +138,7 @@ class TupleList extends React.Component<Props, State> {
     }
 
     if (searchString) {
-      items = this.getSearchResults();
+      items = this.filterResults();
     }
 
     if (pagination) {
@@ -117,7 +159,7 @@ class TupleList extends React.Component<Props, State> {
       currentPage: this.state.currentPage! - 1,
     });
 
-    const length = this.props.search ? this.getSearchResults().length : this.props.result.getBindingSets().length;
+    const length = this.props.search ? this.filterResults().length : this.props.result.getBindingSets().length;
     const hasNext = length > (this.state.currentPage! * this.state.pageSize!);
     const navigateNext = () => this.setState({
       currentPage: this.state.currentPage! + 1,
@@ -162,9 +204,17 @@ class TupleList extends React.Component<Props, State> {
   renderSearchInput = () => {
     return this.props.search && (
         <div style={{ paddingBottom: '15px' }}>
-          <SearchInput onInputChange={searchString =>
-              this.setState({ searchString, currentPage: searchString ? this.state.currentPage : 1 }) }
+          <SearchInput onInputChange={this.handleSearchFilter.bind(this)}
                        instantSearch={this.props.search.instant} suggest={this.props.suggest}/>
+        </div>
+    );
+  }
+
+  renderAlphabeticIndexBarFilter = () => {
+    return this.props.alphabeticIndexBar && (
+        <div style={{ paddingBottom: '15px' }}>
+          <AlphabetIndexBar active={this.state.filterByFirstLetter}
+                            onSelect={this.handleLetterBarFilter.bind(this)}/>
         </div>
     );
   }
@@ -200,6 +250,7 @@ class TupleList extends React.Component<Props, State> {
     return (
       <div>
         {this.renderSearchInput()}
+        {this.renderAlphabeticIndexBarFilter()}
         {this.renderPager()}
         <div style={{ overflowX: 'auto' }}>
           <table className="table table-bordered">

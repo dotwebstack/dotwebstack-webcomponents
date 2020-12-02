@@ -228,7 +228,7 @@ input in order to filter the TupleList result. Use the *suggestions* [TupleResul
 based on the result and the provided column name (should be a field which is also used in search to provide consistency)
 When using suggestions it is best practice to use the same field (and only that field) in the search prop.
 
-### `search`: SearchListProps
+### `search`: SearchListProps (optional)
 The list will be sorted while typing when instant search is true (use when no suggestions are enabled, 
 set to false when suggestions are provided)
 Search will use all names in the TupleResult by default, or a custom list if provided.
@@ -239,6 +239,10 @@ input[type=search]::-webkit-search-cancel-button {
       -webkit-appearance: searchfield-cancel-button;
     }
 ```
+
+### `alphabeticIndexBar`: AlphabetIndexBarProps (optional)
+When this property is provided a AlphabetIndexBar will be embedded with the TupleList. This AlphabetIndexBar filters the resuts of the list
+based on the first letter of the provided `field`
 
 
 ```jsx
