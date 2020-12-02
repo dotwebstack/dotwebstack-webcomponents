@@ -9,8 +9,9 @@ export type ValueProps = {
   linkBuilder?: (term: Term) => string,
   formatString?: (literal: Literal) => string,
   formatLangString?: (literal: Literal) => string,
+  formatOtherLiteral?: (literal: Literal, shorten: (resource: string) => string) => string,
   prefixes?: any,
-  getNamedNodeLabels?: (namedNode: NamedNode) => Literal[],
+  getNamedNodeLabels?: (namedNode: NamedNode, shorten: (resource: string) => string) => Literal[],
   disableLegacyFormatting?: boolean,
 };
 
@@ -27,12 +28,20 @@ const defaultFormatLangString = (literal: Literal) => {
   return `${value} (${language})`;
 };
 
+const defaultFormatOtherLiteral = (literal: Literal, shorten: (resource: string) => string) => {
+  const { value, datatype } = literal;
+  return `${value} (${shorten(datatype.value)})`;
+};
+
+const defaultGetNamedNodeLabels = (namedNode: NamedNode, shorten: (resource: string) => string) =>
+  [literal(shorten(namedNode.value))]; // by default, we only shorten
+
 const rdfLangString = namedNode(RDF + 'langString');
 const xsdString = namedNode(XSD + 'string');
 
 const Value: React.StatelessComponent<ValueProps & Props> = ({ term, local, disableLegacyFormatting, prefixes,
   getNamedNodeLabels, formatString = defaultFormatString, formatLangString = defaultFormatLangString,
-  linkBuilder = defaultLinkBuilder }) => {
+  formatOtherLiteral = defaultFormatOtherLiteral, linkBuilder = defaultLinkBuilder }) => {
 
   const { termType } = term;
 
@@ -67,7 +76,8 @@ const Value: React.StatelessComponent<ValueProps & Props> = ({ term, local, disa
       return <span>{formatString(literal)}</span>;
     }
 
-    return <span>{term.value} ({shorten(datatype.value)})</span>;
+    // other literal, such as xsd:boolean
+    return <span>{formatOtherLiteral(literal, shorten)}</span>;
 
   };
 
@@ -80,15 +90,15 @@ const Value: React.StatelessComponent<ValueProps & Props> = ({ term, local, disa
     const namedNode = term as NamedNode;
     const href = linkBuilder(namedNode);
 
-    // by default, we only shorten
-    const defaultGetNamedNodeLabels = (namedNode: NamedNode) => [literal(shorten(namedNode.value))];
     const effectiveGetNamedNodeLabels = getNamedNodeLabels
-      ? ((namedNode: NamedNode) => {
-        const labels = getNamedNodeLabels(namedNode);
-        return labels.length ? labels : defaultGetNamedNodeLabels(namedNode); // fallback in case we get 0 labels
+      ? ((namedNode: NamedNode, shorten: (resource: string) => string) => {
+        const labels = getNamedNodeLabels(namedNode, shorten);
+        return labels.length
+          ? labels
+          : defaultGetNamedNodeLabels(namedNode, shorten); // fallback in case we get 0 labels
       })
       : defaultGetNamedNodeLabels;
-    const labels: Literal[] = effectiveGetNamedNodeLabels(namedNode);
+    const labels: Literal[] = effectiveGetNamedNodeLabels(namedNode, shorten);
 
     const isLast = (index: number) => index + 1 === labels.length;
     return (
