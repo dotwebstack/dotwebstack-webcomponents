@@ -6,6 +6,7 @@ import { mockBindingNames, mockBindingSets } from '../TestData';
 import { Value, ValueProps } from '../..';
 import { Term } from 'rdf-js';
 import { SuggestProps } from '../../components/SearchInput';
+import { FilterConfig } from '../../components/RefineSearchFilters';
 
 describe('<TupleList />', () => {
   const getColumns = (): Column[] => [
@@ -19,13 +20,14 @@ describe('<TupleList />', () => {
 
   const buildTableWithRecords = (columns: Column[], pagination?: PaginationProps, valueProps?: ValueProps,
                                  suggest?: SuggestProps, search?: SearchListProps,
-                                 alphabetIndexBar?: AlphabetIndexBarProps) => {
+                                 alphabetIndexBar?: AlphabetIndexBarProps, filterConfig?: FilterConfig) => {
 
     return mount(
       <TupleList
         suggest={suggest}
         search={search}
         alphabeticIndexBar={alphabetIndexBar}
+        filterConfig={filterConfig}
         result={mockTupleResult}
         columns={columns}
         pagination={pagination}
@@ -205,5 +207,23 @@ describe('<TupleList />', () => {
     const rows = wrapper.find('table > tbody > tr');
     expect(rows).toHaveLength(1);
     expect(rows.first().find('td:first-child').text()).toBe('Eerste begrip');
+  });
+
+  it('should include related items when refined filter is enabled', () => {
+    const wrapper = buildTableWithRecords(getColumns(), { pageSize: 10 }, undefined,
+                                          undefined, { fields: ['begrip'], instant: true }, undefined,
+                                          { RELATED: { referenceField:'begrip', relatedFields: ['related'] } });
+    // simulate search input
+    wrapper.find('input[type="search"]').simulate('change', { target: { value: 'Derde' } });
+    let rows = wrapper.find('table > tbody > tr');
+    expect(rows).toHaveLength(1);
+    expect(rows.first().find('td:first-child').text()).toBe('Derde begrip');
+
+    // enable related items
+    wrapper.find('input[type="checkbox"]').simulate('change', { target: { checked: true, name: 'RELATED' } });
+    rows = wrapper.find('table > tbody > tr');
+    expect(rows).toHaveLength(2);
+    expect(rows.at(0).find('td').at(0).text()).toBe('Derde begrip');
+    expect(rows.at(1).find('td').at(0).text()).toBe('Eerste begrip');
   });
 });

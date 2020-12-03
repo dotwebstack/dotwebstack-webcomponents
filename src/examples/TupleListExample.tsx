@@ -3,7 +3,7 @@ import TupleContext from '../components/TupleContext';
 import TupleList, { Column } from '../components/TupleList';
 import { Term } from 'rdf-js';
 
-const endpoint = 'https://stelselcatalogus.omgevingswet.overheid.nl/concepten';
+const endpoint = 'http://localhost:8080/concepten';
 
 const columns: Column[] = [
   {
@@ -29,8 +29,9 @@ export default () => (
       <TupleContext src={endpoint}>
         {result => (
               <TupleList
-            suggest={{ suggestions: [result, 'resource_label'] }}
-            search={ { fields: ['resource_label', 'uitleg'], instant: false }}
+            // suggest={{ suggestions: [result, 'resource_label'] }}
+            filterConfig={ { RELATED: { referenceField:'resource', relatedFields:['related'] } } }
+            search={ { fields: ['resource_label', 'uitleg'], instant: true }}
             alphabeticIndexBar={ { field: 'resource_label' } }
             result={result}
             columns={columns}
