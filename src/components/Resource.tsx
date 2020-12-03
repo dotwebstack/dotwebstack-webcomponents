@@ -14,7 +14,7 @@ type Props = {
   valueProps?: ValueProps;
   hideEmptyProperties?: boolean;
   showAllProperties?: boolean;
-  formatPredicate?: (predicate: string, inverse: boolean) => string | null;
+  formatPredicate?: (predicate: string, inverse: boolean, shorten: (resource: string) => string) => string | null;
   includeProperty?: (predicate: string, inverse: boolean) => boolean;
   disableAutoLabel?: boolean;
   disableLegacyFormatting?: boolean,
@@ -126,7 +126,7 @@ const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, v
 
   // if custom format predicate function returns null, fall back to default implementation
   const effectiveFormatPredicate: (predicate: string, inverse: boolean) => string = formatPredicate
-    ? ((p, i) => formatPredicate(p, i) || defaultFormatPredicate(p, i))
+    ? ((p, i) => formatPredicate(p, i, shorten) || defaultFormatPredicate(p, i))
     : defaultFormatPredicate;
 
   const PropertyValues = ({ property }: { property: Property }) => {

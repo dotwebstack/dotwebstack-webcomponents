@@ -31,13 +31,13 @@ const rows = [
   },
 ];
 
-const formatPredicate = (predicate: string, inverse: boolean) => {
+const formatPredicate = (predicate: string, inverse: boolean, shorten: (resource: string) => string) => {
   if (inverse) {
     return null; // defer to default implementation
   }
   const foaf = 'http://xmlns.com/foaf/0.1/';
   if (predicate.startsWith(foaf)) {
-    const name = predicate.substring(foaf.length);
+    const name = shorten(predicate); // use provided shortener
     return `${name} (foaf)`;
   }
   return null;
