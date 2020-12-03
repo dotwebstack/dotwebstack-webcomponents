@@ -27,6 +27,7 @@ const i18next = i18n
           loadSuggestions: 'Suggesties laden...',
           noSuggestions: 'Geen suggesties gevonden.',
           searchPlaceholder: 'Voer een zoekterm in',
+          showAll: 'toon alles',
         },
       },
       en: {
@@ -51,6 +52,7 @@ const i18next = i18n
           loadSuggestions: 'Loading suggestions...',
           noSuggestions: 'No suggestions found.',
           searchPlaceholder: 'Enter a search term',
+          showAll: 'show all',
         },
       },
     },
