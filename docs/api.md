@@ -277,7 +277,8 @@ The number of items which are shown in the table view.
 
 ## &lt;Resource>
 
-`Resource` a detailed view of one ResourceIri. It provides a simple list of properties.
+`Resource` is a detailed view of a specified resource (IRI).
+It is a list of properties (predicates) and their corresponding values (objects).
 
 ```jsx
 <Resource
@@ -287,6 +288,15 @@ The number of items which are shown in the table view.
   valueProps={{
     linkBuilder: term => term.value,
   }}
+  hideEmptyProperties
+  showAllProperties
+  formatPredicate={(predicate, inverse, shorten) => shorten(predicate)}
+  includeProperty={(predicate, inverse) => true}
+  disableAutoLabel
+  disableLegacyFormatting
+  prefixes={{
+    ex: 'http://example.org/',
+  }}
 />
 ```
 
@@ -294,31 +304,87 @@ The number of items which are shown in the table view.
 The data source.
 
 ### `resourceIri`: `Term`
-The IRI of the `Resource` to be represented.
+The IRI of the resource to be represented.
 
-### `rows`: `Row[]`
-Custom settings on how to represent the `Resource` view
-
-### `valueProps`: `ValueProps` (optional)
-Optional object with properties, which will be passed to every instance of the `Value` component (except `term` property).
+### `rows`: `Row[]` (optional)
+Custom settings on how to represent the `Resource` view.
+If not specified, all found properties are displayed.
+See [`showAllProperties`](#showallproperties).
 
 ```jsx
 type Row {
   predicate: NamedNode;
+  inverse?: boolean;
   label?: string;
-  render?: (terms: Term[]) => JSX.Element;
+  customRender?: (terms: Term[]) => JSX.Element;
 }
 ```
-### `predicate`: `NamedNode`
-The predicate of the row being represented
 
-### `label`: `string`
-A readable representation of the predicate
+- `predicate: NamedNode` The predicate of the row being represented
+- `inverse: boolean` If `true`, indicates the resource is the object of the predicate, not the subject
+- `label: string` A readable representation of the predicate
+- `customRender: (terms: Term[]) => JSX.Element` A way to add custom rendering to a row element
 
-### `customRender?`: `(terms: Term[]) => JSX.Element`
-A way to add custom rendering to a row element
+### `valueProps`: `ValueProps` (optional)
+Properties that are passed to every `Value` component rendered by the `Resource`.
 
+See [`<Value>`](#value) for more information.
 
+### `hideEmptyProperties`: `boolean` (optional)
+If `hideEmptyProperties` is `true`, any properties specified in `rows`, for which no values are present, are not displayed.
+The default value is `false`.
+If a `Row` has a `customRender`, it is unaffected by this setting.
+
+### `showAllProperties`: `boolean` (optional)
+If `showAllProperties` is `true`, any other properties found in the store, in addition to those specified in `rows`, are displayed.
+Otherwise, only the properties defined in `rows` are displayed.
+The default value is `false` if `rows` is specified, `true` otherwise.
+
+### `formatPredicate`: `(predicate: string, inverse: boolean, shorten: (resource: string) => string) => string | null` (optional)
+If `formatPredicate` is specified, it is invoked for each property, with the property's corresponding predicate.
+The return value is used as a display label for the property link.
+
+`formatPredicate` is invoked with the following arguments:
+- `predicate: string` is the property's corresponding predicate
+- `inverse: boolean` indicates whether or not the predicate's direction is inversed.
+In other words, the specified resource is the object of the triple with this predicate, as opposed to the subject, as is normally the case.
+- `shorten: (resource: string) => string` provides access to the built-in IRI shortening logic.
+
+The specified `formatPredicate` function may return `null`.
+If this occurs, the default mechanism is used as a fallback, which is:
+- If the property is `inverse`, format as `"is {label} of"`, otherwise format as `"{label}"`.
+- The value of `label` depends on the `disableAutoLabel` flag.
+If `disableAutoLabel` is `true`, `label` is created by shortening the predicate IRI by applying default and configured prefixes. 
+Otherwise, the predicate IRI's "local name" is used (the part after the last occurring `#` or `/`).
+
+### `includeProperty`: `(predicate: string, inverse: boolean) => boolean` (optional)
+If `includeProperty` is specified, it is invoked for every property not specified in `rows`, in order to determine whether or not to display it.
+In other words, this is a property filter.
+Properties specified in `rows` are unaffected.
+
+### `disableAutoLabel`: `boolean` (optional)
+Affects default formatting of property predicates as text.
+If `true`, default formatting is shortening the predicate IRI by applying default and configured prefixes.
+Otherwise, the predicate IRI's "local name" is used (the part after the last occurring `#` or `/`).
+The default vale is `false`.
+
+### `disableLegacyFormatting`: `boolean` (optional)
+This is a convenience flag that is directly passed to the `Value` components rendered by `Resource`.
+The default vale is `false`.
+
+See [`<Value>`](#value) for more information.
+
+### `prefixes`: `any` (optional)
+An object of key-value pairs defining prefixes to apply to any rendering of property predicates, values and types of literals.
+A set of default prefixes is built-in. The contents of `prefixes` are merged with the default prefixes.
+
+Example:
+```
+{
+  ex: 'http://example.org/',
+  xyz: 'http://xyz.org/',
+}
+```
 
 ## &lt;ResourceSelector>
 
@@ -390,6 +456,14 @@ If not specified, the default value `btn btn-success` is used.
   term={term}
   local={local}
   linkBuilder={term => term.value}
+  formatString={literal => literal.value}
+  formatLangString={literal => literal.value}
+  formatOtherLiteral={(literal, shorten) => literal.value},
+  prefixes={{
+    ex: 'http://example.org/',
+  }}
+  getNamedNodeLabels={(namedNode, shorten) => [ ...literals... ]},
+  disableLegacyFormatting
 />
 ```
 
@@ -401,6 +475,49 @@ Whether the link text contains the local name or the full IRI. When no `local` i
 
 ### `linkBuilder`: `(term: Term) => string` (optional)
 A callback function to be able to customize the `href` attribute of the link (only relevant for `NamedNode` terms).
+
+### `formatString`: `(literal: Literal) => string` (optional)
+If specified, `formatString` is invoked to format literals of type `xsd:string`.
+The default implementation renders `literal.value`.
+
+Has no effect unless `disableLegacyFormatting` is `true`.
+
+### `formatLangString`: `(literal: Literal) => string` (optional)
+If specified, `formatLangString` is invoked to format literals of type `rdf:langString`.
+The default implementation renders `"{value} ({language})"`.
+
+Has no effect unless `disableLegacyFormatting` is `true`.
+
+### `formatOtherLiteral`: `(literal: Literal, shorten: (resource: string) => string) => string` (optional)
+If specified, `formatOtherLiteral` is invoked to format literals of types that are not `xsd:string` or `rdf:langString`.
+The default implementation renders `"{value} ({shorten(datatype)})"`.
+
+Has no effect unless `disableLegacyFormatting` is `true`.
+
+### `prefixes`: `any` (optional)
+An object of key-value pairs defining prefixes to apply to any rendering of property predicates, values and types of literals.
+A set of default prefixes is built-in. The contents of `prefixes` are merged with the default prefixes.
+
+Example:
+```
+{
+  ex: 'http://example.org/',
+  xyz: 'http://xyz.org/',
+}
+```
+
+### `getNamedNodeLabels`: `(namedNode: NamedNode, shorten: (resource: string) => string) => Literal[]` (optional)
+If specified, `getNamedNodeLabels` is used to retrieve zero or more display labels to use when rendering a particular resource.
+This may be used to look up `rdfs:label` values, for example.
+The provided `shorten` function can be used to apply the standard IRI-shortening mechanism.
+
+### `disableLegacyFormatting`: `boolean` (optional)
+Flag to disable legacy formatting.
+If `true`, the previous, simpler formatting logic is disabled, and more control is granted over formatting through various props.
+In addition, without further configuration, rendering differences exist between modes.
+For example, legacy mode does not shorten any IRIs, while the new mode does.
+
+For sake of backwards compatibility, the default value is `false`.
 
 ## &lt;Label>
 
