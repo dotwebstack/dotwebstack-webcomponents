@@ -77,7 +77,8 @@ describe('<Resource />', () => {
         rows={rows}
       />,
     );
-    expect(wrapper.find('span').text()).toEqual('-');
+    expect(wrapper.find('PropertyValues').shallow()
+      .find('span').text()).toEqual('-');
   });
 
   it('shows localName when no label is given', () => {
@@ -126,6 +127,7 @@ describe('<Resource />', () => {
       />,
     );
 
-    expect(wrapper.find('h1').text()).toEqual(quadWith1.object.value);
+    expect(wrapper.find('PropertyValues').shallow()
+      .find('h1').text()).toEqual(quadWith1.object.value);
   });
 });

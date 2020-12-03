@@ -68,22 +68,22 @@ const Value: React.StatelessComponent<ValueProps & Props> = ({ term, local, disa
 
     // rdf:langString
     if (datatype.equals(rdfLangString)) {
-      return <span>{formatLangString(literal)}</span>;
+      return <>{formatLangString(literal)}</>;
     }
 
     // xsd:string
     if (datatype.equals(xsdString)) {
-      return <span>{formatString(literal)}</span>;
+      return <>{formatString(literal)}</>;
     }
 
     // other literal, such as xsd:boolean
-    return <span>{formatOtherLiteral(literal, shorten)}</span>;
+    return <>{formatOtherLiteral(literal, shorten)}</>;
 
   };
 
   if (termType === 'Literal') {
     const literal = term as Literal;
-    return <LiteralValue literal={literal} />;
+    return <span><LiteralValue literal={literal} /></span>;
   }
 
   if (termType === 'NamedNode') {
