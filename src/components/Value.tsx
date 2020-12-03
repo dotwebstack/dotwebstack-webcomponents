@@ -39,7 +39,7 @@ const defaultGetNamedNodeLabels = (namedNode: NamedNode, shorten: (resource: str
 const rdfLangString = namedNode(RDF + 'langString');
 const xsdString = namedNode(XSD + 'string');
 
-const Value: React.StatelessComponent<ValueProps & Props> = ({ term, local, disableLegacyFormatting, prefixes,
+const Value: React.FunctionComponent<ValueProps & Props> = ({ term, local, disableLegacyFormatting, prefixes,
   getNamedNodeLabels, formatString = defaultFormatString, formatLangString = defaultFormatLangString,
   formatOtherLiteral = defaultFormatOtherLiteral, linkBuilder = defaultLinkBuilder }) => {
 

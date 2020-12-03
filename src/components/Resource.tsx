@@ -56,7 +56,7 @@ const otherPropertiesComparator = (a: Property, b: Property) => {
 
 const rdfsLabel = namedNode(RDFS + 'label');
 
-const Resource: React.StatelessComponent<Props> = ({ resourceIri, store, rows, valueProps, showAllProperties,
+const Resource: React.FunctionComponent<Props> = ({ resourceIri, store, rows, valueProps, showAllProperties,
   formatPredicate, prefixes, includeProperty, disableAutoLabel = false, disableLegacyFormatting = false,
   hideEmptyProperties = false }) => {
 
