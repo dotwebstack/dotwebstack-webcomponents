@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { NamedNode, Term, Literal } from 'rdf-js';
 import { namedNode } from '@rdfjs/data-model';
 import Store from '../lib/Store';
@@ -21,7 +21,7 @@ type Props = {
   prefixes?: any;
 };
 
-type Row = {
+export type Row = {
   predicate: NamedNode;
   inverse?: boolean;
   label?: string;
@@ -56,7 +56,7 @@ const otherPropertiesComparator = (a: Property, b: Property) => {
 
 const rdfsLabel = namedNode(RDFS + 'label');
 
-const Resource: React.FunctionComponent<Props> = ({ resourceIri, store, rows, valueProps, showAllProperties,
+const Resource: FunctionComponent<Props> = ({ resourceIri, store, rows, valueProps, showAllProperties,
   formatPredicate, prefixes, includeProperty, disableAutoLabel = false, disableLegacyFormatting = false,
   hideEmptyProperties = false }) => {
 

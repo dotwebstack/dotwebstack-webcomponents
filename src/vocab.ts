@@ -1,43 +1,40 @@
-import { DCT, RDF, RDFS, PROV, XSD } from './namespaces';
+import { FOAF, DCT, RDF, RDFS, PROV, XSD } from './namespaces';
 import { namedNode } from '@rdfjs/data-model';
-import { NamedNode } from 'rdf-js';
 
-const generateVocab = (namespace: string, localNames: string[]) => {
-  const vocab: { [key: string]: NamedNode } = {};
-  localNames.forEach(localName => vocab[localName] = namedNode(`${namespace}${localName}`));
-  return vocab;
+export const foaf = {
+  isPrimaryTopicOf: namedNode(`${FOAF}isPrimaryTopicOf`),
 };
 
-export const dct = generateVocab(DCT, [
-  'description',
-  'title',
-  'created',
-  'issued',
-  'identifier',
-  'hasVersion',
-  'isReplacedBy',
-  'replaces',
-  'publisher',
-]);
+export const dct = {
+  description: namedNode(`${DCT}description`),
+  title: namedNode(`${DCT}title`),
+  created: namedNode(`${DCT}created`),
+  issued: namedNode(`${DCT}issued`),
+  identifier: namedNode(`${DCT}identifier`),
+  hasVersion: namedNode(`${DCT}hasVersion`),
+  isReplacedBy: namedNode(`${DCT}isReplacedBy`),
+  replaces: namedNode(`${DCT}replaces`),
+  publisher: namedNode(`${DCT}publisher`),
+};
 
-export const rdf = generateVocab(RDF, [
-  'type'
-]);
+export const rdf = {
+  type: namedNode(`${RDF}type`),
+};
 
-export const rdfs = generateVocab(RDFS, [
-  'label'
-]);
+export const rdfs = {
+  label: namedNode(`${RDFS}label`),
+};
 
-export const prov = generateVocab(PROV, [
-  'Entity'
-]);
+export const prov = {
+  Entity: namedNode(`${PROV}Entity`),
+};
 
-export const xsd = generateVocab(XSD, [
-  'decimal',
-  'string',
-  'dateTime',
-  'date',
-  'boolean',
-  'int',
-  'integer',
-]);
+export const xsd = {
+  decimal: namedNode(`${XSD}decimal`),
+  string: namedNode(`${XSD}string`),
+  dateTime: namedNode(`${XSD}dateTime`),
+  date: namedNode(`${XSD}date`),
+  boolean: namedNode(`${XSD}boolean`),
+  int: namedNode(`${XSD}int`),
+  integer: namedNode(`${XSD}integer`),
+};
