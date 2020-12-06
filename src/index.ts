@@ -2,6 +2,7 @@ import './polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ConceptList from './components/ConceptList';
+import ConciseBoundedDescription from './components/ConciseBoundedDescription';
 import GraphContext, { graphContext } from './components/GraphContext';
 import Store from './lib/Store';
 import Resource from './components/Resource';
@@ -40,6 +41,7 @@ const componentRegistry = new Map<string, React.ComponentType<any>>();
 componentRegistry.set('Label', Label);
 componentRegistry.set('Value', Value);
 componentRegistry.set('ConceptList', ConceptList);
+componentRegistry.set('ConciseBoundedDescription', ConciseBoundedDescription);
 componentRegistry.set('GraphContext', GraphContext);
 componentRegistry.set('GraphSearch', GraphContext);
 componentRegistry.set('Resource', Resource);
@@ -59,6 +61,7 @@ export {
   ValueProps,
   graphContext,
   ConceptList,
+  ConciseBoundedDescription,
   GraphContext,
   GraphSearch,
   Store,
