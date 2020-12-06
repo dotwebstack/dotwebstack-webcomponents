@@ -1,6 +1,6 @@
-import { Quad, Term } from 'rdf-js';
+import { BlankNode, Literal, NamedNode, Quad, Term, DefaultGraph } from 'rdf-js';
 import { reduce } from 'ramda';
-import { isNamedNode, isUnique } from '../utils';
+import { isNamedNode, isUnique, uniqueTermsReducer } from '../utils';
 import { namedNode } from '@rdfjs/data-model';
 import { RDFS } from '../namespaces';
 
@@ -50,6 +50,33 @@ export default class Store {
       }),
       {},
     )
+
+  filter = (subject: NamedNode | BlankNode | null,
+            predicate: NamedNode | null,
+            object: NamedNode | BlankNode | Literal | null,
+            graph: NamedNode | BlankNode | DefaultGraph | null = null): Store => {
+    const pass = () => true;
+    const subjectTest: (quad: Quad) => boolean = subject === null ? pass
+      : quad => subject.equals(quad.subject);
+    const predicateTest: (quad: Quad) => boolean = predicate === null ? pass
+      : quad => predicate.equals(quad.predicate);
+    const objectTest: (quad: Quad) => boolean = object === null ? pass
+      : quad => object.equals(quad.object);
+    const graphTest: (quad: Quad) => boolean = graph === null ? pass
+      : quad => graph.equals(quad.graph);
+    return new Store(this.quads.filter(quad =>
+      subjectTest(quad) && predicateTest(quad) && objectTest(quad) && graphTest(quad)));
+  }
+
+  subjects = () => this.quads.map(quad => quad.subject)
+    .reduce(uniqueTermsReducer, [])
+    .map(subject => subject as NamedNode | BlankNode)
+
+  objects = () => this.quads.map(quad => quad.object)
+    .reduce(uniqueTermsReducer, [])
+    .map(object => object as NamedNode | BlankNode | Literal)
+
+  size = () => this.quads.length;
 
   findStatements = (subject: Term): Quad[] => {
     return this.quads.filter(quad => quad.subject.equals(subject));
