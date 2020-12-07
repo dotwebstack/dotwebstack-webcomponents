@@ -7,7 +7,7 @@ import fetchMock = require('fetch-mock');
 describe('<ResourceSelector />', () => {
 
   const createLinkHref = (resource: string) => {
-    const url = new URL(`https://example.org/waardelijst`);
+    const url = new URL('https://example.org/waardelijst');
     url.searchParams.set('uri', resource);
     return url.href;
 
@@ -23,16 +23,15 @@ describe('<ResourceSelector />', () => {
         resourceColumn="waardelijst"
         displayColumn="version"
         transformBindingSets={transform}
-        createLinkHref={createLinkHref}/>
-    );
+        createLinkHref={createLinkHref}/>);
   };
 
   const mockJson = JSON.stringify({
     head: { vars: [ 'waardelijst', 'version' ] },
     results: { bindings: [
       { waardelijst: { type: 'uri', value: 'ex:w1' }, version: { type: 'literal', value: '1.2.0-a' } },
-      { waardelijst: { type: 'uri', value: 'ex:w2' }, version: { type: 'literal', value: '1.3.0-b' } }
-    ] }
+      { waardelijst: { type: 'uri', value: 'ex:w2' }, version: { type: 'literal', value: '1.3.0-b' } },
+    ] },
   });
   const expectedDataSourceUrl = `${endpoint}?r=` + encodeURIComponent('ex:w2');
   fetchMock.mock(expectedDataSourceUrl, mockJson);
@@ -45,23 +44,25 @@ describe('<ResourceSelector />', () => {
 
   it('creates links corresponding to fetched results', done => {
     const wrapper: ReactWrapper = createWrapper();
-    setTimeout(() => {
-      wrapper.update();
-      expect(fetchMock.calls().length).toBe(1);
+    setTimeout(
+      () => {
+        wrapper.update();
+        expect(fetchMock.calls().length).toBe(1);
 
-      expect(wrapper.find('a')).toHaveLength(2);
-      expect(wrapper.find('a').at(0).props()).toEqual(expect.objectContaining({
-        href: 'https://example.org/waardelijst?uri=' + encodeURIComponent('ex:w1'),
-        children: '1.2.0-a',
-        className: 'btn btn-info',
-      }));
-      expect(wrapper.find('a').at(1).props()).toEqual(expect.objectContaining({
-        href: 'https://example.org/waardelijst?uri=' + encodeURIComponent('ex:w2'),
-        children: '1.3.0-b',
-        className: 'btn btn-success',
-      }));
-      done();
-    }, 50);
+        expect(wrapper.find('a')).toHaveLength(2);
+        expect(wrapper.find('a').at(0).props()).toEqual(expect.objectContaining({
+          href: 'https://example.org/waardelijst?uri=' + encodeURIComponent('ex:w1'),
+          children: '1.2.0-a',
+          className: 'btn btn-info',
+        }));
+        expect(wrapper.find('a').at(1).props()).toEqual(expect.objectContaining({
+          href: 'https://example.org/waardelijst?uri=' + encodeURIComponent('ex:w2'),
+          children: '1.3.0-b',
+          className: 'btn btn-success',
+        }));
+        done();
+      },
+      50);
   });
 
   it('applies transform function', done => {
@@ -69,16 +70,18 @@ describe('<ResourceSelector />', () => {
       return bindingSets.filter(bindingSet => bindingSet.version.value === '1.3.0-b');
     };
     const wrapper: ReactWrapper = createWrapper(transform);
-    setTimeout(() => {
-      wrapper.update();
-      expect(wrapper.find('a')).toHaveLength(1);
-      expect(wrapper.find('a').props()).toEqual(expect.objectContaining({
-        href: 'https://example.org/waardelijst?uri=' + encodeURIComponent('ex:w2'),
-        children: '1.3.0-b',
-        className: 'btn btn-success',
-      }));
-      done();
-    }, 50);
+    setTimeout(
+      () => {
+        wrapper.update();
+        expect(wrapper.find('a')).toHaveLength(1);
+        expect(wrapper.find('a').props()).toEqual(expect.objectContaining({
+          href: 'https://example.org/waardelijst?uri=' + encodeURIComponent('ex:w2'),
+          children: '1.3.0-b',
+          className: 'btn btn-success',
+        }));
+        done();
+      },
+      50);
   });
 
 });

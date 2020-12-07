@@ -194,7 +194,7 @@ describe('<Value />', () => {
 
   it('renders a named node with multiple labels from custom label function', () => {
     const term = namedNode('http://example.org/xyz');
-    //const getNamedNodeLabels = (namedNode: NamedNode, shorten: (resource: string) => string) => [
+    // const getNamedNodeLabels = (namedNode: NamedNode, shorten: (resource: string) => string) => [
     const getNamedNodeLabels = (namedNode: NamedNode) => [
       literal(namedNode.value),
       literal('Xyz', 'nl'),

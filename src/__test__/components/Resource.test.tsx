@@ -144,7 +144,7 @@ describe('<Resource />', () => {
   });
 
   const checkRow = (wrapper: ShallowWrapper, propertyHref: string,
-    callback: (aElement: ShallowWrapper, valuesElement: ShallowWrapper) => void) => {
+                    callback: (aElement: ShallowWrapper, valuesElement: ShallowWrapper) => void) => {
 
     // propertyHref is used as a key to find the desired property row
     const row = wrapper.find(`a[href='${propertyHref}']`).closest('tr');
@@ -211,7 +211,7 @@ describe('<Resource />', () => {
       {
         '@value': 'Ander ding',
         '@language': 'nl',
-      }
+      },
     ],
   }, {
     '@id': ex.another.value,
@@ -223,7 +223,7 @@ describe('<Resource />', () => {
   it('renders (inverse) properties in correct order', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const wrapper = shallow(
       <Resource
         resourceIri={ex.something}
@@ -246,7 +246,7 @@ describe('<Resource />', () => {
   it('renders inverse properties correctly', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const wrapper = shallow(
       <Resource
         resourceIri={ex.something}
@@ -279,7 +279,7 @@ describe('<Resource />', () => {
   it('renders predicate label specified in row mapping', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const rows = [{
       predicate: rdf.type,
       label: 'the type',
@@ -303,7 +303,7 @@ describe('<Resource />', () => {
   it('hides empty properties, if configured, but leaves those with custom render', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const rows = [{
       predicate: dct.replaces, // not present in data
       customRender: () => <span>a, b, c</span>,
@@ -331,7 +331,7 @@ describe('<Resource />', () => {
   it('does not show all properties if rows are specified', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const rows = [{
       predicate: dct.replaces,
     }, {
@@ -352,7 +352,7 @@ describe('<Resource />', () => {
   it('shows all properties if rows are specified and flag is set', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const rows = [{
       predicate: dct.replaces,
     }, {
@@ -374,7 +374,7 @@ describe('<Resource />', () => {
   it('filters properties if configured, but not those of row mapping', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const rows = [{
       predicate: dct.title,
     }];
@@ -415,7 +415,7 @@ describe('<Resource />', () => {
   it('shortens property labels when autolabel is disabled', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const rows = [{
       predicate: dct.title,
     }];
@@ -448,7 +448,7 @@ describe('<Resource />', () => {
   it('uses custom predicate formatter, but falls back to default for null result', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const prefixes = {
       abc: EX,
     };
@@ -463,7 +463,7 @@ describe('<Resource />', () => {
       }
       return null;
     };
-    
+
     const wrapper = shallow(
       <Resource
         resourceIri={ex.something}
@@ -485,7 +485,7 @@ describe('<Resource />', () => {
   });
 
   const checkValue = (wrapper: ShallowWrapper, propertyHref: string,
-    callback: (valueElement: ShallowWrapper) => void) => {
+                      callback: (valueElement: ShallowWrapper) => void) => {
 
     // propertyHref is used as a key to find the desired property row
     const row = wrapper.find(`a[href='${propertyHref}']`).closest('tr');
@@ -495,7 +495,7 @@ describe('<Resource />', () => {
   it('renders Value components correctly', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const prefixes = {
       abc: EX,
     };
@@ -514,7 +514,7 @@ describe('<Resource />', () => {
         literal('Ander ding', 'nl'),
       ]);
       expect(getNamedNodeLabels(ex.another)).toEqual([
-        literal('Another thing')
+        literal('Another thing'),
       ]);
     };
 
@@ -545,13 +545,13 @@ describe('<Resource />', () => {
   it('renders Value components correctly (valueProps, disableLegacyFormatting)', async () => {
 
     const store = await storeFromJsonLd(entities);
-    
+
     const prefixes = {
       abc: EX,
     };
 
     const valuePrefixes = {
-      xyz: 'http://xyz.org/data/'
+      xyz: 'http://xyz.org/data/',
     };
 
     const valueProps = {
