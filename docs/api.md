@@ -366,11 +366,11 @@ Properties specified in `rows` are unaffected.
 Affects default formatting of property predicates as text.
 If `true`, default formatting is shortening the predicate IRI by applying default and configured prefixes.
 Otherwise, the predicate IRI's "local name" is used (the part after the last occurring `#` or `/`).
-The default vale is `false`.
+The default value is `false`.
 
 ### `disableLegacyFormatting`: `boolean` (optional)
 This is a convenience flag that is directly passed to the `Value` components rendered by `Resource`.
-The default vale is `false`.
+The default value is `false`.
 
 See [`<Value>`](#value) for more information.
 
