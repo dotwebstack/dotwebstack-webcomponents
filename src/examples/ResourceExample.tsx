@@ -4,8 +4,8 @@ import React from 'react';
 import Resource from '../components/Resource';
 import { Term } from 'rdf-js';
 
-const endpoint = 'https://bag.basisregistraties.overheid.nl/def/bag';
-const resourceIri = namedNode('http://bag.basisregistraties.overheid.nl/def/bag#BAG-object');
+const endpoint = 'https://bag.basisregistraties.overheid.nl/bag/doc/2011031800000000/pand/0200100000085932';
+const resourceIri = namedNode('http://bag.basisregistraties.overheid.nl/bag/id/pand/0200100000085932');
 const rows = [
   {
     predicate: namedNode('http://www.w3.org/2000/01/rdf-schema#isDefinedBy'),
@@ -17,7 +17,6 @@ const rows = [
   },
   {
     predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-    label: 'Type',
   },
   {
     predicate: namedNode('http://purl.org/dc/terms/subject'),
@@ -32,6 +31,29 @@ const rows = [
   },
 ];
 
+const formatPredicate = (predicate: string, inverse: boolean, shorten: (resource: string) => string) => {
+  if (inverse) {
+    return null; // defer to default implementation
+  }
+  const foaf = 'http://xmlns.com/foaf/0.1/';
+  if (predicate.startsWith(foaf)) {
+    const name = shorten(predicate); // use provided shortener
+    return `${name} (foaf)`;
+  }
+  return null;
+};
+
+const prefixes = {
+  bag: 'http://bag.basisregistraties.overheid.nl/def/bag#',
+};
+
+const includeProperty = (predicate: string, inverse: boolean) => {
+  if (predicate.includes('status') && !inverse) {
+    return false;
+  }
+  return true;
+};
+
 export default () => (
   <GraphContext src={endpoint}>
     {store => (
@@ -43,6 +65,13 @@ export default () => (
             store={store}
             resourceIri={resourceIri}
             rows={rows}
+            hideEmptyProperties
+            showAllProperties
+            formatPredicate={formatPredicate}
+            disableAutoLabel
+            prefixes={prefixes}
+            includeProperty={includeProperty}
+            disableLegacyFormatting
           />
         </section>
       </div>

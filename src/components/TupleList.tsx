@@ -13,7 +13,7 @@ export type Column = {
   name: string;
   label?: string;
   sortable?: boolean;
-  customRender?: (term?: Term) => JSX.Element;
+  customRender?: (term: Term, bindingSet:BindingSet) => JSX.Element;
 };
 
 export type PaginationProps = boolean | {
@@ -270,7 +270,7 @@ class TupleList extends React.Component<Props, State> {
                   {this.props.columns.map(column => (
                     <td key={column.name}>
                       {column.customRender
-                        ? column.customRender(bindingSet[column.name])
+                        ? column.customRender(bindingSet[column.name], bindingSet)
                         : this.renderField(bindingSet[column.name])}
                     </td>
                   ))}

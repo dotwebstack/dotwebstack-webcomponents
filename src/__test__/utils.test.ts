@@ -1,4 +1,4 @@
-import { sortRows, findComment, findDefinition } from '../utils';
+import { sortRows, findComment, findDefinition, applyPrefixes, mergePrefixMaps } from '../utils';
 import { objectTest1, objectTest2, literal1, literal2, quadWithCommentLiteral, quadWithDefinitionLiteral,
   quadWithDCSubjectDefinitionLiteral, quadWithDCSubject} from './TestData';
 import Store from '../lib/Store';
@@ -103,5 +103,52 @@ describe('utils::findDefinition', () => {
   it('Returns undefined when both not found.', () => {
     const store = new Store([]);
     expect(findDefinition(quadWithCommentLiteral.subject, store)).toBeUndefined();
+  });
+});
+
+describe('utils::applyPrefixes', () => {
+  const prefixes = {
+    abc: 'http://example.org/abc/',
+    xyz: 'http://example.org/xyz/',
+    qrs: 'http://example.org/xyz/', // duplicate namespace on purpose
+  };
+
+  it('Returns the IRI as-is, if no applicable namespace is found.', () => {
+    expect(applyPrefixes('http://example.org/123/456', prefixes)).toBe('http://example.org/123/456');
+  });
+
+  it('Applies first matching prefix.', () => {
+    expect(applyPrefixes('http://example.org/xyz/123', prefixes)).toBe('xyz:123');
+  });
+});
+
+describe('utils::mergePrefixMaps', () => {
+  const existing = {
+    abc: 'http://example.org/abc/',
+    xyz: 'http://example.org/xyz/',
+  };
+  it('Merges 2 prefix maps.', () => {
+    expect(mergePrefixMaps(existing, { qrs: 'http://example.org/qrs/' }))
+    .toEqual({
+      abc: 'http://example.org/abc/',
+      xyz: 'http://example.org/xyz/',
+      qrs: 'http://example.org/qrs/',
+    });
+  });
+
+  it('Merges 2 prefix maps, overwriting existing prefix.', () => {
+    expect(mergePrefixMaps(existing, {  abc: 'http://example.org/qrs/' }))
+    .toEqual({
+      abc: 'http://example.org/qrs/',
+      xyz: 'http://example.org/xyz/',
+    });
+  });
+
+  it('Merges 2 prefix maps, overwriting existing namespace.', () => {
+    expect(mergePrefixMaps(existing, { qrs: 'http://example.org/xyz/' }))
+    .toEqual({
+      abc: 'http://example.org/abc/',
+      qrs: 'http://example.org/xyz/',
+    });
   });
 });
