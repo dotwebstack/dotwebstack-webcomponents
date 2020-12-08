@@ -28,6 +28,8 @@ const i18next = i18n
           noSuggestions: 'Geen suggesties gevonden.',
           searchPlaceholder: 'Voer een zoekterm in',
           showAll: 'toon alles',
+          relatedFilter: 'Relaties in zoekresultaten meenemen',
+          refineResults: 'Verfijn zoekresutaten',
         },
       },
       en: {
@@ -53,6 +55,8 @@ const i18next = i18n
           noSuggestions: 'No suggestions found.',
           searchPlaceholder: 'Enter a search term',
           showAll: 'show all',
+          relatedFilter: 'Include related subjects in search results',
+          refineResults: 'Refine searchresults',
         },
       },
     },
