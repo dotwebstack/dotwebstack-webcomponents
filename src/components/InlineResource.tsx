@@ -19,7 +19,7 @@ type Props = {
   valueSeparator?: () => JSX.Element;
 };
 
-export const InlineResource: FunctionComponent<Props> = ({ resource, store, propertyRows, valueProps,
+const InlineResource: FunctionComponent<Props> = ({ resource, store, propertyRows, valueProps,
   hideEmptyProperties, formatPredicate, prefixes, valueSeparator = () => null }) => {
 
   const getResourceLabels = (resource: NamedNode | BlankNode) => store.findObjects(resource, rdfs.label)
