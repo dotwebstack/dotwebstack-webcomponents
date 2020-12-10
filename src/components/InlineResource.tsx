@@ -64,7 +64,7 @@ const InlineResource: FunctionComponent<Props> = ({ resource, store, propertyRow
         const { predicate, inverse } = property.path;
         return (
           <span key={index} className="inline-resource">
-            <a href={predicate.value}>
+            <a href={predicate.value} style={{ fontWeight: 600 }}>
               {property.label ? property.label : effectiveFormatPredicate(predicate.value, inverse)}
             </a>:<span> </span>
             <PropertyValues

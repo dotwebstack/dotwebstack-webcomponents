@@ -22,8 +22,6 @@ const prefixes = {
 const rows = [
   { predicate: bag.beginGeldigheid },
   { predicate: rdf.type },
-  { predicate: bag.aanduidingInactief },
-  { predicate: bag.inOnderzoek },
 ];
 
 export default () => (

@@ -151,7 +151,7 @@ const Resource: FunctionComponent<Props> = ({ resourceIri, store, rows, valuePro
 
   const ResourceHeading: FunctionComponent<{}> = () => {
     return (
-      <div className={'resource-heading border ' + className}>
+      <div className={'resource-heading border ' + className} style={{ padding: '0.75em', paddingTop: '1em' }}>
         <h4>
           <Value
             term={resourceIri}
@@ -160,9 +160,11 @@ const Resource: FunctionComponent<Props> = ({ resourceIri, store, rows, valuePro
             disableLegacyFormatting
             disableLink
           />
-          {resourceType ? (<span className="resource-type">«{resourceType}»</span>) : null}
+          {resourceType ? (
+            <span className="resource-type" style={{ marginLeft: '0.5em', fontSize: '0.8em' }}>«{resourceType}»</span>
+          ) : null}
         </h4>
-        <div className="resource-uri">
+        <div className="resource-uri" style={{ marginBottom: '0.5em', fontSize: '0.9em' }}>
           {i18next.t('persistentUri')}: &lt;<a href={resourceIri.value}>{resourceIri.value}</a>&gt;
         </div>
       </div>
@@ -180,7 +182,7 @@ const Resource: FunctionComponent<Props> = ({ resourceIri, store, rows, valuePro
     {renderHeading ? (
       <ResourceHeading />
     ) : null}
-    <table className={'table table-striped border resource-container ' + className}>
+    <table className={'table table-striped border resource-container ' + className} style={{ marginBottom: '1.5em' }}>
       <tbody>
       {properties.map((property: Property, index: number) => {
 

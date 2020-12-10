@@ -86,12 +86,25 @@ const ConciseBoundedDescription: FunctionComponent<Props> = ({ store, primaryTop
     const expand = i18next.t('expandButtonTitle');
     const collapse = i18next.t('collapseButtonTitle');
     return (
-      <div className="information-resource-container">
-        {isOpen ? (
-          <a href="#" title={collapse} className="expand-collapse-information-resource" onClick={toggleOpen}>&and;</a>
-        ) : (
-          <a href="#" title={expand} className="expand-collapse-information-resource" onClick={toggleOpen}>&or;</a>
-        )}
+      <div className="information-resource-container" style={{ position: 'relative' }}>
+        <a
+          href="#"
+          title={isOpen ? collapse : expand}
+          className="expand-collapse-information-resource"
+          onClick={toggleOpen}
+          style={{
+            textDecoration: 'none',
+            width: '1.7em',
+            lineHeight: '1.7em',
+            textAlign: 'center',
+            fontSize: '1.4em',
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            zIndex: 100,
+          }}>
+            {isOpen ? <>&and;</> : <>&or;</>}
+        </a>
         {isOpen ? (
           <div className="information-resource">
             <Resource
@@ -109,8 +122,13 @@ const ConciseBoundedDescription: FunctionComponent<Props> = ({ store, primaryTop
             />
           </div>
         ) : (
-          <div className="resource-container border information-resource-collapsed">
-            <span className="resource-type">«{resourceType}»</span>
+          <div className="resource-container border information-resource-collapsed" style={{
+            marginBottom: '1.5em',
+            padding: '0.75em',
+            fontSize: '0.9em',
+            lineHeight: '1.7em',
+          }}>
+            <span className="resource-type" style={{ marginRight: '0.7em' }}>«{resourceType}»</span>
             <InlineResource
               store={store}
               resource={resource}
