@@ -180,7 +180,7 @@ describe('<ConciseBoundedDescription />', () => {
 
   });
 
-  it('can uses directly set primary topic and information resource', async () => {
+  it('uses directly set primary topic and information resource', async () => {
 
     const store = await storeFromJsonLd(entities.concat(primaryTopicAndInformationResource));
 
