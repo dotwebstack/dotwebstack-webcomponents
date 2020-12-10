@@ -108,7 +108,7 @@ const Value: FunctionComponent<ValueProps & Props> = ({ term, local, disableLega
           {disableLink
             ? <LiteralValue literal={label} />
             : <a href={href}><LiteralValue literal={label} /></a>}
-          {isLast(index) ? null : <br />}
+          {!isLast(index) && <br />}
         </Fragment>
       ))}</>
     );

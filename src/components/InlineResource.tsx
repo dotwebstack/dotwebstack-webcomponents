@@ -72,7 +72,7 @@ const InlineResource: FunctionComponent<Props> = ({ resource, store, propertyRow
               valueProps={effectiveValueProps}
               appendBreak={false}
               separator={valueSeparator} />
-            {isLast(index) ? null : ' • '}
+            {!isLast(index) && <> &bull; </>}
           </span>
         );
       })}

@@ -60,7 +60,7 @@ const defaultDetermineInformationResource = (store: Store, primaryTopic: Optiona
 
 const determineOtherResources = (store: Store, exclude: OptionalResource[]) => {
   const isIncluded = (resource: NamedNode | BlankNode): boolean =>
-    exclude.filter(excluded => excluded !== null && excluded.equals(resource)).length === 0;
+    exclude.filter(excluded => excluded && excluded.equals(resource)).length === 0;
   return store.subjects().filter(isIncluded);
 };
 
@@ -144,10 +144,10 @@ const ConciseBoundedDescription: FunctionComponent<Props> = ({ store, primaryTop
 
   return (
     <>
-      {effectiveInformationResource ? (
+      {effectiveInformationResource && (
         <InformationResource resource={effectiveInformationResource} />
-      ) : null}
-      {effectivePrimaryTopic ? (
+      )}
+      {effectivePrimaryTopic && (
         <Resource
           store={store}
           resourceIri={effectivePrimaryTopic}
@@ -160,7 +160,7 @@ const ConciseBoundedDescription: FunctionComponent<Props> = ({ store, primaryTop
           prefixes={prefixes}
           {...resourceProps}
         />
-      ) : null}
+      )}
       {otherResources.map((resource: NamedNode | BlankNode) => (
         <Resource key={resource.value}
           store={store}

@@ -83,8 +83,8 @@ const PropertyValues: FunctionComponent<PropertyValuesProps> = ({ property, valu
         <Value
           term={value}
           {...valueProps} />
-        {isLast(index) ? null : separator()}
-        {appendBreak ? <br /> : null}
+        {!isLast(index) && separator()}
+        {appendBreak && <br />}
       </Fragment>
     ))}</>
   );
@@ -160,9 +160,9 @@ const Resource: FunctionComponent<Props> = ({ resourceIri, store, rows, valuePro
             disableLegacyFormatting
             disableLink
           />
-          {resourceType ? (
+          {resourceType && (
             <span className="resource-type" style={{ marginLeft: '0.5em', fontSize: '0.8em' }}>«{resourceType}»</span>
-          ) : null}
+          )}
         </h4>
         <div className="resource-uri" style={{ marginBottom: '0.5em', fontSize: '0.9em' }}>
           {i18next.t('persistentUri')}: &lt;<a href={resourceIri.value}>{resourceIri.value}</a>&gt;
@@ -179,9 +179,7 @@ const Resource: FunctionComponent<Props> = ({ resourceIri, store, rows, valuePro
   };
 
   return (<>
-    {renderHeading ? (
-      <ResourceHeading />
-    ) : null}
+    {renderHeading && <ResourceHeading />}
     <table className={'table table-striped border resource-container ' + className} style={{ marginBottom: '1.5em' }}>
       <tbody>
       {properties.map((property: Property, index: number) => {

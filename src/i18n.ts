@@ -32,7 +32,7 @@ const i18next = i18n
           refineResults: 'Verfijn zoekresutaten',
           persistentUri: 'Persistente URI',
           informationResourceType: 'Metadata',
-          primaryTopicType: 'Primair onderwerp',
+          primaryTopicType: 'Hoofdonderwerp',
           expandButtonTitle: 'Uitklappen',
           collapseButtonTitle: 'Inklappen',
         },
