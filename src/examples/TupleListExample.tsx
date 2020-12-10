@@ -30,6 +30,7 @@ export default () => (
         {result => (
               <TupleList
             suggest={{ suggestions: [result, 'resource_label'] }}
+            filterConfig={ { RELATED: { referenceField:'resource', relatedFields:['related'] } } }
             search={ { fields: ['resource_label', 'uitleg'], instant: false }}
             alphabeticIndexBar={ { field: 'resource_label' } }
             result={result}

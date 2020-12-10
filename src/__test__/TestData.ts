@@ -574,6 +574,7 @@ export const mockBindingSets: BindingSet[] = [
     begrip: namedNode('Derde begrip'),
     definition: literal('Derde definitie'),
     label: literal('Derde label'),
+    related: literal('Eerste begrip'),
   },
   {
     begrip: namedNode('Vierde begrip'),
@@ -581,4 +582,4 @@ export const mockBindingSets: BindingSet[] = [
   },
 ];
 
-export const mockBindingNames = ['begrip', 'definition', 'label'];
+export const mockBindingNames = ['begrip', 'definition', 'label', 'related'];

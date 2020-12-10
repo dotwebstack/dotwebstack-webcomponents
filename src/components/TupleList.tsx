@@ -6,6 +6,7 @@ import Value, { ValueProps } from './Value';
 import { sortRows } from '../utils';
 import SearchInput, { SuggestProps } from './SearchInput';
 import { AlphabetIndexBar } from './AlphabetIndexBar';
+import { RefineSearchFilters, Filter, FilterConfig } from './RefineSearchFilters';
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -35,6 +36,7 @@ type Props = {
   columns: Column[];
   pagination?: PaginationProps;
   search?: SearchListProps;
+  filterConfig?: FilterConfig;
   alphabeticIndexBar?: AlphabetIndexBarProps;
   valueProps?: ValueProps;
   sortByColumn?: [string, boolean];
@@ -46,6 +48,7 @@ type State = {
   sortByColumn?: [string, boolean];
   searchString?: string;
   filterByFirstLetter: boolean;
+  activeFilters: Filter[]
 };
 
 class TupleList extends React.Component<Props, State> {
@@ -57,6 +60,7 @@ class TupleList extends React.Component<Props, State> {
       pageSize: this.getPageSize(),
       sortByColumn: props.sortByColumn,
       filterByFirstLetter: false,
+      activeFilters: [],
     };
   }
 
@@ -126,9 +130,14 @@ class TupleList extends React.Component<Props, State> {
       filterByFirstLetter: false});
   }
 
+  /* handle callback on selected filters */
+  handleFilterSelected(filters: Filter[]) {
+    this.setState({ activeFilters: filters });
+  }
+
   getBindingSets = () => {
-    const { result, pagination } = this.props;
-    const { sortByColumn, currentPage, pageSize, searchString } = this.state;
+    const { result, pagination, filterConfig } = this.props;
+    const { sortByColumn, currentPage, pageSize, searchString, activeFilters, filterByFirstLetter } = this.state;
 
     let items = result.getBindingSets();
 
@@ -139,6 +148,11 @@ class TupleList extends React.Component<Props, State> {
 
     if (searchString) {
       items = this.filterResults();
+
+      // @ts-ignore
+      if (!filterByFirstLetter && filterConfig?.RELATED && activeFilters.includes(Filter[Filter.RELATED])) {
+        items = this.addRelatedItems(items, result.getBindingSets());
+      }
     }
 
     if (pagination) {
@@ -147,6 +161,28 @@ class TupleList extends React.Component<Props, State> {
     }
 
     return items;
+  }
+
+  addRelatedItems(items:BindingSet[], all:BindingSet[]):BindingSet[] {
+    const { filterConfig } = this.props;
+
+    const relatedFields = filterConfig!.RELATED!.relatedFields;
+    const referenceField = filterConfig!.RELATED!.referenceField;
+
+    items.forEach((item, index) => {
+      Object.keys(item).forEach((key) => {
+        if (relatedFields.includes(key)) {
+          const subject:string = item[key].value;
+          const related = all.find(i => subject.includes(i[referenceField].value));
+          if (related && !items.includes(related)) {
+            items.splice(index + 1, 0, related);
+          }
+        }
+      });
+    });
+
+    return items;
+
   }
 
   renderPager = () => {
@@ -201,6 +237,14 @@ class TupleList extends React.Component<Props, State> {
     );
   }
 
+  renderCustomSearchFilters = () => {
+    return this.props.search && this.props.filterConfig && (<div style={{ paddingBottom: '15px' }}>
+      <RefineSearchFilters
+          availableFilters={Object.keys(this.props.filterConfig).map(s => s as unknown as Filter)}
+          selected={this.handleFilterSelected.bind(this)}/>
+    </div>);
+  }
+
   renderSearchInput = () => {
     return this.props.search && (
         <div style={{ paddingBottom: '15px' }}>
@@ -249,6 +293,7 @@ class TupleList extends React.Component<Props, State> {
   render() {
     return (
       <div>
+        {this.renderCustomSearchFilters()}
         {this.renderSearchInput()}
         {this.renderAlphabeticIndexBarFilter()}
         {this.renderPager()}
