@@ -1,5 +1,5 @@
 import React, { Fragment, FunctionComponent } from 'react';
-import { NamedNode, Term, Literal, BlankNode, Quad } from 'rdf-js';
+import { NamedNode, Term, Literal, BlankNode } from 'rdf-js';
 import Store from '../lib/Store';
 import PropertyStore from '../lib/PropertyStore';
 import Value, { ValueProps } from './Value';
