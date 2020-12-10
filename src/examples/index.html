@@ -5,6 +5,82 @@
   <title>DotWebStack Web Components</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
   <style type="text/css">
+
+    .resource-container {
+      margin-bottom: 1.5em;
+    }
+
+    .information-resource {
+      position: relative;
+    }
+
+    .information-resource-collapsed {
+      padding: 0.75em;
+      position: relative;
+      font-size: 0.9em;
+      line-height: 1.7em;
+    }
+
+    .information-resource-collapsed .resource-type {
+      margin-right: 0.7em;
+      color: #aaa;
+    }
+
+    a.expand-collapse-information-resource:hover {
+      color: black;
+    }
+
+    a.expand-collapse-information-resource {
+      color: #aaa;
+      text-decoration: none;
+      width: 1.5em;
+      height: 1.5em;
+      text-align: center;
+      font-size: 1.2em;
+      position: absolute;
+      right: 0.4em;
+      top: 0.35em;
+      display: block;
+      z-index: 100;
+    }
+
+    .inline-resource a {
+      font-weight: 600;
+    }
+
+    .resource-heading {
+      padding: 0.75em;
+      padding-top: 1em;
+    }
+
+    .resource-heading .resource-type {
+      margin-left: 0.5em;
+      color: #aaa;
+      font-size: 0.8em;
+    }
+
+    .resource-heading .resource-uri {
+      margin-bottom: 0.5em;
+      font-size: 0.9em;
+    }
+
+    .information-resource-container .initial-highlight {
+      animation: 0.4s ease-out 1 both fade-highlight;
+    }
+
+    @keyframes fade-highlight {
+      from {
+        background-color: rgba(255, 230, 0, 0.1);
+      }
+      to {
+        background-color: none;
+      }
+    }
+
+    body {
+      margin-bottom: 15em;
+    }
+
     .nav-link {
       white-space: nowrap;
       overflow: hidden;
