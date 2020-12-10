@@ -17,7 +17,7 @@ type Props = {
   determineInformationResource?: (store: Store, primaryTopic: OptionalResource) => OptionalResource;
   resourceProps?: ResourceProps;
   prefixes?: any;
-  informationResourceCollapsedRows: Row[]
+  informationResourceCollapsedRows?: Row[]
 };
 
 // subset of Resource.Props
@@ -36,10 +36,10 @@ type ResourceProps = {
 
 const defaultDeterminePrimaryTopic = (store: Store) => {
   const primaryTopics = store.filter(null, foaf.isPrimaryTopicOf, null).subjects();
-  if (primaryTopics.length !== 1) {
-    throw new Error(`found ${primaryTopics.length} primary topics; expected exactly 1`);
+  if (primaryTopics.length > 1) {
+    throw new Error(`found ${primaryTopics.length} primary topics; expected at most 1`);
   }
-  return primaryTopics[0];
+  return primaryTopics.length ? primaryTopics[0] : null;
 };
 
 const defaultDetermineInformationResource = (store: Store, primaryTopic: OptionalResource) => {
@@ -67,7 +67,7 @@ const determineOtherResources = (store: Store, exclude: OptionalResource[]) => {
 const ConciseBoundedDescription: FunctionComponent<Props> = ({ store, primaryTopic,
   determinePrimaryTopic = defaultDeterminePrimaryTopic, informationResource,
   determineInformationResource = defaultDetermineInformationResource, resourceProps, prefixes,
-  informationResourceCollapsedRows }) => {
+  informationResourceCollapsedRows = [] }) => {
 
   const effectivePrimaryTopic = primaryTopic ?? determinePrimaryTopic(store);
   const effectiveInformationResource = informationResource
