@@ -88,8 +88,12 @@ const ConciseBoundedDescription: FunctionComponent<Props> = ({ store, primaryTop
     return (
       <div className="information-resource-container">
         {isOpen ? (
+          <a href="#" title={collapse} className="expand-collapse-information-resource" onClick={toggleOpen}>&and;</a>
+        ) : (
+          <a href="#" title={expand} className="expand-collapse-information-resource" onClick={toggleOpen}>&or;</a>
+        )}
+        {isOpen ? (
           <div className="information-resource">
-            <a href="#" title={collapse} className="expand-collapse-information-resource" onClick={toggleOpen}>▲</a>
             <Resource
               store={store}
               resourceIri={resource}
@@ -106,7 +110,6 @@ const ConciseBoundedDescription: FunctionComponent<Props> = ({ store, primaryTop
           </div>
         ) : (
           <div className="resource-container border information-resource-collapsed">
-            <a href="#" title={expand} className="expand-collapse-information-resource" onClick={toggleOpen}>▼</a>
             <span className="resource-type">«{resourceType}»</span>
             <InlineResource
               store={store}
