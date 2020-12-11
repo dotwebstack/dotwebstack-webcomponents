@@ -13,6 +13,7 @@ import VocabularyJsExample from './VocabularyJsExample';
 import TupleListJsExample from './TupleListJsExample';
 import ResourceJsExample from './ResourceJsExample';
 import ConciseBoundedDescriptionExample from './ConciseBoundedDescriptionExample';
+import ConciseBoundedDescriptionJsExample from './ConciseBoundedDescriptionJsExample';
 
 const App = () => (
   <I18nextProvider i18n={i18next}>
@@ -50,6 +51,10 @@ const App = () => (
                   <Link to="/resource-js" className="nav-link">Resource (without React)</Link>
                 </li>
                 <li className="nav-item">
+                  <Link to="/concise-bounded-description-js" className="nav-link">
+                    ConciseBoundedDescription (without React)</Link>
+                </li>
+                <li className="nav-item">
                   <Link to="/search-js" className="nav-link">Search (without React)</Link>
                 </li>
               </ul>
@@ -68,6 +73,7 @@ const App = () => (
               <Route exact path="/vocabulary-js" component={VocabularyJsExample} />
               <Route exact path="/tuple-list-js" component={TupleListJsExample} />
               <Route exact path="/resource-js" component={ResourceJsExample} />
+              <Route exact path="/concise-bounded-description-js" component={ConciseBoundedDescriptionJsExample} />
               <Route exact path="/search-js" component={SearchJsExample} />
               <Redirect from="/" to="/vocabulary" />
             </Switch>
