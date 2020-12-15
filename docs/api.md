@@ -1,5 +1,79 @@
 # API Reference
 
+## &lt;ConciseBoundedDescription>
+
+`ConciseBoundedDescription` displays all resources from a particular URL or endpoint.
+Each resource is rendered as a `<Resource>` component.
+
+Optionally, resources can be provided or dynamically determined that are treated as a "primary topic" or
+"information resource". If present, the primary topic is displayed with the annotation "Primary topic".
+If present, the information resource is displayed in a collapsed/compact state, showing only those
+properties that are configured. The component may be expanded by the user.
+
+```jsx
+<ConciseBoundedDescription
+  store={store}
+  primaryTopic={namedNode('http://example.org/topic38')}
+  determinePrimaryTopic={store => ... }
+  informationResource={namedNode('http://example.org/doc38')}
+  determineInformationResource={store => ... }
+  resourceProps={{ ... }}
+  prefixes={{ ex: 'http://example.org/' }}
+  informationResourceCollapsedRows={rows}
+/>
+```
+
+### `store`: `Store`
+The data source.
+
+### `primaryTopic`: `NamedNode` (optional)
+Property to manually set the resource to be treated as the primary topic.
+
+### `determinePrimaryTopic`: `(store: Store) => NamedNode | BlankNode | null` (optional)
+Function to dynamically determine the primary topic.
+
+### `informationResource`: `NamedNode` (optional)
+Property to manually set the resource to be treated as the information resource.
+
+### `determineInformationResource`: `(store: Store, primaryTopic: NamedNode | BlankNode | null) => NamedNode | BlankNode | null` (optional)
+Function to dynamically determine the information resource.
+The primary topic is determined *before* and passed to this function as well.
+
+### `resourceProps`: `ResourceProps` (optional)
+A subset of `<Resource>` props. Passed directly to rendered `<Resource>` components.
+
+```jsx
+type ResourceProps = {
+  rows?: Row[];
+  valueProps?: ValueProps;
+  hideEmptyProperties?: boolean;
+  showAllProperties?: boolean;
+  formatPredicate?: (predicate: string, inverse: boolean, shorten: (resource: string) => string) => string | null;
+  includeProperty?: (predicate: string, inverse: boolean) => boolean;
+  disableAutoLabel?: boolean;
+  disableLegacyFormatting?: boolean,
+  prefixes?: any;
+  renderHeading?: boolean;
+};
+```
+
+### `prefixes`: `any` (optional)
+An object of key-value pairs defining prefixes to apply to any rendering of property predicates, values and types of literals.
+A set of default prefixes is built-in. The contents of `prefixes` are merged with the default prefixes.
+
+### `informationResourceCollapsedRows`: `Row[]` (optional)
+A set of row definitions that specify which properties will be displayed in the information resource component,
+when it is in a collapsed (compact) state.
+
+```jsx
+type Row = {
+  predicate: NamedNode;
+  inverse?: boolean;
+  label?: string;
+  customRender?: (terms: Term[]) => JSX.Element;
+};
+```
+
 ## &lt;ClassList>
 
 `ClassList` creates list of classes with its properties.
@@ -297,6 +371,9 @@ It is a list of properties (predicates) and their corresponding values (objects)
   prefixes={{
     ex: 'http://example.org/',
   }}
+  renderHeading
+  resourceType="SomeTypeToDisplay"
+  className="some-css-class"
 />
 ```
 
@@ -366,11 +443,11 @@ Properties specified in `rows` are unaffected.
 Affects default formatting of property predicates as text.
 If `true`, default formatting is shortening the predicate IRI by applying default and configured prefixes.
 Otherwise, the predicate IRI's "local name" is used (the part after the last occurring `#` or `/`).
-The default vale is `false`.
+The default value is `false`.
 
 ### `disableLegacyFormatting`: `boolean` (optional)
 This is a convenience flag that is directly passed to the `Value` components rendered by `Resource`.
-The default vale is `false`.
+The default value is `false`.
 
 See [`<Value>`](#value) for more information.
 
@@ -385,6 +462,15 @@ Example:
   xyz: 'http://xyz.org/',
 }
 ```
+
+### `renderHeading`: `boolean` (optional)
+If set to `true`, a resource heading is rendered.
+
+### `resourceType`: `string` (optional)
+A string representing a stereotype or type annotation, which is displayed in the resource heading, if enabled.
+
+### `className`: `string` (optional)
+CSS class(es) that are added to the resource's table element, as well as to its heading element, if any.
 
 ## &lt;ResourceSelector>
 
@@ -449,7 +535,7 @@ If not specified, the default value `btn btn-success` is used.
 
 ## &lt;Value>
 
-`Value` renders the value of the Term. `NamedNode` terms will be rendered as a link.
+`Value` renders the value of the `Term`. `NamedNode` terms will be rendered as a link.
 
 ```jsx
 <Value
@@ -464,14 +550,15 @@ If not specified, the default value `btn btn-success` is used.
   }}
   getNamedNodeLabels={(namedNode, shorten) => [ ...literals... ]},
   disableLegacyFormatting
+  disableLink
 />
 ```
 
 ### `term`: `Term`
-The IRI of the Resource which is represented.
+The `term` which is represented.
 
 ### `local`: `boolean` (optional)
-Whether the link text contains the local name or the full IRI. When no `local` is provided, it defaults to false.
+Whether the link text contains the local name or the full IRI. When no `local` is provided, it defaults to `false`.
 
 ### `linkBuilder`: `(term: Term) => string` (optional)
 A callback function to be able to customize the `href` attribute of the link (only relevant for `NamedNode` terms).
@@ -518,6 +605,10 @@ In addition, without further configuration, rendering differences exist between 
 For example, legacy mode does not shorten any IRIs, while the new mode does.
 
 For sake of backwards compatibility, the default value is `false`.
+
+### `disableLink`: `boolean` (optional)
+If set to `true`, a resource value will not be rendered as a link, but as text only.
+The default value is `false`.
 
 ## &lt;Label>
 

@@ -1,8 +1,6 @@
-import { NamedNode, Quad, Term } from 'rdf-js';
+import { NamedNode, Quad } from 'rdf-js';
 import { last } from 'ramda';
-
-const uniqueTermsReducer = (unique: Term[], term: Term): Term[] =>
-  unique.filter(uniqueTerm => uniqueTerm.equals(term)).length ? unique : [...unique, term];
+import { uniqueTermsReducer } from '../utils';
 
 export const uniquePredicates = (statements: Quad[]): NamedNode[] =>
   statements.map(statement => statement.predicate).reduce(uniqueTermsReducer, [])

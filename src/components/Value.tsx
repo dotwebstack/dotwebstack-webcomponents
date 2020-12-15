@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, FunctionComponent } from 'react';
 import { localName, mergePrefixMaps, applyPrefixes } from '../utils';
 import { Term, Literal, NamedNode } from 'rdf-js';
 import { namedNode, literal } from '@rdfjs/data-model';
@@ -13,6 +13,7 @@ export type ValueProps = {
   prefixes?: any,
   getNamedNodeLabels?: (namedNode: NamedNode, shorten: (resource: string) => string) => Literal[],
   disableLegacyFormatting?: boolean,
+  disableLink?: boolean,
 };
 
 type Props = {
@@ -39,9 +40,9 @@ const defaultGetNamedNodeLabels = (namedNode: NamedNode, shorten: (resource: str
 const rdfLangString = namedNode(RDF + 'langString');
 const xsdString = namedNode(XSD + 'string');
 
-const Value: React.FunctionComponent<ValueProps & Props> = ({ term, local, disableLegacyFormatting, prefixes,
+const Value: FunctionComponent<ValueProps & Props> = ({ term, local, disableLegacyFormatting, prefixes,
   getNamedNodeLabels, formatString = defaultFormatString, formatLangString = defaultFormatLangString,
-  formatOtherLiteral = defaultFormatOtherLiteral, linkBuilder = defaultLinkBuilder }) => {
+  formatOtherLiteral = defaultFormatOtherLiteral, linkBuilder = defaultLinkBuilder, disableLink = false }) => {
 
   const { termType } = term;
 
@@ -103,10 +104,12 @@ const Value: React.FunctionComponent<ValueProps & Props> = ({ term, local, disab
     const isLast = (index: number) => index + 1 === labels.length;
     return (
       <>{labels.map((label: Literal, index: number) => (
-        <React.Fragment key={index}>
-          <a href={href}><LiteralValue literal={label} /></a>
-          {isLast(index) ? null : <br />}
-        </React.Fragment>
+        <Fragment key={index}>
+          {disableLink
+            ? <LiteralValue literal={label} />
+            : <a href={href}><LiteralValue literal={label} /></a>}
+          {!isLast(index) && <br />}
+        </Fragment>
       ))}</>
     );
   }

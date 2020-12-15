@@ -108,3 +108,6 @@ export const mergePrefixMaps = (existingPrefixMap: any, prefixMapToMerge: any) =
     .forEach(({ prefix, namespace }) => result[prefix] = namespace);
   return result;
 };
+
+export const uniqueTermsReducer = (unique: Term[], term: Term): Term[] =>
+  unique.filter(uniqueTerm => uniqueTerm.equals(term)).length ? unique : [...unique, term];

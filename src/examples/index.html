@@ -5,6 +5,34 @@
   <title>DotWebStack Web Components</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
   <style type="text/css">
+
+    .information-resource-collapsed .resource-type,
+    .expand-collapse-information-resource,
+    .resource-heading .resource-type {
+      color: #aaa;
+    }
+
+    a.expand-collapse-information-resource:hover {
+      color: black;
+    }
+
+    .information-resource-container .initial-highlight {
+      animation: 0.4s ease-out 1 both fade-highlight;
+    }
+
+    @keyframes fade-highlight {
+      from {
+        background-color: rgba(255, 230, 0, 0.1);
+      }
+      to {
+        background-color: none;
+      }
+    }
+
+    body {
+      margin-bottom: 15em;
+    }
+
     .nav-link {
       white-space: nowrap;
       overflow: hidden;
