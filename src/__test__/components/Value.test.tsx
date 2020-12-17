@@ -54,7 +54,7 @@ describe('<Value />', () => {
       />);
     const literalValue = wrapper.find('LiteralValue');
     expect(literalValue).toHaveLength(1);
-    expect(literalValue.prop('literal')).toEqual(term);
+    expect(literalValue.prop('value')).toEqual(term);
   });
 
   it('renders a xsd:string with default formatter', () => {
@@ -189,7 +189,7 @@ describe('<Value />', () => {
       />);
     const literalValue = wrapper.find('a').find('LiteralValue');
     expect(literalValue).toHaveLength(1);
-    expect(literalValue.prop('literal')).toEqual(literal('http://example.org/xyz'));
+    expect(literalValue.prop('value')).toEqual('http://example.org/xyz');
   });
 
   it('renders a named node with multiple labels from custom label function', () => {

@@ -303,7 +303,7 @@ based on the result and the provided column name (should be a field which is als
 When using suggestions it is best practice to use the same field (and only that field) in the search prop.
 
 ### `search`: SearchListProps (optional)
-The list will be sorted while typing when instant search is true (use when no suggestions are enabled, 
+The list will be sorted while typing when instant search is true (use when no suggestions are enabled,
 set to false when suggestions are provided)
 Search will use all names in the TupleResult by default, or a custom list if provided.
 
@@ -431,7 +431,7 @@ The specified `formatPredicate` function may return `null`.
 If this occurs, the default mechanism is used as a fallback, which is:
 - If the property is `inverse`, format as `"is {label} of"`, otherwise format as `"{label}"`.
 - The value of `label` depends on the `disableAutoLabel` flag.
-If `disableAutoLabel` is `true`, `label` is created by shortening the predicate IRI by applying default and configured prefixes. 
+If `disableAutoLabel` is `true`, `label` is created by shortening the predicate IRI by applying default and configured prefixes.
 Otherwise, the predicate IRI's "local name" is used (the part after the last occurring `#` or `/`).
 
 ### `includeProperty`: `(predicate: string, inverse: boolean) => boolean` (optional)
@@ -548,7 +548,7 @@ If not specified, the default value `btn btn-success` is used.
   prefixes={{
     ex: 'http://example.org/',
   }}
-  getNamedNodeLabels={(namedNode, shorten) => [ ...literals... ]},
+  getNamedNodeLabels={(namedNode, shorten) => [ ...literals, strings... ]},
   disableLegacyFormatting
   disableLink
 />
@@ -593,7 +593,7 @@ Example:
 }
 ```
 
-### `getNamedNodeLabels`: `(namedNode: NamedNode, shorten: (resource: string) => string) => Literal[]` (optional)
+### `getNamedNodeLabels`: `(namedNode: NamedNode, shorten: (resource: string) => string) => (Literal|string)[]` (optional)
 If specified, `getNamedNodeLabels` is used to retrieve zero or more display labels to use when rendering a particular resource.
 This may be used to look up `rdfs:label` values, for example.
 The provided `shorten` function can be used to apply the standard IRI-shortening mechanism.

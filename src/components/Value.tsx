@@ -11,7 +11,7 @@ export type ValueProps = {
   formatLangString?: (literal: Literal) => string,
   formatOtherLiteral?: (literal: Literal, shorten: (resource: string) => string) => string,
   prefixes?: any,
-  getNamedNodeLabels?: (namedNode: NamedNode, shorten: (resource: string) => string) => Literal[],
+  getNamedNodeLabels?: (namedNode: NamedNode, shorten: (resource: string) => string) => (Literal|string)[],
   disableLegacyFormatting?: boolean,
   disableLink?: boolean,
 };
@@ -35,7 +35,7 @@ const defaultFormatOtherLiteral = (literal: Literal, shorten: (resource: string)
 };
 
 const defaultGetNamedNodeLabels = (namedNode: NamedNode, shorten: (resource: string) => string) =>
-  [literal(shorten(namedNode.value))]; // by default, we only shorten
+  [shorten(namedNode.value)]; // by default, we only shorten
 
 const rdfLangString = namedNode(RDF + 'langString');
 const xsdString = namedNode(XSD + 'string');
@@ -64,27 +64,31 @@ const Value: FunctionComponent<ValueProps & Props> = ({ term, local, disableLega
   const effectivePrefixes = mergePrefixMaps(defaultPrefixes, prefixes);
   const shorten = (resource: string) => applyPrefixes(resource, effectivePrefixes);
 
-  const LiteralValue = ({ literal }: { literal: Literal }) => {
-    const { datatype } = literal;
+  const LiteralValue = ({ value }: { value: Literal|string }) => {
+
+    const x = typeof value === 'string'
+      ? literal(value)
+      : value;
+    const { datatype } = x;
 
     // rdf:langString
     if (datatype.equals(rdfLangString)) {
-      return <>{formatLangString(literal)}</>;
+      return <>{formatLangString(x)}</>;
     }
 
     // xsd:string
     if (datatype.equals(xsdString)) {
-      return <>{formatString(literal)}</>;
+      return <>{formatString(x)}</>;
     }
 
     // other literal, such as xsd:boolean
-    return <>{formatOtherLiteral(literal, shorten)}</>;
+    return <>{formatOtherLiteral(x, shorten)}</>;
 
   };
 
   if (termType === 'Literal') {
     const literal = term as Literal;
-    return <span><LiteralValue literal={literal} /></span>;
+    return <span><LiteralValue value={literal} /></span>;
   }
 
   if (termType === 'NamedNode') {
@@ -99,15 +103,15 @@ const Value: FunctionComponent<ValueProps & Props> = ({ term, local, disableLega
           : defaultGetNamedNodeLabels(namedNode, shorten); // fallback in case we get 0 labels
       })
       : defaultGetNamedNodeLabels;
-    const labels: Literal[] = effectiveGetNamedNodeLabels(namedNode, shorten);
+    const labels: (Literal|string)[] = effectiveGetNamedNodeLabels(namedNode, shorten);
 
     const isLast = (index: number) => index + 1 === labels.length;
     return (
-      <>{labels.map((label: Literal, index: number) => (
+      <>{labels.map((label: Literal|string, index: number) => (
         <Fragment key={index}>
           {disableLink
-            ? <LiteralValue literal={label} />
-            : <a href={href}><LiteralValue literal={label} /></a>}
+            ? <LiteralValue value={label} />
+            : <a href={href}><LiteralValue value={label} /></a>}
           {!isLast(index) && <br />}
         </Fragment>
       ))}</>
