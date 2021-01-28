@@ -121,7 +121,7 @@ class TupleList extends React.Component<Props, State> {
 
   /* handle callback from AlphabeticIndexBar, set filterByFirstLetter to true */
   handleLetterBarFilter(filter: string) {
-    this.setState({ filterByFirstLetter: true, searchString: filter });
+    this.setState({ filterByFirstLetter: true, searchString: filter, currentPage: 1 });
   }
 
   /* handle callback from SearchInput */
@@ -238,7 +238,7 @@ class TupleList extends React.Component<Props, State> {
   }
 
   renderCustomSearchFilters = () => {
-    return this.props.search && this.props.filterConfig && (<div style={{ paddingBottom: '15px' }}>
+    return this.props.search && this.props.filterConfig && (<div className="mb-3" id="search-filters">
       <RefineSearchFilters
           availableFilters={Object.keys(this.props.filterConfig).map(s => s as unknown as Filter)}
           selected={this.handleFilterSelected.bind(this)}/>
@@ -247,7 +247,7 @@ class TupleList extends React.Component<Props, State> {
 
   renderSearchInput = () => {
     return this.props.search && (
-        <div style={{ paddingBottom: '15px' }}>
+        <div className="mb-3" id="search-input">
           <SearchInput onInputChange={this.handleSearchFilter.bind(this)}
                        instantSearch={this.props.search.instant} suggest={this.props.suggest}/>
         </div>
@@ -256,7 +256,7 @@ class TupleList extends React.Component<Props, State> {
 
   renderAlphabeticIndexBarFilter = () => {
     return this.props.alphabeticIndexBar && (
-        <div style={{ paddingBottom: '15px' }}>
+        <div className="mb-3" id="alphabetic-index">
           <AlphabetIndexBar active={this.state.filterByFirstLetter}
                             onSelect={this.handleLetterBarFilter.bind(this)}/>
         </div>

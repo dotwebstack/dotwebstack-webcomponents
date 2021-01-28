@@ -19,10 +19,10 @@ export const AlphabetIndexBar:React.FC<Props> = ({ active, onSelect }) => {
   };
 
   return (
-            <div className="btn-group" style={{ display: 'flex' }} role="group">
+            <div className="btn-group w-100" role="group">
                 {items.map(i => (
                     <button type="button" key={i} id={`button-${i}`}
-                            className={`btn btn-outline-primary ${active && selected === i ? 'active' : ''}`}
+                            className={`btn btn-light rounded-0 py-1 px-2 ${active && selected === i ? 'active' : ''}`}
                             style={{ flex: 1 }} onClick={() => handleClick(i)}>{i}
                     </button>))}
             </div>
