@@ -206,6 +206,7 @@ describe('<TupleList />', () => {
     wrapper.find('button[id="button-e"]').simulate('click');
     const rows = wrapper.find('table > tbody > tr');
     expect(rows).toHaveLength(1);
+    expect(wrapper.state('currentPage')).toBe(1);
     expect(rows.first().find('td:first-child').text()).toBe('Eerste begrip');
   });
 
