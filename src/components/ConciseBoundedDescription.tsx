@@ -47,6 +47,9 @@ const defaultDetermineInformationResource = (store: Store, primaryTopic: Optiona
     return null;
   }
   const informationResources = store.filter(primaryTopic, foaf.isPrimaryTopicOf, null).objects();
+  if (!informationResources.length) {
+    return null;
+  }
   if (informationResources.length > 1) {
     throw new Error(`found ${informationResources.length} information resources; expected at most 1`);
   }
